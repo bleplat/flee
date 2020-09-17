@@ -24,17 +24,24 @@ Public Class MainForm
     Dim player_team As Team = Nothing
 
     Private Sub MainForm_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
-        G = Graphics.FromImage(DrawBMP)
-        G.CompositingQuality = CompositingQuality.HighSpeed
-        G.InterpolationMode = InterpolationMode.Bicubic
+        ' Commandline
         If My.Application.CommandLineArgs.Count > 1 Then
             SeedTextBox.Text = My.Application.CommandLineArgs(1)
         Else
             SeedTextBox.Text = (New Random().Next()).ToString()
         End If
+        ' Graphics settings
+        G = Graphics.FromImage(DrawBMP)
+        G.CompositingQuality = CompositingQuality.HighSpeed
+        G.InterpolationMode = InterpolationMode.Bicubic
         Upgrade.LoadRegUpgrades()
         Me.Width = Me.Width + 1
-        My.Computer.Audio.Play("sounds/PhilippWeigl-SubdivisionOfTheMasses.wav", AudioPlayMode.BackgroundLoop)
+        ' Play the music if it's available
+        Try
+            My.Computer.Audio.Play("sounds/PhilippWeigl-SubdivisionOfTheMasses.wav", AudioPlayMode.BackgroundLoop)
+        Catch ex As Exception
+            Me.Text = "Flee - Music was not found and therefore not loaded!"
+        End Try
     End Sub
     Private Sub BeginButton_Click(sender As Object, e As EventArgs) Handles StartPlayingButton.Click
         Dim Seed As Integer
