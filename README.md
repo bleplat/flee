@@ -1,5 +1,6 @@
 # Flee
 A game I made a while ago when I was learning vb.NET
+Run on MS Windows only.
 
 ## Progress
 I am working on other projects and **I have no intention to improve it substantially**.
@@ -12,3 +13,6 @@ You spawn as a faction, and you have to reach 'ascention' by collecting a huge a
 To achieve this goal, you need to exterminate your enemies, with the help of allied factions.
 Do not loose time, as your foe will quickly rise in power.
 Bosses will randomly spawn, just to make your task a little bit harder.
+
+## Usage
+A .exe binary is available in bin/x64/Release, but you can always compile it yourself. 
