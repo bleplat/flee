@@ -103,7 +103,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Effect.vb" />
+    <Compile Include="GunClass.vb" />
     <Compile Include="Helpers.vb" />
+    <Compile Include="ListClass.vb" />
+    <Compile Include="ListProperty.vb" />
     <Compile Include="MainForm.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -129,9 +132,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Ship.vb" />
+    <Compile Include="ShipClass.vb" />
     <Compile Include="Shoot.vb" />
     <Compile Include="Team.vb" />
     <Compile Include="Upgrade.vb" />
+    <Compile Include="Upgrade2.vb" />
     <Compile Include="Weapon.vb" />
     <Compile Include="World.vb" />
   </ItemGroup>
