@@ -3,7 +3,7 @@
 	' shared
 	Public Shared classes As New Dictionary(Of String, GunClass)
 
-	' identity and appearence
+	' identity AndAlso appearence
 	Public name As String = "Default-Gun"
 	Public sprite As String = "MSL"
 	Public effect As Integer = 0

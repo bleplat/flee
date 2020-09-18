@@ -273,7 +273,7 @@
             Else
                 Auto = True
             End If
-            If Not STeam Is Nothing And Behavior <> "Drift" Then
+            If Not STeam Is Nothing AndAlso Behavior <> "Drift" Then
                 Color = STeam.color
             End If
             If Not Team Is Nothing AndAlso UpsMax > 0 Then
@@ -301,12 +301,12 @@
                 Me.Coo.Y = world.ArenaSize.Height
             End If
         Else
-            If Me.Coo.X < -100 Or Me.Coo.Y < -100 Or Me.Coo.X > world.ArenaSize.Width + 100 Or Me.Coo.Y > world.ArenaSize.Height + 100 Then
+            If Me.Coo.X < -100 OrElse Me.Coo.Y < -100 OrElse Me.Coo.X > world.ArenaSize.Width + 100 OrElse Me.Coo.Y > world.ArenaSize.Height + 100 Then
                 If Me.Auto = False Then Me.Life = 0
             End If
         End If
         '===' Déplacement '==='
-        If Agility = 0 And SpeedMax = 0 Then
+        If Agility = 0 AndAlso SpeedMax = 0 Then
             Direction = Direction + 1
         Else
             Vec = Helpers.GetNewPoint(New Point(0, 0), Direction, Speed)
@@ -403,13 +403,13 @@
             Exit Sub
         Else
             If qa > 180 Then
-                If Direction > qa - 180 And Direction < qa Then
+                If Direction > qa - 180 AndAlso Direction < qa Then
                     Direction = Direction + Agility
                 Else
                     Direction = Direction - Agility
                 End If
             Else
-                If Direction < qa + 180 And Direction > qa Then
+                If Direction < qa + 180 AndAlso Direction > qa Then
                     Direction = Direction - Agility
                 Else
                     Direction = Direction + Agility
@@ -449,7 +449,7 @@
                 If ShieldPoints((shield_ptn_index + 15) Mod 16) < 128 Then ShieldPoints((shield_ptn_index + 15) Mod 16) = 128
             End If
         End If
-        If Me.ColdDeflector >= 0 And Me.ColdDeflector < Me.Life * 2 Then
+        If Me.ColdDeflector >= 0 AndAlso Me.ColdDeflector < Me.Life * 2 Then
             Me.ColdDeflector += Amount / 2
             Amount /= 6
         End If
@@ -473,7 +473,7 @@
         Dim QA As Single
         Dim NeedSpeed As Boolean = False
         '===' Fin de poursuite '==='
-        If Me.Behavior <> "Drift" And world.GetShipByUID(Target) Is Nothing Then
+        If Me.Behavior <> "Drift" AndAlso world.GetShipByUID(Target) Is Nothing Then
             Target = ""
             If Me.Behavior <> "Mine" Then
                 Me.Behavior = "Stand"
@@ -484,11 +484,11 @@
             Me.Behavior = "Drift"
         End If
         '===' Auto-Activation '==='
-        If Me.Auto And Me.Behavior <> "Drift" Then
+        If Me.Auto AndAlso Me.Behavior <> "Drift" Then
             Dim NearVal As Integer = Vision : Dim NearUID As String = ""
             If Me.Target = "" Then
                 For Each oShip As Ship In world.Ships
-                    If (Not Me.Team.IsFriendWith(oShip.Team)) And (rnd_num < 6700 Or Not oShip.Team Is Nothing) Then
+                    If (Not Me.Team.IsFriendWith(oShip.Team)) AndAlso (rnd_num < 6700 OrElse Not oShip.Team Is Nothing) Then
                         Dim dist As Integer = Helpers.GetDistance(Me.Coo.X, Me.Coo.Y, oShip.Coo.X, oShip.Coo.Y)
                         If dist < NearVal Then
                             NearVal = dist
@@ -527,7 +527,7 @@
                         If oShip.Team Is Nothing Then
                             Dim dist_me As Integer = Helpers.GetDistance(Me.Coo.X, Me.Coo.Y, oShip.Coo.X, oShip.Coo.Y)
                             Dim dist_target As Integer = Helpers.GetDistance(Me.TargetPTN.X, Me.TargetPTN.Y, oShip.Coo.X, oShip.Coo.Y)
-                            If dist_target < world.ArenaSize.Width / 8 And dist_me < NearVal Then
+                            If dist_target < world.ArenaSize.Width / 8 AndAlso dist_me < NearVal Then
                                 NearVal = dist_me
                                 NearUID = oShip.UID
                             End If
@@ -550,7 +550,7 @@
                     QA = Helpers.GetQA(Me.Coo.X, Me.Coo.Y, oShip.Coo.X, oShip.Coo.Y)
                     Dim d As Integer = 50 : If Weapons.Count > 0 Then d = Me.Weapons(0).Range / 2
                     If Helpers.GetDistance(Me.Coo.X, Me.Coo.Y, oShip.Coo.X, oShip.Coo.Y) <= d Then
-                        If Me.SpeedMax > 4 Or Me.W < 35 Or Me.Speed < 1.0 Then
+                        If Me.SpeedMax > 4 OrElse Me.W < 35 OrElse Me.Speed < 1.0 Then
                             NeedSpeed = True
                         Else
                             NeedSpeed = False
@@ -581,7 +581,7 @@
     End Sub 'IAIAIAIAIA
     Public Sub IAFire()
         '===' Tirer '==='
-        If Weapons.Count > 0 And (fram Mod 2 = 0) Then
+        If Weapons.Count > 0 AndAlso (fram Mod 2 = 0) Then
             For Each AWeap As Weapon In Weapons
                 If AWeap.Bar > 0 Then
                     Dim record As Integer = 100000 : Dim recorded As String = "" 'Pas de cible
@@ -591,7 +591,7 @@
                         If OVessel Is Me Then
                             Continue For
                         End If
-                        If Not Me.AllowMining And (OVessel.Type = "Asteroide" Or OVessel.Type = "Meteoroide") Then
+                        If Not Me.AllowMining AndAlso (OVessel.Type = "Asteroide" OrElse OVessel.Type = "Meteoroide") Then
                             Continue For
                         End If
                         If Me.Team Is Nothing OrElse Not Me.Team.IsFriendWith(OVessel.Team) Then

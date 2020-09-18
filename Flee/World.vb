@@ -108,7 +108,7 @@
         ' enemy NPC
         Teams.Add(New Team(Me, AffinityEnum.MEAN, Nothing))
         SPAWN_STATION_RANDOMLY("Station", Teams(Teams.Count - 1), Rand.Next(3, 7))
-        ' random NPC Teams and Ships
+        ' random NPC Teams AndAlso Ships
         Dim npc_team_count = Rand.Next(4, 10)
         For i = 0 To npc_team_count - 1
             Teams.Add(New Team(Me, Nothing, Nothing))
@@ -161,7 +161,7 @@
                 If Not AShoot.Team Is AShip.Team AndAlso (AShoot.Team Is Nothing OrElse Not AShoot.Team.IsFriendWith(AShip.Team)) Then
                     If Helpers.GetDistance(AShoot.Coo.X, AShoot.Coo.Y, AShip.Coo.X, AShip.Coo.Y) < AShip.W / 2 Then
                         AShoot.Life = 0
-                        If AShip.HotDeflector > 0 And Rand.Next(0, 100) < AShip.HotDeflector Then
+                        If AShip.HotDeflector > 0 AndAlso Rand.Next(0, 100) < AShip.HotDeflector Then
                             Effects.Add(New Effect With {.Type = "Deflected2", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
                         Else
                             If AShip.DeflectorCount > 0 Then
@@ -207,7 +207,7 @@
                             If Helpers.GetDistance(Ships(i).Coo.X, Ships(i).Coo.Y, a_ship.Coo.X, a_ship.Coo.Y) < 5500 Then
                                 a_ship.TakeDamages(10000, Nothing)
                             End If
-                            If a_ship.Team.affinity = AffinityEnum.KIND And a_ship.Life <= 0 And a_ship.Team.id <> Ships(i).Team.id Then
+                            If a_ship.Team.affinity = AffinityEnum.KIND AndAlso a_ship.Life <= 0 AndAlso a_ship.Team.id <> Ships(i).Team.id Then
                                 FriendlyFireCount += 1
                             End If
                             If FriendlyFireCount >= 4 Then
@@ -262,7 +262,7 @@
             If aShip.Team Is Nothing OrElse aShip.Team.id <= 1 Then
                 Continue For
             End If
-            If aShip.Type = "Station" And Not aShip.Team.IsFriendWith(team) Then
+            If aShip.Type = "Station" AndAlso Not aShip.Team.IsFriendWith(team) Then
                 Return False
             End If
         Next
@@ -285,7 +285,7 @@
             ' Spawn Direction
             Dim dir As Single = 0
             dir = Helpers.GetQA(Spawn.X, Spawn.Y, ArenaSize.Width / 2, ArenaSize.Height / 2) + Rand.Next(-75, 75)
-            ' Type and count
+            ' Type AndAlso count
             Dim Type As String = "Asteroide"
             Dim Team As Team = Nothing
             Dim AltTeam = boss_team
@@ -332,7 +332,7 @@
             If HasTeamWon(Teams(0)) Then
                 If Rand.Next(0, 4) = 0 Then
                     Dim possibles = New List(Of String) From {"Loneboss", "Pusher", "Legend_U", "Legend_I", "Legend_L", "Legend_K", "Cargo", "Colonizer", "Converter_A", "Converter_B"}
-                    If (Teams(0).affinity And AffinityEnum.ALOOF) <> 0 Then
+                    If Teams(0).affinity = AffinityEnum.ALOOF Then
                         possibles.Add("Nuke")
                         possibles.Add("Ambassador")
                     End If
@@ -366,7 +366,7 @@
             Next
             ' Summoning / upgrades
             For Each a_ship As Ship In Ships
-                If Not a_ship.Team Is Nothing AndAlso ((a_ship.Team.id <> 0 Or a_ship.Type = "BomberFactory") And a_ship.UpProgress = 0 And a_ship.Team.ApproxShipCount < a_ship.Team.MaxShips) Then
+                If Not a_ship.Team Is Nothing AndAlso ((a_ship.Team.id <> 0 OrElse a_ship.Type = "BomberFactory") AndAlso a_ship.UpProgress = 0 AndAlso a_ship.Team.ApproxShipCount < a_ship.Team.MaxShips) Then
                     Dim wished_upgrade = "Launch_MSL"
                     ' Stations summoning ships
                     If a_ship.Type = "Station" Then
@@ -450,11 +450,11 @@
                         If Rand.Next(0, 16) < 4 Then Upgrade.ForceUpgradeToShip(a_ship, "Jump_II")
                     End If
                     ' Bugs jumping
-                    If a_ship.Type = "Bugs" And a_ship.ColdDeflector > 25 Then
+                    If a_ship.Type = "Bugs" AndAlso a_ship.ColdDeflector > 25 Then
                         Upgrade.ForceUpgradeToShip(a_ship, "Jump")
                     End If
                     ' Converter jumping when not in combat
-                    If a_ship.Type = "Converter" And (a_ship.Shield >= a_ship.ShieldMax Or a_ship.Shield < a_ship.ShieldMax / 8) Then
+                    If a_ship.Type = "Converter" AndAlso (a_ship.Shield >= a_ship.ShieldMax OrElse a_ship.Shield < a_ship.ShieldMax / 8) Then
                         Upgrade.ForceUpgradeToShip(a_ship, "Jump")
                     End If
                     ' Purger jumping
@@ -462,7 +462,7 @@
                         If Rand.Next(0, 64) < 6 Then Upgrade.ForceUpgradeToShip(a_ship, "Jump_II")
                     End If
                     ' Dronner summoning drones
-                    If a_ship.Type = "Dronner" And Rand.Next(0, 16) < 4 Then
+                    If a_ship.Type = "Dronner" AndAlso Rand.Next(0, 16) < 4 Then
                         Select Case Rand.Next(0, 3)
                             Case 0
                                 wished_upgrade = "Combat_Drone_1"
@@ -474,7 +474,7 @@
                         Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
                     End If
                     ' Purger summoning drones
-                    If a_ship.Type = "Purger_Dronner" And Rand.Next(0, 16) < 9 Then
+                    If a_ship.Type = "Purger_Dronner" AndAlso Rand.Next(0, 16) < 9 Then
                         Select Case Rand.Next(0, 3)
                             Case 0
                                 wished_upgrade = "Purger_Drone_1"
@@ -486,7 +486,7 @@
                         Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
                     End If
                     ' Converter summoning alternative converters
-                    If a_ship.Type = "Converter" And Rand.Next(0, 16) < 8 Then
+                    If a_ship.Type = "Converter" AndAlso Rand.Next(0, 16) < 8 Then
                         Select Case Rand.Next(0, 2)
                             Case 0
                                 wished_upgrade = "Spawn_Converter_A"
@@ -506,18 +506,18 @@
                         If Rand.Next(0, 16) < 1 Then Upgrade.ForceUpgradeToShip(a_ship, "Launch_MSL")
                     End If
                     'Upgrading
-                    If Rand.Next(0, 8) = 0 And (a_ship.Type = "Simpleship" Or a_ship.Team.upgrade_limit > 0) Then
+                    If Rand.Next(0, 8) = 0 AndAlso (a_ship.Type = "Simpleship" OrElse a_ship.Team.upgrade_limit > 0) Then
                         Dim PossibleUps As List(Of Upgrade) = New List(Of Upgrade)
                         For Each AUp As Upgrade In Upgrade.Upgrades
                             Dim ok As Boolean = True
                             Dim Spliter() As String = AUp.Need.Split(" ")
-                            If Not a_ship.HaveUp(AUp.Name) And Not (AUp.Name.StartsWith("Paint")) And Not (AUp.Name = "Destroy") And Not (AUp.Name = "Nuke") And Not (AUp.Name = "Ascend") And Not (AUp.Name = "Warp") Then
+                            If Not a_ship.HaveUp(AUp.Name) AndAlso Not (AUp.Name.StartsWith("Paint")) AndAlso Not (AUp.Name = "Destroy") AndAlso Not (AUp.Name = "Nuke") AndAlso Not (AUp.Name = "Ascend") AndAlso Not (AUp.Name = "Warp") Then
                                 For Each ac As String In Spliter
-                                    If a_ship.Ups.Count > Math.Min(a_ship.UpsMax, a_ship.Team.upgrade_limit) And AUp.Install Then
+                                    If a_ship.Ups.Count > Math.Min(a_ship.UpsMax, a_ship.Team.upgrade_limit) AndAlso AUp.Install Then
                                         ok = False
                                         Exit For
                                     End If
-                                    If a_ship.InterUpgrade(ac, False) = False And (a_ship.Upgrading Is Nothing OrElse AUp.Name <> a_ship.Upgrading.Name) Then
+                                    If a_ship.InterUpgrade(ac, False) = False AndAlso (a_ship.Upgrading Is Nothing OrElse AUp.Name <> a_ship.Upgrading.Name) Then
                                         ok = False
                                         Exit For
                                     End If

@@ -112,17 +112,17 @@ Public NotInheritable Class Helpers
 		Dim R As Integer = color.R
 		Dim G As Integer = color.G
 		Dim B As Integer = color.B
-		If R <= G And R <= B Then
+		If R <= G AndAlso R <= B Then
 			R -= 48
 			G += 48
 			B += 48
 		End If
-		If G <= R And G <= B Then
+		If G <= R AndAlso G <= B Then
 			R += 48
 			G -= 48
 			B += 48
 		End If
-		If B <= R And B <= G Then
+		If B <= R AndAlso B <= G Then
 			R += 48
 			G += 48
 			B -= 48
@@ -143,7 +143,7 @@ Public NotInheritable Class Helpers
 		Return angle
 	End Function
 	Shared Function GetAngle(x1 As Double, y1 As Double, x2 As Double, y2 As Double) As Integer
-		If (x1 = x2 And y1 = y2) Then Return -1
+		If (x1 = x2 AndAlso y1 = y2) Then Return -1
 		Dim QA As Double = Math.Atan2(x2 - x1, y2 - y1) * 180.0 / Math.PI
 		QA = NormalizeAngleUnsigned(QA)
 		Return QA

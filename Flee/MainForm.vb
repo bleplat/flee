@@ -40,7 +40,7 @@ Public Class MainForm
 		Try
 			My.Computer.Audio.Play("sounds/PhilippWeigl-SubdivisionOfTheMasses.wav", AudioPlayMode.BackgroundLoop)
 		Catch ex As Exception
-			Me.Text = "Flee - Music was not found and therefore not loaded!"
+			Me.Text = "Flee - Music was not found AndAlso therefore not loaded!"
 		End Try
 		' Load lists
 		Helpers.LoadLists()
@@ -121,7 +121,7 @@ Public Class MainForm
 			If W > 5 Then W = 5
 			Dim mini_color = AShip.Color
 			If target_identification Then
-				If AShip.Team Is Nothing Or AShip.Type = "Comet" Then
+				If AShip.Team Is Nothing OrElse AShip.Type = "Comet" Then
 					mini_color = AShip.Color
 				ElseIf AShip.Team Is player_team Then
 					mini_color = Color.Lime
@@ -133,7 +133,7 @@ Public Class MainForm
 			End If
 			MiniG.FillRectangle(New SolidBrush(mini_color), New Rectangle(AShip.Coo.X / world.ArenaSize.Width * MiniBMP.Width - (W / 2), AShip.Coo.Y / world.ArenaSize.Height * MiniBMP.Height - (W / 2), W, W))
 			' Main screen '
-			If AShip.Coo.X + (AShip.W / 2) > See.X And AShip.Coo.X - (AShip.W / 2) < See.X + DrawBox.Width And AShip.Coo.Y + (AShip.W / 2) > See.Y And AShip.Coo.Y - (AShip.W / 2) < See.Y + DrawBox.Height Then
+			If AShip.Coo.X + (AShip.W / 2) > See.X AndAlso AShip.Coo.X - (AShip.W / 2) < See.X + DrawBox.Width AndAlso AShip.Coo.Y + (AShip.W / 2) > See.Y AndAlso AShip.Coo.Y - (AShip.W / 2) < See.Y + DrawBox.Height Then
 				Dim img As New Bitmap(Helpers.GetSprite(AShip.Type, AShip.fram, 0, mini_color)) 'image
 				Dim center As New Point(AShip.Coo.X - See.X, AShip.Coo.Y - See.Y) 'centre
 				Dim AddD As Integer = 0 : If AShip.Team Is Nothing Then AddD = world.ticks Mod 360
@@ -146,7 +146,7 @@ Public Class MainForm
 
 		'===' Shoots '==='
 		For Each AShoot As Shoot In world.Shoots
-			'If AShoot.Coo.X > See.X And AShoot.Coo.X < See.X + DrawBox.Width And AShoot.Coo.Y > See.Y And AShoot.Coo.Y < See.Y + DrawBox.Height Then
+			'If AShoot.Coo.X > See.X AndAlso AShoot.Coo.X < See.X + DrawBox.Width AndAlso AShoot.Coo.Y > See.Y AndAlso AShoot.Coo.Y < See.Y + DrawBox.Height Then
 			Dim col As Color
 			If AShoot.Team Is Nothing Then
 				col = Color.White
@@ -163,7 +163,7 @@ Public Class MainForm
 		Next
 		'===' Effets '==='
 		For Each AEffect As Effect In world.Effects
-			If AEffect.Coo.X > See.X And AEffect.Coo.X < See.X + DrawBox.Width And AEffect.Coo.Y > See.Y And AEffect.Coo.Y < See.Y + DrawBox.Height Then
+			If AEffect.Coo.X > See.X AndAlso AEffect.Coo.X < See.X + DrawBox.Width AndAlso AEffect.Coo.Y > See.Y AndAlso AEffect.Coo.Y < See.Y + DrawBox.Height Then
 				Dim img As New Bitmap(Helpers.GetSprite(AEffect.Type, AEffect.fram, 0)) 'image
 				Dim center As New Point(AEffect.Coo.X - See.X, AEffect.Coo.Y - See.Y) 'centre
 				Dim MonM As Matrix = New Matrix : MonM.RotateAt(-AEffect.Direction + 180, center) 'rotation
@@ -181,8 +181,8 @@ Public Class MainForm
 		End If
 		'===' Ships Special '==='
 		For Each AShip As Ship In world.Ships
-			If AShip.Coo.X + (AShip.W / 2) > See.X And AShip.Coo.X - (AShip.W / 2) < See.X + DrawBox.Width And AShip.Coo.Y + (AShip.W / 2) > See.Y And AShip.Coo.Y - (AShip.W / 2) < See.Y + DrawBox.Height Then
-				If Not AShip.Team Is Nothing AndAlso AShip.Behavior <> "Drift" And AShip.Type <> "MSL" Then
+			If AShip.Coo.X + (AShip.W / 2) > See.X AndAlso AShip.Coo.X - (AShip.W / 2) < See.X + DrawBox.Width AndAlso AShip.Coo.Y + (AShip.W / 2) > See.Y AndAlso AShip.Coo.Y - (AShip.W / 2) < See.Y + DrawBox.Height Then
+				If Not AShip.Team Is Nothing AndAlso AShip.Behavior <> "Drift" AndAlso AShip.Type <> "MSL" Then
 					' Selection '
 					Dim drawrect As Rectangle = New Rectangle(New Point(AShip.Coo.X - AShip.W / 2 - See.X, AShip.Coo.Y - AShip.W / 2 - See.Y), New Size(AShip.W, AShip.W)) 'zone de dessin
 					If False AndAlso target_identification Then ' disabled
@@ -247,7 +247,7 @@ Public Class MainForm
 				help_str += "CONTROLS:" & vbNewLine
 				help_str += "Arrows               - move camera" & vbNewLine
 				help_str += "Left Click           - select unit" & vbNewLine
-				help_str += "Right Click          - (for selected units) move, follow or attack" & vbNewLine
+				help_str += "Right Click          - (for selected units) move, follow OrElse attack" & vbNewLine
 				help_str += "Double Right Click   - (for selected units) mine there" & vbNewLine
 				help_str += "Right Click (on you) - (for unit you click on, if selected) ignore asteroids" & vbNewLine
 				help_str += "Space                - pause" & vbNewLine
@@ -393,7 +393,7 @@ Public Class MainForm
 		Dim SS As Rectangle = Helpers.GetRect(SelectPTN1, SelectPTN2)
 		For Each aship As Ship In world.Ships
 			aship.selected = False
-			If aship.Team Is player_team Or DebugMode Then 'Si mode debug ou equipe correcte
+			If aship.Team Is player_team OrElse DebugMode Then 'Si mode debug ou equipe correcte
 				If aship.Coo.X + aship.W / 2 > SS.X Then
 					If aship.Coo.X - aship.W / 2 < SS.X + SS.Width Then
 						If aship.Coo.Y + aship.W / 2 > SS.Y Then
@@ -528,7 +528,7 @@ Public Class MainForm
 					Dim Spliter() As String = AUp.Need.Split(" ")
 					If Not AShip.HaveUp(AUp.Name) Then
 						For Each ac As String In Spliter
-							If AShip.InterUpgrade(ac, False) = False And (AShip.Upgrading Is Nothing OrElse AUp.Name <> AShip.Upgrading.Name) Then
+							If AShip.InterUpgrade(ac, False) = False AndAlso (AShip.Upgrading Is Nothing OrElse AUp.Name <> AShip.Upgrading.Name) Then
 								ok = False
 							End If
 						Next
@@ -552,14 +552,14 @@ Public Class MainForm
 	Dim PG As Graphics = Graphics.FromImage(PBMP)
 	Sub drawUpgrades()
 		Dim Aship As Ship = world.GetShipByUID(LastShipPaneload)
-		If SShipPanel.Visible = False Or Aship Is Nothing Then
+		If SShipPanel.Visible = False OrElse Aship Is Nothing Then
 			Exit Sub
 		End If
 		PG.Clear(Color.Black)
 		Dim x As Integer = 0 : Dim y As Integer = 0
 		Dim udV As Boolean = False
 		For Each AUp As Upgrade In ListedUps
-			If x = UpX And y = UpY Then
+			If x = UpX AndAlso y = UpY Then
 				PG.FillRectangle(Brushes.DimGray, x * 25, y * 25, 25, 25)
 				udV = True
 				UpName.Text = AUp.Name
@@ -585,7 +585,7 @@ Public Class MainForm
 				PG.DrawRectangle(New Pen(Brushes.Yellow, 2), x * 25, y * 25, 24, 24)
 				Dim ph As Integer = Aship.UpProgress / AUp.Time * 25
 				PG.FillRectangle(Brushes.White, x * 25, y * 25 + 25 - ph, 25, ph)
-			ElseIf Aship.Ups.Count >= Aship.UpsMax And AUp.Install Then
+			ElseIf Aship.Ups.Count >= Aship.UpsMax AndAlso AUp.Install Then
 				PG.DrawRectangle(Pens.DarkBlue, x * 25, y * 25, 24, 24)
 			ElseIf Aship.Team Is Nothing OrElse Not Aship.Team.resources.HasEnough(AUp.cost) Then
 				PG.DrawRectangle(Pens.DarkRed, x * 25, y * 25, 24, 24)
@@ -615,8 +615,8 @@ Public Class MainForm
 		Dim AShip As Ship = world.GetShipByUID(LastShipPaneload)
 		Dim x As Integer = 0 : Dim y As Integer = 0
 		For Each AUp As Upgrade In ListedUps
-			If x = UpX And y = UpY Then
-				If (Not AShip.Upgrading Is Nothing) Or (AShip.Ups.Count >= AShip.UpsMax And AUp.Install) Then
+			If x = UpX AndAlso y = UpY Then
+				If (Not AShip.Upgrading Is Nothing) OrElse (AShip.Ups.Count >= AShip.UpsMax AndAlso AUp.Install) Then
 					Exit Sub
 				End If
 				If AShip.Team Is Nothing OrElse AShip.Team.resources.HasEnough(AUp.cost) Then
