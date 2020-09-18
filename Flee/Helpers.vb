@@ -177,11 +177,11 @@ Public NotInheritable Class Helpers
 		For Each a_class As ListClass In list_classes
 			Select Case a_class.type
 				Case "gun"
-					If Not GunClass.classes.ContainsKey(a_class.name) Then
-						GunClass.classes(a_class.name) = New GunClass(a_class.name)
+					If Not GunStats.classes.ContainsKey(a_class.name) Then
+						GunStats.classes(a_class.name) = New GunStats(a_class.name)
 					End If
 					For Each prop As ListProperty In a_class.properties
-						GunClass.classes(a_class.name).SetProperty(prop.name, prop.value)
+						GunStats.classes(a_class.name).SetProperty(prop.name, prop.value)
 					Next
 				Case Else : Throw New Exception("Unknown class type: " & a_class.type)
 			End Select

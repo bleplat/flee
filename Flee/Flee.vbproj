@@ -103,7 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Effect.vb" />
-    <Compile Include="GunClass.vb" />
+    <Compile Include="GunStats.vb" />
     <Compile Include="Helpers.vb" />
     <Compile Include="ListClass.vb" />
     <Compile Include="ListProperty.vb" />

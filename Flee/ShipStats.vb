@@ -1,4 +1,5 @@
-﻿Public Class ShipClass
+﻿Public Class ShipStats
+
 	' identity
 	Public name As String = "Default"
 	' visual
@@ -22,10 +23,11 @@
 	Public hot_deflector As Integer = 0
 	Public cold_deflector As Boolean = 0
 	' crafting
-	Public craft As New List(Of ShipClass)
+	Public craft As New List(Of ShipStats)
 	Public cost As MaterialSet = New MaterialSet(0, 0, 0, 0)
 	Public complexity = 400
-	' settings
+
+	' Import/Export
 	Public Sub SetProperty(name As String, value As String)
 		Select Case name
 			Case "sprite" : name = value
@@ -47,4 +49,10 @@
 			Case "name" : name = value
 		End Select
 	End Sub
+
+
+
+
+
+
 End Class
