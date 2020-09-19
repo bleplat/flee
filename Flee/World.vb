@@ -216,7 +216,7 @@
                     End If
                     If Not Ships(i).last_damager_team Is Nothing Then
                         If Ships(i).stats.sprite = "Meteoroide" Then
-                            Ships(i).last_damager_team.resources.Add(0, 1, 0, 0)
+                            Ships(i).last_damager_team.resources.Add(0, 2, 0, 0)
                         ElseIf Ships(i).stats.sprite = "Comet" Then
                             Ships(i).last_damager_team.resources.Add(1200, 8, 1, 0)
                         ElseIf Ships(i).stats.name.Contains("Station") Then
@@ -362,9 +362,9 @@
             Next
             ' Summoning / upgrades
             For Each a_ship As Ship In Ships
-                If Not a_ship.team Is Nothing AndAlso ((a_ship.team.id <> 0 OrElse a_ship.stats.sprite = "BomberFactory") AndAlso a_ship.UpProgress = 0 AndAlso a_ship.team.ApproxShipCount < a_ship.team.MaxShips) Then
+                If Not a_ship.team Is Nothing AndAlso Not a_ship.team.bot_team AndAlso a_ship.UpProgress = 0 AndAlso a_ship.team.ApproxShipCount < a_ship.team.MaxShips Then
                     Dim wished_upgrade = Nothing
-                    If Rand.Next(0, 16) < 4 Then
+                    If Rand.Next(0, 16) < 8 Then
                         ' building ships
                         If a_ship.stats.crafts.Count() > 0 Then
                             wished_upgrade = Helpers.GetRandomSpawnUpgrade(Rand, a_ship)
@@ -417,7 +417,7 @@
                         End If
                         ' Missiles summoning
                         If a_ship.stats.name = "Loneboss" Then
-                            'If Rand.Next(0, 16) < 12 Then Upgrade.ForceUpgradeToShip(a_ship, "Launch_MSL_instant")
+                            If Rand.Next(0, 16) < 12 Then Upgrade.ForceUpgradeToShip(a_ship, "Launch_MSL_instant")
                         End If
                         If a_ship.stats.name = "Yerka" Then
                             'If Rand.Next(0, 16) < 1 Then Upgrade.ForceUpgradeToShip(a_ship, "Launch_MSL_from_yerka")

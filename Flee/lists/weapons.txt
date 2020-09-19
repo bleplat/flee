@@ -159,9 +159,9 @@ gun Star-Waves
 	sprite=C
 	range=210
 	celerity=4
-	power=1
+	power=0
 	loadtime=75
-	salvo=7
+	salvo=8
 
 gun Explode-On-Contact
 	sprite=Z

@@ -322,7 +322,7 @@
         End If
         If Not From Is Nothing AndAlso Not From.Team Is Nothing Then
             If Me.stats.sprite = "Star" Then
-                From.Team.resources.Antimatter += Amount / 16
+                From.Team.resources.Antimatter += Amount / 8
             Else
                 If Me.integrity > Amount Then
                     From.Team.resources.Metal += Amount
