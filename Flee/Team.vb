@@ -82,7 +82,7 @@ Public Class Team
     Public upgrade_limit As Integer = 0
     Public resources As MaterialSet = New MaterialSet()
     Public MaxShips As UShort = 8
-    Public UpsBonus As UShort = 0
+    Public upgrade_slots_bonus As UShort = 0
     Public ApproxShipCount = 0
 
     Public Function IsFriendWith(other As Team) As Boolean

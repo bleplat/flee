@@ -49,12 +49,28 @@
         SetStats(ship_class)
         ResetShieldPoint()
     End Sub
+    Public Sub New(ByRef world As World, team As Team, ship_class As String)
+        Me.world = world
+        Me.uid = Helpers.GetNextUniqueID()
+        Me.SetTeam(team)
+        SetStats(ship_class)
+        ResetShieldPoint()
+    End Sub
     Public Sub SetStats(ship_class As String)
         SetStats(ShipStats.classes(ship_class))
     End Sub
     Public Sub SetStats(stats As ShipStats)
         If Not Me.base_stats Is stats Then
             Me.base_stats = stats
+            ' upgrade_slots
+            If Me.upgrade_slots < 0 Then ' initial value is -1
+                Me.upgrade_slots = Me.base_stats.level
+                If Me.base_stats.repair > 0 Then ' for now, a ships which cannot repair is not inhabited and cannot upgrade
+                    If Not Me.team Is Nothing Then
+                        Me.upgrade_slots += Me.team.upgrade_slots_bonus
+                    End If
+                End If
+            End If
             ' Reset Weapons
             Me.weapons.Clear()
             For Each gun_name As String In Me.base_stats.default_weapons
@@ -128,8 +144,8 @@
             If Not STeam Is Nothing AndAlso Behavior <> "Drift" Then
                 color = STeam.color
             End If
-            If Not team Is Nothing AndAlso UpsMax > 0 Then
-                UpsMax += team.UpsBonus
+            If Not team Is Nothing AndAlso upgrade_slots > 0 Then
+                upgrade_slots += team.upgrade_slots_bonus
             End If
         End If
     End Sub
@@ -228,7 +244,7 @@
                 Next
                 'actualisation vaisseau
                 Me.ResetStats()
-                Me.ApplyUps("")
+                Me.ApplyUpgrades("")
                 Me.ResetShieldPoint() ' just for the effect :>
                 Upgrading = Nothing
                 UpProgress = 0
@@ -483,7 +499,7 @@
 
 
 
-    Public Sub ApplyUps(ByVal NewUp As String)
+    Public Sub ApplyUpgrades(ByVal NewUp As String)
         For Each AUp As Upgrade In Me.Ups
             Dim spliter() As String = AUp.Effect.Split(" ")
             For Each Aspli As String In spliter
@@ -524,7 +540,7 @@
                 End If
                 Me.position = Me.TargetPTN + New Point(world.Rand.Next(-512, 512), world.Rand.Next(-512, 512))
             Case "!Upsbonus"
-                If FN Then Me.team.UpsBonus += Spliter(1) 'FN
+                If FN Then Me.team.upgrade_slots_bonus += Spliter(1) 'FN
             Case "!Maxships"
                 If FN Then Me.team.MaxShips += Spliter(1) 'FN
             Case "+Shield"
@@ -544,7 +560,7 @@
             Case "%Shieldreg"
                 Me.stats.shield_regeneration += (Me.stats.shield_regeneration * (Spliter(1) / 100))
             Case "!UpsMax"
-                Me.UpsMax += Spliter(1)
+                Me.upgrade_slots += Spliter(1)
             Case "!Fix"
                 Me.integrity += Me.integrity * (Spliter(1) / 100.0)
             Case "!FixSFull"
@@ -600,8 +616,7 @@
             Case "?MS"
                 If Me.team Is Nothing OrElse world.CountTeamShips(team) < Me.team.MaxShips Then Return True
             Case "!Sum"
-                If FN Then world.Ships.Add(New Ship(world, Spliter(1)) With {.position = New Point(Me.position.X + world.Rand.Next(-10, 11), Me.position.Y + world.Rand.Next(-10, 11))})
-                world.Ships(world.Ships.Count - 1).SetTeam(Me.team)
+                If FN Then world.Ships.Add(New Ship(world, Me.team, Spliter(1)) With {.position = New Point(Me.position.X + world.Rand.Next(-10, 11), Me.position.Y + world.Rand.Next(-10, 11))})
                 world.Ships(world.Ships.Count - 1).direction = Me.direction
                 If world.Ships(world.Ships.Count - 1).stats.sprite <> "MSL" Then
                     world.Ships(world.Ships.Count - 1).Behavior = "Fight"
@@ -628,7 +643,7 @@
     End Function
     Public Ups As New List(Of Upgrade)
     Public Upgrading As Upgrade : Public UpProgress As Integer
-    Public UpsMax As Integer = 10
+    Public upgrade_slots As Integer = -1
 
     Public Function HaveUp(ByVal Upstr As String) As Boolean
         For Each AUp As Upgrade In Me.Ups

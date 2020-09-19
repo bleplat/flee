@@ -40,14 +40,12 @@
             main_type = Helpers.RandomStationName(Rand)
         End If
         Dim main_coords As Point = New Point(Rand.Next(1000, ArenaSize.Width - 1000), Rand.Next(1000, ArenaSize.Height - 1000))
-        Ships.Add(New Ship(Me, main_type) With {.position = main_coords})
-        Ships(Ships.Count - 1).SetTeam(team)
+        Ships.Add(New Ship(Me, team, main_type) With {.position = main_coords})
         ' turrets
         While spawn_allies > 0
             Dim ally_type As String = Helpers.RandomTurretName(Rand)
             Dim ally_coords As Point = New Point(main_coords.X + Rand.Next(-600, 600), main_coords.Y + Rand.Next(-600, 600))
-            Ships.Add(New Ship(Me, ally_type) With {.position = ally_coords})
-            Ships(Ships.Count - 1).SetTeam(team)
+            Ships.Add(New Ship(Me, team, ally_type) With {.position = ally_coords})
             spawn_allies -= 1
         End While
     End Sub
@@ -68,25 +66,22 @@
             origin = New Point(Rand.Next(1000, ArenaSize.Width - 1000), Rand.Next(1000, ArenaSize.Height - 1000))
         End If
         If Rand.Next(0, 100) < 75 Then
-            Ships.Add(New Ship(Me, "Colonizer") With {.position = New Point(origin.X, origin.Y - 1)})
-            Ships(Ships.Count - 1).SetTeam(player_team)
+            Ships.Add(New Ship(Me, player_team, "Colonizer") With {.position = New Point(origin.X, origin.Y - 1)})
             Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).position.X, Ships(0).position.Y, origin.X, origin.Y)
-            Ships(Ships.Count - 1).UpsMax += Rand.Next(0, 16)
+            Ships(Ships.Count - 1).upgrade_slots += Rand.Next(0, 16)
             power -= 15
         End If
         If Rand.Next(0, 100) < 75 Then
-            Ships.Add(New Ship(Me, "Ambassador") With {.position = New Point(origin.X + 1, origin.Y)})
-            Ships(Ships.Count - 1).SetTeam(player_team)
+            Ships.Add(New Ship(Me, player_team, "Ambassador") With {.position = New Point(origin.X + 1, origin.Y)})
             Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).position.X, Ships(0).position.Y, origin.X, origin.Y)
-            Ships(Ships.Count - 1).UpsMax += Rand.Next(0, 16)
+            Ships(Ships.Count - 1).upgrade_slots += Rand.Next(0, 16)
             power -= 25
         End If
         While power > 0
             Dim types As String() = {"Pusher", "Sacred", "Simpleship", "Artillery", "Bomber", "Dronner", "Scout", "Kastou", "Strange", "MiniColonizer", "Civil_A"}
-            Ships.Add(New Ship(Me, types(Rand.Next(0, types.Length))) With {.position = New Point(origin.X - 1, origin.Y)})
-            Ships(Ships.Count - 1).SetTeam(player_team)
+            Ships.Add(New Ship(Me, player_team, types(Rand.Next(0, types.Length))) With {.position = New Point(origin.X - 1, origin.Y)})
             Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).position.X, Ships(0).position.Y, origin.X, origin.Y)
-            Ships(Ships.Count - 1).UpsMax += Rand.Next(4, 16)
+            Ships(Ships.Count - 1).upgrade_slots += Rand.Next(4, 16)
             power -= 15
         End While
     End Sub
@@ -96,14 +91,12 @@
         ' Derelict Asteroids
         For i As Integer = 1 To 85
             Dim T As String = "Asteroide" : If Rand.Next(0, 3) = 0 Then T = "Meteoroide"
-            Ships.Add(New Ship(Me, T) With {.position = New Point(Rand.Next(0, ArenaSize.Width), Rand.Next(0, ArenaSize.Width)), .direction = Rand.Next(0, 360)})
-            Ships(Ships.Count - 1).SetTeam(Nothing)
+            Ships.Add(New Ship(Me, Nothing, T) With {.position = New Point(Rand.Next(0, ArenaSize.Width), Rand.Next(0, ArenaSize.Width)), .direction = Rand.Next(0, 360)})
         Next
         ' Stars
         For i = 0 To Rand.Next(1, 3)
             Dim T As String = "Star"
-            Ships.Add(New Ship(Me, T) With {.position = New Point(Rand.Next(0, ArenaSize.Width), Rand.Next(0, ArenaSize.Width)), .direction = Rand.Next(0, 360)})
-            Ships(Ships.Count - 1).SetTeam(Nothing)
+            Ships.Add(New Ship(Me, Nothing, T) With {.position = New Point(Rand.Next(0, ArenaSize.Width), Rand.Next(0, ArenaSize.Width)), .direction = Rand.Next(0, 360)})
         Next
         ' allied NPC
         Teams.Add(New Team(Me, AffinityEnum.KIND))
@@ -351,8 +344,7 @@
                 End If
             End If
             For j As Integer = 1 To Count
-                Ships.Add(New Ship(Me, Type) With {.position = New Point(Spawn.X + Rand.Next(-50, 50), Spawn.Y + Rand.Next(-50, 50)), .direction = dir})
-                Ships(Ships.Count - 1).SetTeam(Team)
+                Ships.Add(New Ship(Me, Team, Type) With {.position = New Point(Spawn.X + Rand.Next(-50, 50), Spawn.Y + Rand.Next(-50, 50)), .direction = dir})
             Next
         End If
     End Sub
@@ -451,7 +443,7 @@
                             Dim Spliter() As String = AUp.Need.Split(" ")
                             If Not a_ship.HaveUp(AUp.Name) AndAlso Not (AUp.Name.StartsWith("Paint")) AndAlso Not (AUp.Name = "Destroy") AndAlso Not (AUp.Name = "Nuke") AndAlso Not (AUp.Name = "Ascend") AndAlso Not (AUp.Name = "Warp") Then
                                 For Each ac As String In Spliter
-                                    If a_ship.Ups.Count > Math.Min(a_ship.UpsMax, a_ship.team.upgrade_limit) AndAlso AUp.Install Then
+                                    If a_ship.Ups.Count > Math.Min(a_ship.upgrade_slots, a_ship.team.upgrade_limit) AndAlso AUp.Install Then
                                         ok = False
                                         Exit For
                                     End If

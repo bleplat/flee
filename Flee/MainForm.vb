@@ -524,7 +524,7 @@ Public Class MainForm
 		'===' Afficher infos '==='
 		SShipImageBox.Image = Helpers.GetSprite(AShip.stats.sprite, 0, 0, AShip.color)
 		SShipTypeBox.Text = AShip.stats.sprite
-		SShipUpsMax.Text = AShip.Ups.Count & " / " & AShip.UpsMax
+		SShipUpsMax.Text = AShip.Ups.Count & " / " & AShip.upgrade_slots
 		AllowMiningBox.Visible = Not AShip.AllowMining
 
 		'===' Upgrades '==='
@@ -593,7 +593,7 @@ Public Class MainForm
 				PG.DrawRectangle(New Pen(Brushes.Yellow, 2), x * 25, y * 25, 24, 24)
 				Dim ph As Integer = Aship.UpProgress / AUp.Time * 25
 				PG.FillRectangle(Brushes.White, x * 25, y * 25 + 25 - ph, 25, ph)
-			ElseIf Aship.Ups.Count >= Aship.UpsMax AndAlso AUp.Install Then
+			ElseIf Aship.Ups.Count >= Aship.upgrade_slots AndAlso AUp.Install Then
 				PG.DrawRectangle(Pens.DarkBlue, x * 25, y * 25, 24, 24)
 			ElseIf Aship.team Is Nothing OrElse Not Aship.team.resources.HasEnough(AUp.cost) Then
 				PG.DrawRectangle(Pens.DarkRed, x * 25, y * 25, 24, 24)
@@ -624,7 +624,7 @@ Public Class MainForm
 		Dim x As Integer = 0 : Dim y As Integer = 0
 		For Each AUp As Upgrade In ListedUps
 			If x = UpX AndAlso y = UpY Then
-				If (Not AShip.Upgrading Is Nothing) OrElse (AShip.Ups.Count >= AShip.UpsMax AndAlso AUp.Install) Then
+				If (Not AShip.Upgrading Is Nothing) OrElse (AShip.Ups.Count >= AShip.upgrade_slots AndAlso AUp.Install) Then
 					Exit Sub
 				End If
 				If AShip.team Is Nothing OrElse AShip.team.resources.HasEnough(AUp.cost) Then
