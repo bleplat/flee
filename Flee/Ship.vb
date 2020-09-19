@@ -13,7 +13,7 @@
     Public ShieldPoints(SHIELD_POINTS - 1) As Integer
     Public Sub ResetShieldPoint()
         For shield_ptn_value = 0 To SHIELD_POINTS - 1
-            ShieldPoints(shield_ptn_value) = 128
+            ShieldPoints(shield_ptn_value) = Math.Max(ShieldPoints(shield_ptn_value), 128)
         Next
     End Sub
 
@@ -572,7 +572,7 @@
             Case "?Type" 'Type
                 If Me.stats.sprite = Spliter(1) Then Return True
             Case "!Type"
-                If FN Then Me.stats.sprite = Spliter(1)
+                If FN Then Me.SetStats(Spliter(1))' : Me.stats.sprite = Spliter(1)
             Case "?Wtype" 'armement
                 If Me.weapons(0).stats.sprite = Spliter(1) Then Return True
             Case "%Wloadmax"
