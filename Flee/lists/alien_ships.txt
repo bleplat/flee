@@ -10,9 +10,10 @@ ship Kastou
 	shield_opacity=100.00
 	cost=140;1;0;0
 	complexity=600
+	craft=Yerka
 
 ship Yerka
-	level=1
+	level=2
 	width=25
 	integrity=75
 	speed=4.00
@@ -20,6 +21,7 @@ ship Yerka
 	weapon=270;Machine-Gun
 	cost=110;1;0;0
 	complexity=500
+	craft=MSL
 
 ship Strange
 	level=2
@@ -35,7 +37,7 @@ ship Strange
 	complexity=600
 
 ship Sacred
-	level=9
+	level=8
 	width=30
 	integrity=85
 	speed=3.50
@@ -45,7 +47,7 @@ ship Sacred
 	complexity=500
 
 ship Pusher
-	level=1
+	level=2
 	width=25
 	integrity=95
 	speed=2.80
@@ -55,7 +57,7 @@ ship Pusher
 	complexity=500
 
 ship Crusher
-	level=5
+	level=4
 	width=75
 	integrity=665
 	speed=2.20
@@ -67,7 +69,7 @@ ship Crusher
 	complexity=1000
 
 ship Civil_A
-	level=1
+	level=4
 	width=60
 	integrity=320
 	speed=2.20

@@ -364,79 +364,16 @@
             For Each a_ship As Ship In Ships
                 If Not a_ship.team Is Nothing AndAlso ((a_ship.team.id <> 0 OrElse a_ship.stats.sprite = "BomberFactory") AndAlso a_ship.UpProgress = 0 AndAlso a_ship.team.ApproxShipCount < a_ship.team.MaxShips) Then
                     Dim wished_upgrade = Nothing
-                    ' Stations summoning ships
-                    If a_ship.stats.name.StartsWith("Station") Then
-                        wished_upgrade = Helpers.GetRandomSpawnUpgrade(Rand, a_ship)
-                        If Not wished_upgrade Is Nothing Then
-                            Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
+                    If Rand.Next(0, 16) < 4 Then
+                        ' building ships
+                        If a_ship.stats.crafts.Count() > 0 Then
+                            wished_upgrade = Helpers.GetRandomSpawnUpgrade(Rand, a_ship)
+                            If Not wished_upgrade Is Nothing Then
+                                Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
+                            End If
                         End If
-                    End If
-                    ' Kastou summoning Yerka
-                    If a_ship.stats.sprite = "Kastou" Then
-                        If Rand.Next(0, 16) < 4 Then Upgrade.ForceUpgradeToShip(a_ship, "Build_Yerka")
-                    End If
-                    ' Crusher jumping
-                    If a_ship.stats.sprite = "Crusher" Then
-                        If Rand.Next(0, 16) < 4 Then Upgrade.ForceUpgradeToShip(a_ship, "Jump_II")
-                    End If
-                    ' Bugs jumping
-                    If a_ship.stats.sprite = "Bugs" AndAlso a_ship.cold_deflector_charge > 25 Then
-                        Upgrade.ForceUpgradeToShip(a_ship, "Jump")
-                    End If
-                    ' Converter jumping when not in combat
-                    If a_ship.stats.sprite = "Converter" AndAlso (a_ship.shield >= a_ship.stats.shield OrElse a_ship.shield < a_ship.stats.shield / 8) Then
-                        Upgrade.ForceUpgradeToShip(a_ship, "Jump")
-                    End If
-                    ' Purger jumping
-                    If a_ship.stats.sprite = "Purger_Dronner" Then
-                        If Rand.Next(0, 64) < 6 Then Upgrade.ForceUpgradeToShip(a_ship, "Jump_II")
-                    End If
-                    ' Dronner summoning drones
-                    If a_ship.stats.sprite = "Dronner" AndAlso Rand.Next(0, 16) < 4 Then
-                        Select Case Rand.Next(0, 3)
-                            Case 0
-                                wished_upgrade = "Build_Combat_Drone_1"
-                            Case 1
-                                wished_upgrade = "Build_Combat_Drone_2"
-                            Case 2
-                                wished_upgrade = "Build_Combat_Drone_3"
-                        End Select
-                        Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
-                    End If
-                    ' Purger summoning drones
-                    If a_ship.stats.sprite = "Purger_Dronner" AndAlso Rand.Next(0, 16) < 9 Then
-                        Select Case Rand.Next(0, 3)
-                            Case 0
-                                wished_upgrade = "Build_Purger_Drone_1"
-                            Case 1
-                                wished_upgrade = "Build_Purger_Drone_2"
-                            Case 2
-                                wished_upgrade = "Build_Purger_Drone_3"
-                        End Select
-                        Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
-                    End If
-                    ' Converter summoning alternative converters
-                    If a_ship.stats.sprite = "Converter" AndAlso Rand.Next(0, 16) < 8 Then
-                        Select Case Rand.Next(0, 2)
-                            Case 0
-                                wished_upgrade = "Build_Converter_A"
-                            Case 1
-                                wished_upgrade = "Build_Converter_B"
-                        End Select
-                        Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
-                    End If
-                    ' Missiles summoning
-                    If a_ship.stats.sprite = "Loneboss" Then
-                        If Rand.Next(0, 16) < 12 Then Upgrade.ForceUpgradeToShip(a_ship, "Launch_MSL_instant")
-                    End If
-                    If a_ship.stats.sprite = "Yerka" Then
-                        If Rand.Next(0, 16) < 1 Then Upgrade.ForceUpgradeToShip(a_ship, "Launch_MSL_from_yerka")
-                    End If
-                    If a_ship.stats.sprite = "Scout" Then
-                        If Rand.Next(0, 16) < 1 Then Upgrade.ForceUpgradeToShip(a_ship, "Launch_MSL")
-                    End If
-                    'Upgrading
-                    If Rand.Next(0, 8) = 0 AndAlso (a_ship.stats.sprite = "Simpleship" OrElse a_ship.team.upgrade_limit > 0) Then
+                    ElseIf Rand.Next(0, 8) = 0 Then
+                        ' upgrading
                         Dim PossibleUps As List(Of Upgrade) = New List(Of Upgrade)
                         For Each AUp As Upgrade In Upgrade.Upgrades
                             Dim ok As Boolean = True
@@ -460,12 +397,40 @@
                         If PossibleUps.Count >= 1 Then
                             a_ship.Upgrading = PossibleUps(Rand.Next(0, PossibleUps.Count))
                         End If
+                    Else
+                        ' hardcoded special things
+                        ' Crusher jumping
+                        If a_ship.stats.name = "Crusher" Then
+                            If Rand.Next(0, 16) < 4 Then Upgrade.ForceUpgradeToShip(a_ship, "Jump_II")
+                        End If
+                        ' Bugs jumping
+                        If a_ship.stats.name = "Bugs" AndAlso a_ship.cold_deflector_charge > 25 Then
+                            Upgrade.ForceUpgradeToShip(a_ship, "Jump")
+                        End If
+                        ' Converter jumping when not in combat
+                        If a_ship.stats.name = "Converter" AndAlso (a_ship.shield >= a_ship.stats.shield OrElse a_ship.shield < a_ship.stats.shield / 8) Then
+                            Upgrade.ForceUpgradeToShip(a_ship, "Jump")
+                        End If
+                        ' Purger jumping
+                        If a_ship.stats.name = "Purger_Dronner" Then
+                            If Rand.Next(0, 48) < 4 Then Upgrade.ForceUpgradeToShip(a_ship, "Jump_II")
+                        End If
+                        ' Missiles summoning
+                        If a_ship.stats.name = "Loneboss" Then
+                            'If Rand.Next(0, 16) < 12 Then Upgrade.ForceUpgradeToShip(a_ship, "Launch_MSL_instant")
+                        End If
+                        If a_ship.stats.name = "Yerka" Then
+                            'If Rand.Next(0, 16) < 1 Then Upgrade.ForceUpgradeToShip(a_ship, "Launch_MSL_from_yerka")
+                        End If
+                        If a_ship.stats.name = "Scout" Then
+                            'If Rand.Next(0, 16) < 1 Then Upgrade.ForceUpgradeToShip(a_ship, "Launch_MSL")
+                        End If
                     End If
                 End If
             Next
-        End If
-    End Sub
-    Sub AutoSpawn(Optional ByVal force As Boolean = False)
+		End If
+	End Sub
+	Sub AutoSpawn(Optional ByVal force As Boolean = False)
         SpawnDerelictsObjects()
         SpawnNPCShips()
     End Sub

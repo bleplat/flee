@@ -10,9 +10,10 @@ ship Loneboss
 	hot_deflector=55.00
 	cost=140;1;0;0
 	complexity=600
+	craft=MSL
 
 ship Bugs
-	level=4
+	level=0
 	width=200
 	integrity=3400
 	speed=3.20
@@ -25,7 +26,7 @@ ship Bugs
 	complexity=1600
 
 ship Converter
-	level=4
+	level=2
 	width=55
 	integrity=360
 	speed=1.20
@@ -42,11 +43,14 @@ ship Converter
 	shield_opacity=100.00
 	cost=304;1;0;0
 	complexity=1000
+	craft=Converter_A
+	craft=Converter_B
 
 ship Converter_A
-	level=4
+	level=0
 	width=45
 	integrity=125
+	repair=0
 	speed=3.50
 	turn=6.50
 	weapon=-45;Lazers
@@ -58,9 +62,10 @@ ship Converter_A
 	complexity=600
 
 ship Converter_B
-	level=4
+	level=0
 	width=45
 	integrity=145
+	repair=0
 	speed=2.80
 	turn=1.50
 	weapon=0;Heavy-Bombs
@@ -71,7 +76,7 @@ ship Converter_B
 	complexity=600
 
 ship Purger_Dronner
-	level=3
+	level=4
 	integrity=355
 	speed=2.80
 	turn=1.20
@@ -83,9 +88,14 @@ ship Purger_Dronner
 	shield_opacity=75.00
 	cost=170;1;0;0
 	complexity=700
+	craft=Purger_Drone_1
+	craft=Purger_Drone_2
+	craft=Purger_Drone_3
 
 ship Purger_Drone_1
+	level=0
 	integrity=8
+	repair=0
 	speed=3.80
 	turn=4.60
 	weapon=0;Light-Basic-Gun
@@ -96,7 +106,9 @@ ship Purger_Drone_1
 	complexity=400
 
 ship Purger_Drone_2
+	level=0
 	integrity=8
+	repair=0
 	speed=3.80
 	turn=7.50
 	weapon=0;Light-Basic-Gun
@@ -107,7 +119,9 @@ ship Purger_Drone_2
 	complexity=400
 
 ship Purger_Drone_3
+	level=0
 	integrity=8
+	repair=0
 	speed=3.80
 	turn=2.80
 	weapon=0;Light-Basic-Gun
@@ -118,7 +132,7 @@ ship Purger_Drone_3
 	complexity=400
 
 ship Finalizer
-	level=99
+	level=0
 	width=60
 	integrity=740
 	speed=14.00
@@ -132,7 +146,7 @@ ship Finalizer
 	complexity=700
 
 ship Ori
-	level=99
+	level=0
 	width=100
 	integrity=880
 	speed=3.80
