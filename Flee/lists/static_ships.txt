@@ -32,11 +32,7 @@ ship Station_Drones
 	integrity=4000
 	cost=304;1;0;0
 	complexity=1000
-	craft=Legend_I
-	craft=Legend_K
-	craft=Legend_L
-	craft=Legend_U
-	craft=Legend_Y
+	craft=Dronner
 	
 ship Station_Kastous
 	level=9
@@ -50,7 +46,6 @@ ship Station_Kastous
 ship Station_Stranges
 	level=9
 	width=100
-	turn=0.01
 	integrity=4000
 	cost=304;1;0;0
 	complexity=1000
