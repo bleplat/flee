@@ -245,7 +245,6 @@
                 'actualisation vaisseau
                 Me.ResetStats()
                 Me.ApplyUpgrades("")
-                Me.ResetShieldPoint() ' just for the effect :>
                 Upgrading = Nothing
                 UpProgress = 0
             End If
@@ -512,7 +511,7 @@
         Next
     End Sub
     ' return true is condition succeed
-    Public Function InterUpgrade(ByVal Chain As String, ByVal FN As Boolean) As Boolean
+    Public Function InterUpgrade(ByVal Chain As String, ByVal first_application As Boolean) As Boolean
         Dim Spliter() As String = Chain.Split(":")
         Select Case Spliter(0)
             Case "!C"
@@ -528,9 +527,6 @@
                 If Me.uid = MainForm.MAIN_BASE Then Return True
             Case "!Jump"
                 Me.speed = Convert.ToInt32(Spliter(1))
-
-
-
             Case "!Agility"
                 Me.stats.turn += Spliter(1)
             Case "!Teleport"
@@ -540,13 +536,15 @@
                 End If
                 Me.position = Me.TargetPTN + New Point(world.Rand.Next(-512, 512), world.Rand.Next(-512, 512))
             Case "!Upsbonus"
-                If FN Then Me.team.upgrade_slots_bonus += Spliter(1) 'FN
+                If first_application Then Me.team.upgrade_slots_bonus += Spliter(1) 'FN
             Case "!Maxships"
-                If FN Then Me.team.MaxShips += Spliter(1) 'FN
+                If first_application Then Me.team.MaxShips += Spliter(1) 'FN
             Case "+Shield"
                 If Me.stats.shield >= Spliter(1) Then Return True
+                If first_application Then Me.ResetShieldPoint()
             Case "!Shield"
                 Me.stats.shield += Spliter(1)
+                If first_application Then Me.ResetShieldPoint()
             Case "!Deflector"
                 Me.stats.deflectors += Spliter(1)
             Case "!HotDeflector"
@@ -555,10 +553,13 @@
                 Me.stats.cold_deflector = Spliter(1)
             Case "%Shield"
                 Me.stats.shield += (Me.stats.shield * (Spliter(1) / 100))
+                If first_application Then Me.ResetShieldPoint()
             Case "!Shieldop"
                 Me.stats.shield_opacity += Spliter(1)
+                If first_application Then Me.ResetShieldPoint()
             Case "%Shieldreg"
                 Me.stats.shield_regeneration += (Me.stats.shield_regeneration * (Spliter(1) / 100))
+                If first_application Then Me.ResetShieldPoint()
             Case "!UpsMax"
                 Me.upgrade_slots += Spliter(1)
             Case "!Fix"
@@ -580,50 +581,65 @@
                 If Me.stats.integrity <= Spliter(1) Then Return True
             Case "%Life"
                 Me.stats.integrity += (Me.stats.integrity * (Spliter(1) / 100))
-                If FN Then Me.stats.integrity += (Me.stats.integrity * (Spliter(1) / 100)) 'FN
+                If first_application Then Me.integrity += (Me.stats.integrity * (Spliter(1) / 100)) 'FN
             Case "!Regen"
-                If FN Then Me.stats.repair += Spliter(1) 'FN
+                Me.stats.repair += Convert.ToInt32(Spliter(1)) 'FN
             Case "?Up"
                 If Me.HaveUp(Spliter(1)) Then Return True
             Case "?Type" 'Type
                 If Me.stats.sprite = Spliter(1) Then Return True
             Case "!Type"
-                If FN Then Me.SetStats(Spliter(1))' : Me.stats.sprite = Spliter(1)
+                If first_application Then Me.SetStats(Spliter(1))' : Me.stats.sprite = Spliter(1)
             Case "?Wtype" 'armement
                 If Me.weapons(0).stats.sprite = Spliter(1) Then Return True
             Case "%Wloadmax"
-                For Each AW As Weapon In weapons
-                    AW.stats.loadtime += AW.stats.loadtime * (Spliter(1) / 100)
-                Next
+                'For Each AW As Weapon In weapons
+                'AW.stats.loadtime += AW.stats.loadtime * (Spliter(1) / 100)
+                'Next
+                If Me.weapons.Count <> 0 Then
+                    Me.weapons(0).stats.loadtime += Me.weapons(0).stats.loadtime * (Helpers.ToDouble(Spliter(1)) / 100.0)
+                End If
             Case "%Wbar"
-                For Each AW As Weapon In weapons
-                    AW.stats.salvo += AW.stats.salvo * (Spliter(1) / 100)
-                Next
+                'For Each AW As Weapon In weapons
+                'AW.stats.salvo += AW.stats.salvo * (Spliter(1) / 100)
+                'Next
+                If Me.weapons.Count <> 0 Then
+                    Me.weapons(0).stats.salvo += Me.weapons(0).stats.salvo * (Helpers.ToDouble(Spliter(1)) / 100.0)
+                End If
             Case "%Wpower"
-                For Each AW As Weapon In weapons
-                    AW.stats.power += AW.stats.power * (Spliter(1) / 100)
-                Next
+                'For Each AW As Weapon In weapons
+                'AW.stats.power += AW.stats.power * (Spliter(1) / 100)
+                'Next
+                If Me.weapons.Count <> 0 Then
+                    Me.weapons(0).stats.power += Me.weapons(0).stats.power * (Helpers.ToDouble(Spliter(1)) / 100.0)
+                End If
             Case "%Wrange"
-                For Each AW As Weapon In weapons
-                    AW.stats.range += AW.stats.range * (Spliter(1) / 100)
-                Next
+                'For Each AW As Weapon In weapons
+                'AW.stats.range += AW.stats.range * (Spliter(1) / 100)
+                'Next
+                If Me.weapons.Count <> 0 Then
+                    Me.weapons(0).stats.range += Me.weapons(0).stats.range * (Helpers.ToDouble(Spliter(1)) / 100.0)
+                End If
             Case "%Wcelerity"
-                For Each AW As Weapon In weapons
-                    AW.stats.celerity += AW.stats.celerity * (Spliter(1) / 100)
-                Next
+                'For Each AW As Weapon In weapons
+                'AW.stats.celerity += AW.stats.celerity * (Spliter(1) / 100)
+                'Next
+                If Me.weapons.Count <> 0 Then
+                    Me.weapons(0).stats.celerity += Me.weapons(0).stats.celerity * (Helpers.ToDouble(Spliter(1)) / 100.0)
+                End If
             Case "" 'Debug
                 Return True
             Case "?MS"
                 If Me.team Is Nothing OrElse world.CountTeamShips(team) < Me.team.MaxShips Then Return True
             Case "!Sum"
-                If FN Then world.Ships.Add(New Ship(world, Me.team, Spliter(1)) With {.position = New Point(Me.position.X + world.Rand.Next(-10, 11), Me.position.Y + world.Rand.Next(-10, 11))})
+                If first_application Then world.Ships.Add(New Ship(world, Me.team, Spliter(1)) With {.position = New Point(Me.position.X + world.Rand.Next(-10, 11), Me.position.Y + world.Rand.Next(-10, 11))})
                 world.Ships(world.Ships.Count - 1).direction = Me.direction
                 If world.Ships(world.Ships.Count - 1).stats.sprite <> "MSL" Then
                     world.Ships(world.Ships.Count - 1).Behavior = "Fight"
                     world.Ships(world.Ships.Count - 1).target_uid = Me.uid
                 End If
             Case "!Ascend"
-                If Me.team.id = 0 Then
+                If first_application AndAlso Me.team.id = 0 Then
                     MainForm.has_ascended = True
                     MainForm.help = True
                 End If

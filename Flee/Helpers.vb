@@ -237,8 +237,9 @@ Public NotInheritable Class Helpers
 
 	'locale indpendent double conversions
 	Public Shared Function ToDouble(s As String) As Double
-		Static culture As CultureInfo = CultureInfo.CreateSpecificCulture("en-US")
-		Return Double.Parse(s.Replace(",", "."), NumberStyles.AllowDecimalPoint, culture)
+		'Static culture As CultureInfo = CultureInfo.CreateSpecificCulture("en-US")
+		Static format As NumberFormatInfo = New NumberFormatInfo() With {.NegativeSign = "-", .NumberDecimalSeparator = "."}
+		Return Double.Parse(s.Replace(",", "."), format)
 	End Function
 	Public Shared Function ToString(d As Double) As String
 		Static culture As CultureInfo = CultureInfo.CreateSpecificCulture("en-US")
