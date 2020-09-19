@@ -61,8 +61,7 @@ ship Station_Crushers
 	integrity=4000
 	cost=304;1;0;0
 	complexity=1000
-	weapon=-45;Standard-Artillery
-	weapon=45;Standard-Artillery
+	weapon=0;Heavy-Bombs
 	craft=Crusher
 
 ship BomberFactory
