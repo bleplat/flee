@@ -226,7 +226,7 @@
                             Ships(i).last_damager_team.resources.Add(0, 1, 0, 0)
                         ElseIf Ships(i).stats.sprite = "Comet" Then
                             Ships(i).last_damager_team.resources.Add(1200, 8, 1, 0)
-                        ElseIf Ships(i).stats.sprite = "Station" Then
+                        ElseIf Ships(i).stats.name.Contains("Station") Then
                             Ships(i).last_damager_team.resources.Add(1200, 16, 2, 0)
                         ElseIf Ships(i).stats.sprite = "Loneboss" Then
                             Ships(i).last_damager_team.resources.Add(0, 8, 4, 0)
@@ -373,7 +373,7 @@
                 If Not a_ship.team Is Nothing AndAlso ((a_ship.team.id <> 0 OrElse a_ship.stats.sprite = "BomberFactory") AndAlso a_ship.UpProgress = 0 AndAlso a_ship.team.ApproxShipCount < a_ship.team.MaxShips) Then
                     Dim wished_upgrade = Nothing
                     ' Stations summoning ships
-                    If a_ship.stats.name.EndsWith("Station") Then
+                    If a_ship.stats.name.StartsWith("Station") Then
                         wished_upgrade = Helpers.GetRandomSpawnUpgrade(Rand, a_ship)
                         If Not wished_upgrade Is Nothing Then
                             Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
