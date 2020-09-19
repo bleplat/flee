@@ -1,0 +1,42 @@
+ship Station
+	level=9
+	width=100
+	integrity=4000
+	cost=304;1;0;0
+	complexity=1000
+
+ship Outpost
+	width=40
+	integrity=190
+	weapon=0;Intercepting-Gun
+	weapon=-90;Intercepting-Gun
+	weapon=90;Intercepting-Gun
+	weapon=180;Intercepting-Gun
+	cost=136;1;0;0
+	complexity=600
+
+ship Defense
+	width=25
+	integrity=170
+	weapon=0;Shuriken-Bombs
+	weapon=-120;Shuriken-Bombs
+	weapon=120;Shuriken-Bombs
+	cost=140;1;0;0
+	complexity=600
+
+ship Pointvortex
+	width=25
+	integrity=130
+	weapon=0;Intercepting-Artillery
+	cost=140;1;0;0
+	complexity=600
+	
+ship BomberFactory
+	width=40
+	integrity=190
+	weapon=0;Intercepting-Gun
+	weapon=-90;Intercepting-Gun
+	weapon=90;Intercepting-Gun
+	weapon=180;Intercepting-Gun
+	cost=136;1;0;0
+	complexity=600

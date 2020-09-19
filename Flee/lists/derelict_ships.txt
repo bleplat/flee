@@ -1,0 +1,37 @@
+ship Meteoroide
+	level=1
+	integrity=4
+	speed=2.00
+	turn=1.00
+	cost=110;1;0;0
+	complexity=500
+
+ship Asteroide
+	level=1
+	integrity=1248
+	speed=0.90
+	turn=1.00
+	cost=170;1;0;0
+	complexity=700
+
+ship Star
+	level=1
+	width=95
+	integrity=1073741823
+	turn=1.00
+	weapon=0;Star-Waves
+	weapon=-90;Star-Waves
+	weapon=90;Star-Waves
+	weapon=180;Star-Waves
+	cost=304;1;0;0
+	complexity=1000
+
+ship Comet
+	level=1
+	width=25
+	integrity=2
+	speed=12.00
+	turn=3.00
+	weapon=180;Explode-On-Contact
+	cost=304;1;0;0
+	complexity=1000

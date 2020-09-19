@@ -132,7 +132,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Ship.vb" />
-    <Compile Include="ShipClass.vb" />
+    <Compile Include="ShipStats.vb" />
     <Compile Include="Shoot.vb" />
     <Compile Include="Team.vb" />
     <Compile Include="Upgrade.vb" />

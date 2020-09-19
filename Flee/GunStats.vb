@@ -1,5 +1,4 @@
-﻿
-Public Class GunStats
+﻿Public Class GunStats
 
 	' shared
 	Public Shared classes As New Dictionary(Of String, GunStats)

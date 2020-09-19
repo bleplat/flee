@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Imports System.Globalization
+Imports System.IO
 
 Public NotInheritable Class Helpers
 
@@ -170,6 +171,11 @@ Public NotInheritable Class Helpers
 	Public Shared Sub LoadLists()
 		Dim list_classes As List(Of ListClass) = New List(Of ListClass)
 		list_classes.AddRange(Helpers.GetListsFromFile("./lists/weapons.txt"))
+		list_classes.AddRange(Helpers.GetListsFromFile("./lists/derelict_ships.txt"))
+		list_classes.AddRange(Helpers.GetListsFromFile("./lists/static_ships.txt"))
+		list_classes.AddRange(Helpers.GetListsFromFile("./lists/human_ships.txt"))
+		list_classes.AddRange(Helpers.GetListsFromFile("./lists/alien_ships.txt"))
+		list_classes.AddRange(Helpers.GetListsFromFile("./lists/boss_ships.txt"))
 		Helpers.LoadLists(list_classes)
 	End Sub
 
@@ -182,6 +188,13 @@ Public NotInheritable Class Helpers
 					End If
 					For Each prop As ListProperty In a_class.properties
 						GunStats.classes(a_class.name).SetProperty(prop.name, prop.value)
+					Next
+				Case "ship"
+					If Not ShipStats.classes.ContainsKey(a_class.name) Then
+						ShipStats.classes(a_class.name) = New ShipStats(a_class.name)
+					End If
+					For Each prop As ListProperty In a_class.properties
+						ShipStats.classes(a_class.name).SetProperty(prop.name, prop.value)
 					Next
 				Case Else : Throw New Exception("Unknown class type: " & a_class.type)
 			End Select
@@ -219,5 +232,15 @@ Public NotInheritable Class Helpers
 			End If
 		Next
 		Return list_classes
+	End Function
+
+	'locale indpendent double conversions
+	Public Shared Function ToDouble(s As String) As Double
+		Static culture As CultureInfo = CultureInfo.CreateSpecificCulture("en-US")
+		Return Double.Parse(s.Replace(",", "."), NumberStyles.AllowDecimalPoint, culture)
+	End Function
+	Public Shared Function ToString(d As Double) As String
+		Static culture As CultureInfo = CultureInfo.CreateSpecificCulture("en-US")
+		Return d.ToString("0.00", culture)
 	End Function
 End Class

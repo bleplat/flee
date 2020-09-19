@@ -1,0 +1,242 @@
+ship Colonizer
+	level=9
+	width=55
+	integrity=185
+	speed=2.80
+	turn=1.80
+	weapon=0;Basic-Gun
+	weapon=-135;Light-Machine-Gun
+	weapon=135;Light-Machine-Gun
+	cost=166;1;0;0
+	complexity=700
+
+ship MiniColonizer
+	width=55
+	integrity=150
+	speed=2.80
+	turn=1.80
+	weapon=0;Standard-Artillery
+	weapon=-135;Light-Machine-Gun
+	weapon=135;Light-Machine-Gun
+	shield=200
+	shield_opacity=75.00
+	cost=166;1;0;0
+	complexity=700
+
+ship Ambassador
+	level=9
+	width=50
+	integrity=175
+	speed=2.80
+	turn=1.80
+	weapon=45;Basic-Gun
+	weapon=-45;Basic-Gun
+	weapon=180;Light-Machine-Gun
+	cost=166;1;0;0
+	complexity=700
+
+ship Hunter
+	level=1
+	width=25
+	integrity=60
+	speed=3.50
+	turn=2.80
+	weapon=0;Light-Machine-Gun
+	cost=166;1;0;0
+	complexity=700
+
+ship Harass
+	level=1
+	width=25
+	integrity=75
+	speed=3.30
+	turn=2.30
+	weapon=0;Light-Bombs
+	cost=76;0;0;0
+	complexity=400
+
+ship Cargo
+	integrity=70
+	speed=3.20
+	turn=2.00
+	weapon=90;Mining-Gun
+	cost=140;1;0;0
+	complexity=600
+
+ship Simpleship
+	level=1
+	integrity=90
+	speed=2.80
+	turn=2.00
+	weapon=0;Basic-Gun
+	cost=140;1;0;0
+	complexity=600
+
+ship Scout
+	level=2
+	width=35
+	integrity=105
+	speed=3.50
+	turn=2.50
+	weapon=-45;Machine-Gun
+	weapon=45;Machine-Gun
+	cost=140;1;0;0
+	complexity=600
+
+ship Bomber
+	level=2
+	integrity=210
+	speed=2.80
+	turn=1.80
+	weapon=45;Heavy-Bombs
+	cost=140;1;0;0
+	complexity=600
+
+ship Artillery
+	level=2
+	width=35
+	integrity=140
+	speed=2.80
+	turn=1.80
+	weapon=0;Standard-Artillery
+	cost=140;1;0;0
+	complexity=600
+	
+ship Dronner
+	level=2
+	integrity=135
+	speed=3.10
+	turn=1.50
+	weapon=0;Basic-Gun
+	cost=140;1;0;0
+	complexity=600
+	
+ship Explorer
+	width=15
+	integrity=10
+	speed=2.80
+	turn=8.50
+	weapon=0;Mining-Gun
+	cost=76;0;0;0
+	complexity=400
+
+ship Combat_Drone_1
+	width=14
+	integrity=35
+	speed=3.50
+	weapon=180;Light-Machine-Gun
+	weapon=-180;Light-Machine-Gun
+	cost=76;0;0;0
+	complexity=400
+
+ship Combat_Drone_2
+	width=14
+	integrity=45
+	speed=3.50
+	turn=5.50
+	weapon=0;Light-Machine-Gun
+	cost=76;0;0;0
+	complexity=400
+
+ship Combat_Drone_3
+	width=14
+	integrity=50
+	speed=3.50
+	turn=1.50
+	weapon=0;Light-Basic-Gun
+	cost=76;0;0;0
+	complexity=400
+
+ship Drone
+	level=1
+	width=25
+	integrity=75
+	speed=3.50
+	turn=4.50
+	weapon=0;Basic-Gun
+	cost=106;1;0;0
+	complexity=500
+
+ship Legend_I
+	level=9
+	width=45
+	integrity=170
+	speed=3.20
+	turn=1.80
+	weapon=0;Standard-Artillery
+	weapon=-135;Light-Bombs
+	weapon=135;Light-Bombs
+	cost=166;1;0;0
+	complexity=700
+	
+ship Legend_K
+	level=9
+	width=45
+	integrity=220
+	speed=2.80
+	turn=1.80
+	weapon=0;Shuriken-Bombs
+	weapon=-135;Shuriken-Bombs
+	weapon=135;Shuriken-Bombs
+	cost=166;1;0;0
+	complexity=700
+	
+ship Legend_L
+	level=9
+	width=45
+	integrity=240
+	speed=2.80
+	turn=1.80
+	weapon=135;Beam-4
+	cost=166;1;0;0
+	complexity=700
+
+ship Legend_U
+	level=9
+	width=45
+	integrity=200
+	speed=2.80
+	turn=1.80
+	weapon=90;Pusher
+	weapon=-90;Pusher
+	cost=166;1;0;0
+	complexity=700
+
+ship Legend_Y
+	level=9
+	width=50
+	integrity=180
+	speed=3.20
+	turn=1.80
+	weapon=0;Light-Machine-Gun
+	weapon=-135;Machine-Gun
+	weapon=135;Machine-Gun
+	cost=166;1;0;0
+	complexity=700
+
+ship PartialBomber
+	level=1
+	integrity=190
+	speed=2.80
+	turn=1.80
+	weapon=45;Heavy-Bombs
+	cost=140;1;0;0
+	complexity=600
+
+ship MSL
+	width=15
+	integrity=8
+	speed=8.00
+	turn=3.50
+	weapon=-90;Explode-On-Contact
+	cost=110;1;0;0
+	complexity=500
+
+ship Nuke
+	integrity=72
+	speed=3.00
+	turn=2.50
+	weapon=0;Explode-On-Contact
+	weapon=180;Mining-Gun
+	cost=140;1;0;0
+	complexity=600

@@ -65,6 +65,7 @@ gun Standard-Artillery
 	celerity=12
 	power=55
 	loadtime=70
+	special=Propeled;
 
 gun Intercepting-Artillery
 	desc=A weaker but longer ranged artillery.
@@ -73,6 +74,7 @@ gun Intercepting-Artillery
 	celerity=16
 	power=45
 	loadtime=35
+	special=Propeled;
 	
 #
 # Bombs
@@ -85,6 +87,7 @@ gun Light-Bombs
 	celerity=10
 	power=30
 	loadtime=35
+	special=Plasma;
 	
 gun Heavy-Bombs
 	desc=A slow but deadly heavy weapon
@@ -93,6 +96,7 @@ gun Heavy-Bombs
 	celerity=9
 	power=50
 	loadtime=55
+	special=Plasma;
 	
 gun Longrange-Bombs
 	desc=A slow but deadly heavy weapon
@@ -101,6 +105,7 @@ gun Longrange-Bombs
 	celerity=6
 	power=15
 	loadtime=21
+	special=Plasma;
 	
 #
 # Special
@@ -113,6 +118,7 @@ gun Pusher
 	celerity=10
 	power=15
 	loadtime=25
+	special=Flak;
 
 gun Shuriken-Bombs
 	desc=Long ranged but slow weapon, useful against slow targets.
@@ -163,6 +169,15 @@ gun Explode-On-Contact
 	celerity=8
 	power=50
 	loadtime=2
+	special=SelfExplode;
+
+gun Nuke-On-Contact
+	sprite=Z
+	range=32
+	celerity=8
+	power=50
+	loadtime=2
+	special=SelfNuke;
 
 #
 # Boss guns
@@ -175,6 +190,7 @@ gun Rail-Gun
 	celerity=16
 	power=32
 	loadtime=65
+	special=Rail;
 
 gun Bio-Gun
 	desc=Deadly weapon used by bugs bosses.
@@ -183,6 +199,7 @@ gun Bio-Gun
 	celerity=24
 	power=16
 	loadtime=24
+	special=BioDrops;
 
 gun Heavy-Bio-Gun
 	desc=Deadly weapon used by bugs bosses.
@@ -191,6 +208,7 @@ gun Heavy-Bio-Gun
 	celerity=12
 	power=24
 	loadtime=32
+	special=BioDrops;
 
 gun Finalizer
 	sprite=D
@@ -207,3 +225,4 @@ gun Ori
 	power=55
 	loadtime=35
 	salvo=7
+	special=Propeled;
