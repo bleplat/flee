@@ -265,7 +265,7 @@
             If aShip.team Is Nothing OrElse aShip.team.id <= 1 Then
                 Continue For
             End If
-            If aShip.stats.sprite = "Station" AndAlso Not aShip.team.IsFriendWith(team) Then
+            If aShip.stats.name.Contains("Station") AndAlso Not aShip.team.IsFriendWith(team) Then
                 Return False
             End If
         Next
