@@ -4,7 +4,7 @@ Imports System.Threading
 
 Public Class MainForm
 	Public Shared DebugMode As Boolean = False
-	Public Const MAIN_BASE As String = "MainBase"
+	Public Const MAIN_BASE As ULong = ULong.MaxValue
 
 	Dim See As New Point(4700, 4700)
 
@@ -440,12 +440,12 @@ Public Class MainForm
 						world.Effects.Add(New Effect With {.Type = "Patrouille", .Coo = SelectPTN2})
 						AShip.Behavior = "Mine"
 						AShip.TargetPTN = SelectPTN2
-						AShip.Target = ""
+						AShip.target_uid = Helpers.INVALID_UID
 					Else
 						world.Effects.Add(New Effect With {.Type = "Fleche", .Coo = SelectPTN2})
 						AShip.Behavior = "Goto"
 						AShip.TargetPTN = SelectPTN2
-						AShip.Target = AShip.uid
+						AShip.target_uid = AShip.uid
 					End If
 				End If
 			Next
@@ -458,7 +458,7 @@ Public Class MainForm
 					Else
 						world.Effects.Add(New Effect With {.Type = "Cible", .Coo = SelectPTN2})
 						AShip.Behavior = "Fight"
-						AShip.Target = oUID
+						AShip.target_uid = oUID
 					End If
 				End If
 			Next
@@ -493,8 +493,8 @@ Public Class MainForm
 
 	'===' SHIP PANEL & Cie '==='
 
-	Public LastSShipSelect As String = ""
-	Public LastShipPaneload As String = ""
+	Public LastSShipSelect As String = Helpers.INVALID_UID
+	Public LastShipPaneload As String = Helpers.INVALID_UID
 	Sub CheckRightPanel()
 		MetalTextBox.Text = player_team.resources.Metal
 		CristalTextBox.Text = player_team.resources.Crystal

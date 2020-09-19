@@ -32,30 +32,32 @@
         ticks += 1
     End Sub
 
+
+
     Sub SPAWN_STATION_RANDOMLY(main_type As String, team As Team, spawn_allies As Integer)
+        ' main station
+        If main_type Is Nothing Then
+            main_type = Helpers.RandomStationName(Rand)
+        End If
         Dim main_coords As Point = New Point(Rand.Next(1000, ArenaSize.Width - 1000), Rand.Next(1000, ArenaSize.Height - 1000))
-        Ships.Add(New Ship(Me) With {.position = main_coords}) : Ships(Ships.Count - 1).SetType(main_type, team, True)
+        Ships.Add(New Ship(Me, main_type) With {.position = main_coords})
+        Ships(Ships.Count - 1).SetTeam(team)
+        ' turrets
         While spawn_allies > 0
-            Dim ally_type As String = Nothing
-            Select Case Rand.Next(0, 3)
-                Case 0
-                    ally_type = "Outpost"
-                Case 1
-                    ally_type = "Defense"
-                Case 2
-                    ally_type = "Pointvortex"
-            End Select
+            Dim ally_type As String = Helpers.RandomTurretName(Rand)
             Dim ally_coords As Point = New Point(main_coords.X + Rand.Next(-600, 600), main_coords.Y + Rand.Next(-600, 600))
-            Ships.Add(New Ship(Me) With {.position = ally_coords}) : Ships(Ships.Count - 1).SetType(ally_type, team, True)
+            Ships.Add(New Ship(Me, ally_type) With {.position = ally_coords})
+            Ships(Ships.Count - 1).SetTeam(team)
             spawn_allies -= 1
         End While
     End Sub
     Private Sub InitPlayerTeam()
         Dim power = 100
         Dim origin As PointF
-        ' Player Team (0)
-        Teams.Add(New Team(Me, AffinityEnum.KIND, ShipstyleEnum.NONE))
+        ' Player Team
+        Teams.Add(New Team(Me, AffinityEnum.KIND))
         Dim player_team As Team = Teams(Teams.Count - 1)
+        player_team.bot_team = False
         ' Player Ships
         If Rand.Next(0, 100) < 75 Then
             SPAWN_STATION_RANDOMLY("Station", player_team, 3)
@@ -66,52 +68,53 @@
             origin = New Point(Rand.Next(1000, ArenaSize.Width - 1000), Rand.Next(1000, ArenaSize.Height - 1000))
         End If
         If Rand.Next(0, 100) < 75 Then
-            Ships.Add(New Ship(Me) With {.position = New Point(origin.X, origin.Y - 1)})
-            Ships(Ships.Count - 1).SetType("Colonizer", player_team, True)
+            Ships.Add(New Ship(Me, "Colonizer") With {.position = New Point(origin.X, origin.Y - 1)})
+            Ships(Ships.Count - 1).SetTeam(player_team)
             Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).position.X, Ships(0).position.Y, origin.X, origin.Y)
             Ships(Ships.Count - 1).UpsMax += Rand.Next(0, 16)
             power -= 15
         End If
         If Rand.Next(0, 100) < 75 Then
-            Ships.Add(New Ship(Me) With {.position = New Point(origin.X + 1, origin.Y)})
-            Ships(Ships.Count - 1).SetType("Ambassador", player_team, True)
+            Ships.Add(New Ship(Me, "Ambassador") With {.position = New Point(origin.X + 1, origin.Y)})
+            Ships(Ships.Count - 1).SetTeam(player_team)
             Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).position.X, Ships(0).position.Y, origin.X, origin.Y)
             Ships(Ships.Count - 1).UpsMax += Rand.Next(0, 16)
             power -= 25
         End If
         While power > 0
             Dim types As String() = {"Pusher", "Sacred", "Simpleship", "Artillery", "Bomber", "Dronner", "Scout", "Kastou", "Strange", "MiniColonizer", "Civil_A"}
-            Ships.Add(New Ship(Me) With {.position = New Point(origin.X - 1, origin.Y)})
-            Ships(Ships.Count - 1).SetType(types(Rand.Next(0, types.Length)), player_team, True)
+            Ships.Add(New Ship(Me, types(Rand.Next(0, types.Length))) With {.position = New Point(origin.X - 1, origin.Y)})
+            Ships(Ships.Count - 1).SetTeam(player_team)
             Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).position.X, Ships(0).position.Y, origin.X, origin.Y)
             Ships(Ships.Count - 1).UpsMax += Rand.Next(4, 16)
             power -= 15
         End While
     End Sub
     Sub InitBotsTeams()
-        Teams.Add(New Team(Me, AffinityEnum.ALOOF, ShipstyleEnum.NONE))
+        Teams.Add(New Team(Me, AffinityEnum.ALOOF))
         boss_team = Teams(Teams.Count - 1)
-        'SPAWN_STATION_RANDOMLY("Loneboss", Teams(Teams.Count - 1), 0)
         ' Derelict Asteroids
         For i As Integer = 1 To 85
             Dim T As String = "Asteroide" : If Rand.Next(0, 3) = 0 Then T = "Meteoroide"
-            Ships.Add(New Ship(Me) With {.position = New Point(Rand.Next(0, ArenaSize.Width), Rand.Next(0, ArenaSize.Width)), .direction = Rand.Next(0, 360)}) : Ships(Ships.Count - 1).SetType(T, Nothing, True)
+            Ships.Add(New Ship(Me, T) With {.position = New Point(Rand.Next(0, ArenaSize.Width), Rand.Next(0, ArenaSize.Width)), .direction = Rand.Next(0, 360)})
+            Ships(Ships.Count - 1).SetTeam(Nothing)
         Next
         ' Stars
         For i = 0 To Rand.Next(1, 3)
             Dim T As String = "Star"
-            Ships.Add(New Ship(Me) With {.position = New Point(Rand.Next(0, ArenaSize.Width), Rand.Next(0, ArenaSize.Width)), .direction = Rand.Next(0, 360)}) : Ships(Ships.Count - 1).SetType(T, Nothing, True)
+            Ships.Add(New Ship(Me, T) With {.position = New Point(Rand.Next(0, ArenaSize.Width), Rand.Next(0, ArenaSize.Width)), .direction = Rand.Next(0, 360)})
+            Ships(Ships.Count - 1).SetTeam(Nothing)
         Next
         ' allied NPC
-        Teams.Add(New Team(Me, AffinityEnum.KIND, Nothing))
+        Teams.Add(New Team(Me, AffinityEnum.KIND))
         SPAWN_STATION_RANDOMLY("Station", Teams(Teams.Count - 1), Rand.Next(2, 6))
         ' enemy NPC
-        Teams.Add(New Team(Me, AffinityEnum.MEAN, Nothing))
+        Teams.Add(New Team(Me, AffinityEnum.MEAN))
         SPAWN_STATION_RANDOMLY("Station", Teams(Teams.Count - 1), Rand.Next(3, 7))
-        ' random NPC Teams AndAlso Ships
+        ' random NPC Teams and Ships
         Dim npc_team_count = Rand.Next(4, 10)
         For i = 0 To npc_team_count - 1
-            Teams.Add(New Team(Me, Nothing, Nothing))
+            Teams.Add(New Team(Me, Nothing))
             SPAWN_STATION_RANDOMLY("Station", Teams(Teams.Count - 1), Rand.Next(4, 8))
         Next
     End Sub
@@ -348,11 +351,12 @@
                 End If
             End If
             For j As Integer = 1 To Count
-                Ships.Add(New Ship(Me) With {.position = New Point(Spawn.X + Rand.Next(-50, 50), Spawn.Y + Rand.Next(-50, 50)), .direction = dir})
-                Ships(Ships.Count - 1).SetType(Type, Team, True)
+                Ships.Add(New Ship(Me, Type) With {.position = New Point(Spawn.X + Rand.Next(-50, 50), Spawn.Y + Rand.Next(-50, 50)), .direction = dir})
+                Ships(Ships.Count - 1).SetTeam(Team)
             Next
         End If
     End Sub
+
     Sub SpawnNPCShips()
         If (ticks Mod 80 = 0) Then
             ' Count Teams's ships
@@ -367,83 +371,17 @@
             ' Summoning / upgrades
             For Each a_ship As Ship In Ships
                 If Not a_ship.team Is Nothing AndAlso ((a_ship.team.id <> 0 OrElse a_ship.stats.sprite = "BomberFactory") AndAlso a_ship.UpProgress = 0 AndAlso a_ship.team.ApproxShipCount < a_ship.team.MaxShips) Then
-                    Dim wished_upgrade = "Launch_MSL"
+                    Dim wished_upgrade = Nothing
                     ' Stations summoning ships
-                    If a_ship.stats.sprite = "Station" Then
-                        If Rand.Next(0, 128) = 0 Then
-                            wished_upgrade = "Spawn_Colonizer"
-                        ElseIf a_ship.team.shipstyle = ShipstyleEnum.SIMPLE Then
-                            Select Case Rand.Next(0, 6)
-                                Case 0
-                                    wished_upgrade = "Spawn_Harass"
-                                Case 1
-                                    wished_upgrade = "Spawn_Hunter"
-                                Case Else
-                                    wished_upgrade = "Simpleship"
-                            End Select
-                        ElseIf a_ship.team.shipstyle = ShipstyleEnum.ADVANCED Then
-                            Select Case Rand.Next(0, 3)
-                                Case 0
-                                    wished_upgrade = "Spawn_Scout"
-                                Case 1
-                                    wished_upgrade = "Spawn_Artillery"
-                                Case 2
-                                    wished_upgrade = "Spawn_Bomber"
-                            End Select
-                        ElseIf a_ship.team.shipstyle = ShipstyleEnum.DRONES Then
-                            Select Case Rand.Next(0, 4)
-                                Case 0
-                                    wished_upgrade = "Spawn_Dronner"
-                                Case 1
-                                    wished_upgrade = "Spawn_Drone"
-                                Case 2
-                                    wished_upgrade = "Spawn_Hunter"
-                                Case 3
-                                    wished_upgrade = "Spawn_Harass"
-                            End Select
-                        ElseIf a_ship.team.shipstyle = ShipstyleEnum.KASTOU Then
-                            wished_upgrade = "Spawn_Kastou"
-                        ElseIf a_ship.team.shipstyle = ShipstyleEnum.CRUSHERS Then
-                            wished_upgrade = "Spawn_Crusher"
-                        ElseIf a_ship.team.shipstyle = ShipstyleEnum.STRANGE Then
-                            Select Case Rand.Next(0, 3)
-                                Case 0
-                                    wished_upgrade = "Spawn_Strange"
-                                Case 1
-                                    wished_upgrade = "Spawn_Strange"
-                                Case 2
-                                    wished_upgrade = "Spawn_Sacred"
-                            End Select
-                        ElseIf a_ship.team.shipstyle = ShipstyleEnum.PURGERS Then
-                            Select Case Rand.Next(0, 2)
-                                Case 0
-                                    wished_upgrade = "Summon_Purger_Dronner"
-                                Case 1
-                                    wished_upgrade = "Spawn_Cargo"
-                            End Select
-                        ElseIf a_ship.team.shipstyle = ShipstyleEnum.LEGENDS Then
-                            Select Case Rand.Next(0, 7)
-                                Case 0
-                                    wished_upgrade = "Spawn_MiniColonizer"
-                                Case 1
-                                    wished_upgrade = "Simpleship"
-                                Case 2
-                                    wished_upgrade = "Legend_I"
-                                Case 3
-                                    wished_upgrade = "Legend_K"
-                                Case 4
-                                    wished_upgrade = "Legend_L"
-                                Case 5
-                                    wished_upgrade = "Legend_U"
-                                Case 6
-                                    wished_upgrade = "Legend_Y"
-                            End Select
+                    If a_ship.stats.name.EndsWith("Station") Then
+                        wished_upgrade = Helpers.GetRandomSpawnUpgrade(Rand, a_ship)
+                        If Not wished_upgrade Is Nothing Then
+                            Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
                         End If
-                        Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
                     End If
                     ' Kastou summoning Yerka
                     If a_ship.stats.sprite = "Kastou" Then
-                        If Rand.Next(0, 16) < 4 Then Upgrade.ForceUpgradeToShip(a_ship, "Spawn_Yerka")
+                        If Rand.Next(0, 16) < 4 Then Upgrade.ForceUpgradeToShip(a_ship, "Build_Yerka")
                     End If
                     ' Crusher jumping
                     If a_ship.stats.sprite = "Crusher" Then
@@ -465,11 +403,11 @@
                     If a_ship.stats.sprite = "Dronner" AndAlso Rand.Next(0, 16) < 4 Then
                         Select Case Rand.Next(0, 3)
                             Case 0
-                                wished_upgrade = "Combat_Drone_1"
+                                wished_upgrade = "Build_Combat_Drone_1"
                             Case 1
-                                wished_upgrade = "Combat_Drone_2"
+                                wished_upgrade = "Build_Combat_Drone_2"
                             Case 2
-                                wished_upgrade = "Combat_Drone_3"
+                                wished_upgrade = "Build_Combat_Drone_3"
                         End Select
                         Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
                     End If
@@ -477,11 +415,11 @@
                     If a_ship.stats.sprite = "Purger_Dronner" AndAlso Rand.Next(0, 16) < 9 Then
                         Select Case Rand.Next(0, 3)
                             Case 0
-                                wished_upgrade = "Purger_Drone_1"
+                                wished_upgrade = "Build_Purger_Drone_1"
                             Case 1
-                                wished_upgrade = "Purger_Drone_2"
+                                wished_upgrade = "Build_Purger_Drone_2"
                             Case 2
-                                wished_upgrade = "Purger_Drone_3"
+                                wished_upgrade = "Build_Purger_Drone_3"
                         End Select
                         Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
                     End If
@@ -489,9 +427,9 @@
                     If a_ship.stats.sprite = "Converter" AndAlso Rand.Next(0, 16) < 8 Then
                         Select Case Rand.Next(0, 2)
                             Case 0
-                                wished_upgrade = "Spawn_Converter_A"
+                                wished_upgrade = "Build_Converter_A"
                             Case 1
-                                wished_upgrade = "Spawn_Converter_B"
+                                wished_upgrade = "Build_Converter_B"
                         End Select
                         Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
                     End If
@@ -543,7 +481,7 @@
 
 
     '===' Fonctions '==='
-    Public Function GetShipByUID(ByVal UID As String) As Ship
+    Public Function GetShipByUID(ByVal UID As ULong) As Ship
         For Each AShip As Ship In Ships
             If AShip.uid = UID Then
                 Return AShip

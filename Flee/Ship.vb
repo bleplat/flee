@@ -2,10 +2,10 @@
     Public world As World
 
     'IA
-    Public Auto As Boolean = True
+    Public bot_ship As Boolean = True
     Public Behavior As String = "Stand"
-    Public Target As String = "" : Public TargetPTN As New Point(0, 0)
-    Public Vision As Integer = 50000
+    Public target_uid As ULong = Helpers.INVALID_UID
+    Public TargetPTN As New Point(0, 0)
     Public AllowMining As Boolean = True
 
     ' shield effect
@@ -20,7 +20,7 @@
     'main
     Private base_stats As ShipStats = Nothing
     Public stats As ShipStats = Nothing
-    Public uid As String = -1
+    Public uid As ULong = ULong.MaxValue - 1
     Public team As Team = Nothing
     Public color As Color = Color.White
     Public fram As UShort = 0
@@ -60,6 +60,18 @@
             For Each gun_name As String In Me.base_stats.default_weapons
                 Me.weapons.Add(New Weapon(Me, gun_name))
             Next
+            ' force a color
+            Select Case Me.base_stats.name
+                Case "Asteroide"
+                    Behavior = "Drift" : target_uid = uid : color = Color.FromArgb(64, 64, 48)
+                Case "Meteoroide"
+                    Behavior = "Drift" : target_uid = uid : color = Color.FromArgb(80, 48, 80)
+                Case "Comet"
+                    Behavior = "Drift" : target_uid = uid : color = Color.FromArgb(0, 100, 0)
+                Case "Star"
+                    Behavior = "Drift" : target_uid = uid : color = Color.FromArgb(255, 255, 220)
+            End Select
+            '
             ResetStats()
         End If
     End Sub
@@ -67,6 +79,7 @@
         If Not Me.team Is team Then
             Me.team = team
             Me.color = team.color
+            Me.bot_ship = Me.team.bot_team
         End If
     End Sub
     Public Sub ResetStats()
@@ -96,251 +109,10 @@
     End Sub
 
     Public Sub SetType(ByVal SType As String, ByVal STeam As Team, Optional ByVal IsNew As Boolean = False)
-        If ShipStats.classes.ContainsKey(SType) Then
-            If Me.base_stats Is Nothing Then
-                Me.SetStats(SType)
-            End If
-            Me.SetTeam(STeam)
-        Else
-            weapons.Clear()
-            If stats Is Nothing Then
-                stats = New ShipStats(SType)
-            End If
-            Me.cold_deflector_charge = -1
-            Me.stats.deflectors = 0
-            Me.stats.hot_deflector = 0
-            Me.stats.sprite = SType
-            Select Case SType
-                'Start ships
-                Case "Station"
-                    stats.width = 100 : stats.turn = 0 : stats.speed = 0 : stats.integrity = 4000 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 9 : If IsNew Then UpsMax = 99
-                Case "Colonizer"
-                    stats.width = 55 : stats.turn = 1.8 : stats.speed = 2.8 : stats.integrity = 185 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 9 : If IsNew Then UpsMax = 8
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Basic-Gun")))
-                    weapons.Add(New Weapon(Me, -135, GunStats.classes("Light-Machine-Gun")))
-                    weapons.Add(New Weapon(Me, 135, GunStats.classes("Light-Machine-Gun")))
-                Case "MiniColonizer"
-                    stats.width = 55 : stats.turn = 1.8 : stats.speed = 2.8 : stats.integrity = 150 : stats.shield = 200 : stats.shield_opacity = 75 : stats.shield_regeneration = 10 : stats.level = 0 : If IsNew Then UpsMax = 4
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Standard-Artillery")))
-                    weapons.Add(New Weapon(Me, -135, GunStats.classes("Light-Machine-Gun")))
-                    weapons.Add(New Weapon(Me, 135, GunStats.classes("Light-Machine-Gun")))
-                Case "Ambassador"
-                    stats.width = 50 : stats.turn = 1.8 : stats.speed = 2.8 : stats.integrity = 175 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 9 : If IsNew Then UpsMax = 32
-                    weapons.Add(New Weapon(Me, 45, GunStats.classes("Basic-Gun")))
-                    weapons.Add(New Weapon(Me, -45, GunStats.classes("Basic-Gun")))
-                    weapons.Add(New Weapon(Me, 180, GunStats.classes("Light-Machine-Gun")))
-                Case "Pusher"
-                    stats.width = 25 : stats.turn = 3.8 : stats.speed = 4.5 : stats.integrity = 95 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 1 : If IsNew Then UpsMax = 4
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Pusher")))
-                'Legendary
-                Case "Legend_I"
-                    stats.width = 45 : stats.turn = 1.8 : stats.speed = 3.2 : stats.integrity = 170 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 9 : If IsNew Then UpsMax = 16
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Standard-Artillery")))
-                    weapons.Add(New Weapon(Me, -135, GunStats.classes("Light-Bombs")))
-                    weapons.Add(New Weapon(Me, 135, GunStats.classes("Light-Bombs")))
-                Case "Legend_K"
-                    stats.width = 45 : stats.turn = 1.8 : stats.speed = 2.8 : stats.integrity = 220 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 9 : If IsNew Then UpsMax = 16
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Shuriken-Bombs")))
-                    weapons.Add(New Weapon(Me, -135, GunStats.classes("Shuriken-Bombs")))
-                    weapons.Add(New Weapon(Me, 135, GunStats.classes("Shuriken-Bombs")))
-                Case "Legend_L"
-                    stats.width = 45 : stats.turn = 1.8 : stats.speed = 2.8 : stats.integrity = 240 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 9 : If IsNew Then UpsMax = 16
-                    weapons.Add(New Weapon(Me, 135, GunStats.classes("Beam-4")))
-                Case "Legend_U"
-                    stats.width = 45 : stats.turn = 1.8 : stats.speed = 2.8 : stats.integrity = 200 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 9 : If IsNew Then UpsMax = 16
-                    weapons.Add(New Weapon(Me, 90, GunStats.classes("Pusher")))
-                    weapons.Add(New Weapon(Me, -90, GunStats.classes("Pusher")))
-                Case "Legend_Y"
-                    stats.width = 50 : stats.turn = 1.8 : stats.speed = 3.2 : stats.integrity = 180 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 5 : stats.level = 9 : If IsNew Then UpsMax = 16
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Light-Machine-Gun")))
-                    weapons.Add(New Weapon(Me, -135, GunStats.classes("Machine-Gun")))
-                    weapons.Add(New Weapon(Me, 135, GunStats.classes("Machine-Gun")))
-                Case "Civil_A"
-                    stats.width = 60 : stats.turn = 1.4 : stats.speed = 2.2 : stats.integrity = 320 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 5 : stats.deflectors = 6 : stats.deflectors_cooldown = 32 : stats.level = 1 : If IsNew Then UpsMax = 0
-                    weapons.Add(New Weapon(Me, -90, GunStats.classes("Lazers")))
-                    weapons.Add(New Weapon(Me, 90, GunStats.classes("Lazers")))
-                'Craftable/Upgradable
-                Case "Cargo"
-                    stats.width = 40 : stats.turn = 2.0 : stats.speed = 3.2 : stats.integrity = 70 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 0 : If IsNew Then UpsMax = 4
-                    weapons.Add(New Weapon(Me, 90, GunStats.classes("Mining-Gun")))
-                Case "Simpleship"
-                    stats.width = 40 : stats.turn = 2.0 : stats.speed = 2.8 : stats.integrity = 90 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 1 : If IsNew Then UpsMax = 10
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Basic-Gun")))
-                Case "Scout"
-                    stats.width = 35 : stats.turn = 2.5 : stats.speed = 3.5 : stats.integrity = 105 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 2
-                    weapons.Add(New Weapon(Me, -45, GunStats.classes("Machine-Gun")))
-                    weapons.Add(New Weapon(Me, 45, GunStats.classes("Machine-Gun")))
-                Case "Bomber"
-                    stats.width = 40 : stats.turn = 1.8 : stats.speed = 2.8 : stats.integrity = 210 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 2
-                    weapons.Add(New Weapon(Me, 45, GunStats.classes("Heavy-Bombs")))
-                Case "PartialBomber"
-                    stats.width = 40 : stats.turn = 1.8 : stats.speed = 2.8 : stats.integrity = 190 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 1 : If IsNew Then UpsMax = 8
-                    weapons.Add(New Weapon(Me, 45, GunStats.classes("Heavy-Bombs")))
-                Case "Artillery"
-                    stats.width = 35 : stats.turn = 1.8 : stats.speed = 2.8 : stats.integrity = 140 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 2
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Standard-Artillery")))
-                Case "Dronner"
-                    stats.width = 40 : stats.turn = 1.5 : stats.speed = 3.1 : stats.integrity = 135 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 2
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Basic-Gun")))
-                'Small ships
-                Case "Hunter"
-                    stats.width = 25 : stats.turn = 2.8 : stats.speed = 3.5 : stats.integrity = 60 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 1 : If IsNew Then UpsMax = 1
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Light-Machine-Gun")))
-                Case "Harass"
-                    stats.width = 25 : stats.turn = 2.3 : stats.speed = 3.3 : stats.integrity = 75 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 1 : If IsNew Then UpsMax = 1
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Light-Bombs")))
-                'Drones
-                Case "Drone"
-                    stats.width = 25 : stats.turn = 4.5 : stats.speed = 3.5 : stats.integrity = 75 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 5 : stats.level = 1 : If IsNew Then UpsMax = 2
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Basic-Gun")))
-                Case "Explorer"
-                    stats.width = 15 : stats.turn = 8.5 : stats.speed = 2.8 : stats.integrity = 10 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 1 : stats.level = 0 : If IsNew Then UpsMax = 1
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Mining-Gun")))
-                Case "Combat_Drone_1"
-                    stats.width = 14 : stats.turn = 3.5 : stats.speed = 3.5 : stats.integrity = 35 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 1 : stats.level = 0 : If IsNew Then UpsMax = 0
-                    weapons.Add(New Weapon(Me, 180, GunStats.classes("Light-Machine-Gun")))
-                    weapons.Add(New Weapon(Me, -180, GunStats.classes("Light-Machine-Gun")))
-                Case "Combat_Drone_2"
-                    stats.width = 14 : stats.turn = 5.5 : stats.speed = 3.5 : stats.integrity = 45 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 1 : stats.level = 0 : If IsNew Then UpsMax = 0
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Light-Machine-Gun")))
-                Case "Combat_Drone_3"
-                    stats.width = 14 : stats.turn = 1.5 : stats.speed = 3.5 : stats.integrity = 50 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 1 : stats.level = 0 : If IsNew Then UpsMax = 0
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Light-Basic-Gun")))
-                'NPC
-                Case "Sacred"
-                    stats.width = 30 : stats.turn = 2.5 : stats.speed = 3.5 : stats.integrity = 85 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 9 : If IsNew Then UpsMax = 2
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Light-Bombs")))
-                Case "Strange"
-                    stats.width = 44 : stats.turn = 1.2 : stats.speed = 2.8 : stats.integrity = 185 : stats.shield = 25 : stats.shield_opacity = 25 : stats.shield_regeneration = 25 : stats.level = 2 : If IsNew Then UpsMax = 2
-                    weapons.Add(New Weapon(Me, 135, GunStats.classes("Beam-6")))
-                Case "Yerka"
-                    stats.width = 25 : stats.turn = 4.2 : stats.speed = 4 : stats.integrity = 75 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 1 : If IsNew Then UpsMax = 1
-                    weapons.Add(New Weapon(Me, 270, GunStats.classes("Machine-Gun")))
-                Case "Kastou"
-                    stats.width = 45 : stats.turn = 2.2 : stats.speed = 3 : stats.integrity = 225 : stats.shield = 100 : stats.shield_opacity = 100 : stats.shield_regeneration = 20 : stats.level = 4 : If IsNew Then UpsMax = 1
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Heavy-Bombs")))
-                Case "Crusher"
-                    stats.width = 75 : stats.turn = 0.4 : stats.speed = 2.2 : stats.integrity = 665 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 5 : stats.level = 5 : If IsNew Then UpsMax = 2
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Intercepting-Artillery")))
-                    weapons.Add(New Weapon(Me, -90, GunStats.classes("Longrange-Bombs")))
-                    weapons.Add(New Weapon(Me, +90, GunStats.classes("Longrange-Bombs")))
-                Case "Loneboss"
-                    stats.width = 40 : stats.turn = 1.5 : stats.speed = 3.2 : stats.integrity = 520 : stats.repair = 4 : stats.shield = 0 : stats.shield_opacity = 25 : stats.shield_regeneration = 5 : stats.deflectors = 4 : stats.hot_deflector = 55 : stats.level = 4 : If IsNew Then UpsMax = 1
-                    weapons.Add(New Weapon(Me, -135, GunStats.classes("Machine-Gun")))
-                    weapons.Add(New Weapon(Me, 135, GunStats.classes("Machine-Gun")))
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Rail-Gun")))
-                Case "Bugs"
-                    stats.width = 200 : stats.turn = 2.5 : stats.speed = 3.2 : stats.integrity = 3400 : stats.repair = 2 : stats.shield = 0 : stats.shield_opacity = 25 : stats.shield_regeneration = 5 : cold_deflector_charge = 1 : stats.hot_deflector = 8 : stats.level = 4 : If IsNew Then UpsMax = 0
-                    weapons.Add(New Weapon(Me, -45, GunStats.classes("Heavy-Bio-Gun")))
-                    weapons.Add(New Weapon(Me, +45, GunStats.classes("Heavy-Bio-Gun")))
-                    weapons.Add(New Weapon(Me, 180, GunStats.classes("Bio-Gun")))
-                Case "Finalizer"
-                    stats.width = 60 : stats.turn = 16 : stats.speed = 14 : stats.integrity = 740 : stats.shield = 1800 : stats.shield_opacity = 100 : stats.shield_regeneration = 350 : stats.level = 99 : If IsNew Then UpsMax = 42
-                    weapons.Add(New Weapon(Me, -90, GunStats.classes("Finalizer")))
-                    weapons.Add(New Weapon(Me, 90, GunStats.classes("Finalizer")))
-                Case "Ori"
-                    stats.width = 100 : stats.turn = 1.6 : stats.speed = 3.8 : stats.integrity = 880 : stats.shield = 2200 : stats.shield_opacity = 100 : stats.shield_regeneration = 380 : stats.level = 99 : If IsNew Then UpsMax = 2
-                    weapons.Add(New Weapon(Me, 180, GunStats.classes("Basic-Gun")))
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Ori")))
-                    'Converter
-                Case "Converter"
-                    stats.width = 55 : stats.turn = 0.8 : stats.speed = 1.2 : stats.integrity = 360 : stats.repair = 3 : stats.shield = 1200 : stats.shield_opacity = 100 : stats.shield_regeneration = 30 : stats.level = 4 : If IsNew Then UpsMax = 2
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Lazers")))
-                    weapons.Add(New Weapon(Me, -45, GunStats.classes("Lazers")))
-                    weapons.Add(New Weapon(Me, +45, GunStats.classes("Lazers")))
-                    weapons.Add(New Weapon(Me, -90, GunStats.classes("Lazers")))
-                    weapons.Add(New Weapon(Me, 90, GunStats.classes("Lazers")))
-                    weapons.Add(New Weapon(Me, -135, GunStats.classes("Lazers")))
-                    weapons.Add(New Weapon(Me, +135, GunStats.classes("Lazers")))
-                Case "Converter_A"
-                    stats.width = 45 : stats.turn = 6.5 : stats.speed = 3.5 : stats.integrity = 125 : stats.repair = 0 : stats.shield = 350 : stats.shield_opacity = 65 : stats.shield_regeneration = 0 : stats.level = 4 : If IsNew Then UpsMax = 1
-                    weapons.Add(New Weapon(Me, -45, GunStats.classes("Lazers")))
-                    weapons.Add(New Weapon(Me, +45, GunStats.classes("Lazers")))
-                Case "Converter_B"
-                    stats.width = 45 : stats.turn = 1.5 : stats.speed = 2.8 : stats.integrity = 145 : stats.repair = 0 : stats.shield = 350 : stats.shield_opacity = 65 : stats.shield_regeneration = 0 : stats.level = 4 : If IsNew Then UpsMax = 1
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Heavy-Bombs")))
-                    'Purger
-                Case "Purger_Dronner"
-                    stats.width = 50 : stats.turn = 1.2 : stats.speed = 2.8 : stats.integrity = 355 : stats.shield = 300 : stats.shield_opacity = 75 : stats.shield_regeneration = 20 : stats.level = 3 : If IsNew Then UpsMax = 16
-                    weapons.Add(New Weapon(Me, -90, GunStats.classes("Heavy-Bombs")))
-                    weapons.Add(New Weapon(Me, 90, GunStats.classes("Heavy-Bombs")))
-                    weapons.Add(New Weapon(Me, 180, GunStats.classes("Lazers")))
-                Case "Purger_Drone_1"
-                    stats.width = 18 : stats.turn = 4.6 : stats.speed = 3.8 : stats.integrity = 8 : stats.repair = 0 : stats.shield = 8 : stats.shield_opacity = 75 : stats.shield_regeneration = 2 : stats.level = 0 : If IsNew Then UpsMax = 0
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Light-Basic-Gun")))
-                Case "Purger_Drone_2"
-                    stats.width = 18 : stats.turn = 7.5 : stats.speed = 3.8 : stats.integrity = 8 : stats.repair = 0 : stats.shield = 8 : stats.shield_opacity = 85 : stats.shield_regeneration = 2 : stats.level = 0 : If IsNew Then UpsMax = 0
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Light-Basic-Gun")))
-                Case "Purger_Drone_3"
-                    stats.width = 18 : stats.turn = 2.8 : stats.speed = 3.8 : stats.integrity = 8 : stats.repair = 0 : stats.shield = 8 : stats.shield_opacity = 100 : stats.shield_regeneration = 2 : stats.level = 0 : If IsNew Then UpsMax = 0
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Light-Basic-Gun")))
-                    'Turrets
-                Case "Outpost"
-                    stats.width = 40 : stats.turn = 0.0 : stats.speed = 0.0 : stats.integrity = 190 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 0 : If IsNew Then UpsMax = 1
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Intercepting-Gun")))
-                    weapons.Add(New Weapon(Me, -90, GunStats.classes("Intercepting-Gun")))
-                    weapons.Add(New Weapon(Me, +90, GunStats.classes("Intercepting-Gun")))
-                    weapons.Add(New Weapon(Me, 180, GunStats.classes("Intercepting-Gun")))
-                Case "BomberFactory"
-                    stats.width = 70 : stats.turn = 0.0 : stats.speed = 0.0 : stats.integrity = 450 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 0 : If IsNew Then UpsMax = 1
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Intercepting-Gun")))
-                    weapons.Add(New Weapon(Me, -90, GunStats.classes("Intercepting-Gun")))
-                    weapons.Add(New Weapon(Me, +90, GunStats.classes("Intercepting-Gun")))
-                    weapons.Add(New Weapon(Me, 180, GunStats.classes("Intercepting-Gun")))
-                Case "Defense"
-                    stats.width = 25 : stats.turn = 0.0 : stats.speed = 0.0 : stats.integrity = 170 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 0 : If IsNew Then UpsMax = 1
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Shuriken-Bombs")))
-                    weapons.Add(New Weapon(Me, -120, GunStats.classes("Shuriken-Bombs")))
-                    weapons.Add(New Weapon(Me, +120, GunStats.classes("Shuriken-Bombs")))
-                Case "Pointvortex"
-                    stats.width = 25 : stats.turn = 0.0 : stats.speed = 0.0 : stats.integrity = 130 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 10 : stats.level = 0 : If IsNew Then UpsMax = 1
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Intercepting-Artillery")))
-                'Wild
-                Case "Asteroide"
-                    stats.width = 50 : stats.turn = 1 : stats.speed = 0.9 : stats.integrity = world.Rand.Next(1000, 10000) : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 0 : stats.level = 1
-                    Behavior = "Drift" : Target = uid : color = Color.FromArgb(64, 64, 48)
-                Case "Meteoroide"
-                    stats.width = 30 : stats.turn = 1 : stats.speed = 2.0 + (world.Rand.Next(0, 100) / 100.0) : stats.integrity = 4 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 0 : stats.level = 1
-                    Behavior = "Drift" : Target = uid : color = Color.FromArgb(80, 48, 80)
-                Case "Comet"
-                    stats.width = 25 : stats.turn = 3.0 : stats.speed = 12.0 : stats.integrity = 2 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 5 : stats.level = 1
-                    Behavior = "Drift" : Target = uid : color = Color.FromArgb(0, 100, 0)
-                    weapons.Add(New Weapon(Me, 180, GunStats.classes("Explode-On-Contact")))
-                Case "Star"
-                    stats.width = 95 : stats.turn = 1.0 : stats.speed = 0.0 : stats.integrity = 1073741823 : stats.level = 1
-                    Behavior = "Drift" : Target = uid : color = Color.FromArgb(255, 255, 220)
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Star-Waves")))
-                    weapons.Add(New Weapon(Me, -90, GunStats.classes("Star-Waves")))
-                    weapons.Add(New Weapon(Me, +90, GunStats.classes("Star-Waves")))
-                    weapons.Add(New Weapon(Me, 180, GunStats.classes("Star-Waves")))
-                'Other
-                Case "MSL"
-                    stats.width = 15 : stats.turn = 3.5 : stats.speed = 8 : stats.integrity = 8 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 0 : stats.level = 0 : stats.repair = 0 : If IsNew Then UpsMax = 0
-                    weapons.Add(New Weapon(Me, -90, GunStats.classes("Explode-On-Contact")))
-                'Other
-                Case "Nuke"
-                    stats.width = 40 : stats.turn = 2.5 : stats.speed = 3 : stats.integrity = 72 : stats.shield = 0 : stats.shield_opacity = 0 : stats.shield_regeneration = 0 : stats.level = 0 : stats.repair = 0 : If IsNew Then UpsMax = 0
-                    AllowMining = False
-                    weapons.Add(New Weapon(Me, 0, GunStats.classes("Explode-On-Contact")))
-                    weapons.Add(New Weapon(Me, 180, GunStats.classes("Mining-Gun")))
-            End Select
-            team = STeam
-
-            ' TODO: REMOVE:
-            Me.TempForceUpdateStats()
-            'fin 
+        If Me.base_stats Is Nothing Then
+            Me.SetStats(SType)
         End If
-        ' Force colors
-        Select Case SType
-            Case "Asteroide"
-                Behavior = "Drift" : Target = uid : color = Color.FromArgb(64, 64, 48)
-            Case "Meteoroide"
-                Behavior = "Drift" : Target = uid : color = Color.FromArgb(80, 48, 80)
-            Case "Comet"
-                Behavior = "Drift" : Target = uid : color = Color.FromArgb(0, 100, 0)
-            Case "Star"
-                Behavior = "Drift" : Target = uid : color = Color.FromArgb(255, 255, 220)
-        End Select
+        Me.SetTeam(STeam)
         ' Ship just created TODO: NOW: move to constructor
         If IsNew Then
             Me.Upgrading = Nothing
@@ -349,9 +121,9 @@
             integrity = stats.integrity
             shield = stats.shield
             If STeam Is Nothing OrElse STeam.id = 0 Then
-                Auto = False
+                bot_ship = False
             Else
-                Auto = True
+                bot_ship = True
             End If
             If Not STeam Is Nothing AndAlso Behavior <> "Drift" Then
                 color = STeam.color
@@ -381,7 +153,7 @@
             End If
         Else
             If Me.position.X < -100 OrElse Me.position.Y < -100 OrElse Me.position.X > world.ArenaSize.Width + 100 OrElse Me.position.Y > world.ArenaSize.Height + 100 Then
-                If Me.Auto = False Then Me.integrity = 0
+                If Me.bot_ship = False Then Me.integrity = 0
             End If
         End If
         '===' Déplacement '==='
@@ -455,9 +227,9 @@
                     Me.InterUpgrade(aspli, True)
                 Next
                 'actualisation vaisseau
-                Me.SetType(Me.stats.sprite, Me.team)
                 Me.ResetStats()
                 Me.ApplyUps("")
+                Me.ResetShieldPoint() ' just for the effect :>
                 Upgrading = Nothing
                 UpProgress = 0
             End If
@@ -554,8 +326,8 @@
         Dim QA As Single
         Dim NeedSpeed As Boolean = False
         '===' Fin de poursuite '==='
-        If Me.Behavior <> "Drift" AndAlso world.GetShipByUID(Target) Is Nothing Then
-            Target = ""
+        If Me.Behavior <> "Drift" AndAlso world.GetShipByUID(target_uid) Is Nothing Then
+            target_uid = Helpers.INVALID_UID
             If Me.Behavior <> "Mine" Then
                 Me.Behavior = "Stand"
             End If
@@ -565,9 +337,9 @@
             Me.Behavior = "Drift"
         End If
         '===' Auto-Activation '==='
-        If Me.Auto AndAlso Me.Behavior <> "Drift" Then
-            Dim NearVal As Integer = Vision : Dim NearUID As String = ""
-            If Me.Target = "" Then
+        If Me.bot_ship AndAlso Me.Behavior <> "Drift" Then
+            Dim NearVal As Integer = Integer.MaxValue : Dim NearUID As ULong = Helpers.INVALID_UID
+            If Me.target_uid = Helpers.INVALID_UID Then
                 For Each oShip As Ship In world.Ships
                     If (Not Me.team.IsFriendWith(oShip.team)) AndAlso (rnd_num < 6700 OrElse Not oShip.team Is Nothing) Then
                         Dim dist As Integer = Helpers.GetDistance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
@@ -577,13 +349,14 @@
                         End If
                     End If
                 Next
-                If NearUID <> "" Then
-                    Me.Target = NearUID
+                If NearUID <> Helpers.INVALID_UID Then
+                    Me.target_uid = NearUID
                     Me.Behavior = "Fight"
                 End If
             Else
-                If rnd_num < 6 Then
-                    Me.Target = ""
+                If rnd_num < 6 Then 'chance to change target
+                    Me.target_uid = Helpers.INVALID_UID
+                    Me.Behavior = "Stand"
                 End If
             End If
         End If
@@ -591,8 +364,8 @@
         Select Case Behavior
             Case "Mine"
                 Me.AllowMining = True
-                If Me.Target <> "" Then
-                    Dim oShip As Ship = world.GetShipByUID(Me.Target)
+                If Me.target_uid <> Helpers.INVALID_UID Then
+                    Dim oShip As Ship = world.GetShipByUID(Me.target_uid)
                     QA = Helpers.GetQA(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
                     Dim d As Integer = 50 : If weapons.Count > 0 Then d = Me.weapons(0).stats.range / 2
                     If Helpers.GetDistance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y) <= d Then
@@ -600,10 +373,10 @@
                     End If
                     NeedSpeed = True
                     If Helpers.GetDistance(Me.TargetPTN.X, Me.TargetPTN.Y, oShip.position.X, oShip.position.Y) > world.ArenaSize.Width / 8 Then
-                        Me.Target = ""
+                        Me.target_uid = Helpers.INVALID_UID
                     End If
                 Else
-                    Dim NearVal As Integer = world.ArenaSize.Width / 8 : Dim NearUID As String = ""
+                    Dim NearVal As Integer = world.ArenaSize.Width / 8 : Dim NearUID As ULong = Helpers.INVALID_UID
                     For Each oShip As Ship In world.Ships
                         If oShip.team Is Nothing Then
                             Dim dist_me As Integer = Helpers.GetDistance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
@@ -614,7 +387,7 @@
                             End If
                         End If
                     Next
-                    Me.Target = NearUID
+                    Me.target_uid = NearUID
                     QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y)
                     NeedSpeed = True
                 End If
@@ -625,9 +398,9 @@
                 QA = direction
                 NeedSpeed = True
             Case "Fight"
-                If Me.Target <> "" Then
+                If Me.target_uid <> Helpers.INVALID_UID Then
                     NeedSpeed = True
-                    Dim oShip As Ship = world.GetShipByUID(Me.Target)
+                    Dim oShip As Ship = world.GetShipByUID(Me.target_uid)
                     QA = Helpers.GetQA(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
                     Dim d As Integer = 50 : If weapons.Count > 0 Then d = Me.weapons(0).stats.range / 2
                     If Helpers.GetDistance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y) <= d Then
@@ -681,7 +454,7 @@
                                 If Me.team Is Nothing OrElse Not OVessel.team Is Nothing AndAlso Not Me.team.IsFriendWith(OVessel.team) Then
                                     dist /= 4
                                 End If
-                                If Me.Target = OVessel.uid Then
+                                If Me.target_uid = OVessel.uid Then
                                     dist /= 2
                                 End If
                             End If
@@ -745,7 +518,7 @@
             Case "!Agility"
                 Me.stats.turn += Spliter(1)
             Case "!Teleport"
-                Dim target_ship As Ship = world.GetShipByUID(Me.Target)
+                Dim target_ship As Ship = world.GetShipByUID(Me.target_uid)
                 If Not target_ship Is Nothing Then
                     Me.position = target_ship.position + New Point(world.Rand.Next(-512, 512), world.Rand.Next(-512, 512))
                 End If
@@ -827,10 +600,12 @@
             Case "?MS"
                 If Me.team Is Nothing OrElse world.CountTeamShips(team) < Me.team.MaxShips Then Return True
             Case "!Sum"
-                If FN Then world.Ships.Add(New Ship(world) With {.position = New Point(Me.position.X + world.Rand.Next(-10, 11), Me.position.Y + world.Rand.Next(-10, 11))}) : world.Ships(world.Ships.Count - 1).direction = Me.direction : world.Ships(world.Ships.Count - 1).SetType(Spliter(1), Me.team, True)
+                If FN Then world.Ships.Add(New Ship(world, Spliter(1)) With {.position = New Point(Me.position.X + world.Rand.Next(-10, 11), Me.position.Y + world.Rand.Next(-10, 11))})
+                world.Ships(world.Ships.Count - 1).SetTeam(Me.team)
+                world.Ships(world.Ships.Count - 1).direction = Me.direction
                 If world.Ships(world.Ships.Count - 1).stats.sprite <> "MSL" Then
                     world.Ships(world.Ships.Count - 1).Behavior = "Fight"
-                    world.Ships(world.Ships.Count - 1).Target = Me.uid
+                    world.Ships(world.Ships.Count - 1).target_uid = Me.uid
                 End If
             Case "!Ascend"
                 If Me.team.id = 0 Then

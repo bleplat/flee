@@ -3,6 +3,7 @@ Imports System.IO
 
 Public NotInheritable Class Helpers
 
+	Public Shared ReadOnly INVALID_UID As ULong = ULong.MaxValue - 1
 	Private Shared last_uid As ULong = 0
 	Public Shared Function GetNextUniqueID() As ULong
 		last_uid = last_uid + 1
@@ -243,4 +244,48 @@ Public NotInheritable Class Helpers
 		Static culture As CultureInfo = CultureInfo.CreateSpecificCulture("en-US")
 		Return d.ToString("0.00", culture)
 	End Function
+
+
+
+
+
+	Public Shared Function RandomStationName(rand As Random) As String
+		Dim station_names As List(Of String) = New List(Of String)
+		For Each ship_class_name As String In ShipStats.classes.Keys
+			If ship_class_name.Contains("Station") Then
+				station_names.Add(ship_class_name)
+			End If
+		Next
+		Return station_names(rand.Next(0, station_names.Count()))
+	End Function
+	Public Shared Function RandomTurretName(rand As Random) As String
+		Select Case rand.Next(0, 3)
+			Case 0 : Return "Outpost"
+			Case 1 : Return "Defense"
+			Case 2 : Return "Pointvortex"
+		End Select
+	End Function
+
+
+	Public Shared Function GetSpawnUpgrades(ship As Ship) As List(Of String)
+		Dim upgrades As List(Of String) = New List(Of String)
+		For Each craft As String In ship.stats.crafts
+			For Each a_up As Upgrade In Upgrade.Upgrades
+				If a_up.Name.StartsWith("Build_") Then
+					If a_up.Name.EndsWith(craft) Then
+						upgrades.Add(a_up.Name)
+					End If
+				End If
+			Next
+		Next
+		Return upgrades
+	End Function
+	Public Shared Function GetRandomSpawnUpgrade(rand As Random, ship As Ship) As String
+		Dim upgrades As List(Of String) = GetSpawnUpgrades(ship)
+		If upgrades.Count() = 0 Then
+			Return Nothing
+		End If
+		Return upgrades(rand.Next(0, upgrades.Count))
+	End Function
+
 End Class

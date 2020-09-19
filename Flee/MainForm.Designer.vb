@@ -26,6 +26,7 @@ Partial Class MainForm
 		Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
 		Me.MainPanel = New System.Windows.Forms.Panel()
 		Me.MenuPanel = New System.Windows.Forms.Panel()
+		Me.Label4 = New System.Windows.Forms.Label()
 		Me.RandomizeButton = New System.Windows.Forms.Button()
 		Me.Label3 = New System.Windows.Forms.Label()
 		Me.SeedTextBox = New System.Windows.Forms.TextBox()
@@ -101,16 +102,26 @@ Partial Class MainForm
 		'MenuPanel
 		'
 		Me.MenuPanel.Anchor = System.Windows.Forms.AnchorStyles.Left
+		Me.MenuPanel.Controls.Add(Me.Label4)
 		Me.MenuPanel.Controls.Add(Me.RandomizeButton)
 		Me.MenuPanel.Controls.Add(Me.Label3)
 		Me.MenuPanel.Controls.Add(Me.SeedTextBox)
 		Me.MenuPanel.Controls.Add(Me.Label2)
 		Me.MenuPanel.Controls.Add(Me.StartPlayingButton)
 		Me.MenuPanel.Font = New System.Drawing.Font("Constantia", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-		Me.MenuPanel.Location = New System.Drawing.Point(236, 181)
+		Me.MenuPanel.Location = New System.Drawing.Point(155, 162)
 		Me.MenuPanel.Name = "MenuPanel"
-		Me.MenuPanel.Size = New System.Drawing.Size(312, 193)
+		Me.MenuPanel.Size = New System.Drawing.Size(312, 249)
 		Me.MenuPanel.TabIndex = 5
+		'
+		'Label4
+		'
+		Me.Label4.Font = New System.Drawing.Font("Constantia", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+		Me.Label4.Location = New System.Drawing.Point(5, 144)
+		Me.Label4.Name = "Label4"
+		Me.Label4.Size = New System.Drawing.Size(302, 57)
+		Me.Label4.TabIndex = 8
+		Me.Label4.Text = "" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "some sprites are from MillionthVector"
 		'
 		'RandomizeButton
 		'
@@ -161,7 +172,7 @@ Partial Class MainForm
 		Me.StartPlayingButton.Dock = System.Windows.Forms.DockStyle.Bottom
 		Me.StartPlayingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.StartPlayingButton.Font = New System.Drawing.Font("Corbel", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-		Me.StartPlayingButton.Location = New System.Drawing.Point(0, 155)
+		Me.StartPlayingButton.Location = New System.Drawing.Point(0, 211)
 		Me.StartPlayingButton.Name = "StartPlayingButton"
 		Me.StartPlayingButton.Size = New System.Drawing.Size(312, 38)
 		Me.StartPlayingButton.TabIndex = 0
@@ -192,7 +203,7 @@ Partial Class MainForm
 		'
 		Me.PriceA.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.PriceA.ForeColor = System.Drawing.Color.Yellow
-		Me.PriceA.Location = New System.Drawing.Point(186, 3)
+		Me.PriceA.Location = New System.Drawing.Point(234, 3)
 		Me.PriceA.Name = "PriceA"
 		Me.PriceA.Size = New System.Drawing.Size(40, 20)
 		Me.PriceA.TabIndex = 1
@@ -203,7 +214,7 @@ Partial Class MainForm
 		'
 		Me.PriceU.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.PriceU.ForeColor = System.Drawing.Color.Lime
-		Me.PriceU.Location = New System.Drawing.Point(247, 3)
+		Me.PriceU.Location = New System.Drawing.Point(187, 3)
 		Me.PriceU.Name = "PriceU"
 		Me.PriceU.Size = New System.Drawing.Size(25, 20)
 		Me.PriceU.TabIndex = 1
@@ -267,7 +278,7 @@ Partial Class MainForm
 		'PriceAIcon
 		'
 		Me.PriceAIcon.Image = Global.Flee.My.Resources.Resources.Antimatter
-		Me.PriceAIcon.Location = New System.Drawing.Point(227, 3)
+		Me.PriceAIcon.Location = New System.Drawing.Point(275, 3)
 		Me.PriceAIcon.Name = "PriceAIcon"
 		Me.PriceAIcon.Size = New System.Drawing.Size(20, 20)
 		Me.PriceAIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -277,7 +288,7 @@ Partial Class MainForm
 		'PriceUIcon
 		'
 		Me.PriceUIcon.Image = Global.Flee.My.Resources.Resources.Fissile
-		Me.PriceUIcon.Location = New System.Drawing.Point(273, 3)
+		Me.PriceUIcon.Location = New System.Drawing.Point(213, 3)
 		Me.PriceUIcon.Name = "PriceUIcon"
 		Me.PriceUIcon.Size = New System.Drawing.Size(20, 20)
 		Me.PriceUIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -424,7 +435,7 @@ Partial Class MainForm
 		'
 		Me.CristalTextBox.Font = New System.Drawing.Font("Consolas", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.CristalTextBox.ForeColor = System.Drawing.Color.Violet
-		Me.CristalTextBox.Location = New System.Drawing.Point(36, 3)
+		Me.CristalTextBox.Location = New System.Drawing.Point(36, 34)
 		Me.CristalTextBox.Name = "CristalTextBox"
 		Me.CristalTextBox.Size = New System.Drawing.Size(56, 25)
 		Me.CristalTextBox.TabIndex = 3
@@ -435,7 +446,7 @@ Partial Class MainForm
 		'
 		Me.MetalTextBox.Font = New System.Drawing.Font("Consolas", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.MetalTextBox.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
-		Me.MetalTextBox.Location = New System.Drawing.Point(36, 34)
+		Me.MetalTextBox.Location = New System.Drawing.Point(36, 3)
 		Me.MetalTextBox.Name = "MetalTextBox"
 		Me.MetalTextBox.Size = New System.Drawing.Size(71, 25)
 		Me.MetalTextBox.TabIndex = 3
@@ -465,7 +476,7 @@ Partial Class MainForm
 		'PictureBox2
 		'
 		Me.PictureBox2.Image = Global.Flee.My.Resources.Resources.Crystal
-		Me.PictureBox2.Location = New System.Drawing.Point(5, 3)
+		Me.PictureBox2.Location = New System.Drawing.Point(5, 34)
 		Me.PictureBox2.Name = "PictureBox2"
 		Me.PictureBox2.Size = New System.Drawing.Size(25, 25)
 		Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -475,7 +486,7 @@ Partial Class MainForm
 		'PictureBox1
 		'
 		Me.PictureBox1.Image = Global.Flee.My.Resources.Resources.Metal
-		Me.PictureBox1.Location = New System.Drawing.Point(5, 34)
+		Me.PictureBox1.Location = New System.Drawing.Point(5, 3)
 		Me.PictureBox1.Name = "PictureBox1"
 		Me.PictureBox1.Size = New System.Drawing.Size(25, 25)
 		Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -586,4 +597,5 @@ Partial Class MainForm
 	Friend WithEvents PictureBox6 As PictureBox
 	Friend WithEvents PriceA As Label
 	Friend WithEvents PriceAIcon As PictureBox
+	Friend WithEvents Label4 As Label
 End Class

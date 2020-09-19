@@ -4,23 +4,12 @@
     ALOOF = 8 'Alway hostile to other teams
 End Enum
 
-Public Enum ShipstyleEnum
-    NONE = 0
-    SIMPLE = 1
-    ADVANCED = 2
-    DRONES = 4
-    KASTOU = 8
-    STRANGE = 16
-    LEGENDS = 32
-    CRUSHERS = 64
-    PURGERS = 128
-End Enum
-
 Public Class Team
     Public world As World
+    Public bot_team As Boolean = True
     Shared last_id As Integer = -1
     Shared available_colors As List(Of Color) = New List(Of Color)
-    Public Sub New(world As World, affinity As Integer, shipstyle As ShipstyleEnum)
+    Public Sub New(world As World, affinity As Integer)
         Me.world = world
 
         'id
@@ -56,36 +45,6 @@ Public Class Team
             upgrade_limit += 1
         End If
 
-        'shipstyle
-        If shipstyle = 0 Then
-            If id = 0 Then
-                Me.shipstyle = ShipstyleEnum.NONE
-            Else
-                Select Case world.Rand.Next(0, 7)
-                    Case 0
-                        Me.shipstyle = ShipstyleEnum.SIMPLE
-                        Me.upgrade_limit = 4
-                    Case 1
-                        Me.shipstyle = ShipstyleEnum.ADVANCED
-                        Me.upgrade_limit = 8
-                    Case 2
-                        Me.shipstyle = ShipstyleEnum.DRONES
-                    Case 3
-                        Me.shipstyle = ShipstyleEnum.KASTOU
-                    Case 4
-                        Me.shipstyle = ShipstyleEnum.STRANGE
-                    Case 5
-                        Me.shipstyle = ShipstyleEnum.LEGENDS
-                    Case 6
-                        Me.shipstyle = ShipstyleEnum.CRUSHERS
-                        Me.upgrade_limit = 2
-                        Me.MaxShips = 20
-                End Select
-            End If
-        Else
-            Me.shipstyle = shipstyle
-        End If
-
         'color
         If available_colors.Count = 0 Then
             available_colors.Add(Color.FromArgb(0, 255, 0)) ' primary green
@@ -118,7 +77,6 @@ Public Class Team
 
     Public id As Integer
     Public affinity As Integer
-    Public shipstyle As ShipstyleEnum
     Public color As Color
 
     Public upgrade_limit As Integer = 0
