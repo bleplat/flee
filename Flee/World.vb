@@ -107,15 +107,15 @@
         Next
         ' allied NPC
         Teams.Add(New Team(Me, AffinityEnum.KIND))
-        SPAWN_STATION_RANDOMLY("Station", Teams(Teams.Count - 1), Rand.Next(2, 6))
+        SPAWN_STATION_RANDOMLY(Nothing, Teams(Teams.Count - 1), Rand.Next(2, 6))
         ' enemy NPC
         Teams.Add(New Team(Me, AffinityEnum.MEAN))
-        SPAWN_STATION_RANDOMLY("Station", Teams(Teams.Count - 1), Rand.Next(3, 7))
+        SPAWN_STATION_RANDOMLY(Nothing, Teams(Teams.Count - 1), Rand.Next(3, 7))
         ' random NPC Teams and Ships
         Dim npc_team_count = Rand.Next(4, 10)
         For i = 0 To npc_team_count - 1
             Teams.Add(New Team(Me, Nothing))
-            SPAWN_STATION_RANDOMLY("Station", Teams(Teams.Count - 1), Rand.Next(4, 8))
+            SPAWN_STATION_RANDOMLY(Nothing, Teams(Teams.Count - 1), Rand.Next(4, 8))
         Next
     End Sub
 

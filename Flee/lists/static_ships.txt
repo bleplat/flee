@@ -10,7 +10,7 @@ ship Station
 	cost=304;1;0;0
 	complexity=1000
 	craft=Cargo
-	craft=SimpleShip
+	craft=Simpleship
 	craft=Hunter
 	craft=Harass
 
