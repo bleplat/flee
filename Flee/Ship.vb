@@ -240,7 +240,7 @@
                 'Appliquation debugage
                 Dim spliter() As String = Upgrading.Effect.Split(" ")
                 For Each aspli As String In spliter
-                    Me.InterUpgrade(aspli, True)
+                    Me.ApplyUpgradeEffect(aspli, True)
                 Next
                 'actualisation vaisseau
                 Me.ResetStats()
@@ -503,15 +503,15 @@
             Dim spliter() As String = AUp.Effect.Split(" ")
             For Each Aspli As String In spliter
                 If AUp.Name = NewUp Then
-                    InterUpgrade(Aspli, True)
+                    ApplyUpgradeEffect(Aspli, True)
                 Else
-                    InterUpgrade(Aspli, False)
+                    ApplyUpgradeEffect(Aspli, False)
                 End If
             Next
         Next
     End Sub
     ' return true is condition succeed
-    Public Function InterUpgrade(ByVal Chain As String, ByVal first_application As Boolean) As Boolean
+    Public Function ApplyUpgradeEffect(ByVal Chain As String, ByVal first_application As Boolean) As Boolean
         Dim Spliter() As String = Chain.Split(":")
         Select Case Spliter(0)
             Case "!C"
@@ -605,6 +605,10 @@
                 'Next
                 If Me.weapons.Count <> 0 Then
                     Me.weapons(0).stats.salvo += Me.weapons(0).stats.salvo * (Helpers.ToDouble(Spliter(1)) / 100.0)
+                    If first_application Then
+                        Me.weapons(0).Bar = 0
+                        Me.weapons(0).Load = 0
+                    End If
                 End If
             Case "%Wpower"
                 'For Each AW As Weapon In weapons

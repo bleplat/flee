@@ -542,7 +542,7 @@ Public Class MainForm
 					Dim Spliter() As String = AUp.Need.Split(" ")
 					If Not AShip.HaveUp(AUp.Name) Then
 						For Each ac As String In Spliter
-							If AShip.InterUpgrade(ac, False) = False AndAlso (AShip.Upgrading Is Nothing OrElse AUp.Name <> AShip.Upgrading.Name) Then
+							If AShip.ApplyUpgradeEffect(ac, False) = False AndAlso (AShip.Upgrading Is Nothing OrElse AUp.Name <> AShip.Upgrading.Name) Then
 								ok = False
 							End If
 						Next

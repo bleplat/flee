@@ -8,7 +8,7 @@ ship Meteoroide
 
 ship Asteroide
 	level=1
-	integrity=1248
+	integrity=4000
 	speed=0.90
 	turn=1.00
 	cost=170;1;0;0

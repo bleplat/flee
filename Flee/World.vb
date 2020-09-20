@@ -287,40 +287,33 @@
             Dim AltTeam = boss_team
             If Rand.Next(0, 3) = 0 Then AltTeam = Teams(Rand.Next(2, Teams.Count))
             Dim Count As Integer = Rand.Next(1, 5)
-            If Rand.Next(0, 5) = 0 Then
+            If Rand.Next(0, 4) = 0 Then
                 Type = "Meteoroide"
                 Count = Rand.Next(6, 12)
-            End If
-            If Rand.Next(0, 5) = 0 Then
+            ElseIf Rand.Next(0, 5) = 0 Then
                 Type = "Comet"
                 Team = boss_team
                 Count = 1
-            End If
-            If Rand.Next(0, 30) = 0 Then
+            ElseIf Rand.Next(0, 30) = 0 Then
                 Type = "Cargo"
                 Count = 1
-            End If
-            If Rand.Next(0, 90) = 0 Then
+            ElseIf Rand.Next(0, 90) = 0 Then
                 Type = "Civil_A"
                 Team = AltTeam
                 Count = 1
-            End If
-            If Rand.Next(0, 350) = 0 Then
+            ElseIf Rand.Next(0, 350) = 0 Then
                 Type = "Purger_Dronner"
                 Team = AltTeam
                 Count = 1
-            End If
-            If Rand.Next(0, 350) = 0 Then
+            ElseIf Rand.Next(0, 350) = 0 Then
                 Type = "Loneboss"
                 Team = AltTeam
                 Count = 1
-            End If
-            If Rand.Next(0, 550) = 0 Then
+            ElseIf Rand.Next(0, 550) = 0 Then
                 Type = "Converter"
                 Team = AltTeam
                 Count = 1
-            End If
-            If Rand.Next(0, 2000) = 0 Then
+            ElseIf Rand.Next(0, 2000) = 0 Then
                 Type = "Bugs"
                 Team = AltTeam
                 Count = 1
@@ -384,7 +377,7 @@
                                         ok = False
                                         Exit For
                                     End If
-                                    If a_ship.InterUpgrade(ac, False) = False AndAlso (a_ship.Upgrading Is Nothing OrElse AUp.Name <> a_ship.Upgrading.Name) Then
+                                    If a_ship.ApplyUpgradeEffect(ac, False) = False AndAlso (a_ship.Upgrading Is Nothing OrElse AUp.Name <> a_ship.Upgrading.Name) Then
                                         ok = False
                                         Exit For
                                     End If
