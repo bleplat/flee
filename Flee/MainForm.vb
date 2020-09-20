@@ -238,7 +238,7 @@ Public Class MainForm
 			End If
 		Next
 		'===' Infos '==='
-		G.DrawString("Ships : " & world.CountTeamShips(player_team) & " / " & player_team.MaxShips & " Max.", New Font("Consolas", 10), Brushes.Lime, New Point(0, 0))
+		G.DrawString("Ships : " & world.CountTeamShips(player_team) & " / " & player_team.ship_count_limit & " Max.", New Font("Consolas", 10), Brushes.Lime, New Point(0, 0))
 		If Not play Then
 			G.DrawString("PAUSE", New Font("Consolas", 16), Brushes.White, New Point(0, DrawBMP.Height - 32))
 		ElseIf timelapse Then
@@ -534,26 +534,7 @@ Public Class MainForm
 		AllowMiningBox.Visible = Not AShip.AllowMining
 
 		'===' Upgrades '==='
-		If True Then
-			Try
-				ListedUps.Clear()
-				For Each AUp As Upgrade In Upgrade.Upgrades
-					Dim ok As Boolean = True
-					Dim Spliter() As String = AUp.Need.Split(" ")
-					If Not AShip.HaveUp(AUp.Name) Then
-						For Each ac As String In Spliter
-							If AShip.ApplyUpgradeEffect(ac, False) = False AndAlso (AShip.Upgrading Is Nothing OrElse AUp.Name <> AShip.Upgrading.Name) Then
-								ok = False
-							End If
-						Next
-					End If
-					If ok Then
-						ListedUps.Add(AUp)
-					End If
-				Next
-			Catch
-			End Try
-		End If
+		ListedUps = AShip.ConditionsMetUpgrades()
 	End Sub
 
 	Dim UpX As Integer = -1 : Dim UpY As Integer = -1
@@ -593,7 +574,7 @@ Public Class MainForm
 				PriceA.Visible = (AUp.cost.Antimatter <> 0)
 				PriceAIcon.Visible = (AUp.cost.Antimatter <> 0)
 			End If
-			If Aship.HaveUp(AUp.Name) Then
+			If Aship.HaveUp(AUp) Then
 				PG.DrawRectangle(New Pen(Brushes.White, 2), x * 25 + 1, y * 25 + 1, 24 - 1, 24 - 1)
 			ElseIf (Not Aship.Upgrading Is Nothing) AndAlso Aship.Upgrading.Name = AUp.Name Then
 				PG.DrawRectangle(New Pen(Brushes.Yellow, 2), x * 25, y * 25, 24, 24)
@@ -637,7 +618,7 @@ Public Class MainForm
 					Exit Sub
 				End If
 				If AShip.team Is Nothing OrElse AShip.team.resources.HasEnough(AUp.cost) Then
-					If Not AShip.HaveUp(AUp.Name) Then
+					If Not AShip.HaveUp(AUp) Then
 						'===' achat '==='
 						If Not AShip.team Is Nothing Then AShip.team.resources.Deplete(AUp.cost)
 						AShip.Upgrading = AUp

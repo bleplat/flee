@@ -204,7 +204,7 @@
         Return " ?Up:" & Upgrades(Upgrades.Count - 1).Name
     End Function
 
-    Public Shared Function GetUpgrade(up_name As String) As Upgrade
+    Public Shared Function UpgradeFromName(up_name As String) As Upgrade
         For Each aUp In Upgrades
             If aUp.Name = up_name Then
                 Return aUp

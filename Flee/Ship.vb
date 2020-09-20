@@ -234,17 +234,21 @@
                     UpProgress = UpProgress + 99
                 End If
             Else
+                If Upgrading.Name.Contains("Pointvortex") Then
+                    Console.WriteLine()
+                End If
                 If Upgrading.Install Then
                     Ups.Add(Upgrading)
                 End If
-                'Appliquation debugage
-                Dim spliter() As String = Upgrading.Effect.Split(" ")
-                For Each aspli As String In spliter
-                    Me.ApplyUpgradeEffect(aspli, True)
-                Next
+                'Appliquation debugage 'TODO: NOW: test without this
+                'Dim spliter() As String = Upgrading.Effect.Split(" ")
+                ' For Each aspli As String In spliter
+                'Me.ApplyUpgradeEffect(aspli, True)
+                'Next
                 'actualisation vaisseau
+                Me.ApplyUpgradeFirstTime(Upgrading)
                 Me.ResetStats()
-                Me.ApplyUpgrades("")
+                Me.ApplyUpgrades()
                 Upgrading = Nothing
                 UpProgress = 0
             End If
@@ -496,35 +500,107 @@
         End If
     End Sub
 
-
-
-    Public Sub ApplyUpgrades(ByVal NewUp As String)
-        For Each AUp As Upgrade In Me.Ups
-            Dim spliter() As String = AUp.Effect.Split(" ")
-            For Each Aspli As String In spliter
-                If AUp.Name = NewUp Then
-                    ApplyUpgradeEffect(Aspli, True)
-                Else
-                    ApplyUpgradeEffect(Aspli, False)
-                End If
-            Next
+    ' get all possible upgrades
+    Public Function ConditionsMetUpgrades()
+        Dim met_upgrades As List(Of Upgrade) = New List(Of Upgrade)
+        For Each upgrade As Upgrade In Upgrade.Upgrades
+            If IsUpgradeCompatible(upgrade) Then
+                met_upgrades.Add(upgrade)
+            End If
         Next
-    End Sub
-    ' return true is condition succeed
-    Public Function ApplyUpgradeEffect(ByVal Chain As String, ByVal first_application As Boolean) As Boolean
-        Dim Spliter() As String = Chain.Split(":")
+        Return met_upgrades
+    End Function
+    ' get all possible upgrades
+    Public Function AvailableUpgrades()
+        Dim possible_upgrades As List(Of Upgrade) = New List(Of Upgrade)
+        For Each upgrade As Upgrade In Upgrade.Upgrades
+            If CanUpgrade(upgrade) Then
+                possible_upgrades.Add(upgrade)
+            End If
+        Next
+        Return possible_upgrades
+    End Function
+    ' return true if the upgrade is available
+    Public Function CanUpgrade(upgrade As Upgrade) As Boolean
+        If MainForm.DebugMode Then Return True
+        If Not Me.Upgrading Is Nothing Then Return False
+        If Not upgrade.Install OrElse Me.Ups.Count >= upgrade_slots Then Return False
+        If Me.HaveUp(upgrade) Then Return False
+        Return IsUpgradeCompatible(upgrade)
+    End Function
+    ' return true if the upgrade have its conditions met
+    Public Function IsUpgradeCompatible(upgrade As Upgrade) As Boolean
+        If upgrade Is Me.Upgrading Then Return True
+        Dim conditions_strings() As String = upgrade.Need.Split(" ")
+        For Each a_condition As String In conditions_strings
+            If Not IsUpgradeConditionMet(a_condition) Then
+                Return False
+            End If
+        Next
+        Return True
+    End Function
+    ' test a single upgrade condition
+    Public Function IsUpgradeConditionMet(ByVal chain As String) As Boolean
+        Dim Spliter() As String = chain.Split(":")
         Select Case Spliter(0)
-            Case "!C"
-                Me.color = Color.FromName(Spliter(1))
-                If Me.stats.sprite = "Station" Then
-                    Me.team.color = Me.color
-                End If
+            Case "" 'Debug
+                Return True
             Case "?W"
                 If weapons.Count > 0 Then Return True
             Case "?S"
                 If stats.speed > 0 Then Return True
             Case "?Base"
                 If Me.uid = MainForm.MAIN_BASE Then Return True
+            Case "+Lvl"
+                If Me.stats.level >= Spliter(1) Then Return True
+            Case "+Speed" 'vitesse
+                If Me.stats.speed >= Spliter(1) Then Return True
+            Case "-Speed"
+                If Me.stats.speed <= Spliter(1) Then Return True
+            Case "+Life" 'Resistance
+                If Me.stats.integrity >= Spliter(1) Then Return True
+            Case "-Life" '
+                If Me.stats.integrity <= Spliter(1) Then Return True
+            Case "?Up"
+                If Me.HaveUp(Upgrade.UpgradeFromName(Spliter(1))) Then Return True
+            Case "?Type" 'Type
+                If Me.stats.sprite = Spliter(1) Then Return True
+            Case "?Wtype" 'armement
+                If Me.weapons(0).stats.sprite = Spliter(1) Then Return True
+            Case "?MS"
+                If Me.team Is Nothing OrElse world.CountTeamShips(team) < Me.team.ship_count_limit Then Return True
+            Case Else
+                Throw New Exception("Erreur : " & chain & " (invalid condition)")
+        End Select
+        Return False
+    End Function
+
+    ' apply all upgrades effects this ship have
+    Public Sub ApplyUpgrades()
+        For Each AUp As Upgrade In Me.Ups
+            Dim spliter() As String = AUp.Effect.Split(" ")
+            For Each Aspli As String In spliter
+                ApplyUpgradeEffect(Aspli, False)
+            Next
+        Next
+    End Sub
+    ' apply a single upgrade effects to this ship
+    Public Sub ApplyUpgradeFirstTime(ByRef upgrade As Upgrade)
+        Dim spliter() As String = upgrade.Effect.Split(" ")
+        For Each Aspli As String In spliter
+            ApplyUpgradeEffect(Aspli, True)
+        Next
+    End Sub
+    ' apply an upgrade effect
+    Public Sub ApplyUpgradeEffect(ByVal Chain As String, ByVal first_application As Boolean)
+        Dim Spliter() As String = Chain.Split(":")
+        Select Case Spliter(0)
+            Case ""
+            Case "!C"
+                Me.color = Color.FromName(Spliter(1))
+                If Me.stats.sprite = "Station" Then
+                    Me.team.color = Me.color
+                End If
             Case "!Jump"
                 Me.speed = Convert.ToInt32(Spliter(1))
             Case "!Agility"
@@ -538,10 +614,7 @@
             Case "!Upsbonus"
                 If first_application Then Me.team.upgrade_slots_bonus += Spliter(1) 'FN
             Case "!Maxships"
-                If first_application Then Me.team.MaxShips += Spliter(1) 'FN
-            Case "+Shield"
-                If Me.stats.shield >= Spliter(1) Then Return True
-                If first_application Then Me.ResetShieldPoint()
+                If first_application Then Me.team.ship_count_limit += Spliter(1) 'FN
             Case "!Shield"
                 Me.stats.shield += Spliter(1)
                 If first_application Then Me.ResetShieldPoint()
@@ -566,32 +639,16 @@
                 Me.integrity += Me.integrity * (Spliter(1) / 100.0)
             Case "!FixSFull"
                 Me.shield = Me.stats.shield
-            Case "+Lvl"
-                If Me.stats.level >= Spliter(1) Then Return True
-            Case "+Speed" 'vitesse
-                If Me.stats.speed >= Spliter(1) Then Return True
-            Case "-Speed"
-                If Me.stats.speed <= Spliter(1) Then Return True
             Case "%Speed"
                 Me.stats.speed += (Me.stats.speed * (Spliter(1) / 100))
                 Me.stats.turn += (Me.stats.turn * (Spliter(1) / 100))
-            Case "+Life" 'Resistance
-                If Me.stats.integrity >= Spliter(1) Then Return True
-            Case "-Life" '
-                If Me.stats.integrity <= Spliter(1) Then Return True
             Case "%Life"
                 Me.stats.integrity += (Me.stats.integrity * (Spliter(1) / 100))
                 If first_application Then Me.integrity += (Me.stats.integrity * (Spliter(1) / 100)) 'FN
             Case "!Regen"
                 Me.stats.repair += Convert.ToInt32(Spliter(1)) 'FN
-            Case "?Up"
-                If Me.HaveUp(Spliter(1)) Then Return True
-            Case "?Type" 'Type
-                If Me.stats.sprite = Spliter(1) Then Return True
             Case "!Type"
                 If first_application Then Me.SetStats(Spliter(1))' : Me.stats.sprite = Spliter(1)
-            Case "?Wtype" 'armement
-                If Me.weapons(0).stats.sprite = Spliter(1) Then Return True
             Case "%Wloadmax"
                 'For Each AW As Weapon In weapons
                 'AW.stats.loadtime += AW.stats.loadtime * (Spliter(1) / 100)
@@ -631,10 +688,6 @@
                 If Me.weapons.Count <> 0 Then
                     Me.weapons(0).stats.celerity += Me.weapons(0).stats.celerity * (Helpers.ToDouble(Spliter(1)) / 100.0)
                 End If
-            Case "" 'Debug
-                Return True
-            Case "?MS"
-                If Me.team Is Nothing OrElse world.CountTeamShips(team) < Me.team.MaxShips Then Return True
             Case "!Sum"
                 If first_application Then world.Ships.Add(New Ship(world, Me.team, Spliter(1)) With {.position = New Point(Me.position.X + world.Rand.Next(-10, 11), Me.position.Y + world.Rand.Next(-10, 11))})
                 world.Ships(world.Ships.Count - 1).direction = Me.direction
@@ -649,29 +702,17 @@
                 End If
             Case "!Suicide"
                 Me.TakeDamages(7777777)
-                '---' UPGRADES SHIPS Au dessus '---'
             Case Else
-                MsgBox("Erreur : " & Chain & " (Refusé)", MsgBoxStyle.Critical)
-                MainForm.play = False
-                MainForm.Ticker.Enabled = False
+                Throw New Exception("Erreur : " & Chain & " (invalid effect)")
         End Select
-        If MainForm.DebugMode Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
+    End Sub
     Public Ups As New List(Of Upgrade)
-    Public Upgrading As Upgrade : Public UpProgress As Integer
+    Public Upgrading As Upgrade
+    Public UpProgress As Integer
     Public upgrade_slots As Integer = -1
 
-    Public Function HaveUp(ByVal Upstr As String) As Boolean
-        For Each AUp As Upgrade In Me.Ups
-            If AUp.Name = Upstr Then
-                Return True
-            End If
-        Next
-        Return False
+    Public Function HaveUp(ByRef upgrade As Upgrade) As Boolean
+        Return Me.Ups.Contains(upgrade)
     End Function
 
     ' Import/Export

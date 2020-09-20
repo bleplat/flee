@@ -6,18 +6,23 @@ End Enum
 
 Public Class Team
     Public world As World
-    Public bot_team As Boolean = True
     Shared last_id As Integer = -1
     Shared available_colors As List(Of Color) = New List(Of Color)
+
+    ' stats
     Public id As Integer
     Public affinity As Integer
     Public color As Color
 
-    Public upgrade_limit As Integer = 0
+    ' state
     Public resources As MaterialSet = New MaterialSet()
-    Public MaxShips As UShort = 8
+    Public ship_count_limit As UShort = 8
     Public upgrade_slots_bonus As UShort = 0
-    Public ApproxShipCount = 0
+    Public ship_count_approximation = 0
+
+    ' IA
+    Public bot_team As Boolean = True
+    Public upgrade_limit As Integer = 32
 
     Public Sub New(world As World, affinity As Integer)
         Me.world = world
@@ -45,12 +50,7 @@ Public Class Team
 
         'max ships
         If id <> 0 Then
-            MaxShips = 72
-        End If
-
-        'allow upgrades of bosses + endgame ships
-        If id = 2 Then
-            upgrade_limit += 1
+            ship_count_limit = 64
         End If
 
         'color
@@ -59,8 +59,8 @@ Public Class Team
             available_colors.Add(Color.FromArgb(173, 136, 26)) ' olive
             available_colors.Add(Color.FromArgb(0, 160, 0)) ' dark green
             available_colors.Add(Color.FromArgb(128, 128, 128)) ' gray
-            available_colors.Add(Color.FromArgb(0, 80, 255)) ' deep blue
             available_colors.Add(Color.FromArgb(128, 128, 255)) ' pale blue
+            available_colors.Add(Color.FromArgb(0, 80, 255)) ' deep blue
             available_colors.Add(Color.FromArgb(0, 255, 255)) ' primary cyan
             available_colors.Add(Color.FromArgb(173, 76, 38)) ' brown
             available_colors.Add(Color.FromArgb(128, 0, 255)) ' dark purple

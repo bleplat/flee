@@ -346,16 +346,16 @@
         If (ticks Mod 80 = 0) Then
             ' Count Teams's ships
             For Each a_team As Team In Teams
-                a_team.ApproxShipCount = 0
+                a_team.ship_count_approximation = 0
             Next
             For Each a_ship As Ship In Ships
                 If Not a_ship.team Is Nothing Then
-                    a_ship.team.ApproxShipCount += 1
+                    a_ship.team.ship_count_approximation += 1
                 End If
             Next
             ' Summoning / upgrades
             For Each a_ship As Ship In Ships
-                If Not a_ship.team Is Nothing AndAlso a_ship.bot_ship AndAlso a_ship.UpProgress = 0 AndAlso a_ship.team.ApproxShipCount < a_ship.team.MaxShips Then
+                If Not a_ship.team Is Nothing AndAlso a_ship.bot_ship AndAlso a_ship.UpProgress = 0 AndAlso a_ship.team.ship_count_approximation < a_ship.team.ship_count_limit Then
                     Dim wished_upgrade = Nothing
                     If Rand.Next(0, 16) < 8 Then
                         ' building ships
@@ -367,26 +367,7 @@
                         End If
                     ElseIf Rand.Next(0, 8) = 0 Then
                         ' upgrading
-                        Dim PossibleUps As List(Of Upgrade) = New List(Of Upgrade)
-                        For Each AUp As Upgrade In Upgrade.Upgrades
-                            Dim ok As Boolean = True
-                            Dim Spliter() As String = AUp.Need.Split(" ")
-                            If Not a_ship.HaveUp(AUp.Name) AndAlso Not (AUp.Name.StartsWith("Paint")) AndAlso Not (AUp.Name = "Destroy") AndAlso Not (AUp.Name = "Nuke") AndAlso Not (AUp.Name = "Ascend") AndAlso Not (AUp.Name = "Warp") Then
-                                For Each ac As String In Spliter
-                                    If a_ship.Ups.Count > Math.Min(a_ship.upgrade_slots, a_ship.team.upgrade_limit) AndAlso AUp.Install Then
-                                        ok = False
-                                        Exit For
-                                    End If
-                                    If a_ship.ApplyUpgradeEffect(ac, False) = False AndAlso (a_ship.Upgrading Is Nothing OrElse AUp.Name <> a_ship.Upgrading.Name) Then
-                                        ok = False
-                                        Exit For
-                                    End If
-                                Next
-                                If ok Then
-                                    PossibleUps.Add(AUp)
-                                End If
-                            End If
-                        Next
+                        Dim PossibleUps As List(Of Upgrade) = a_ship.AvailableUpgrades()
                         If PossibleUps.Count >= 1 Then
                             a_ship.Upgrading = PossibleUps(Rand.Next(0, PossibleUps.Count))
                         End If
