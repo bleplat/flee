@@ -344,6 +344,10 @@
     Public Sub IA(rnd_num As Integer)
         Dim QA As Single
         Dim NeedSpeed As Boolean = False
+        'Remove destroyed targets
+        If Not Me.target Is Nothing AndAlso Me.target.IsDestroyed() Then
+            Me.target = Nothing
+        End If
         '===' Fin de poursuite '==='
         If Me.Behavior <> "Drift" AndAlso target Is Nothing Then
             target = Nothing
@@ -606,11 +610,11 @@
             Case "!Agility"
                 Me.stats.turn += Spliter(1)
             Case "!Teleport"
-                Dim target_ship As Ship = Me.target
-                If Not target_ship Is Nothing Then
-                    Me.position = target_ship.position + New Point(world.Rand.Next(-512, 512), world.Rand.Next(-512, 512))
+                Dim tp_dst As PointF = Me.TargetPTN
+                If Not Me.target Is Nothing Then
+                    tp_dst = Me.target.position
                 End If
-                Me.position = Me.TargetPTN + New Point(world.Rand.Next(-512, 512), world.Rand.Next(-512, 512))
+                Me.position = tp_dst + New Point(world.Rand.Next(-512, 512), world.Rand.Next(-512, 512))
             Case "!Upsbonus"
                 If first_application Then Me.team.upgrade_slots_bonus += Spliter(1) 'FN
             Case "!Maxships"
@@ -713,6 +717,11 @@
 
     Public Function HaveUp(ByRef upgrade As Upgrade) As Boolean
         Return Me.Ups.Contains(upgrade)
+    End Function
+
+
+    Public Function IsDestroyed() As Boolean
+        Return Me.integrity <= 0
     End Function
 
     ' Import/Export
