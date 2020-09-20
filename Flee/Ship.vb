@@ -3,10 +3,10 @@
 
     'IA
     Public bot_ship As Boolean = True
-    Public Behavior As String = "Stand"
-    Public target_uid As ULong = Helpers.INVALID_UID
-    Public TargetPTN As New Point(0, 0)
     Public AllowMining As Boolean = True
+    Public Behavior As String = "Stand"
+    Public target As Ship = Nothing
+    Public TargetPTN As New Point(0, 0)
 
     ' shield effect
     Public Const SHIELD_POINTS As Integer = 16
@@ -79,13 +79,13 @@
             ' force a color
             Select Case Me.base_stats.name
                 Case "Asteroide"
-                    Behavior = "Drift" : target_uid = uid : color = Color.FromArgb(64, 64, 48)
+                    Behavior = "Drift" : target = Me : color = Color.FromArgb(64, 64, 48)
                 Case "Meteoroide"
-                    Behavior = "Drift" : target_uid = uid : color = Color.FromArgb(80, 48, 80)
+                    Behavior = "Drift" : target = Me : color = Color.FromArgb(80, 48, 80)
                 Case "Comet"
-                    Behavior = "Drift" : target_uid = uid : color = Color.FromArgb(0, 100, 0)
+                    Behavior = "Drift" : target = Me : color = Color.FromArgb(0, 100, 0)
                 Case "Star"
-                    Behavior = "Drift" : target_uid = uid : color = Color.FromArgb(255, 255, 220)
+                    Behavior = "Drift" : target = Me : color = Color.FromArgb(255, 255, 220)
             End Select
             '
             ResetStats()
@@ -345,8 +345,8 @@
         Dim QA As Single
         Dim NeedSpeed As Boolean = False
         '===' Fin de poursuite '==='
-        If Me.Behavior <> "Drift" AndAlso world.GetShipByUID(target_uid) Is Nothing Then
-            target_uid = Helpers.INVALID_UID
+        If Me.Behavior <> "Drift" AndAlso target Is Nothing Then
+            target = Nothing
             If Me.Behavior <> "Mine" Then
                 Me.Behavior = "Stand"
             End If
@@ -357,24 +357,24 @@
         End If
         '===' Auto-Activation '==='
         If Me.bot_ship AndAlso Me.Behavior <> "Drift" Then
-            Dim NearVal As Integer = Integer.MaxValue : Dim NearUID As ULong = Helpers.INVALID_UID
-            If Me.target_uid = Helpers.INVALID_UID Then
+            Dim NearVal As Integer = Integer.MaxValue : Dim NearUID As Ship = Nothing
+            If Me.target Is Nothing Then
                 For Each oShip As Ship In world.Ships
                     If (Not Me.team.IsFriendWith(oShip.team)) AndAlso (rnd_num < 6700 OrElse Not oShip.team Is Nothing) Then
                         Dim dist As Integer = Helpers.GetDistance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
                         If dist < NearVal Then
                             NearVal = dist
-                            NearUID = oShip.uid
+                            NearUID = oShip
                         End If
                     End If
                 Next
-                If NearUID <> Helpers.INVALID_UID Then
-                    Me.target_uid = NearUID
+                If Not NearUID Is Nothing Then
+                    Me.target = NearUID
                     Me.Behavior = "Fight"
                 End If
             Else
                 If rnd_num < 6 Then 'chance to change target
-                    Me.target_uid = Helpers.INVALID_UID
+                    Me.target = Nothing
                     Me.Behavior = "Stand"
                 End If
             End If
@@ -383,8 +383,8 @@
         Select Case Behavior
             Case "Mine"
                 Me.AllowMining = True
-                If Me.target_uid <> Helpers.INVALID_UID Then
-                    Dim oShip As Ship = world.GetShipByUID(Me.target_uid)
+                If Not Me.target Is Nothing Then
+                    Dim oShip As Ship = Me.target
                     QA = Helpers.GetQA(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
                     Dim d As Integer = 50 : If weapons.Count > 0 Then d = Me.weapons(0).stats.range / 2
                     If Helpers.GetDistance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y) <= d Then
@@ -392,21 +392,21 @@
                     End If
                     NeedSpeed = True
                     If Helpers.GetDistance(Me.TargetPTN.X, Me.TargetPTN.Y, oShip.position.X, oShip.position.Y) > world.ArenaSize.Width / 8 Then
-                        Me.target_uid = Helpers.INVALID_UID
+                        Me.target = Nothing
                     End If
                 Else
-                    Dim NearVal As Integer = world.ArenaSize.Width / 8 : Dim NearUID As ULong = Helpers.INVALID_UID
+                    Dim NearVal As Integer = world.ArenaSize.Width / 8 : Dim NearUID As Ship = Nothing
                     For Each oShip As Ship In world.Ships
                         If oShip.team Is Nothing Then
                             Dim dist_me As Integer = Helpers.GetDistance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
                             Dim dist_target As Integer = Helpers.GetDistance(Me.TargetPTN.X, Me.TargetPTN.Y, oShip.position.X, oShip.position.Y)
                             If dist_target < world.ArenaSize.Width / 8 AndAlso dist_me < NearVal Then
                                 NearVal = dist_me
-                                NearUID = oShip.uid
+                                NearUID = oShip
                             End If
                         End If
                     Next
-                    Me.target_uid = NearUID
+                    Me.target = NearUID
                     QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y)
                     NeedSpeed = True
                 End If
@@ -417,9 +417,9 @@
                 QA = direction
                 NeedSpeed = True
             Case "Fight"
-                If Me.target_uid <> Helpers.INVALID_UID Then
+                If Not Me.target Is Nothing Then
                     NeedSpeed = True
-                    Dim oShip As Ship = world.GetShipByUID(Me.target_uid)
+                    Dim oShip As Ship = Me.target
                     QA = Helpers.GetQA(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
                     Dim d As Integer = 50 : If weapons.Count > 0 Then d = Me.weapons(0).stats.range / 2
                     If Helpers.GetDistance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y) <= d Then
@@ -473,7 +473,7 @@
                                 If Me.team Is Nothing OrElse Not OVessel.team Is Nothing AndAlso Not Me.team.IsFriendWith(OVessel.team) Then
                                     dist /= 4
                                 End If
-                                If Me.target_uid = OVessel.uid Then
+                                If Me.target Is OVessel Then
                                     dist /= 2
                                 End If
                             End If
@@ -606,7 +606,7 @@
             Case "!Agility"
                 Me.stats.turn += Spliter(1)
             Case "!Teleport"
-                Dim target_ship As Ship = world.GetShipByUID(Me.target_uid)
+                Dim target_ship As Ship = Me.target
                 If Not target_ship Is Nothing Then
                     Me.position = target_ship.position + New Point(world.Rand.Next(-512, 512), world.Rand.Next(-512, 512))
                 End If
@@ -693,7 +693,7 @@
                 world.Ships(world.Ships.Count - 1).direction = Me.direction
                 If world.Ships(world.Ships.Count - 1).stats.sprite <> "MSL" Then
                     world.Ships(world.Ships.Count - 1).Behavior = "Fight"
-                    world.Ships(world.Ships.Count - 1).target_uid = Me.uid
+                    world.Ships(world.Ships.Count - 1).target = Me
                 End If
             Case "!Ascend"
                 If first_application AndAlso Me.team.id = 0 Then

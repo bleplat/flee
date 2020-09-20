@@ -425,46 +425,46 @@ Public Class MainForm
 		If SelectCount = 0 Then
 			Exit Sub
 		End If
-		Dim oUID As String = ""
+		Dim oUID As Ship = Nothing
 		'===' Recherche '==='
 		For Each AShip As Ship In world.Ships
 			If AShip.position.X + AShip.stats.width / 2 > SelectPTN2.X Then
 				If AShip.position.X - AShip.stats.width / 2 < SelectPTN2.X Then
 					If AShip.position.Y + AShip.stats.width / 2 > SelectPTN2.Y Then
 						If AShip.position.Y - AShip.stats.width / 2 < SelectPTN2.Y Then
-							oUID = AShip.uid
+							oUID = AShip
 						End If
 					End If
 				End If
 			End If
 		Next
 		'===' Validation '==='
-		If oUID = "" Then
+		If oUID Is Nothing Then
 			For Each AShip As Ship In world.Ships
 				If AShip.selected Then
 					If AShip.TargetPTN = SelectPTN2 Then
 						world.Effects.Add(New Effect With {.Type = "Patrouille", .Coo = SelectPTN2})
 						AShip.Behavior = "Mine"
 						AShip.TargetPTN = SelectPTN2
-						AShip.target_uid = Helpers.INVALID_UID
+						AShip.target = Nothing
 					Else
 						world.Effects.Add(New Effect With {.Type = "Fleche", .Coo = SelectPTN2})
 						AShip.Behavior = "Goto"
 						AShip.TargetPTN = SelectPTN2
-						AShip.target_uid = AShip.uid
+						AShip.target = AShip
 					End If
 				End If
 			Next
 		Else
 			For Each AShip As Ship In world.Ships
 				If AShip.selected Then
-					If AShip.uid = oUID Then
+					If AShip Is oUID Then
 						world.Effects.Add(New Effect With {.Type = "Cible2", .Coo = SelectPTN2})
 						AShip.AllowMining = False
 					Else
 						world.Effects.Add(New Effect With {.Type = "Cible", .Coo = SelectPTN2})
 						AShip.Behavior = "Fight"
-						AShip.target_uid = oUID
+						AShip.target = oUID
 					End If
 				End If
 			Next
