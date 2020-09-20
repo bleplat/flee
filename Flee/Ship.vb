@@ -94,8 +94,10 @@
     Public Sub SetTeam(team As Team)
         If Not Me.team Is team Then
             Me.team = team
-            Me.color = team.color
-            Me.bot_ship = Me.team.bot_team
+            If Not Me.team Is Nothing Then
+                Me.bot_ship = Me.team.bot_team
+                Me.color = team.color
+            End If
         End If
     End Sub
     Public Sub ResetStats()
@@ -707,7 +709,8 @@
                     MainForm.help = True
                 End If
             Case "!Suicide"
-                Me.TakeDamages(7777777)
+                'Me.TakeDamages(7777777)
+                Me.SetTeam(Me.world.Teams(world.Rand.Next(0, Me.world.Teams.Count())))
             Case Else
                 Throw New Exception("Erreur : " & Chain & " (invalid effect)")
         End Select

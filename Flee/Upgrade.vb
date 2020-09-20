@@ -16,7 +16,7 @@
     Public Shared UpsMax As Integer = 10
 
     Public Shared Sub LoadRegUpgrades()
-        Upgrades.Add(New Upgrade With {.Name = "Destroy", .File = "Ups", .PTN = New Point(4, 7), .cost = New MaterialSet(), .Time = 10, .Need = "", .Effect = "!Suicide", .Install = False, .not_for_bots = True, .Desc = "Destroy this ship to free ship slots"})
+        Upgrades.Add(New Upgrade With {.Name = "Free", .File = "Ups", .PTN = New Point(4, 7), .cost = New MaterialSet(), .Time = 10, .Need = "", .Effect = "!Suicide", .Install = False, .not_for_bots = True, .Desc = "Release this ship's crew"})
         'Peintures
         Upgrades.Add(New Upgrade With {.Name = "Paint_1", .File = "Ups", .PTN = New Point(5, 1), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:Cyan", .Install = False, .not_for_bots = True, .Desc = "Apply paint."})
         Upgrades.Add(New Upgrade With {.Name = "Paint_2", .File = "Ups", .PTN = New Point(5, 2), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:Lime", .Install = False, .not_for_bots = True, .Desc = "Apply paint."})

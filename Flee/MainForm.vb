@@ -618,7 +618,7 @@ Public Class MainForm
 		Dim x As Integer = 0 : Dim y As Integer = 0
 		For Each AUp As Upgrade In ListedUps
 			If x = UpX AndAlso y = UpY Then
-				If MainForm.DebugMode OrElse AShip.CanUpgrade(AUp) Then
+				If MainForm.DebugMode OrElse (AShip.CanUpgrade(AUp) AndAlso AShip.team Is player_team) Then
 					If AShip.team Is Nothing OrElse AShip.team.resources.HasEnough(AUp.cost) Then
 						If Not AShip.team Is Nothing Then AShip.team.resources.Deplete(AUp.cost)
 						AShip.Upgrading = AUp
@@ -633,7 +633,6 @@ Public Class MainForm
 				y = y + 1
 			End If
 		Next
-
 	End Sub
 	Private Sub UpgradesBox_MouseLeave(sender As System.Object, e As System.EventArgs) Handles UpgradesBox.MouseLeave
 		UpgradeDetails.Visible = False
