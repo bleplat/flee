@@ -284,6 +284,9 @@ Public Class MainForm
 	Dim MiniG As Graphics = Graphics.FromImage(MiniBMP)
 	Dim MiniMDown As Boolean = False
 	Private Sub MiniBox_MouseDown(sender As System.Object, e As System.Windows.Forms.MouseEventArgs) Handles MiniBox.MouseDown
+		If MenuPanel.Visible Then
+			Return
+		End If
 		MiniMDown = True
 		See.X = (e.X / sender.width * world.ArenaSize.Width) - DrawBMP.Width / 2
 		See.Y = (e.Y / sender.height * world.ArenaSize.Height) - DrawBMP.Height / 2
@@ -399,6 +402,9 @@ Public Class MainForm
 	End Sub
 	Public Sub SelectInSquare()
 		Dim SS As Rectangle = Helpers.GetRect(SelectPTN1, SelectPTN2)
+		If MenuPanel.Visible Then
+			Return
+		End If
 		For Each aship As Ship In world.Ships
 			aship.selected = False
 			If aship.team Is player_team OrElse DebugMode Then 'Si mode debug ou equipe correcte
@@ -620,6 +626,9 @@ Public Class MainForm
 		UpgradesBox.Image = PBMP
 	End Sub
 	Private Sub UpgradesBox_Click(sender As System.Object, e As System.EventArgs) Handles UpgradesBox.Click
+		If MenuPanel.Visible Then
+			Return
+		End If
 		Dim AShip As Ship = world.GetShipByUID(LastShipPaneload)
 		Dim x As Integer = 0 : Dim y As Integer = 0
 		For Each AUp As Upgrade In ListedUps

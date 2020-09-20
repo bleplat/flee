@@ -68,20 +68,20 @@
         If Rand.Next(0, 100) < 75 Then
             Ships.Add(New Ship(Me, player_team, "Colonizer") With {.position = New Point(origin.X, origin.Y - 1)})
             Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).position.X, Ships(0).position.Y, origin.X, origin.Y)
-            Ships(Ships.Count - 1).upgrade_slots += Rand.Next(0, 16)
+            Ships(Ships.Count - 1).upgrade_slots += Rand.Next(4, 10)
             power -= 15
         End If
         If Rand.Next(0, 100) < 75 Then
             Ships.Add(New Ship(Me, player_team, "Ambassador") With {.position = New Point(origin.X + 1, origin.Y)})
             Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).position.X, Ships(0).position.Y, origin.X, origin.Y)
-            Ships(Ships.Count - 1).upgrade_slots += Rand.Next(0, 16)
+            Ships(Ships.Count - 1).upgrade_slots += Rand.Next(4, 10)
             power -= 25
         End If
         While power > 0
             Dim types As String() = {"Pusher", "Sacred", "Simpleship", "Artillery", "Bomber", "Dronner", "Scout", "Kastou", "Strange", "MiniColonizer", "Civil_A"}
             Ships.Add(New Ship(Me, player_team, types(Rand.Next(0, types.Length))) With {.position = New Point(origin.X - 1, origin.Y)})
             Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).position.X, Ships(0).position.Y, origin.X, origin.Y)
-            Ships(Ships.Count - 1).upgrade_slots += Rand.Next(4, 16)
+            Ships(Ships.Count - 1).upgrade_slots += Rand.Next(6, 12)
             power -= 15
         End While
     End Sub
@@ -105,7 +105,7 @@
         Teams.Add(New Team(Me, AffinityEnum.MEAN))
         SPAWN_STATION_RANDOMLY(Nothing, Teams(Teams.Count - 1), Rand.Next(3, 7))
         ' random NPC Teams and Ships
-        Dim npc_team_count = Rand.Next(4, 10)
+        Dim npc_team_count = Rand.Next(3, 6)
         For i = 0 To npc_team_count - 1
             Teams.Add(New Team(Me, Nothing))
             SPAWN_STATION_RANDOMLY(Nothing, Teams(Teams.Count - 1), Rand.Next(4, 8))
@@ -216,7 +216,7 @@
                     End If
                     If Not Ships(i).last_damager_team Is Nothing Then
                         If Ships(i).stats.sprite = "Meteoroide" Then
-                            Ships(i).last_damager_team.resources.Add(0, 2, 0, 0)
+                            Ships(i).last_damager_team.resources.Add(0, 1, 0, 0)
                         ElseIf Ships(i).stats.sprite = "Comet" Then
                             Ships(i).last_damager_team.resources.Add(1200, 8, 1, 0)
                         ElseIf Ships(i).stats.name.Contains("Station") Then
@@ -287,11 +287,11 @@
             Dim AltTeam = boss_team
             If Rand.Next(0, 3) = 0 Then AltTeam = Teams(Rand.Next(2, Teams.Count))
             Dim Count As Integer = Rand.Next(1, 5)
-            If Rand.Next(0, 4) = 0 Then
+            If Rand.Next(0, 5) = 0 Then
                 Type = "Meteoroide"
                 Count = Rand.Next(6, 12)
             End If
-            If Rand.Next(0, 4) = 0 Then
+            If Rand.Next(0, 5) = 0 Then
                 Type = "Comet"
                 Team = boss_team
                 Count = 1
@@ -300,27 +300,27 @@
                 Type = "Cargo"
                 Count = 1
             End If
-            If Rand.Next(0, 70) = 0 Then
+            If Rand.Next(0, 90) = 0 Then
                 Type = "Civil_A"
                 Team = AltTeam
                 Count = 1
             End If
-            If Rand.Next(0, 180) = 0 Then
+            If Rand.Next(0, 350) = 0 Then
                 Type = "Purger_Dronner"
                 Team = AltTeam
                 Count = 1
             End If
-            If Rand.Next(0, 290) = 0 Then
+            If Rand.Next(0, 350) = 0 Then
                 Type = "Loneboss"
                 Team = AltTeam
                 Count = 1
             End If
-            If Rand.Next(0, 460) = 0 Then
+            If Rand.Next(0, 550) = 0 Then
                 Type = "Converter"
                 Team = AltTeam
                 Count = 1
             End If
-            If Rand.Next(0, 1250) = 0 Then
+            If Rand.Next(0, 2000) = 0 Then
                 Type = "Bugs"
                 Team = AltTeam
                 Count = 1
@@ -362,7 +362,7 @@
             Next
             ' Summoning / upgrades
             For Each a_ship As Ship In Ships
-                If Not a_ship.team Is Nothing AndAlso Not a_ship.team.bot_team AndAlso a_ship.UpProgress = 0 AndAlso a_ship.team.ApproxShipCount < a_ship.team.MaxShips Then
+                If Not a_ship.team Is Nothing AndAlso a_ship.bot_ship AndAlso a_ship.UpProgress = 0 AndAlso a_ship.team.ApproxShipCount < a_ship.team.MaxShips Then
                     Dim wished_upgrade = Nothing
                     If Rand.Next(0, 16) < 8 Then
                         ' building ships

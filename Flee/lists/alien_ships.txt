@@ -29,7 +29,7 @@ ship Strange
 	integrity=185
 	speed=2.80
 	turn=1.20
-	weapon=135;Beam-6
+	weapon=0;Beam-6
 	shield=25
 	shield_regeneration=25.00
 	shield_opacity=25.00
@@ -59,7 +59,7 @@ ship Pusher
 ship Crusher
 	level=4
 	width=75
-	integrity=665
+	integrity=465
 	speed=2.20
 	turn=0.40
 	weapon=0;Intercepting-Artillery

@@ -15,7 +15,7 @@ ship Loneboss
 ship Bugs
 	level=0
 	width=200
-	integrity=3400
+	integrity=2400
 	speed=3.20
 	turn=2.50
 	weapon=-45;Heavy-Bio-Gun
