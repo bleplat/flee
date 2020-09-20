@@ -24,9 +24,7 @@ Public Class Team
                 Me.affinity = AffinityEnum.MEAN ' derelict
             ElseIf id = 2 Then
                 Me.affinity = AffinityEnum.ALOOF ' bosses/endgames
-            ElseIf id = 9 Then
-                Me.affinity = AffinityEnum.KIND ' an ally
-            ElseIf (id > 9) AndAlso (id Mod 8 = 0) Then
+            ElseIf id Mod 8 = 0 Then
                 Me.affinity = AffinityEnum.KIND
             Else
                 Me.affinity = AffinityEnum.MEAN
