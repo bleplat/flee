@@ -9,21 +9,22 @@
     Public First As Boolean = False
 
     Public cost As MaterialSet = New MaterialSet()
+    Public not_for_bots As Boolean = False
 
 
     Public Shared Upgrades As New List(Of Upgrade)
     Public Shared UpsMax As Integer = 10
 
     Public Shared Sub LoadRegUpgrades()
-        Upgrades.Add(New Upgrade With {.Name = "Destroy", .File = "Ups", .PTN = New Point(4, 7), .cost = New MaterialSet(), .Time = 10, .Need = "", .Effect = "!Suicide", .Install = False, .Desc = "Destroy this ship to free ship slots"})
+        Upgrades.Add(New Upgrade With {.Name = "Destroy", .File = "Ups", .PTN = New Point(4, 7), .cost = New MaterialSet(), .Time = 10, .Need = "", .Effect = "!Suicide", .Install = False, .not_for_bots = True, .Desc = "Destroy this ship to free ship slots"})
         'Peintures
-        Upgrades.Add(New Upgrade With {.Name = "Paint_1", .File = "Ups", .PTN = New Point(5, 1), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:Cyan", .Install = False, .Desc = "Apply paint."})
-        Upgrades.Add(New Upgrade With {.Name = "Paint_2", .File = "Ups", .PTN = New Point(5, 2), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:Lime", .Install = False, .Desc = "Apply paint."})
-        Upgrades.Add(New Upgrade With {.Name = "Paint_3", .File = "Ups", .PTN = New Point(5, 3), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:Yellow", .Install = False, .Desc = "Apply paint."})
-        Upgrades.Add(New Upgrade With {.Name = "Paint_4", .File = "Ups", .PTN = New Point(5, 4), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:Orange", .Install = False, .Desc = "Apply paint."})
-        Upgrades.Add(New Upgrade With {.Name = "Paint_5", .File = "Ups", .PTN = New Point(5, 5), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:Violet", .Install = False, .Desc = "Apply paint."})
-        Upgrades.Add(New Upgrade With {.Name = "Paint_6", .File = "Ups", .PTN = New Point(5, 6), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:Purple", .Install = False, .Desc = "Apply paint."})
-        Upgrades.Add(New Upgrade With {.Name = "Paint_7", .File = "Ups", .PTN = New Point(5, 7), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:White", .Install = False, .Desc = "Apply paint."})
+        Upgrades.Add(New Upgrade With {.Name = "Paint_1", .File = "Ups", .PTN = New Point(5, 1), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:Cyan", .Install = False, .not_for_bots = True, .Desc = "Apply paint."})
+        Upgrades.Add(New Upgrade With {.Name = "Paint_2", .File = "Ups", .PTN = New Point(5, 2), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:Lime", .Install = False, .not_for_bots = True, .Desc = "Apply paint."})
+        Upgrades.Add(New Upgrade With {.Name = "Paint_3", .File = "Ups", .PTN = New Point(5, 3), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:Yellow", .Install = False, .not_for_bots = True, .Desc = "Apply paint."})
+        Upgrades.Add(New Upgrade With {.Name = "Paint_4", .File = "Ups", .PTN = New Point(5, 4), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:Orange", .Install = False, .not_for_bots = True, .Desc = "Apply paint."})
+        Upgrades.Add(New Upgrade With {.Name = "Paint_5", .File = "Ups", .PTN = New Point(5, 5), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:Violet", .Install = False, .not_for_bots = True, .Desc = "Apply paint."})
+        Upgrades.Add(New Upgrade With {.Name = "Paint_6", .File = "Ups", .PTN = New Point(5, 6), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:Purple", .Install = False, .not_for_bots = True, .Desc = "Apply paint."})
+        Upgrades.Add(New Upgrade With {.Name = "Paint_7", .File = "Ups", .PTN = New Point(5, 7), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:White", .Install = False, .not_for_bots = True, .Desc = "Apply paint."})
 
         Upgrades.Add(New Upgrade With {.Name = "Nanobots", .File = "Ups", .PTN = New Point(5, 0), .cost = New MaterialSet(200, 0, 0, 0), .Time = 200, .Need = "", .Effect = "!Fix:10", .Install = False, .Desc = "Help fixing the hull"})
         Upgrades.Add(New Upgrade With {.Name = "Fielbots", .File = "Ups", .PTN = New Point(5, 0), .cost = New MaterialSet(200, 0, 0, 0), .Time = 50, .Need = "?Up:Auto_Nanobots", .Effect = "!FixSFull", .Install = False, .Desc = "Help fixing the shield"})

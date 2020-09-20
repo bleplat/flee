@@ -528,7 +528,8 @@
     Public Function CanUpgrade(upgrade As Upgrade) As Boolean
         If MainForm.DebugMode Then Return True
         If Not Me.Upgrading Is Nothing Then Return False
-        If Not upgrade.Install OrElse Me.Ups.Count >= upgrade_slots Then Return False
+        If upgrade.Install AndAlso Me.Ups.Count >= upgrade_slots Then Return False
+        If upgrade.not_for_bots AndAlso Me.bot_ship Then Return False
         If Me.HaveUp(upgrade) Then Return False
         Return IsUpgradeCompatible(upgrade)
     End Function

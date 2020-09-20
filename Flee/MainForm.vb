@@ -582,7 +582,7 @@ Public Class MainForm
 				PG.DrawRectangle(New Pen(Brushes.White, 2), x * 25 + 1, y * 25 + 1, 24 - 1, 24 - 1)
 			ElseIf (Not Aship.Upgrading Is Nothing) AndAlso Aship.Upgrading.Name = AUp.Name Then
 				PG.DrawRectangle(New Pen(Brushes.Yellow, 2), x * 25, y * 25, 24, 24)
-				Dim ph As Integer = Aship.UpProgress / AUp.Time * 25
+				Dim ph As Integer = Aship.UpProgress / Math.Max(1, AUp.Time) * 25
 				PG.FillRectangle(Brushes.White, x * 25, y * 25 + 25 - ph, 25, ph)
 			ElseIf Aship.Ups.Count >= Aship.upgrade_slots AndAlso AUp.Install Then
 				PG.DrawRectangle(Pens.DarkBlue, x * 25, y * 25, 24, 24)
@@ -618,12 +618,8 @@ Public Class MainForm
 		Dim x As Integer = 0 : Dim y As Integer = 0
 		For Each AUp As Upgrade In ListedUps
 			If x = UpX AndAlso y = UpY Then
-				If (Not AShip.Upgrading Is Nothing) OrElse (AShip.Ups.Count >= AShip.upgrade_slots AndAlso AUp.Install) Then
-					Exit Sub
-				End If
-				If AShip.team Is Nothing OrElse AShip.team.resources.HasEnough(AUp.cost) Then
-					If Not AShip.HaveUp(AUp) Then
-						'===' achat '==='
+				If MainForm.DebugMode OrElse AShip.CanUpgrade(AUp) Then
+					If AShip.team Is Nothing OrElse AShip.team.resources.HasEnough(AUp.cost) Then
 						If Not AShip.team Is Nothing Then AShip.team.resources.Deplete(AUp.cost)
 						AShip.Upgrading = AUp
 						Exit Sub
