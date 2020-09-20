@@ -534,6 +534,7 @@
     End Function
     ' return true if the upgrade have its conditions met
     Public Function IsUpgradeCompatible(upgrade As Upgrade) As Boolean
+        If MainForm.DebugMode Then Return True
         If upgrade Is Me.Upgrading Then Return True
         Dim conditions_strings() As String = upgrade.Need.Split(" ")
         For Each a_condition As String In conditions_strings
