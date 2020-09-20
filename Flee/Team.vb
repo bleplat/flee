@@ -9,6 +9,16 @@ Public Class Team
     Public bot_team As Boolean = True
     Shared last_id As Integer = -1
     Shared available_colors As List(Of Color) = New List(Of Color)
+    Public id As Integer
+    Public affinity As Integer
+    Public color As Color
+
+    Public upgrade_limit As Integer = 0
+    Public resources As MaterialSet = New MaterialSet()
+    Public MaxShips As UShort = 8
+    Public upgrade_slots_bonus As UShort = 0
+    Public ApproxShipCount = 0
+
     Public Sub New(world As World, affinity As Integer)
         Me.world = world
 
@@ -45,7 +55,6 @@ Public Class Team
 
         'color
         If available_colors.Count = 0 Then
-            available_colors.Add(Color.FromArgb(0, 255, 0)) ' primary green
             available_colors.Add(Color.FromArgb(128, 255, 128)) ' pale green
             available_colors.Add(Color.FromArgb(173, 136, 26)) ' olive
             available_colors.Add(Color.FromArgb(0, 160, 0)) ' dark green
@@ -53,35 +62,31 @@ Public Class Team
             available_colors.Add(Color.FromArgb(0, 80, 255)) ' deep blue
             available_colors.Add(Color.FromArgb(128, 128, 255)) ' pale blue
             available_colors.Add(Color.FromArgb(0, 255, 255)) ' primary cyan
-            available_colors.Add(Color.FromArgb(255, 255, 255)) ' white
             available_colors.Add(Color.FromArgb(173, 76, 38)) ' brown
             available_colors.Add(Color.FromArgb(128, 0, 255)) ' dark purple
-            available_colors.Add(Color.FromArgb(255, 0, 255)) ' primary magenta
-            available_colors.Add(Color.FromArgb(255, 110, 0)) ' orange
             available_colors.Add(Color.FromArgb(173, 34, 69)) ' crismon
+            available_colors.Add(Color.FromArgb(255, 128, 255)) ' pink
+            available_colors.Add(Color.FromArgb(255, 0, 255)) ' primary magenta
             available_colors.Add(Color.FromArgb(255, 255, 0)) ' primary yellow
+            available_colors.Add(Color.FromArgb(255, 128, 0)) ' orange
             available_colors.Add(Color.FromArgb(255, 128, 128)) ' pale red
-            available_colors.Add(Color.FromArgb(255, 0, 0)) ' primary red
         End If
-        Dim i_color As Integer
-        If (Me.affinity And AffinityEnum.KIND) <> 0 Then
-            i_color = world.Rand.Next(0, available_colors.Count / 4)
+        If Me.affinity = AffinityEnum.ALOOF Then
+            Me.color = Color.FromArgb(255, 0, 0) ' primary red
+        ElseIf Me.id = 0 Then
+            Me.color = Color.FromArgb(0, 255, 0) ' primary green
         Else
-            i_color = world.Rand.Next(available_colors.Count / 4, available_colors.Count)
+            Dim i_color As Integer
+            If (Me.affinity And AffinityEnum.KIND) <> 0 Then
+                i_color = world.Rand.Next(0, available_colors.Count / 4)
+            Else
+                i_color = world.Rand.Next(available_colors.Count / 2, available_colors.Count)
+            End If
+            Me.color = available_colors(i_color)
+            available_colors.RemoveAt(i_color)
         End If
-        Me.color = available_colors(i_color)
-        available_colors.RemoveAt(i_color)
     End Sub
 
-    Public id As Integer
-    Public affinity As Integer
-    Public color As Color
-
-    Public upgrade_limit As Integer = 0
-    Public resources As MaterialSet = New MaterialSet()
-    Public MaxShips As UShort = 8
-    Public upgrade_slots_bonus As UShort = 0
-    Public ApproxShipCount = 0
 
     Public Function IsFriendWith(other As Team) As Boolean
         If Me Is other Then
