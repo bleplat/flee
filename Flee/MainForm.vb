@@ -413,7 +413,7 @@ Public Class MainForm
 						If aship.position.Y + aship.stats.width / 2 > SS.Y Then
 							If aship.position.Y - aship.stats.width / 2 < SS.Y + SS.Height Then
 								aship.selected = True
-								LastSShipSelect = aship.uid
+								LastSShipSelect = aship
 							End If
 						End If
 					End If
@@ -472,7 +472,11 @@ Public Class MainForm
 	End Sub
 	Private Sub PictureBox2_Click(sender As System.Object, e As System.EventArgs) Handles PictureBox2.Click, PictureBox5.Click, PictureBox6.Click
 		If DebugMode Then
-			player_team.resources = New MaterialSet(999999, 99999, 9999, 999999)
+			Dim team As Team = player_team
+			If Not LastSShipSelect Is Nothing AndAlso Not LastSShipSelect.team Is Nothing Then
+				team = LastSShipSelect.team
+			End If
+			team.resources = New MaterialSet(999999, 999, 9999, 999999)
 		End If
 	End Sub
 
@@ -499,42 +503,42 @@ Public Class MainForm
 
 	'===' SHIP PANEL & Cie '==='
 
-	Public LastSShipSelect As String = Helpers.INVALID_UID
-	Public LastShipPaneload As String = Helpers.INVALID_UID
+	Public LastSShipSelect As Ship = Nothing
+	Public LastShipPaneload As Ship = Nothing
 	Sub CheckRightPanel()
-		MetalTextBox.Text = player_team.resources.Metal
-		CristalTextBox.Text = player_team.resources.Crystal
-		UraniumTextBox.Text = player_team.resources.Fissile
-		AntimatterTextBox.Text = player_team.resources.Antimatter
+		Dim team As Team = player_team
+		If Not LastSShipSelect Is Nothing AndAlso Not LastSShipSelect.team Is Nothing Then
+			team = LastSShipSelect.team
+		End If
+
+		MetalTextBox.Text = team.resources.Metal
+		CristalTextBox.Text = team.resources.Crystal
+		UraniumTextBox.Text = team.resources.Fissile
+		AntimatterTextBox.Text = team.resources.Antimatter
 		If SelectCount = 1 Then
 			SelectSShip(LastSShipSelect)
 		Else
 			SelectSShip(Nothing)
 		End If
 	End Sub
-	Sub SelectSShip(ByVal UID As String)
-		If UID Is Nothing Then
-			SShipPanel.Visible = False
-			Exit Sub
-		End If
-		Dim AShip As Ship = world.GetShipByUID(UID)
-		If AShip Is Nothing Then
+	Sub SelectSShip(ByRef ship As Ship)
+		If ship Is Nothing Then
 			SShipPanel.Visible = False
 			Exit Sub
 		End If
 		If SShipPanel.Visible = False Then
 			SShipPanel.Visible = True
 		End If
-		LastShipPaneload = UID
+		LastShipPaneload = ship
 
 		'===' Afficher infos '==='
-		SShipImageBox.Image = Helpers.GetSprite(AShip.stats.sprite, 0, 0, AShip.color)
-		SShipTypeBox.Text = AShip.stats.sprite
-		SShipUpsMax.Text = AShip.Ups.Count & " / " & AShip.upgrade_slots
-		AllowMiningBox.Visible = Not AShip.AllowMining
+		SShipImageBox.Image = Helpers.GetSprite(ship.stats.sprite, 0, 0, ship.color)
+		SShipTypeBox.Text = ship.stats.sprite
+		SShipUpsMax.Text = ship.Ups.Count & " / " & ship.upgrade_slots
+		AllowMiningBox.Visible = Not ship.AllowMining
 
 		'===' Upgrades '==='
-		ListedUps = AShip.ConditionsMetUpgrades()
+		ListedUps = ship.ConditionsMetUpgrades()
 	End Sub
 
 	Dim UpX As Integer = -1 : Dim UpY As Integer = -1
@@ -546,7 +550,7 @@ Public Class MainForm
 	Dim PBMP As New Bitmap(200, 400)
 	Dim PG As Graphics = Graphics.FromImage(PBMP)
 	Sub drawUpgrades()
-		Dim Aship As Ship = world.GetShipByUID(LastShipPaneload)
+		Dim Aship As Ship = LastShipPaneload
 		If SShipPanel.Visible = False OrElse Aship Is Nothing Then
 			Exit Sub
 		End If
@@ -610,7 +614,7 @@ Public Class MainForm
 		If MenuPanel.Visible Then
 			Return
 		End If
-		Dim AShip As Ship = world.GetShipByUID(LastShipPaneload)
+		Dim AShip As Ship = LastShipPaneload
 		Dim x As Integer = 0 : Dim y As Integer = 0
 		For Each AUp As Upgrade In ListedUps
 			If x = UpX AndAlso y = UpY Then
