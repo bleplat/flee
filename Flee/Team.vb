@@ -55,21 +55,28 @@ Public Class Team
 
         'color
         If available_colors.Count = 0 Then
-            available_colors.Add(Color.FromArgb(128, 255, 128)) ' pale green
-            available_colors.Add(Color.FromArgb(173, 136, 26)) ' olive
-            available_colors.Add(Color.FromArgb(0, 160, 0)) ' dark green
-            available_colors.Add(Color.FromArgb(128, 128, 128)) ' gray
-            available_colors.Add(Color.FromArgb(128, 128, 255)) ' pale blue
-            available_colors.Add(Color.FromArgb(0, 80, 255)) ' deep blue
-            available_colors.Add(Color.FromArgb(0, 255, 255)) ' primary cyan
-            available_colors.Add(Color.FromArgb(173, 76, 38)) ' brown
-            available_colors.Add(Color.FromArgb(128, 0, 255)) ' dark purple
-            available_colors.Add(Color.FromArgb(173, 34, 69)) ' crismon
-            available_colors.Add(Color.FromArgb(255, 128, 255)) ' pink
-            available_colors.Add(Color.FromArgb(255, 0, 255)) ' primary magenta
+            ' allies colors
+            'available_colors.Add(Color.FromArgb(0, 160, 0)) ' dark green (confused with player)
+            available_colors.Add(Color.FromArgb(0, 80, 255)) ' deep blue (perfect)
+            available_colors.Add(Color.FromArgb(0, 128, 128)) ' dark cyan (perfect)
+            available_colors.Add(Color.FromArgb(0, 192, 96)) ' blueish green (good)
+            available_colors.Add(Color.FromArgb(128, 128, 255)) ' pale blue (a bit light)
+            available_colors.Add(Color.FromArgb(64, 128, 64)) ' desaturated green (looks neutral)
+            available_colors.Add(Color.FromArgb(128, 255, 128)) ' pale green (a bit bright)
+            available_colors.Add(Color.FromArgb(173, 136, 26)) ' olive (looks yellow)
+            available_colors.Add(Color.FromArgb(173, 76, 38)) ' brown (too redish, looks hostile)
+            available_colors.Add(Color.FromArgb(128, 0, 255)) ' dark purple (too pinkish)
+            'available_colors.Add(Color.FromArgb(128, 128, 128)) ' (confused with neutrals)
+            ' enemies colors
+            available_colors.Add(Color.FromArgb(173, 34, 69)) ' crismon (pinkish 5th)
+            available_colors.Add(Color.FromArgb(255, 128, 255)) ' pink (pinkish 4th)
+            available_colors.Add(Color.FromArgb(255, 128, 0)) ' orange (orangish 2nd)
+            available_colors.Add(Color.FromArgb(255, 0, 192)) ' red purple (pinkish 3rd)
+            available_colors.Add(Color.FromArgb(255, 64, 0)) ' orange-red (orangish 1st)
+            available_colors.Add(Color.FromArgb(255, 0, 128)) ' red pink (pinkish 2nd)
             available_colors.Add(Color.FromArgb(255, 255, 0)) ' primary yellow
-            available_colors.Add(Color.FromArgb(255, 128, 0)) ' orange
-            available_colors.Add(Color.FromArgb(255, 128, 128)) ' pale red
+            available_colors.Add(Color.FromArgb(255, 0, 255)) ' primary magenta (pinkish 1st)
+            available_colors.Add(Color.FromArgb(255, 48, 48)) ' coral
         End If
         If Me.affinity = AffinityEnum.ALOOF Then
             Me.color = Color.FromArgb(255, 0, 0) ' primary red
@@ -80,7 +87,7 @@ Public Class Team
             If (Me.affinity And AffinityEnum.KIND) <> 0 Then
                 i_color = world.Rand.Next(0, available_colors.Count / 4)
             Else
-                i_color = world.Rand.Next(available_colors.Count / 2, available_colors.Count)
+                i_color = world.Rand.Next(available_colors.Count / 4 * 3, available_colors.Count)
             End If
             Me.color = available_colors(i_color)
             available_colors.RemoveAt(i_color)
