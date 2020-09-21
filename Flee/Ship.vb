@@ -491,7 +491,7 @@
                     Next
                     If Not recorded Is Nothing Then
                         Dim oShip As Ship = recorded
-                        record = Helpers.GetDistance(ToX, ToY, oShip.position.X, oShip.position.Y)
+                        record = Helpers.GetDistance(ToX, ToY, oShip.position.X, oShip.position.Y) - OVessel.stats.width / 2
                         If record < AWeap.stats.range Then
                             Dim NewPoint As PointF = Helpers.GetNewPoint(oShip.position, oShip.direction, oShip.speed * (record / AWeap.stats.celerity) * 0.9)
                             Dim QA As Integer = Helpers.GetQA(ToX, ToY, NewPoint.X, NewPoint.Y)
