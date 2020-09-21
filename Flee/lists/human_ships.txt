@@ -244,6 +244,7 @@ ship PartialBomber
 ship MSL
 	width=15
 	integrity=8
+	repair=0
 	speed=8.00
 	turn=3.50
 	weapon=-90;Explode-On-Contact
