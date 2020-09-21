@@ -115,17 +115,16 @@
 
     Sub AntiSuperposition()
         If Ships.Count > 1 Then
-            For a As Integer = 0 To Ships.Count - 1
-                For b As Integer = 0 To Ships.Count - 1
+            For a As Integer = 1 To Ships.Count - 1
+                For b As Integer = 0 To a - 1
                     Dim Aship As Ship = Ships(a) : Dim Bship As Ship = Ships(b)
-                    If Aship.uid <> Bship.uid Then
-                        If Aship.position.X + Aship.stats.width > Bship.position.X - Bship.stats.width AndAlso Bship.position.X + Bship.stats.width > Aship.position.X - Aship.stats.width AndAlso Aship.position.Y + Aship.stats.width > Bship.position.Y - Bship.stats.width AndAlso Bship.position.Y + Bship.stats.width > Aship.position.Y - Aship.stats.width Then
-                            Dim dist As Double = Helpers.Distance(Aship.position.X, Aship.position.Y, Bship.position.X, Bship.position.Y)
-                            If dist < (Aship.stats.width / 2 + Bship.stats.width / 2) Then
-                                Dim z As Double = (Aship.stats.width / 2 + Bship.stats.width / 2) - dist
-                                Dim QA As Single = Helpers.GetQA(Aship.position.X, Aship.position.Y, Bship.position.X, Bship.position.Y)
-                                If Bship.stats.speed <> 0 Then Bship.position = Helpers.GetNewPoint(Bship.position, QA, z / 4)
-                            End If
+                    If Aship.position.X + Aship.stats.width > Bship.position.X - Bship.stats.width AndAlso Bship.position.X + Bship.stats.width > Aship.position.X - Aship.stats.width AndAlso Aship.position.Y + Aship.stats.width > Bship.position.Y - Bship.stats.width AndAlso Bship.position.Y + Bship.stats.width > Aship.position.Y - Aship.stats.width Then
+                        Dim dist As Double = Helpers.Distance(Aship.position.X, Aship.position.Y, Bship.position.X, Bship.position.Y)
+                        If dist < (Aship.stats.width / 2 + Bship.stats.width / 2) Then
+                            Dim z As Double = (Aship.stats.width / 2 + Bship.stats.width / 2) - dist
+                            Dim QA As Single = Helpers.GetQA(Aship.position.X, Aship.position.Y, Bship.position.X, Bship.position.Y)
+                            If Bship.stats.speed <> 0 Then Bship.position = Helpers.GetNewPoint(Bship.position, QA, z / 4)
+                            If Aship.stats.speed <> 0 Then Aship.position = Helpers.GetNewPoint(Aship.position, QA + 180, z / 4)
                         End If
                     End If
                 Next
