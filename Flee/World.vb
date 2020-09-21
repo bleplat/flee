@@ -119,12 +119,13 @@
                 For b As Integer = 0 To a - 1
                     Dim Aship As Ship = Ships(a) : Dim Bship As Ship = Ships(b)
                     If Aship.position.X + Aship.stats.width > Bship.position.X - Bship.stats.width AndAlso Bship.position.X + Bship.stats.width > Aship.position.X - Aship.stats.width AndAlso Aship.position.Y + Aship.stats.width > Bship.position.Y - Bship.stats.width AndAlso Bship.position.Y + Bship.stats.width > Aship.position.Y - Aship.stats.width Then
-                        Dim dist As Double = Helpers.Distance(Aship.position.X, Aship.position.Y, Bship.position.X, Bship.position.Y)
-                        If dist < (Aship.stats.width / 2 + Bship.stats.width / 2) Then
-                            Dim z As Double = (Aship.stats.width / 2 + Bship.stats.width / 2) - dist
-                            Dim QA As Single = Helpers.GetQA(Aship.position.X, Aship.position.Y, Bship.position.X, Bship.position.Y)
-                            If Bship.stats.speed <> 0 Then Bship.position = Helpers.GetNewPoint(Bship.position, QA, z / 4)
-                            If Aship.stats.speed <> 0 Then Aship.position = Helpers.GetNewPoint(Aship.position, QA + 180, z / 4)
+                        Dim dist As Double = Helpers.Distance(Aship.position, Bship.position)
+                        Dim rel_dist As Double = dist - (Aship.stats.width / 2 + Bship.stats.width / 2)
+                        If rel_dist < 0 Then
+                            Dim z As Double = (-1 * rel_dist / (Aship.stats.width / 2 + Bship.stats.width / 2)) * 0.25
+                            Dim a_to_b As PointF = New PointF(Bship.position.X - Aship.position.X, Bship.position.Y - Aship.position.Y)
+                            If Bship.stats.speed <> 0 Then Bship.position = New PointF(Bship.position.X + a_to_b.X * z, Bship.position.Y + a_to_b.Y * z)
+                            If Aship.stats.speed <> 0 Then Aship.position = New PointF(Aship.position.X - a_to_b.X * z, Aship.position.Y - a_to_b.Y * z)
                         End If
                     End If
                 Next
