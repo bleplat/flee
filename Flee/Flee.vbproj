@@ -175,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cell.ICO" />
+    <None Include="Resources\DeadSkull.bmp" />
     <None Include="Resources\Antimatter.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
