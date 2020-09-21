@@ -474,7 +474,7 @@
                             Continue For
                         End If
                         If Me.team Is Nothing OrElse Not Me.team.IsFriendWith(OVessel.team) Then
-                            Dim dist As Integer = Helpers.GetDistance(ToX, ToY, OVessel.position.X, OVessel.position.Y)
+                            Dim dist As Integer = Helpers.GetDistance(ToX, ToY, OVessel.position.X, OVessel.position.Y) - OVessel.stats.width / 2
                             If dist < Me.weapons(0).stats.range Then
                                 If Me.team Is Nothing OrElse Not OVessel.team Is Nothing AndAlso Not Me.team.IsFriendWith(OVessel.team) Then
                                     dist /= 4
