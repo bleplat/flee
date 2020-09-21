@@ -17,7 +17,7 @@
     Public AllowMining As Boolean = True
     Public behavior As BehaviorMode = BehaviorMode.Stand
     Public target As Ship = Nothing
-    Public TargetPTN As New Point(0, 0)
+    Public TargetPTN As New PointF(0, 0)
 
     ' shield effect
     Public Const SHIELD_POINTS As Integer = 16
@@ -392,31 +392,33 @@
             Case BehaviorMode.Mine
                 Me.AllowMining = True
                 If Not Me.target Is Nothing Then
+                    ' has mining target already
                     Dim oShip As Ship = Me.target
                     QA = Helpers.GetQA(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
                     Dim d As Integer = 50 : If weapons.Count > 0 Then d = Me.weapons(0).stats.range / 2
                     If Helpers.Distance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y) <= d Then
+                        ' turn if too close
                         QA = QA + 180
+                        NeedSpeed = False
+                    Else
+                        NeedSpeed = True
                     End If
-                    NeedSpeed = True
-                    If Helpers.Distance(Me.TargetPTN.X, Me.TargetPTN.Y, oShip.position.X, oShip.position.Y) > world.ArenaSize.Width / 8 Then
+                    If Helpers.Distance(Me.TargetPTN, oShip.position) > world.ArenaSize.Width / 8 Then
+                        ' abort target if too far away from mining point
                         Me.target = Nothing
                     End If
                 Else
-                    Dim NearVal As Integer = world.ArenaSize.Width / 8 : Dim NearUID As Ship = Nothing
-                    For Each oShip As Ship In world.Ships
-                        If oShip.team Is Nothing Then
-                            Dim dist_me As Integer = Helpers.Distance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
-                            Dim dist_target As Integer = Helpers.Distance(Me.TargetPTN.X, Me.TargetPTN.Y, oShip.position.X, oShip.position.Y)
-                            If dist_target < world.ArenaSize.Width / 8 AndAlso dist_me < NearVal Then
-                                NearVal = dist_me
-                                NearUID = oShip
-                            End If
-                        End If
-                    Next
-                    Me.target = NearUID
-                    QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y)
-                    NeedSpeed = True
+                    ' no current mining target
+                    Dim max_mining_distance As Integer = world.ArenaSize.Width / 8
+                    Dim mining_target As Ship = Me.GetClosestShip(0.0, 1.0)
+                    If Not mining_target Is Nothing AndAlso Helpers.Distance(Me.TargetPTN, mining_target.position) > max_mining_distance Then
+                        mining_target = Nothing
+                    End If
+                    Me.target = mining_target
+                    If Me.target Is Nothing Then
+                        QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y)
+                        NeedSpeed = True
+                    End If
                 End If
             Case BehaviorMode.Stand
                 QA = direction
