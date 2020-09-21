@@ -457,13 +457,13 @@
         End If
         If Me.speed < 0 Then Me.speed = 0
         IAFire()
-    End Sub 'IAIAIAIAIA
+    End Sub 'AIAIAIAIAI
     Public Sub IAFire()
         '===' Tirer '==='
         If weapons.Count > 0 AndAlso (fram Mod 2 = 0) Then
             For Each AWeap As Weapon In weapons
                 If AWeap.Bar > 0 Then
-                    Dim record As Integer = 100000 : Dim recorded As String = "" 'Pas de cible
+                    Dim record As Integer = 100000 : Dim recorded As Ship = Nothing 'Pas de cible
                     Dim ToX As Integer = (Math.Sin(2 * Math.PI * (AWeap.Loc + direction) / 360) * (stats.width / 2)) + position.X
                     Dim ToY As Integer = (Math.Cos(2 * Math.PI * (AWeap.Loc + direction) / 360) * (stats.width / 2)) + position.Y
                     For Each OVessel As Ship In world.Ships
@@ -485,12 +485,12 @@
                             End If
                             If dist < record Then
                                 record = dist
-                                recorded = OVessel.uid
+                                recorded = OVessel
                             End If
                         End If
                     Next
-                    If recorded <> "" Then
-                        Dim oShip As Ship = world.GetShipByUID(recorded)
+                    If Not recorded Is Nothing Then
+                        Dim oShip As Ship = recorded
                         record = Helpers.GetDistance(ToX, ToY, oShip.position.X, oShip.position.Y)
                         If record < AWeap.stats.range Then
                             Dim NewPoint As PointF = Helpers.GetNewPoint(oShip.position, oShip.direction, oShip.speed * (record / AWeap.stats.celerity) * 0.9)
