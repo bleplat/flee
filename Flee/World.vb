@@ -436,4 +436,12 @@
         Return count
     End Function
 
+    ' Get a ship close to a point
+    ' if team is provided then the remaining parameters allow to choose what ship will be selected
+    Public Function GetClosestShip(from_location As PointF, Optional team As Team = Nothing, Optional neutral As Boolean = True, Optional allies As Boolean = True, Optional enemies As Boolean = True) As Boolean
+
+
+        Return Nothing
+    End Function
+
 End Class

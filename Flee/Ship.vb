@@ -1,10 +1,21 @@
 ﻿Public Class Ship : Public selected As Boolean
+
+    ' mode of behavior
+    Public Enum BehaviorMode
+        None
+        Stand
+        Drift
+        Folow
+        Mine
+        GoToPoint
+    End Enum
+
     Public world As World
 
     'IA
     Public bot_ship As Boolean = True
     Public AllowMining As Boolean = True
-    Public Behavior As String = "Stand"
+    Public behavior As BehaviorMode = BehaviorMode.Stand
     Public target As Ship = Nothing
     Public TargetPTN As New Point(0, 0)
 
@@ -79,13 +90,13 @@
             ' force a color
             Select Case Me.base_stats.name
                 Case "Asteroide"
-                    Behavior = "Drift" : target = Me : color = Color.FromArgb(64, 64, 48)
+                    behavior = BehaviorMode.Drift : target = Me : color = Color.FromArgb(64, 64, 48)
                 Case "Meteoroide"
-                    Behavior = "Drift" : target = Me : color = Color.FromArgb(80, 48, 80)
+                    behavior = BehaviorMode.Drift : target = Me : color = Color.FromArgb(80, 48, 80)
                 Case "Comet"
-                    Behavior = "Drift" : target = Me : color = Color.FromArgb(0, 100, 0)
+                    behavior = BehaviorMode.Drift : target = Me : color = Color.FromArgb(0, 100, 0)
                 Case "Star"
-                    Behavior = "Drift" : target = Me : color = Color.FromArgb(255, 255, 220)
+                    behavior = BehaviorMode.Drift : target = Me : color = Color.FromArgb(255, 255, 220)
             End Select
             '
             ResetStats()
@@ -143,7 +154,7 @@
             Else
                 bot_ship = True
             End If
-            If Not STeam Is Nothing AndAlso Behavior <> "Drift" Then
+            If Not STeam Is Nothing AndAlso behavior <> BehaviorMode.Drift Then
                 color = STeam.color
             End If
             If Not team Is Nothing AndAlso upgrade_slots > 0 Then
@@ -351,18 +362,18 @@
             Me.target = Nothing
         End If
         '===' Fin de poursuite '==='
-        If Me.Behavior <> "Drift" AndAlso target Is Nothing Then
+        If Me.behavior <> BehaviorMode.Drift AndAlso target Is Nothing Then
             target = Nothing
-            If Me.Behavior <> "Mine" Then
-                Me.Behavior = "Stand"
+            If Me.behavior <> BehaviorMode.Mine Then
+                Me.behavior = BehaviorMode.Stand
             End If
         End If
         '===' Derelict are alway drifting '==='
         If Me.team Is Nothing Then
-            Me.Behavior = "Drift"
+            Me.behavior = BehaviorMode.Drift
         End If
         '===' Auto-Activation '==='
-        If Me.bot_ship AndAlso Me.Behavior <> "Drift" Then
+        If Me.bot_ship AndAlso Me.behavior <> BehaviorMode.Drift Then
             Dim NearVal As Integer = Integer.MaxValue : Dim NearUID As Ship = Nothing
             If Me.target Is Nothing Then
                 For Each oShip As Ship In world.Ships
@@ -376,18 +387,18 @@
                 Next
                 If Not NearUID Is Nothing Then
                     Me.target = NearUID
-                    Me.Behavior = "Fight"
+                    Me.behavior = BehaviorMode.Folow
                 End If
             Else
                 If rnd_num < 6 Then 'chance to change target
                     Me.target = Nothing
-                    Me.Behavior = "Stand"
+                    Me.behavior = BehaviorMode.Stand
                 End If
             End If
         End If
         '===' Execution '==='
-        Select Case Behavior
-            Case "Mine"
+        Select Case behavior
+            Case BehaviorMode.Mine
                 Me.AllowMining = True
                 If Not Me.target Is Nothing Then
                     Dim oShip As Ship = Me.target
@@ -416,13 +427,13 @@
                     QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y)
                     NeedSpeed = True
                 End If
-            Case "Stand"
+            Case BehaviorMode.Stand
                 QA = direction
                 NeedSpeed = False
-            Case "Drift"
+            Case BehaviorMode.Drift
                 QA = direction
                 NeedSpeed = True
-            Case "Fight"
+            Case BehaviorMode.Folow
                 If Not Me.target Is Nothing Then
                     NeedSpeed = True
                     Dim oShip As Ship = Me.target
@@ -437,10 +448,10 @@
                         QA = QA + 180
                     End If
                 End If
-            Case "Goto"
+            Case BehaviorMode.GoToPoint
                 QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y)
                 If Helpers.GetDistance(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y) <= 50 Then
-                    Me.Behavior = "Stand"
+                    Me.behavior = BehaviorMode.Stand
                 End If
                 NeedSpeed = True
         End Select
@@ -699,9 +710,9 @@
             Case "!Sum"
                 If first_application Then world.Ships.Add(New Ship(world, Me.team, Spliter(1)) With {.position = New Point(Me.position.X + world.Rand.Next(-10, 11), Me.position.Y + world.Rand.Next(-10, 11))})
                 world.Ships(world.Ships.Count - 1).direction = Me.direction
-                If world.Ships(world.Ships.Count - 1).stats.sprite <> "MSL" Then
-                    world.Ships(world.Ships.Count - 1).Behavior = "Fight"
-                    world.Ships(world.Ships.Count - 1).target = Me
+                If world.Ships(world.Ships.Count - 1).weapons.Count() > 0 AndAlso (world.Ships(world.Ships.Count - 1).weapons(0).stats.special And Weapon.SpecialBits.SelfExplode) <> 0 Then
+                    world.Ships(world.Ships.Count - 1).behavior = BehaviorMode.Folow
+                    world.Ships(world.Ships.Count - 1).target = Me.target
                 End If
             Case "!Ascend"
                 If first_application AndAlso Me.team.id = 0 Then

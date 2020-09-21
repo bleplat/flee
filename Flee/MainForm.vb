@@ -186,7 +186,7 @@ Public Class MainForm
 		'===' Ships Special '==='
 		For Each AShip As Ship In world.Ships
 			If AShip.position.X + (AShip.stats.width / 2) > See.X AndAlso AShip.position.X - (AShip.stats.width / 2) < See.X + DrawBox.Width AndAlso AShip.position.Y + (AShip.stats.width / 2) > See.Y AndAlso AShip.position.Y - (AShip.stats.width / 2) < See.Y + DrawBox.Height Then
-				If Not AShip.team Is Nothing AndAlso AShip.Behavior <> "Drift" AndAlso AShip.stats.sprite <> "MSL" Then
+				If Not AShip.team Is Nothing AndAlso AShip.behavior <> Ship.BehaviorMode.Drift AndAlso AShip.stats.sprite <> "MSL" Then
 					' Selection '
 					Dim drawrect As Rectangle = New Rectangle(New Point(AShip.position.X - AShip.stats.width / 2 - See.X, AShip.position.Y - AShip.stats.width / 2 - See.Y), New Size(AShip.stats.width, AShip.stats.width)) 'zone de dessin
 					If False AndAlso target_identification Then ' disabled
@@ -444,12 +444,12 @@ Public Class MainForm
 				If AShip.selected Then
 					If AShip.TargetPTN = SelectPTN2 Then
 						world.Effects.Add(New Effect With {.Type = "Patrouille", .Coo = SelectPTN2})
-						AShip.Behavior = "Mine"
+						AShip.behavior = Ship.BehaviorMode.Mine
 						AShip.TargetPTN = SelectPTN2
 						AShip.target = Nothing
 					Else
 						world.Effects.Add(New Effect With {.Type = "Fleche", .Coo = SelectPTN2})
-						AShip.Behavior = "Goto"
+						AShip.behavior = Ship.BehaviorMode.GoToPoint
 						AShip.TargetPTN = SelectPTN2
 						AShip.target = AShip
 					End If
@@ -463,7 +463,7 @@ Public Class MainForm
 						AShip.AllowMining = False
 					Else
 						world.Effects.Add(New Effect With {.Type = "Cible", .Coo = SelectPTN2})
-						AShip.Behavior = "Fight"
+						AShip.behavior = Ship.BehaviorMode.Folow
 						AShip.target = oUID
 					End If
 				End If
