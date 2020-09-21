@@ -165,7 +165,7 @@ gun Star-Waves
 
 gun Explode-On-Contact
 	sprite=Z
-	range=32
+	range=8
 	celerity=8
 	power=50
 	loadtime=2
