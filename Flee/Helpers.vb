@@ -21,8 +21,14 @@ Public NotInheritable Class Helpers
 		Return QA
 	End Function
 
-	Public Shared Function GetDistance(ByVal x1 As Single, ByVal y1 As Single, ByVal x2 As Single, ByVal y2 As Single) As Double
+	Public Shared Function Distance(ByVal x1 As Single, ByVal y1 As Single, ByVal x2 As Single, ByVal y2 As Single) As Double
 		Return Math.Sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
+	End Function
+	Public Shared Function DistanceSQ(ByVal x1 As Single, ByVal y1 As Single, ByVal x2 As Single, ByVal y2 As Single) As Double
+		Return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)
+	End Function
+	Public Shared Function DistanceSQ(ByRef p1 As PointF, ByRef p2 As PointF) As Double
+		Return (p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y)
 	End Function
 
 	Public Shared Function GetNewPoint(ByVal AncPoint As PointF, ByVal Dir As Single, ByVal speed As Single) As PointF

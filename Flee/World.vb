@@ -120,7 +120,7 @@
                     Dim Aship As Ship = Ships(a) : Dim Bship As Ship = Ships(b)
                     If Aship.uid <> Bship.uid Then
                         If Aship.position.X + Aship.stats.width > Bship.position.X - Bship.stats.width AndAlso Bship.position.X + Bship.stats.width > Aship.position.X - Aship.stats.width AndAlso Aship.position.Y + Aship.stats.width > Bship.position.Y - Bship.stats.width AndAlso Bship.position.Y + Bship.stats.width > Aship.position.Y - Aship.stats.width Then
-                            Dim dist As Double = Helpers.GetDistance(Aship.position.X, Aship.position.Y, Bship.position.X, Bship.position.Y)
+                            Dim dist As Double = Helpers.Distance(Aship.position.X, Aship.position.Y, Bship.position.X, Bship.position.Y)
                             If dist < (Aship.stats.width / 2 + Bship.stats.width / 2) Then
                                 Dim z As Double = (Aship.stats.width / 2 + Bship.stats.width / 2) - dist
                                 Dim QA As Single = Helpers.GetQA(Aship.position.X, Aship.position.Y, Bship.position.X, Bship.position.Y)
@@ -155,7 +155,7 @@
         For Each AShoot As Shoot In Shoots
             For Each AShip As Ship In Ships
                 If Not AShoot.Team Is AShip.team AndAlso (AShoot.Team Is Nothing OrElse Not AShoot.Team.IsFriendWith(AShip.team)) Then
-                    If Helpers.GetDistance(AShoot.Coo.X, AShoot.Coo.Y, AShip.position.X, AShip.position.Y) < AShip.stats.width / 2 Then
+                    If Helpers.Distance(AShoot.Coo.X, AShoot.Coo.Y, AShip.position.X, AShip.position.Y) < AShip.stats.width / 2 Then
                         AShoot.Life = 0
                         If AShip.stats.hot_deflector > 0 AndAlso Rand.Next(0, 100) < AShip.stats.hot_deflector Then
                             Effects.Add(New Effect With {.Type = "Deflected2", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
@@ -198,9 +198,9 @@
                             a_ship.TakeDamages(8, Nothing)
                             a_ship.TakeDamages(8, Nothing)
                             a_ship.TakeDamages(8, Nothing)
-                            a_ship.TakeDamages(Math.Max(0, Math.Sqrt(Math.Max(0, 7000 - Helpers.GetDistance(Ships(i).position.X, Ships(i).position.Y, a_ship.position.X, a_ship.position.Y)))), Nothing)
+                            a_ship.TakeDamages(Math.Max(0, Math.Sqrt(Math.Max(0, 7000 - Helpers.Distance(Ships(i).position.X, Ships(i).position.Y, a_ship.position.X, a_ship.position.Y)))), Nothing)
                             a_ship.TakeDamages(24, Nothing)
-                            If Helpers.GetDistance(Ships(i).position.X, Ships(i).position.Y, a_ship.position.X, a_ship.position.Y) < 5500 Then
+                            If Helpers.Distance(Ships(i).position.X, Ships(i).position.Y, a_ship.position.X, a_ship.position.Y) < 5500 Then
                                 a_ship.TakeDamages(10000, Nothing)
                             End If
                             If Not a_ship.team Is Nothing AndAlso a_ship.team.affinity = AffinityEnum.KIND AndAlso a_ship.integrity <= 0 AndAlso a_ship.team.id <> Ships(i).team.id Then
@@ -436,12 +436,5 @@
         Return count
     End Function
 
-    ' Get a ship close to a point
-    ' if team is provided then the remaining parameters allow to choose what ship will be selected
-    Public Function GetClosestShip(from_location As PointF, Optional team As Team = Nothing, Optional neutral As Boolean = True, Optional allies As Boolean = True, Optional enemies As Boolean = True) As Boolean
-
-
-        Return Nothing
-    End Function
 
 End Class

@@ -374,17 +374,8 @@
         End If
         '===' Auto-Activation '==='
         If Me.bot_ship AndAlso Me.behavior <> BehaviorMode.Drift Then
-            Dim NearVal As Integer = Integer.MaxValue : Dim NearUID As Ship = Nothing
             If Me.target Is Nothing Then
-                For Each oShip As Ship In world.Ships
-                    If (Not Me.team.IsFriendWith(oShip.team)) AndAlso (rnd_num < 6700 OrElse Not oShip.team Is Nothing) Then
-                        Dim dist As Integer = Helpers.GetDistance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
-                        If dist < NearVal Then
-                            NearVal = dist
-                            NearUID = oShip
-                        End If
-                    End If
-                Next
+                Dim NearUID As Ship = Me.GetClosestShip(1.0, 1.0)
                 If Not NearUID Is Nothing Then
                     Me.target = NearUID
                     Me.behavior = BehaviorMode.Folow
@@ -404,19 +395,19 @@
                     Dim oShip As Ship = Me.target
                     QA = Helpers.GetQA(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
                     Dim d As Integer = 50 : If weapons.Count > 0 Then d = Me.weapons(0).stats.range / 2
-                    If Helpers.GetDistance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y) <= d Then
+                    If Helpers.Distance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y) <= d Then
                         QA = QA + 180
                     End If
                     NeedSpeed = True
-                    If Helpers.GetDistance(Me.TargetPTN.X, Me.TargetPTN.Y, oShip.position.X, oShip.position.Y) > world.ArenaSize.Width / 8 Then
+                    If Helpers.Distance(Me.TargetPTN.X, Me.TargetPTN.Y, oShip.position.X, oShip.position.Y) > world.ArenaSize.Width / 8 Then
                         Me.target = Nothing
                     End If
                 Else
                     Dim NearVal As Integer = world.ArenaSize.Width / 8 : Dim NearUID As Ship = Nothing
                     For Each oShip As Ship In world.Ships
                         If oShip.team Is Nothing Then
-                            Dim dist_me As Integer = Helpers.GetDistance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
-                            Dim dist_target As Integer = Helpers.GetDistance(Me.TargetPTN.X, Me.TargetPTN.Y, oShip.position.X, oShip.position.Y)
+                            Dim dist_me As Integer = Helpers.Distance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
+                            Dim dist_target As Integer = Helpers.Distance(Me.TargetPTN.X, Me.TargetPTN.Y, oShip.position.X, oShip.position.Y)
                             If dist_target < world.ArenaSize.Width / 8 AndAlso dist_me < NearVal Then
                                 NearVal = dist_me
                                 NearUID = oShip
@@ -439,7 +430,7 @@
                     Dim oShip As Ship = Me.target
                     QA = Helpers.GetQA(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
                     Dim d As Integer = 50 : If weapons.Count > 0 Then d = Me.weapons(0).stats.range / 2
-                    If Helpers.GetDistance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y) <= d Then
+                    If Helpers.Distance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y) <= d Then
                         If Me.stats.speed > 4 OrElse Me.stats.width < 35 OrElse Me.speed < 1.0 Then
                             NeedSpeed = True
                         Else
@@ -450,7 +441,7 @@
                 End If
             Case BehaviorMode.GoToPoint
                 QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y)
-                If Helpers.GetDistance(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y) <= 50 Then
+                If Helpers.Distance(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y) <= 50 Then
                     Me.behavior = BehaviorMode.Stand
                 End If
                 NeedSpeed = True
@@ -485,7 +476,7 @@
                             Continue For
                         End If
                         If Me.team Is Nothing OrElse Not Me.team.IsFriendWith(OVessel.team) Then
-                            Dim dist As Integer = Helpers.GetDistance(ToX, ToY, OVessel.position.X, OVessel.position.Y) - OVessel.stats.width / 2
+                            Dim dist As Integer = Helpers.Distance(ToX, ToY, OVessel.position.X, OVessel.position.Y) - OVessel.stats.width / 2
                             If dist < Me.weapons(0).stats.range Then
                                 If Me.team Is Nothing OrElse Not OVessel.team Is Nothing AndAlso Not Me.team.IsFriendWith(OVessel.team) Then
                                     dist /= 4
@@ -502,7 +493,7 @@
                     Next
                     If Not recorded Is Nothing Then
                         Dim oShip As Ship = recorded
-                        record = Helpers.GetDistance(ToX, ToY, oShip.position.X, oShip.position.Y) - oShip.stats.width / 2
+                        record = Helpers.Distance(ToX, ToY, oShip.position.X, oShip.position.Y) - oShip.stats.width / 2
                         If record < AWeap.stats.range Then
                             Dim NewPoint As PointF = Helpers.GetNewPoint(oShip.position, oShip.direction, oShip.speed * (record / AWeap.stats.celerity) * 0.9)
                             Dim QA As Integer = Helpers.GetQA(ToX, ToY, NewPoint.X, NewPoint.Y)
@@ -743,7 +734,42 @@
         Return Me.integrity <= 0
     End Function
 
-    ' Import/Export
+    Public Function GetClosestShip(Optional enemies As Double = 2.0, Optional neutrals As Double = 1.0, Optional allies As Double = 0.0) As Ship
+        Const max_distance As Double = Double.PositiveInfinity
+        ' maximum square distance
+        Dim closest_distance_sq As Double = Double.PositiveInfinity
+        If max_distance < Math.Sqrt(Double.MaxValue) Then
+            closest_distance_sq = max_distance * max_distance
+        End If
+        ' mods are applied to square distance so they should be sqare too
+        enemies *= enemies
+        neutrals *= neutrals
+        allies *= allies
+        ' find the ship
+        Dim closest_ship As Ship = Nothing
+        For Each other_ship As Ship In Me.world.Ships
+            If Not Me Is other_ship Then
+                Dim distance_sq As Double
+                ' relationship priority
+                If other_ship.team Is Nothing OrElse Me.team Is Nothing Then
+                    distance_sq = Helpers.DistanceSQ(Me.position, other_ship.position) / neutrals
+                Else
+                    If Me.team.IsFriendWith(other_ship.team) Then
+                        distance_sq = Helpers.DistanceSQ(Me.position, other_ship.position) / allies
+                    Else
+                        distance_sq = Helpers.DistanceSQ(Me.position, other_ship.position) / enemies
+                    End If
+                End If
+                ' test if closer
+                If distance_sq < closest_distance_sq Then
+                    closest_ship = other_ship
+                    closest_distance_sq = distance_sq
+                End If
+            End If
+        Next
+        Return closest_ship
+    End Function
+
 
 
 
