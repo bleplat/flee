@@ -450,24 +450,25 @@
         If weapons.Count > 0 AndAlso (fram Mod 2 = 0) Then
             For Each AWeap As Weapon In weapons
                 If AWeap.Bar > 0 Then
-                    Dim record As Integer = 100000 : Dim recorded As Ship = Nothing 'Pas de cible
+                    Dim record As Double = 1000 * 1000
+                    Dim recorded As Ship = Nothing 'Pas de cible
                     Dim ToX As Integer = (Math.Sin(2 * Math.PI * (AWeap.Loc + direction) / 360) * (stats.width / 2)) + position.X
                     Dim ToY As Integer = (Math.Cos(2 * Math.PI * (AWeap.Loc + direction) / 360) * (stats.width / 2)) + position.Y
                     For Each OVessel As Ship In world.Ships
                         If OVessel Is Me Then
                             Continue For
                         End If
-                        If Not Me.AllowMining AndAlso (OVessel.stats.sprite = "Asteroide" OrElse OVessel.stats.sprite = "Meteoroide") Then
+                        If Not Me.AllowMining AndAlso (OVessel.stats.default_weapons.Count = 0 OrElse OVessel.weapons(0).stats.power = 0) Then
                             Continue For
                         End If
                         If Me.team Is Nothing OrElse Not Me.team.IsFriendWith(OVessel.team) Then
                             Dim dist As Integer = Helpers.Distance(ToX, ToY, OVessel.position.X, OVessel.position.Y) - OVessel.stats.width / 2
                             If dist < Me.weapons(0).stats.range Then
                                 If Me.team Is Nothing OrElse Not OVessel.team Is Nothing AndAlso Not Me.team.IsFriendWith(OVessel.team) Then
-                                    dist /= 4
+                                    dist /= 8
                                 End If
                                 If Me.target Is OVessel Then
-                                    dist /= 2
+                                    dist /= 4
                                 End If
                             End If
                             If dist < record Then
