@@ -595,7 +595,11 @@ Public Class MainForm
 			ElseIf Aship.Ups.Count >= Aship.upgrade_slots AndAlso AUp.Install Then
 				PG.DrawRectangle(Pens.DarkBlue, x * 25, y * 25, 24, 24)
 			ElseIf Aship.team Is Nothing OrElse Not Aship.team.resources.HasEnough(AUp.cost) Then
-				PG.DrawRectangle(Pens.DarkRed, x * 25, y * 25, 24, 24)
+				If AUp.Install Then
+					PG.DrawRectangle(Pens.DarkRed, x * 25, y * 25, 24, 24)
+				Else
+					PG.DrawRectangle(Pens.MediumPurple, x * 25, y * 25, 24, 24)
+				End If
 			ElseIf Not AUp.Install Then
 				PG.DrawRectangle(Pens.Cyan, x * 25, y * 25, 24, 24)
 			Else
