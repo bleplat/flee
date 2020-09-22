@@ -22,6 +22,7 @@ ship Bugs
 	weapon=45;Heavy-Bio-Gun
 	weapon=180;Bio-Gun
 	hot_deflector=8.00
+	cold_deflector=1
 	cost=668;1;0;0
 	complexity=1600
 
