@@ -57,7 +57,7 @@
         Dim player_team As Team = Teams(Teams.Count - 1)
         player_team.bot_team = False
         ' Player Ships
-        If Rand.Next(0, 100) < 75 Then
+        If Rand.Next(0, 100) < 85 Then
             SPAWN_STATION_RANDOMLY("Station", player_team, 3)
             Ships(0).uid = MainForm.MAIN_BASE
             origin = Ships(0).position
