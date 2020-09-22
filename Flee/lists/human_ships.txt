@@ -12,7 +12,6 @@ ship Colonizer
 	craft=Outpost
 	craft=Defense
 	craft=Pointvortex
-	craft=Nuke
 
 ship MiniColonizer
 	width=55
