@@ -645,7 +645,7 @@
             Case "!UpsMax"
                 Me.upgrade_slots += Spliter(1)
             Case "!Fix"
-                Me.integrity += Me.integrity * (Spliter(1) / 100.0)
+                Me.integrity += Me.stats.integrity * (Spliter(1) / 100.0)
             Case "!FixSFull"
                 Me.shield = Me.stats.shield
             Case "%Speed"
