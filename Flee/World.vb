@@ -121,10 +121,10 @@
                         Dim dist As Double = Helpers.Distance(Aship.position, Bship.position)
                         Dim rel_dist As Double = dist - (Aship.stats.width / 2 + Bship.stats.width / 2)
                         If rel_dist < 0 Then
-                            Dim z As Double = (-1 * rel_dist / (Aship.stats.width / 2 + Bship.stats.width / 2)) * 0.25
+                            Dim z As Double = (-1 * rel_dist / (Aship.stats.width / 2 + Bship.stats.width / 2)) * 0.0125
                             Dim a_to_b As PointF = New PointF(Bship.position.X - Aship.position.X, Bship.position.Y - Aship.position.Y)
-                            If Bship.stats.speed <> 0 Then Bship.position = New PointF(Bship.position.X + a_to_b.X * z, Bship.position.Y + a_to_b.Y * z)
-                            If Aship.stats.speed <> 0 Then Aship.position = New PointF(Aship.position.X - a_to_b.X * z, Aship.position.Y - a_to_b.Y * z)
+                            If Bship.stats.speed <> 0 Then Bship.speed_vec = New PointF(Bship.speed_vec.X + a_to_b.X * z, Bship.speed_vec.Y + a_to_b.Y * z)
+                            If Aship.stats.speed <> 0 Then Aship.speed_vec = New PointF(Aship.speed_vec.X - a_to_b.X * z, Aship.speed_vec.Y - a_to_b.Y * z)
                         End If
                     End If
                 Next
