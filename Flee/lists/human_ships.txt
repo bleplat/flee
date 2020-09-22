@@ -119,6 +119,10 @@ ship Dronner
 	weapon=0;Basic-Gun
 	cost=140;1;0;0
 	complexity=600
+	craft=Combat_Drone_1
+	craft=Combat_Drone_2
+	craft=Combat_Drone_3
+	craft=Drone
 	
 ship Explorer
 	level=0
