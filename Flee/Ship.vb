@@ -242,7 +242,7 @@
         If Not Upgrading Is Nothing Then
             If UpProgress < Upgrading.Time Then
                 UpProgress = UpProgress + 1
-                If MainForm.DebugMode Then
+                If MainForm.cheats_enabled Then
                     UpProgress = UpProgress + 99
                 End If
             Else
@@ -516,7 +516,7 @@
     End Function
     ' return true if the upgrade is available
     Public Function CanUpgrade(upgrade As Upgrade) As Boolean
-        If MainForm.DebugMode Then Return True
+        If MainForm.cheats_enabled Then Return True
         If Not Me.Upgrading Is Nothing Then Return False
         If upgrade.Install AndAlso Me.Ups.Count >= upgrade_slots Then Return False
         If upgrade.not_for_bots AndAlso Me.bot_ship Then Return False
@@ -525,7 +525,7 @@
     End Function
     ' return true if the upgrade have its conditions met
     Public Function IsUpgradeCompatible(upgrade As Upgrade) As Boolean
-        If MainForm.DebugMode Then Return True
+        If MainForm.cheats_enabled Then Return True
         If upgrade Is Me.Upgrading Then Return True
         Dim conditions_strings() As String = upgrade.Need.Split(" ")
         For Each a_condition As String In conditions_strings

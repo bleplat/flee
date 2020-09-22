@@ -3,14 +3,21 @@ Imports System.Globalization
 Imports System.Threading
 
 Public Class MainForm
-	Public Shared DebugMode As Boolean = False
+
+	Enum PlayState
+		Paused
+		Playing
+		Timelapse
+	End Enum
+
+
+	Public Shared cheats_enabled As Boolean = False
 	Public Const MAIN_BASE As ULong = ULong.MaxValue
 
 	Dim See As New Point(4700, 4700)
 
 	'===' Stats '==='
-	Public Shared play As Boolean = True
-	Public Shared timelapse As Boolean = False
+	Public Shared play_state As PlayState = PlayState.Playing
 	Public Shared timelapsev2 As Boolean = False
 	Public Shared target_identification As Boolean = False
 	Public Shared help As Boolean = True
@@ -76,8 +83,8 @@ Public Class MainForm
 	Private Sub Ticker_Tick(sender As System.Object, e As System.EventArgs) Handles Ticker.Tick
 		Dim start_time As DateTime = DateTime.Now
 
-		If play Then
-			For i = 1 To IIf(timelapse, 8, 1) * IIf(timelapsev2, 16, 1)
+		If play_state <> PlayState.Paused Then
+			For i = 1 To IIf(play_state = PlayState.Timelapse, 8, 1) * IIf(timelapsev2, 16, 1)
 				world.Tick()
 			Next
 		End If
@@ -239,9 +246,9 @@ Public Class MainForm
 		Next
 		'===' Infos '==='
 		G.DrawString("Ships : " & world.CountTeamShips(player_team) & " / " & player_team.ship_count_limit & " Max.", New Font("Consolas", 10), Brushes.Lime, New Point(0, 0))
-		If Not play Then
+		If play_state = PlayState.Paused Then
 			G.DrawString("PAUSE", New Font("Consolas", 16), Brushes.White, New Point(0, DrawBMP.Height - 32))
-		ElseIf timelapse Then
+		ElseIf play_state = PlayState.Timelapse Then
 			G.DrawString("TIMELAPSE", New Font("Consolas", 16), Brushes.White, New Point(0, DrawBMP.Height - 32))
 		End If
 		'===' Help '==='
@@ -329,24 +336,24 @@ Public Class MainForm
 			help = Not help
 		End If
 		If e.KeyData = Keys.Space Then
-			If play Then
-				play = False
+			If play_state <> PlayState.Paused Then
+				play_state = PlayState.Paused
 			Else
-				play = True
+				play_state = PlayState.Playing
 			End If
 		End If
 		If e.KeyData = Keys.M Then
-			timelapse = Not timelapse
+			If play_state <> PlayState.Timelapse Then
+				play_state = PlayState.Timelapse
+			Else
+				play_state = PlayState.Playing
+			End If
 		End If
 		If e.KeyData = Keys.P Then
 			timelapsev2 = Not timelapsev2
 		End If
 		If e.KeyData = Keys.F12 Then
-			If DebugMode Then
-				DebugMode = False
-			Else
-				DebugMode = True
-			End If
+			cheats_enabled = Not cheats_enabled
 		End If
 		If e.KeyData = Keys.F7 Then
 			Dim total As String = ShipStats.DumpClasses()
@@ -408,7 +415,7 @@ Public Class MainForm
 		End If
 		For Each aship As Ship In world.Ships
 			aship.selected = False
-			If aship.team Is player_team OrElse DebugMode Then 'Si mode debug ou equipe correcte
+			If aship.team Is player_team OrElse cheats_enabled Then 'Si mode debug ou equipe correcte
 				If aship.position.X + aship.stats.width / 2 > SS.X Then
 					If aship.position.X - aship.stats.width / 2 < SS.X + SS.Width Then
 						If aship.position.Y + aship.stats.width / 2 > SS.Y Then
@@ -472,7 +479,7 @@ Public Class MainForm
 		End If
 	End Sub
 	Private Sub PictureBox2_Click(sender As System.Object, e As System.EventArgs) Handles PictureBox2.Click, PictureBox5.Click, PictureBox6.Click
-		If DebugMode Then
+		If cheats_enabled Then
 			Dim team As Team = player_team
 			If Not LastSShipSelect Is Nothing AndAlso Not LastSShipSelect.team Is Nothing Then
 				team = LastSShipSelect.team
@@ -619,7 +626,7 @@ Public Class MainForm
 		Dim x As Integer = 0 : Dim y As Integer = 0
 		For Each AUp As Upgrade In ListedUps
 			If x = UpX AndAlso y = UpY Then
-				If MainForm.DebugMode OrElse (AShip.CanUpgrade(AUp) AndAlso AShip.team Is player_team) Then
+				If MainForm.cheats_enabled OrElse (AShip.CanUpgrade(AUp) AndAlso AShip.team Is player_team) Then
 					If AShip.team Is Nothing OrElse AShip.team.resources.HasEnough(AUp.cost) Then
 						If Not AShip.team Is Nothing Then AShip.team.resources.Deplete(AUp.cost)
 						AShip.Upgrading = AUp
