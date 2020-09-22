@@ -53,12 +53,14 @@
     Public Sub New(ByRef world As World)
         Me.world = world
         ResetShieldPoint()
+        Me.TargetPTN = New PointF(Me.position.X, Me.position.Y)
     End Sub
     Public Sub New(ByRef world As World, ship_class As String)
         Me.world = world
         Me.uid = Helpers.GetNextUniqueID()
         SetStats(ship_class)
         ResetShieldPoint()
+        Me.TargetPTN = New PointF(Me.position.X, Me.position.Y)
     End Sub
     Public Sub New(ByRef world As World, team As Team, ship_class As String)
         Me.world = world
@@ -66,6 +68,7 @@
         Me.SetTeam(team)
         SetStats(ship_class)
         ResetShieldPoint()
+        Me.TargetPTN = New PointF(Me.position.X, Me.position.Y)
     End Sub
     Public Sub SetStats(ship_class As String)
         SetStats(ShipStats.classes(ship_class))
@@ -340,6 +343,9 @@
 
 
     Public Sub IA(rnd_num As Integer)
+        If Me.stats.name = "Ambassador" Then
+            Console.WriteLine()
+        End If
         Dim QA As Single
         Dim NeedSpeed As Boolean = False
         'Remove destroyed targets
@@ -605,11 +611,13 @@
             Case "!Agility"
                 Me.stats.turn += Spliter(1)
             Case "!Teleport"
+                world.Effects.Add(New Effect With {.Type = "Teleported", .Coo = Me.position, .Direction = 0, .speed = 0})
                 Dim tp_dst As PointF = Me.TargetPTN
                 If Not Me.target Is Nothing Then
                     tp_dst = Me.target.position
                 End If
-                Me.position = tp_dst + New Point(world.Rand.Next(-512, 512), world.Rand.Next(-512, 512))
+                Me.position = New PointF(tp_dst.X + world.Rand.Next(-512, 512), tp_dst.Y + world.Rand.Next(-512, 512))
+                world.Effects.Add(New Effect With {.Type = "Teleported", .Coo = Me.position, .Direction = 0, .speed = 0})
             Case "!Upsbonus"
                 If first_application Then Me.team.upgrade_slots_bonus += Spliter(1) 'FN
             Case "!Maxships"

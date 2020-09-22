@@ -451,7 +451,7 @@ Public Class MainForm
 						world.Effects.Add(New Effect With {.Type = "Fleche", .Coo = SelectPTN2})
 						AShip.behavior = Ship.BehaviorMode.GoToPoint
 						AShip.TargetPTN = SelectPTN2
-						AShip.target = AShip
+						AShip.target = Nothing
 					End If
 				End If
 			Next
@@ -639,4 +639,5 @@ Public Class MainForm
 		UpX = -1
 		UpY = -1
 	End Sub
+
 End Class
