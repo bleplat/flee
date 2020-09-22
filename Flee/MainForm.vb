@@ -73,7 +73,7 @@ Public Class MainForm
 		Me.Text = "Flee - Seed: " & SeedTextBox.Text
 
 		' Place camera on player
-		See = New Point(world.Ships(0).position.X - 200, world.Ships(0).position.Y - 200)
+		See = New Point(world.Ships(0).location.X - 200, world.Ships(0).location.Y - 200)
 
 		Ticker.Enabled = True
 	End Sub
@@ -142,11 +142,11 @@ Public Class MainForm
 					mini_color = Color.Red
 				End If
 			End If
-			MiniG.FillRectangle(New SolidBrush(mini_color), New Rectangle(AShip.position.X / world.ArenaSize.Width * MiniBMP.Width - (W / 2), AShip.position.Y / world.ArenaSize.Height * MiniBMP.Height - (W / 2), W, W))
+			MiniG.FillRectangle(New SolidBrush(mini_color), New Rectangle(AShip.location.X / world.ArenaSize.Width * MiniBMP.Width - (W / 2), AShip.location.Y / world.ArenaSize.Height * MiniBMP.Height - (W / 2), W, W))
 			' Main screen '
-			If AShip.position.X + (AShip.stats.width / 2) > See.X AndAlso AShip.position.X - (AShip.stats.width / 2) < See.X + DrawBox.Width AndAlso AShip.position.Y + (AShip.stats.width / 2) > See.Y AndAlso AShip.position.Y - (AShip.stats.width / 2) < See.Y + DrawBox.Height Then
+			If AShip.location.X + (AShip.stats.width / 2) > See.X AndAlso AShip.location.X - (AShip.stats.width / 2) < See.X + DrawBox.Width AndAlso AShip.location.Y + (AShip.stats.width / 2) > See.Y AndAlso AShip.location.Y - (AShip.stats.width / 2) < See.Y + DrawBox.Height Then
 				Dim img As New Bitmap(Helpers.GetSprite(AShip.stats.sprite, AShip.fram, 0, mini_color)) 'image
-				Dim center As New Point(AShip.position.X - See.X, AShip.position.Y - See.Y) 'centre
+				Dim center As New Point(AShip.location.X - See.X, AShip.location.Y - See.Y) 'centre
 				Dim AddD As Integer = 0 : If AShip.team Is Nothing Then AddD = world.ticks Mod 360
 				Dim MonM As Matrix = New Matrix : MonM.RotateAt(-AShip.direction + 180 + AddD, center) 'rotation
 				G.Transform = MonM 'affectation
@@ -192,10 +192,10 @@ Public Class MainForm
 		End If
 		'===' Ships Special '==='
 		For Each AShip As Ship In world.Ships
-			If AShip.position.X + (AShip.stats.width / 2) > See.X AndAlso AShip.position.X - (AShip.stats.width / 2) < See.X + DrawBox.Width AndAlso AShip.position.Y + (AShip.stats.width / 2) > See.Y AndAlso AShip.position.Y - (AShip.stats.width / 2) < See.Y + DrawBox.Height Then
+			If AShip.location.X + (AShip.stats.width / 2) > See.X AndAlso AShip.location.X - (AShip.stats.width / 2) < See.X + DrawBox.Width AndAlso AShip.location.Y + (AShip.stats.width / 2) > See.Y AndAlso AShip.location.Y - (AShip.stats.width / 2) < See.Y + DrawBox.Height Then
 				If Not AShip.team Is Nothing AndAlso AShip.behavior <> Ship.BehaviorMode.Drift AndAlso AShip.stats.sprite <> "MSL" Then
 					' Selection '
-					Dim drawrect As Rectangle = New Rectangle(New Point(AShip.position.X - AShip.stats.width / 2 - See.X, AShip.position.Y - AShip.stats.width / 2 - See.Y), New Size(AShip.stats.width, AShip.stats.width)) 'zone de dessin
+					Dim drawrect As Rectangle = New Rectangle(New Point(AShip.location.X - AShip.stats.width / 2 - See.X, AShip.location.Y - AShip.stats.width / 2 - See.Y), New Size(AShip.stats.width, AShip.stats.width)) 'zone de dessin
 					If False AndAlso target_identification Then ' disabled
 						If AShip.team.id = 0 Then
 							G.DrawRectangle(Pens.Lime, drawrect)
@@ -230,14 +230,14 @@ Public Class MainForm
 					End If
 					'life   'New Pen(getSColor(AShip.Color))
 					If AShip.stats.integrity > 20 Then
-						G.DrawRectangle(Pens.DimGray, New Rectangle(New Point(AShip.position.X - AShip.stats.width / 2 - See.X, AShip.position.Y + AShip.stats.width / 2 + 5 - See.Y), New Size(AShip.stats.width, 1)))
-						G.DrawRectangle(New Pen(AShip.team.color), New Rectangle(New Point(AShip.position.X - AShip.stats.width / 2 - See.X, AShip.position.Y + AShip.stats.width / 2 + 5 - See.Y), New Size(AShip.integrity / AShip.stats.integrity * AShip.stats.width, 1)))
-						G.DrawString(AShip.integrity & "/" & AShip.stats.integrity, Me.Font, New SolidBrush(AShip.team.color), New Point(AShip.position.X - AShip.stats.width / 2 - See.X, AShip.position.Y + AShip.stats.width / 2 + 7 - See.Y))
+						G.DrawRectangle(Pens.DimGray, New Rectangle(New Point(AShip.location.X - AShip.stats.width / 2 - See.X, AShip.location.Y + AShip.stats.width / 2 + 5 - See.Y), New Size(AShip.stats.width, 1)))
+						G.DrawRectangle(New Pen(AShip.team.color), New Rectangle(New Point(AShip.location.X - AShip.stats.width / 2 - See.X, AShip.location.Y + AShip.stats.width / 2 + 5 - See.Y), New Size(AShip.integrity / AShip.stats.integrity * AShip.stats.width, 1)))
+						G.DrawString(AShip.integrity & "/" & AShip.stats.integrity, Me.Font, New SolidBrush(AShip.team.color), New Point(AShip.location.X - AShip.stats.width / 2 - See.X, AShip.location.Y + AShip.stats.width / 2 + 7 - See.Y))
 						If AShip.stats.deflectors > 0 Then
 							If AShip.deflectors_loaded = AShip.stats.deflectors Then
-								G.DrawString(AShip.deflectors_loaded & "/" & AShip.stats.deflectors, Me.Font, New SolidBrush(Color.Gray), New Point(AShip.position.X - AShip.stats.width / 2 - See.X, AShip.position.Y + AShip.stats.width / 2 + 7 + 7 - See.Y))
+								G.DrawString(AShip.deflectors_loaded & "/" & AShip.stats.deflectors, Me.Font, New SolidBrush(Color.Gray), New Point(AShip.location.X - AShip.stats.width / 2 - See.X, AShip.location.Y + AShip.stats.width / 2 + 7 + 7 - See.Y))
 							Else
-								G.DrawString(AShip.deflectors_loaded & "/" & AShip.stats.deflectors & " <- " & AShip.deflector_loading, Me.Font, New SolidBrush(Color.Gray), New Point(AShip.position.X - AShip.stats.width / 2 - See.X, AShip.position.Y + AShip.stats.width / 2 + 7 + 7 - See.Y))
+								G.DrawString(AShip.deflectors_loaded & "/" & AShip.stats.deflectors & " <- " & AShip.deflector_loading, Me.Font, New SolidBrush(Color.Gray), New Point(AShip.location.X - AShip.stats.width / 2 - See.X, AShip.location.Y + AShip.stats.width / 2 + 7 + 7 - See.Y))
 							End If
 						End If
 					End If
@@ -416,10 +416,10 @@ Public Class MainForm
 		For Each aship As Ship In world.Ships
 			aship.selected = False
 			If aship.team Is player_team OrElse cheats_enabled Then 'Si mode debug ou equipe correcte
-				If aship.position.X + aship.stats.width / 2 > SS.X Then
-					If aship.position.X - aship.stats.width / 2 < SS.X + SS.Width Then
-						If aship.position.Y + aship.stats.width / 2 > SS.Y Then
-							If aship.position.Y - aship.stats.width / 2 < SS.Y + SS.Height Then
+				If aship.location.X + aship.stats.width / 2 > SS.X Then
+					If aship.location.X - aship.stats.width / 2 < SS.X + SS.Width Then
+						If aship.location.Y + aship.stats.width / 2 > SS.Y Then
+							If aship.location.Y - aship.stats.width / 2 < SS.Y + SS.Height Then
 								aship.selected = True
 								LastSShipSelect = aship
 							End If
@@ -436,10 +436,10 @@ Public Class MainForm
 		Dim other_ship As Ship = Nothing
 		'===' Recherche '==='
 		For Each AShip As Ship In world.Ships
-			If AShip.position.X + AShip.stats.width / 2 > SelectPTN2.X Then
-				If AShip.position.X - AShip.stats.width / 2 < SelectPTN2.X Then
-					If AShip.position.Y + AShip.stats.width / 2 > SelectPTN2.Y Then
-						If AShip.position.Y - AShip.stats.width / 2 < SelectPTN2.Y Then
+			If AShip.location.X + AShip.stats.width / 2 > SelectPTN2.X Then
+				If AShip.location.X - AShip.stats.width / 2 < SelectPTN2.X Then
+					If AShip.location.Y + AShip.stats.width / 2 > SelectPTN2.Y Then
+						If AShip.location.Y - AShip.stats.width / 2 < SelectPTN2.Y Then
 							other_ship = AShip
 						End If
 					End If

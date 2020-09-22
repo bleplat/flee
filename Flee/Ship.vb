@@ -37,7 +37,7 @@
 
     'state
     Public integrity As Integer = 20
-    Public position As New PointF(5000, 5000)
+    Public location As New PointF(5000, 5000)
     Public speed_vec As New PointF()
     Public direction As Single = 0
     Public speed As Single = 0
@@ -52,20 +52,20 @@
     Public Sub New(ByRef world As World)
         Me.world = world
         ResetShieldPoint()
-        Me.TargetPTN = New PointF(Me.position.X, Me.position.Y)
+        Me.TargetPTN = New PointF(Me.location.X, Me.location.Y)
     End Sub
     Public Sub New(ByRef world As World, ship_class As String)
         Me.world = world
         SetStats(ship_class)
         ResetShieldPoint()
-        Me.TargetPTN = New PointF(Me.position.X, Me.position.Y)
+        Me.TargetPTN = New PointF(Me.location.X, Me.location.Y)
     End Sub
     Public Sub New(ByRef world As World, team As Team, ship_class As String)
         Me.world = world
         Me.SetTeam(team)
         SetStats(ship_class)
         ResetShieldPoint()
-        Me.TargetPTN = New PointF(Me.position.X, Me.position.Y)
+        Me.TargetPTN = New PointF(Me.location.X, Me.location.Y)
     End Sub
     Public Sub SetStats(ship_class As String)
         SetStats(ShipStats.classes(ship_class))
@@ -167,20 +167,20 @@
         If fram > 7 Then fram = 0
         '===' Bordures '==='
         If Not Me.team Is Nothing AndAlso Me.team.id = 0 Then
-            If Me.position.X < 0 Then
-                Me.position.X = 0
+            If Me.location.X < 0 Then
+                Me.location.X = 0
             End If
-            If Me.position.Y < 0 Then
-                Me.position.Y = 0
+            If Me.location.Y < 0 Then
+                Me.location.Y = 0
             End If
-            If Me.position.X > world.ArenaSize.Width Then
-                Me.position.X = world.ArenaSize.Width
+            If Me.location.X > world.ArenaSize.Width Then
+                Me.location.X = world.ArenaSize.Width
             End If
-            If Me.position.Y > world.ArenaSize.Height Then
-                Me.position.Y = world.ArenaSize.Height
+            If Me.location.Y > world.ArenaSize.Height Then
+                Me.location.Y = world.ArenaSize.Height
             End If
         Else
-            If Me.position.X < -100 OrElse Me.position.Y < -100 OrElse Me.position.X > world.ArenaSize.Width + 100 OrElse Me.position.Y > world.ArenaSize.Height + 100 Then
+            If Me.location.X < -100 OrElse Me.location.Y < -100 OrElse Me.location.X > world.ArenaSize.Width + 100 OrElse Me.location.Y > world.ArenaSize.Height + 100 Then
                 If Me.bot_ship = False Then Me.integrity = 0
             End If
         End If
@@ -190,8 +190,8 @@
         Else
             Dim new_speed As PointF = Helpers.GetNewPoint(New Point(0, 0), direction, speed)
             Me.speed_vec = New PointF(speed_vec.X * 0.9 + new_speed.X * 0.1, speed_vec.Y * 0.9 + new_speed.Y * 0.1)
-            Me.position.X = Me.position.X + speed_vec.X
-            Me.position.Y = Me.position.Y + speed_vec.Y
+            Me.location.X = Me.location.X + speed_vec.X
+            Me.location.Y = Me.location.Y + speed_vec.Y
         End If
         '===' Armes '==='
         If Me.cold_deflector_charge <= 0 Then
@@ -311,7 +311,7 @@
             Me.shield = Me.shield - Amount
             Amount = Amount - (Amount * stats.shield_opacity / 100)
             If Not From Is Nothing Then
-                Dim angle_ship_shoot_rel As Double = Helpers.NormalizeAngleUnsigned(Helpers.GetAngle(position.X, position.Y, From.Coo.X, From.Coo.Y) - direction)
+                Dim angle_ship_shoot_rel As Double = Helpers.NormalizeAngleUnsigned(Helpers.GetAngle(location.X, location.Y, From.Coo.X, From.Coo.Y) - direction)
                 Dim shield_ptn_index As Integer = (angle_ship_shoot_rel * 16 / 360)
                 ShieldPoints(shield_ptn_index Mod 16) = 255
                 If ShieldPoints((shield_ptn_index + 1) Mod 16) < 128 Then ShieldPoints((shield_ptn_index + 1) Mod 16) = 128
@@ -375,9 +375,9 @@
                 Me.AllowMining = True
                 If Not Me.target Is Nothing Then
                     ' has mining target already
-                    QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.target.position.X, Me.target.position.Y)
+                    QA = Helpers.GetQA(Me.location.X, Me.location.Y, Me.target.location.X, Me.target.location.Y)
                     Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = Me.weapons(0).stats.range * 0.65
-                    Dim rel_dist As Double = Helpers.Distance(Me.position, Me.target.position) - (Me.target.stats.width / 2)
+                    Dim rel_dist As Double = Helpers.Distance(Me.location, Me.target.location) - (Me.target.stats.width / 2)
                     If rel_dist <= optimal_range Then
                         ' turn if too close
                         QA = QA + 180
@@ -385,7 +385,7 @@
                     Else
                         NeedSpeed = Helpers.GetAngleDiff(Me.direction, QA) < 90
                     End If
-                    If Helpers.Distance(Me.TargetPTN, Me.target.position) > world.ArenaSize.Width / 8 Then
+                    If Helpers.Distance(Me.TargetPTN, Me.target.location) > world.ArenaSize.Width / 8 Then
                         ' abort target if too far away from mining point
                         Me.target = Nothing
                     End If
@@ -393,12 +393,12 @@
                     ' no current mining target
                     Dim max_mining_distance As Integer = world.ArenaSize.Width / 8
                     Dim mining_target As Ship = Me.GetClosestShip(0.0, 1.0)
-                    If Not mining_target Is Nothing AndAlso Helpers.Distance(Me.TargetPTN, mining_target.position) > max_mining_distance Then
+                    If Not mining_target Is Nothing AndAlso Helpers.Distance(Me.TargetPTN, mining_target.location) > max_mining_distance Then
                         mining_target = Nothing
                     End If
                     Me.target = mining_target
                     If Me.target Is Nothing Then
-                        QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y)
+                        QA = Helpers.GetQA(Me.location.X, Me.location.Y, Me.TargetPTN.X, Me.TargetPTN.Y)
                         NeedSpeed = True
                     End If
                 End If
@@ -407,8 +407,8 @@
                     If Me.stats.name = "Ambassador" Then
                         Console.WriteLine()
                     End If
-                    QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.target.position.X, Me.target.position.Y)
-                    Dim rel_dist As Double = Helpers.Distance(Me.position, Me.target.position) - (Me.target.stats.width / 2)
+                    QA = Helpers.GetQA(Me.location.X, Me.location.Y, Me.target.location.X, Me.target.location.Y)
+                    Dim rel_dist As Double = Helpers.Distance(Me.location, Me.target.location) - (Me.target.stats.width / 2)
                     Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = (Me.weapons(0).stats.range * Me.weapons(0).stats.range / rel_dist) * 0.5 ' TODO: instead of this factor, just use the forseen location of the target
                     If rel_dist <= optimal_range Then
                         If Helpers.GetAngleDiff(Me.direction, QA) < 135 Then
@@ -426,8 +426,8 @@
                 QA = direction
                 NeedSpeed = True
             Case BehaviorMode.GoToPoint
-                QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y)
-                If Helpers.Distance(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y) <= 50 Then
+                QA = Helpers.GetQA(Me.location.X, Me.location.Y, Me.TargetPTN.X, Me.TargetPTN.Y)
+                If Helpers.Distance(Me.location.X, Me.location.Y, Me.TargetPTN.X, Me.TargetPTN.Y) <= 50 Then
                     Me.behavior = BehaviorMode.Stand
                 End If
                 NeedSpeed = True
@@ -453,8 +453,8 @@
                 If AWeap.Bar > 0 Then
                     Dim record As Double = 1000 * 1000
                     Dim recorded As Ship = Nothing 'Pas de cible
-                    Dim ToX As Integer = (Math.Sin(2 * Math.PI * (AWeap.Loc + direction) / 360) * (stats.width / 2)) + position.X
-                    Dim ToY As Integer = (Math.Cos(2 * Math.PI * (AWeap.Loc + direction) / 360) * (stats.width / 2)) + position.Y
+                    Dim ToX As Integer = (Math.Sin(2 * Math.PI * (AWeap.Loc + direction) / 360) * (stats.width / 2)) + location.X
+                    Dim ToY As Integer = (Math.Cos(2 * Math.PI * (AWeap.Loc + direction) / 360) * (stats.width / 2)) + location.Y
                     For Each OVessel As Ship In world.Ships
                         If OVessel Is Me Then
                             Continue For
@@ -463,7 +463,7 @@
                             Continue For
                         End If
                         If Me.team Is Nothing OrElse Not Me.team.IsFriendWith(OVessel.team) Then
-                            Dim dist As Integer = Helpers.Distance(ToX, ToY, OVessel.position.X, OVessel.position.Y) - OVessel.stats.width / 2
+                            Dim dist As Integer = Helpers.Distance(ToX, ToY, OVessel.location.X, OVessel.location.Y) - OVessel.stats.width / 2
                             If dist < Me.weapons(0).stats.range Then
                                 If Me.team Is Nothing OrElse Not OVessel.team Is Nothing AndAlso Not Me.team.IsFriendWith(OVessel.team) Then
                                     dist /= 8
@@ -480,9 +480,9 @@
                     Next
                     If Not recorded Is Nothing Then
                         Dim oShip As Ship = recorded
-                        record = Helpers.Distance(ToX, ToY, oShip.position.X, oShip.position.Y) - oShip.stats.width / 2
+                        record = Helpers.Distance(ToX, ToY, oShip.location.X, oShip.location.Y) - oShip.stats.width / 2
                         If record < AWeap.stats.range Then
-                            Dim NewPoint As PointF = Helpers.GetNewPoint(oShip.position, oShip.direction, oShip.speed * (record / AWeap.stats.celerity) * 0.9)
+                            Dim NewPoint As PointF = Helpers.GetNewPoint(oShip.location, oShip.direction, oShip.speed * (record / AWeap.stats.celerity) * 0.9)
                             Dim QA As Integer = Helpers.GetQA(ToX, ToY, NewPoint.X, NewPoint.Y)
                             AWeap.Fire(QA, New Point(ToX, ToY), Me)
                             If (AWeap.stats.special And Weapon.SpecialBits.SelfExplode) <> 0 OrElse (AWeap.stats.special And Weapon.SpecialBits.SelfExplode) <> 0 Then
@@ -499,7 +499,7 @@
     Public Function ConditionsMetUpgrades()
         Dim met_upgrades As List(Of Upgrade) = New List(Of Upgrade)
         For Each upgrade As Upgrade In Upgrade.Upgrades
-            If IsUpgradeCompatible(upgrade) Then
+            If IsUpgradeCompatible(upgrade) OrElse Me.Ups.Contains(upgrade) Then
                 met_upgrades.Add(upgrade)
             End If
         Next
@@ -603,13 +603,13 @@
             Case "!Agility"
                 Me.stats.turn += Spliter(1)
             Case "!Teleport"
-                world.Effects.Add(New Effect With {.Type = "Teleported", .Coo = Me.position, .Direction = 0, .speed = 0})
+                world.Effects.Add(New Effect With {.Type = "Teleported", .Coo = Me.location, .Direction = 0, .speed = 0})
                 Dim tp_dst As PointF = Me.TargetPTN
                 If Not Me.target Is Nothing Then
-                    tp_dst = Me.target.position
+                    tp_dst = Me.target.location
                 End If
-                Me.position = New PointF(tp_dst.X + world.Rand.Next(-512, 512), tp_dst.Y + world.Rand.Next(-512, 512))
-                world.Effects.Add(New Effect With {.Type = "Teleported", .Coo = Me.position, .Direction = 0, .speed = 0})
+                Me.location = New PointF(tp_dst.X + world.Rand.Next(-512, 512), tp_dst.Y + world.Rand.Next(-512, 512))
+                world.Effects.Add(New Effect With {.Type = "Teleported", .Coo = Me.location, .Direction = 0, .speed = 0})
             Case "!Upsbonus"
                 If first_application Then Me.team.upgrade_slots_bonus += Spliter(1) 'FN
             Case "!Maxships"
@@ -688,7 +688,7 @@
                     Me.weapons(0).stats.celerity += Me.weapons(0).stats.celerity * (Helpers.ToDouble(Spliter(1)) / 100.0)
                 End If
             Case "!Sum"
-                If first_application Then world.Ships.Add(New Ship(world, Me.team, Spliter(1)) With {.position = New Point(Me.position.X + world.Rand.Next(-10, 11), Me.position.Y + world.Rand.Next(-10, 11))})
+                If first_application Then world.Ships.Add(New Ship(world, Me.team, Spliter(1)) With {.location = New Point(Me.location.X + world.Rand.Next(-10, 11), Me.location.Y + world.Rand.Next(-10, 11))})
                 world.Ships(world.Ships.Count - 1).direction = Me.direction
                 If world.Ships(world.Ships.Count - 1).weapons.Count() > 0 AndAlso (world.Ships(world.Ships.Count - 1).weapons(0).stats.special And Weapon.SpecialBits.SelfExplode) <> 0 Then
                     world.Ships(world.Ships.Count - 1).behavior = BehaviorMode.Folow
@@ -741,12 +741,12 @@
                 Dim distance_sq As Double
                 ' relationship priority
                 If other_ship.team Is Nothing OrElse Me.team Is Nothing Then
-                    distance_sq = Helpers.DistanceSQ(Me.position, other_ship.position) / neutrals
+                    distance_sq = Helpers.DistanceSQ(Me.location, other_ship.location) / neutrals
                 Else
                     If Me.team.IsFriendWith(other_ship.team) Then
-                        distance_sq = Helpers.DistanceSQ(Me.position, other_ship.position) / allies
+                        distance_sq = Helpers.DistanceSQ(Me.location, other_ship.location) / allies
                     Else
-                        distance_sq = Helpers.DistanceSQ(Me.position, other_ship.position) / enemies
+                        distance_sq = Helpers.DistanceSQ(Me.location, other_ship.location) / enemies
                     End If
                 End If
                 ' test if closer
@@ -759,8 +759,11 @@
         Return closest_ship
     End Function
 
-
-
+    ' calculat point to aim to touch a moving target with the primary weaponry
+    Public Function ForseeLocation(target_ship As Ship) As PointF
+        Dim dist As Double = Helpers.Distance(Me.location, target_ship.location)
+        Return New PointF(target_ship.location.X + target_ship.speed_vec.X, target_ship.location.Y + target_ship.speed_vec.Y)
+    End Function
 
 
 End Class

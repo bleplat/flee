@@ -40,12 +40,12 @@
             main_type = Helpers.RandomStationName(Rand)
         End If
         Dim main_coords As Point = New Point(Rand.Next(1000, ArenaSize.Width - 1000), Rand.Next(1000, ArenaSize.Height - 1000))
-        Ships.Add(New Ship(Me, team, main_type) With {.position = main_coords})
+        Ships.Add(New Ship(Me, team, main_type) With {.location = main_coords})
         ' turrets
         While spawn_allies > 0
             Dim ally_type As String = Helpers.RandomTurretName(Rand)
             Dim ally_coords As Point = New Point(main_coords.X + Rand.Next(-600, 600), main_coords.Y + Rand.Next(-600, 600))
-            Ships.Add(New Ship(Me, team, ally_type) With {.position = ally_coords})
+            Ships.Add(New Ship(Me, team, ally_type) With {.location = ally_coords})
             spawn_allies -= 1
         End While
     End Sub
@@ -59,27 +59,27 @@
         ' Player Ships
         If Rand.Next(0, 100) < 85 Then
             SPAWN_STATION_RANDOMLY("Station", player_team, 3)
-            origin = Ships(0).position
+            origin = Ships(0).location
             power -= 25
         Else
             origin = New Point(Rand.Next(1000, ArenaSize.Width - 1000), Rand.Next(1000, ArenaSize.Height - 1000))
         End If
         If Rand.Next(0, 100) < 75 Then
-            Ships.Add(New Ship(Me, player_team, "Colonizer") With {.position = New Point(origin.X, origin.Y - 1)})
-            Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).position.X, Ships(0).position.Y, origin.X, origin.Y)
+            Ships.Add(New Ship(Me, player_team, "Colonizer") With {.location = New Point(origin.X, origin.Y - 1)})
+            Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).location.X, Ships(0).location.Y, origin.X, origin.Y)
             Ships(Ships.Count - 1).upgrade_slots += Rand.Next(4, 10)
             power -= 15
         End If
         If Rand.Next(0, 100) < 75 Then
-            Ships.Add(New Ship(Me, player_team, "Ambassador") With {.position = New Point(origin.X + 1, origin.Y)})
-            Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).position.X, Ships(0).position.Y, origin.X, origin.Y)
+            Ships.Add(New Ship(Me, player_team, "Ambassador") With {.location = New Point(origin.X + 1, origin.Y)})
+            Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).location.X, Ships(0).location.Y, origin.X, origin.Y)
             Ships(Ships.Count - 1).upgrade_slots += Rand.Next(4, 10)
             power -= 25
         End If
         While power > 0
             Dim types As String() = {"Pusher", "Sacred", "Simpleship", "Artillery", "Bomber", "Dronner", "Scout", "Kastou", "Strange", "MiniColonizer", "Civil_A"}
-            Ships.Add(New Ship(Me, player_team, types(Rand.Next(0, types.Length))) With {.position = New Point(origin.X - 1, origin.Y)})
-            Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).position.X, Ships(0).position.Y, origin.X, origin.Y)
+            Ships.Add(New Ship(Me, player_team, types(Rand.Next(0, types.Length))) With {.location = New Point(origin.X - 1, origin.Y)})
+            Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).location.X, Ships(0).location.Y, origin.X, origin.Y)
             Ships(Ships.Count - 1).upgrade_slots += Rand.Next(6, 12)
             power -= 15
         End While
@@ -90,12 +90,12 @@
         ' Derelict Asteroids
         For i As Integer = 1 To 85
             Dim T As String = "Asteroide" : If Rand.Next(0, 3) = 0 Then T = "Meteoroide"
-            Ships.Add(New Ship(Me, Nothing, T) With {.position = New Point(Rand.Next(0, ArenaSize.Width), Rand.Next(0, ArenaSize.Width)), .direction = Rand.Next(0, 360)})
+            Ships.Add(New Ship(Me, Nothing, T) With {.location = New Point(Rand.Next(0, ArenaSize.Width), Rand.Next(0, ArenaSize.Width)), .direction = Rand.Next(0, 360)})
         Next
         ' Stars
         For i = 0 To Rand.Next(1, 3)
             Dim T As String = "Star"
-            Ships.Add(New Ship(Me, Nothing, T) With {.position = New Point(Rand.Next(0, ArenaSize.Width), Rand.Next(0, ArenaSize.Width)), .direction = Rand.Next(0, 360)})
+            Ships.Add(New Ship(Me, Nothing, T) With {.location = New Point(Rand.Next(0, ArenaSize.Width), Rand.Next(0, ArenaSize.Width)), .direction = Rand.Next(0, 360)})
         Next
         ' allied NPC
         Teams.Add(New Team(Me, AffinityEnum.KIND))
@@ -117,12 +117,12 @@
             For a As Integer = 1 To Ships.Count - 1
                 For b As Integer = 0 To a - 1
                     Dim Aship As Ship = Ships(a) : Dim Bship As Ship = Ships(b)
-                    If Aship.position.X + Aship.stats.width > Bship.position.X - Bship.stats.width AndAlso Bship.position.X + Bship.stats.width > Aship.position.X - Aship.stats.width AndAlso Aship.position.Y + Aship.stats.width > Bship.position.Y - Bship.stats.width AndAlso Bship.position.Y + Bship.stats.width > Aship.position.Y - Aship.stats.width Then
-                        Dim dist As Double = Helpers.Distance(Aship.position, Bship.position)
+                    If Aship.location.X + Aship.stats.width > Bship.location.X - Bship.stats.width AndAlso Bship.location.X + Bship.stats.width > Aship.location.X - Aship.stats.width AndAlso Aship.location.Y + Aship.stats.width > Bship.location.Y - Bship.stats.width AndAlso Bship.location.Y + Bship.stats.width > Aship.location.Y - Aship.stats.width Then
+                        Dim dist As Double = Helpers.Distance(Aship.location, Bship.location)
                         Dim rel_dist As Double = dist - (Aship.stats.width / 2 + Bship.stats.width / 2)
                         If rel_dist < 0 Then
                             Dim z As Double = (-1 * rel_dist / (Aship.stats.width / 2 + Bship.stats.width / 2)) * 0.0125
-                            Dim a_to_b As PointF = New PointF(Bship.position.X - Aship.position.X, Bship.position.Y - Aship.position.Y)
+                            Dim a_to_b As PointF = New PointF(Bship.location.X - Aship.location.X, Bship.location.Y - Aship.location.Y)
                             If Bship.stats.speed <> 0 Then Bship.speed_vec = New PointF(Bship.speed_vec.X + a_to_b.X * z, Bship.speed_vec.Y + a_to_b.Y * z)
                             If Aship.stats.speed <> 0 Then Aship.speed_vec = New PointF(Aship.speed_vec.X - a_to_b.X * z, Aship.speed_vec.Y - a_to_b.Y * z)
                         End If
@@ -154,7 +154,7 @@
         For Each AShoot As Shoot In Shoots
             For Each AShip As Ship In Ships
                 If Not AShoot.Team Is AShip.team AndAlso (AShoot.Team Is Nothing OrElse Not AShoot.Team.IsFriendWith(AShip.team)) Then
-                    If Helpers.Distance(AShoot.Coo.X, AShoot.Coo.Y, AShip.position.X, AShip.position.Y) < AShip.stats.width / 2 Then
+                    If Helpers.Distance(AShoot.Coo.X, AShoot.Coo.Y, AShip.location.X, AShip.location.Y) < AShip.stats.width / 2 Then
                         AShoot.Life = 0
                         If AShip.stats.hot_deflector > 0 AndAlso Rand.Next(0, 100) < AShip.stats.hot_deflector Then
                             Effects.Add(New Effect With {.Type = "Deflected2", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
@@ -180,14 +180,14 @@
         If Ships.Count > 0 Then
             For i As Integer = Ships.Count - 1 To 0 Step -1
                 If Ships(i).integrity <= 0 Then
-                    Effects.Add(New Effect With {.Type = "ExplosionA", .Coo = Ships(i).position, .Direction = 0, .Life = 8, .speed = 0})
+                    Effects.Add(New Effect With {.Type = "ExplosionA", .Coo = Ships(i).location, .Direction = 0, .Life = 8, .speed = 0})
                     For c As Integer = 1 To Ships(i).stats.width / 8
-                        Effects.Add(New Effect With {.Type = "DebrisA", .Coo = Ships(i).position, .Direction = Rand.Next(0, 360), .Life = Rand.Next(80, 120), .speed = Rand.Next(3, 7)})
+                        Effects.Add(New Effect With {.Type = "DebrisA", .Coo = Ships(i).location, .Direction = Rand.Next(0, 360), .Life = Rand.Next(80, 120), .speed = Rand.Next(3, 7)})
                     Next
                     If Ships(i).stats.sprite = "Nuke" Then
                         NuclearEffect = 255
                         For c As Integer = 1 To 256
-                            Effects.Add(New Effect With {.Type = "ExplosionA", .Coo = Ships(i).position, .Direction = Rand.Next(0, 360), .Life = 8, .speed = Rand.Next(5, 256)})
+                            Effects.Add(New Effect With {.Type = "ExplosionA", .Coo = Ships(i).location, .Direction = Rand.Next(0, 360), .Life = 8, .speed = Rand.Next(5, 256)})
                         Next
                         Dim FriendlyFireCount As Integer = 0
                         For Each a_ship As Ship In Ships
@@ -197,9 +197,9 @@
                             a_ship.TakeDamages(8, Nothing)
                             a_ship.TakeDamages(8, Nothing)
                             a_ship.TakeDamages(8, Nothing)
-                            a_ship.TakeDamages(Math.Max(0, Math.Sqrt(Math.Max(0, 7000 - Helpers.Distance(Ships(i).position.X, Ships(i).position.Y, a_ship.position.X, a_ship.position.Y)))), Nothing)
+                            a_ship.TakeDamages(Math.Max(0, Math.Sqrt(Math.Max(0, 7000 - Helpers.Distance(Ships(i).location.X, Ships(i).location.Y, a_ship.location.X, a_ship.location.Y)))), Nothing)
                             a_ship.TakeDamages(24, Nothing)
-                            If Helpers.Distance(Ships(i).position.X, Ships(i).position.Y, a_ship.position.X, a_ship.position.Y) < 5500 Then
+                            If Helpers.Distance(Ships(i).location.X, Ships(i).location.Y, a_ship.location.X, a_ship.location.Y) < 5500 Then
                                 a_ship.TakeDamages(10000, Nothing)
                             End If
                             If Not a_ship.team Is Nothing AndAlso a_ship.team.affinity = AffinityEnum.KIND AndAlso a_ship.integrity <= 0 AndAlso a_ship.team.id <> Ships(i).team.id Then
@@ -336,7 +336,7 @@
                 End If
             End If
             For j As Integer = 1 To Count
-                Ships.Add(New Ship(Me, Team, Type) With {.position = New Point(Spawn.X + Rand.Next(-50, 50), Spawn.Y + Rand.Next(-50, 50)), .direction = dir})
+                Ships.Add(New Ship(Me, Team, Type) With {.location = New Point(Spawn.X + Rand.Next(-50, 50), Spawn.Y + Rand.Next(-50, 50)), .direction = dir})
             Next
         End If
     End Sub
