@@ -265,7 +265,7 @@ Public Class MainForm
 				help_str += "Click or draw a sqare to select units." & vbNewLine
 				help_str += "Right click to order them to move, folow an ally or attack an enemy." & vbNewLine
 				help_str += "Double right click to order your ships to mine nearby asteroids." & vbNewLine
-				help_str += "Double right click onto your selected ship to order it to only attack enemies." & vbNewLine
+				help_str += "Right click onto your selected ship itself to order it to only attack enemies." & vbNewLine
 				help_str += vbNewLine
 				help_str += "Press H to hide this text." & vbNewLine
 			Else
