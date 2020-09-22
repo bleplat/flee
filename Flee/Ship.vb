@@ -404,12 +404,14 @@
                 End If
             Case BehaviorMode.Folow
                 If Not Me.target Is Nothing Then
-                    If Me.stats.name = "Ambassador" Then
+                    If Me.stats.name = "Ambassador" Then ' TODO: NOW: remove this
                         Console.WriteLine()
                     End If
-                    QA = Helpers.GetQA(Me.location.X, Me.location.Y, Me.target.location.X, Me.target.location.Y)
-                    Dim rel_dist As Double = Helpers.Distance(Me.location, Me.target.location) - (Me.target.stats.width / 2)
-                    Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = (Me.weapons(0).stats.range * Me.weapons(0).stats.range / rel_dist) * 0.5 ' TODO: instead of this factor, just use the forseen location of the target
+                    Dim forseen_location As PointF = Me.ForseeLocation(Me.target)
+                    world.Effects.Add(New Effect With {.Type = "Cible", .Coo = forseen_location, .Direction = 45, .speed = 0})
+                    QA = Helpers.GetQA(Me.location.X, Me.location.Y, forseen_location.X, forseen_location.Y)
+                    Dim rel_dist As Double = Helpers.Distance(Me.location, forseen_location) - (Me.target.stats.width / 2)
+                    Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = (Me.weapons(0).stats.range * Me.weapons(0).stats.range / rel_dist) * 1.0 ' TODO: instead of this factor, just use the forseen location of the target
                     If rel_dist <= optimal_range Then
                         If Helpers.GetAngleDiff(Me.direction, QA) < 135 Then
                             QA = QA + 180
@@ -759,10 +761,11 @@
         Return closest_ship
     End Function
 
-    ' calculat point to aim to touch a moving target with the primary weaponry
+    ' calculat point to aim to reach a moving target
     Public Function ForseeLocation(target_ship As Ship) As PointF
         Dim dist As Double = Helpers.Distance(Me.location, target_ship.location)
-        Return New PointF(target_ship.location.X + target_ship.speed_vec.X, target_ship.location.Y + target_ship.speed_vec.Y)
+        Dim time As Double = dist / Math.Max(1.0, Me.stats.speed)
+        Return New PointF(target_ship.location.X + target_ship.speed_vec.X * time, target_ship.location.Y + target_ship.speed_vec.Y * time)
     End Function
 
 
