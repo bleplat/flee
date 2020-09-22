@@ -47,7 +47,7 @@ Public NotInheritable Class Helpers
 	End Function
 
 	Public Shared Function GetAngleDiff(a1 As Double, a2 As Double) As Double
-		Return Modulo((a2 - a1 + 180), 360) - 180
+		Return Math.Abs(Modulo((a2 - a1 + 180), 360) - 180)
 	End Function
 
 	Private Shared bitmaps As New Dictionary(Of String, Bitmap)

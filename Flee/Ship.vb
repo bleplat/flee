@@ -282,7 +282,7 @@
         While direction < 0
             direction = direction + 360
         End While
-        If GetAngDif(direction, qa) < stats.turn Then
+        If Helpers.GetAngleDiff(direction, qa) < stats.turn Then
             direction = qa
             Exit Sub
         Else
@@ -302,21 +302,6 @@
         End If
 
     End Sub
-    Public Function GetAngDif(ByVal ang1 As Single, ByVal ang2 As Single) As Single
-        While ang1 >= 360
-            ang1 = ang1 - 360
-        End While
-        While ang1 < 0
-            ang1 = ang1 + 360
-        End While
-        While ang2 >= 360
-            ang2 = ang2 - 360
-        End While
-        While ang2 < 0
-            ang2 = ang2 + 360
-        End While
-        Return Math.Abs(ang1 - ang2)
-    End Function
     Sub TakeDamages(ByVal Amount As Integer, Optional ByRef From As Shoot = Nothing)
         If Me.deflectors_loaded > 0 Then
             Me.deflectors_loaded -= 1
@@ -401,7 +386,7 @@
                         QA = QA + 180
                         NeedSpeed = False
                     Else
-                        NeedSpeed = GetAngDif(Me.direction, QA) < 180
+                        NeedSpeed = Helpers.GetAngleDiff(Me.direction, QA) < 90
                     End If
                     If Helpers.Distance(Me.TargetPTN, Me.target.position) > world.ArenaSize.Width / 8 Then
                         ' abort target if too far away from mining point
@@ -422,14 +407,19 @@
                 End If
             Case BehaviorMode.Folow
                 If Not Me.target Is Nothing Then
+                    If Me.stats.name = "Ambassador" Then
+                        Console.WriteLine()
+                    End If
                     QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.target.position.X, Me.target.position.Y)
                     Dim rel_dist As Double = Helpers.Distance(Me.position, Me.target.position) - (Me.target.stats.width / 2)
                     Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = (Me.weapons(0).stats.range * Me.weapons(0).stats.range / rel_dist) * 0.5 ' TODO: instead of this factor, just use the forseen location of the target
                     If rel_dist <= optimal_range Then
-                        QA = QA + 180
+                        If Helpers.GetAngleDiff(Me.direction, QA) < 135 Then
+                            QA = QA + 180
+                        End If
                         NeedSpeed = (Me.stats.speed > 4 OrElse Me.stats.width < 35 OrElse Me.speed < 1.0)
                     Else
-                        NeedSpeed = GetAngDif(Me.direction, QA) < 180
+                        NeedSpeed = Helpers.GetAngleDiff(Me.direction, QA) < 90
                     End If
                 End If
             Case BehaviorMode.Stand
