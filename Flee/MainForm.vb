@@ -248,18 +248,19 @@ Public Class MainForm
 		If help Then
 			Dim help_str As String = ""
 			If Not has_ascended Then
-				help_str += "CONTROLS:" & vbNewLine
-				help_str += "Arrows               - move camera" & vbNewLine
-				help_str += "Left Click           - select unit" & vbNewLine
-				help_str += "Right Click          - (for selected units) move, follow OrElse attack" & vbNewLine
-				help_str += "Double Right Click   - (for selected units) mine there" & vbNewLine
-				help_str += "Right Click (on you) - (for unit you click on, if selected) ignore asteroids" & vbNewLine
-				help_str += "Space                - pause" & vbNewLine
-				help_str += "M                    - timelapse" & vbNewLine
-				help_str += "I                    - combat mode (show all enemies in red)" & vbNewLine
-				help_str += "H                    - show/hide this help" & vbNewLine
-				help_str += vbNewLine
 				help_str += "The galaxy went into chaos. Find a way to escape." & vbNewLine
+				help_str += vbNewLine
+				help_str += "Use the arrows, or click the minimap to move the camera." & vbNewLine
+				help_str += "Press SPACE to pause the game." & vbNewLine
+				help_str += "Press M to accelerate time." & vbNewLine
+				help_str += "Press I to display all allies in blue and all enemies in red." & vbNewLine
+				help_str += vbNewLine
+				help_str += "Click or draw a sqare to select units." & vbNewLine
+				help_str += "Right click to order them to move, folow an ally or attack an enemy." & vbNewLine
+				help_str += "Double right click to order your ships to mine nearby asteroids." & vbNewLine
+				help_str += "Double right click onto your selected ship to order it to only attack enemies." & vbNewLine
+				help_str += vbNewLine
+				help_str += "Press H to hide this text." & vbNewLine
 			Else
 				help_str += "Congratulations!" & vbNewLine
 				help_str += "Your people just accessed another level of existence." & vbNewLine
@@ -268,7 +269,7 @@ Public Class MainForm
 				help_str += vbNewLine
 				help_str += "You won." & vbNewLine
 			End If
-			G.DrawString(help_str, New Font("Consolas", 8), Brushes.Gray, New Point(0, DrawBMP.Height - 256))
+			G.DrawString(help_str, New Font("Consolas", 10), Brushes.Cyan, New Point(0, DrawBMP.Height - 256))
 		End If
 
 		MiniBox.Image = MiniBMP
