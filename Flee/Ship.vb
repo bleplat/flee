@@ -184,11 +184,12 @@
                 If Me.bot_ship = False Then Me.integrity = 0
             End If
         End If
-        '===' Déplacement '==='
+        ' movement
         If stats.turn = 0 AndAlso stats.speed = 0 Then
-            direction = direction + 1
+            direction = direction + 25 / Me.stats.width
         Else
-            speed_vec = Helpers.GetNewPoint(New Point(0, 0), direction, speed)
+            Dim new_speed As PointF = Helpers.GetNewPoint(New Point(0, 0), direction, speed)
+            Me.speed_vec = New PointF(speed_vec.X * 0.9 + new_speed.X * 0.1, speed_vec.Y * 0.9 + new_speed.Y * 0.1)
             Me.position.X = Me.position.X + speed_vec.X
             Me.position.Y = Me.position.Y + speed_vec.Y
         End If
