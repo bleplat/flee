@@ -375,7 +375,7 @@
         '===' Auto-Activation '==='
         If Me.bot_ship AndAlso Me.behavior <> BehaviorMode.Drift Then
             If Me.target Is Nothing Then
-                Dim NearUID As Ship = Me.GetClosestShip(1.0, 1.0)
+                Dim NearUID As Ship = Me.GetClosestShip(2.0, 1.0)
                 If Not NearUID Is Nothing Then
                     Me.target = NearUID
                     Me.behavior = BehaviorMode.Folow
