@@ -343,23 +343,17 @@
 
 
     Public Sub IA(rnd_num As Integer)
-        If Me.stats.name = "Ambassador" Then
-            Console.WriteLine()
-        End If
         Dim QA As Single
         Dim NeedSpeed As Boolean = False
-        'Remove destroyed targets
+        ' remove destroyed target
         If Not Me.target Is Nothing AndAlso Me.target.IsDestroyed() Then
             Me.target = Nothing
         End If
         '===' Fin de poursuite '==='
-        If Me.behavior <> BehaviorMode.Drift AndAlso target Is Nothing Then
-            target = Nothing
-            If Me.behavior <> BehaviorMode.Mine Then
-                Me.behavior = BehaviorMode.Stand
-            End If
+        If Me.behavior = BehaviorMode.Folow AndAlso target Is Nothing Then
+            Me.behavior = BehaviorMode.Stand
         End If
-        '===' Derelict are alway drifting '==='
+        ' no team mean drifting
         If Me.team Is Nothing Then
             Me.behavior = BehaviorMode.Drift
         End If
