@@ -376,12 +376,14 @@
                 If Not Me.target Is Nothing Then
                     ' has mining target already
                     QA = Helpers.GetQA(Me.location.X, Me.location.Y, Me.target.location.X, Me.target.location.Y)
-                    Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = Me.weapons(0).stats.range * 0.65
+                    Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = Me.weapons(0).stats.range * 0.5
                     Dim rel_dist As Double = Helpers.Distance(Me.location, Me.target.location) - (Me.target.stats.width / 2)
                     If rel_dist <= optimal_range Then
                         ' turn if too close
-                        QA = QA + 180
-                        NeedSpeed = False
+                        If Helpers.GetAngleDiff(Me.direction, QA) < 120 Then
+                            QA = QA + 180
+                        End If
+                        NeedSpeed = True
                     Else
                         NeedSpeed = Helpers.GetAngleDiff(Me.direction, QA) < 90
                     End If
@@ -404,22 +406,18 @@
                 End If
             Case BehaviorMode.Folow
                 If Not Me.target Is Nothing Then
-                    If Me.stats.name = "Ambassador" Then ' TODO: NOW: remove this
-                        Console.WriteLine()
-                    End If
                     Dim forseen_location As PointF = Me.ForseeLocation(Me.target)
-                    world.Effects.Add(New Effect With {.Type = "Cible", .Coo = forseen_location, .Direction = 45, .speed = 0})
+                    'world.Effects.Add(New Effect With {.Type = "Cible", .Coo = forseen_location, .Direction = 45, .speed = 0})
                     QA = Helpers.GetQA(Me.location.X, Me.location.Y, forseen_location.X, forseen_location.Y)
-                    Dim rel_dist As Double = Helpers.Distance(Me.location, forseen_location) - (Me.target.stats.width / 2)
-                    Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = (Me.weapons(0).stats.range * Me.weapons(0).stats.range / rel_dist) * 1.0 ' TODO: instead of this factor, just use the forseen location of the target
-                    If rel_dist <= optimal_range Then
+                    Dim rel_forseen_dist As Double = Helpers.Distance(Me.location, forseen_location) - (Me.target.stats.width / 2)
+                    Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = (Me.weapons(0).stats.range * Me.weapons(0).stats.range / rel_forseen_dist) * 0.8 ' TODO: instead of this factor, just use the forseen location of the target
+                    If Helpers.Distance(Me.location, Me.target.location) <= optimal_range Then
                         If Helpers.GetAngleDiff(Me.direction, QA) < 135 Then
                             QA = QA + 180
                         End If
-                        NeedSpeed = (Me.stats.speed > 4 OrElse Me.stats.width < 35 OrElse Me.speed < 1.0)
-                    Else
-                        NeedSpeed = Helpers.GetAngleDiff(Me.direction, QA) < 90
                     End If
+                    'NeedSpeed = Helpers.GetAngleDiff(Me.direction, QA) < 90
+                    NeedSpeed = True
                 End If
             Case BehaviorMode.Stand
                 QA = direction
@@ -453,20 +451,21 @@
         If weapons.Count > 0 AndAlso (fram Mod 2 = 0) Then
             For Each AWeap As Weapon In weapons
                 If AWeap.Bar > 0 Then
-                    Dim record As Double = 1000 * 1000
-                    Dim recorded As Ship = Nothing 'Pas de cible
+                    Dim closest_dist As Double = Double.MaxValue
+                    Dim closest_ship As Ship = Nothing 'Pas de cible
                     Dim ToX As Integer = (Math.Sin(2 * Math.PI * (AWeap.Loc + direction) / 360) * (stats.width / 2)) + location.X
                     Dim ToY As Integer = (Math.Cos(2 * Math.PI * (AWeap.Loc + direction) / 360) * (stats.width / 2)) + location.Y
                     For Each OVessel As Ship In world.Ships
                         If OVessel Is Me Then
                             Continue For
                         End If
-                        If Not Me.AllowMining AndAlso (OVessel.stats.default_weapons.Count = 0 OrElse OVessel.weapons(0).stats.power = 0) Then
+                        If Not Me.AllowMining AndAlso (OVessel.stats.default_weapons.Count = 0 OrElse AWeap.stats.power = 0) Then
                             Continue For
                         End If
                         If Me.team Is Nothing OrElse Not Me.team.IsFriendWith(OVessel.team) Then
-                            Dim dist As Integer = Helpers.Distance(ToX, ToY, OVessel.location.X, OVessel.location.Y) - OVessel.stats.width / 2
-                            If dist < Me.weapons(0).stats.range Then
+                            'Dim dist As Integer = Helpers.Distance(ToX, ToY, OVessel.location.X, OVessel.location.Y) - OVessel.stats.width / 2
+                            Dim dist As Double = Helpers.Distance(Me.location, AWeap.ForseeShootingLocation(OVessel)) - (OVessel.stats.width / 2)
+                            If dist < AWeap.stats.range Then
                                 If Me.team Is Nothing OrElse Not OVessel.team Is Nothing AndAlso Not Me.team.IsFriendWith(OVessel.team) Then
                                     dist /= 8
                                 End If
@@ -474,17 +473,21 @@
                                     dist /= 4
                                 End If
                             End If
-                            If dist < record Then
-                                record = dist
-                                recorded = OVessel
+                            If dist < closest_dist Then
+                                closest_dist = dist
+                                closest_ship = OVessel
                             End If
                         End If
                     Next
-                    If Not recorded Is Nothing Then
-                        Dim oShip As Ship = recorded
-                        record = Helpers.Distance(ToX, ToY, oShip.location.X, oShip.location.Y) - oShip.stats.width / 2
-                        If record < AWeap.stats.range Then
-                            Dim NewPoint As PointF = Helpers.GetNewPoint(oShip.location, oShip.direction, oShip.speed * (record / AWeap.stats.celerity) * 0.9)
+                    If Not closest_ship Is Nothing Then
+                        Dim oShip As Ship = closest_ship
+                        'closest_dist = Helpers.Distance(ToX, ToY, oShip.location.X, oShip.location.Y) - oShip.stats.width / 2
+                        'Dim closest_dist As Double = Helpers.Distance(Me.location, Me.ForseeLocation(closest_ship)) - (closest_ship.stats.width / 2)
+                        'If Not closest_ship.team Is Nothing AndAlso closest_ship.team.bot_team = False Then ' TODO: NOW: remove
+                        '    world.Effects.Add(New Effect With {.Type = "Cible", .Coo = AWeap.ForseeShootingLocation(closest_ship), .Direction = 45, .speed = 0})
+                        'End If
+                        If closest_dist < AWeap.stats.range Then
+                            Dim NewPoint As PointF = AWeap.ForseeShootingLocation(closest_ship)
                             Dim QA As Integer = Helpers.GetQA(ToX, ToY, NewPoint.X, NewPoint.Y)
                             AWeap.Fire(QA, New Point(ToX, ToY), Me)
                             If (AWeap.stats.special And Weapon.SpecialBits.SelfExplode) <> 0 OrElse (AWeap.stats.special And Weapon.SpecialBits.SelfExplode) <> 0 Then
@@ -767,6 +770,5 @@
         Dim time As Double = dist / Math.Max(1.0, Me.stats.speed)
         Return New PointF(target_ship.location.X + target_ship.speed_vec.X * time, target_ship.location.Y + target_ship.speed_vec.Y * time)
     End Function
-
 
 End Class
