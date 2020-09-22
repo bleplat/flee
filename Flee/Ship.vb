@@ -424,7 +424,7 @@
                 If Not Me.target Is Nothing Then
                     QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.target.position.X, Me.target.position.Y)
                     Dim rel_dist As Double = Helpers.Distance(Me.position, Me.target.position) - (Me.target.stats.width / 2)
-                    Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = Me.weapons(0).stats.range * ((Me.weapons(0).stats.celerity * (Me.weapons(0).stats.range / Me.weapons(0).stats.celerity) / rel_dist)) * 0.75
+                    Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = (Me.weapons(0).stats.range * Me.weapons(0).stats.range / rel_dist) * 0.5 ' TODO: instead of this factor, just use the forseen location of the target
                     If rel_dist <= optimal_range Then
                         QA = QA + 180
                         NeedSpeed = (Me.stats.speed > 4 OrElse Me.stats.width < 35 OrElse Me.speed < 1.0)
