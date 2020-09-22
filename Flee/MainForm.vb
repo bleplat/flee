@@ -425,21 +425,21 @@ Public Class MainForm
 		If SelectCount = 0 Then
 			Exit Sub
 		End If
-		Dim oUID As Ship = Nothing
+		Dim other_ship As Ship = Nothing
 		'===' Recherche '==='
 		For Each AShip As Ship In world.Ships
 			If AShip.position.X + AShip.stats.width / 2 > SelectPTN2.X Then
 				If AShip.position.X - AShip.stats.width / 2 < SelectPTN2.X Then
 					If AShip.position.Y + AShip.stats.width / 2 > SelectPTN2.Y Then
 						If AShip.position.Y - AShip.stats.width / 2 < SelectPTN2.Y Then
-							oUID = AShip
+							other_ship = AShip
 						End If
 					End If
 				End If
 			End If
 		Next
 		'===' Validation '==='
-		If oUID Is Nothing Then
+		If other_ship Is Nothing Then
 			For Each AShip As Ship In world.Ships
 				If AShip.selected Then
 					If AShip.TargetPTN = SelectPTN2 Then
@@ -458,13 +458,13 @@ Public Class MainForm
 		Else
 			For Each AShip As Ship In world.Ships
 				If AShip.selected Then
-					If AShip Is oUID Then
+					If AShip Is other_ship Then
 						world.Effects.Add(New Effect With {.Type = "Cible2", .Coo = SelectPTN2})
 						AShip.AllowMining = False
 					Else
 						world.Effects.Add(New Effect With {.Type = "Cible", .Coo = SelectPTN2})
 						AShip.behavior = Ship.BehaviorMode.Folow
-						AShip.target = oUID
+						AShip.target = other_ship
 					End If
 				End If
 			Next

@@ -59,7 +59,6 @@
         ' Player Ships
         If Rand.Next(0, 100) < 85 Then
             SPAWN_STATION_RANDOMLY("Station", player_team, 3)
-            Ships(0).uid = MainForm.MAIN_BASE
             origin = Ships(0).position
             power -= 25
         Else
@@ -404,28 +403,16 @@
             Next
 		End If
 	End Sub
-	Sub AutoSpawn(Optional ByVal force As Boolean = False)
+    Sub AutoSpawn(Optional ByVal force As Boolean = False)
         SpawnDerelictsObjects()
         SpawnNPCShips()
     End Sub
-
-
-
-    '===' Fonctions '==='
-    Public Function GetShipByUID(ByVal UID As ULong) As Ship
-        For Each AShip As Ship In Ships
-            If AShip.uid = UID Then
-                Return AShip
-            End If
-        Next
-        Return Nothing
-    End Function
 
     '===' UPGRADES SHIPS '==='
     Public Function CountTeamShips(team As Team) As Integer
         Dim count As Integer = 0 : For Each aship As Ship In Ships
             If aship.team Is team Then
-                If aship.uid <> MainForm.MAIN_BASE Then
+                If aship.stats.speed <> 0.0 OrElse Not aship.stats.name.Contains("Station") Then
                     count = count + 1
                 End If
                 If (Not aship.Upgrading Is Nothing) AndAlso aship.Upgrading.Effect.StartsWith("!Sum") Then

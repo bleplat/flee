@@ -31,7 +31,6 @@
     'main
     Private base_stats As ShipStats = Nothing
     Public stats As ShipStats = Nothing
-    Public uid As ULong = ULong.MaxValue - 1
     Public team As Team = Nothing
     Public color As Color = Color.White
     Public fram As UShort = 0
@@ -57,14 +56,12 @@
     End Sub
     Public Sub New(ByRef world As World, ship_class As String)
         Me.world = world
-        Me.uid = Helpers.GetNextUniqueID()
         SetStats(ship_class)
         ResetShieldPoint()
         Me.TargetPTN = New PointF(Me.position.X, Me.position.Y)
     End Sub
     Public Sub New(ByRef world As World, team As Team, ship_class As String)
         Me.world = world
-        Me.uid = Helpers.GetNextUniqueID()
         Me.SetTeam(team)
         SetStats(ship_class)
         ResetShieldPoint()
@@ -148,7 +145,6 @@
         ' Ship just created TODO: NOW: move to constructor
         If IsNew Then
             Me.Upgrading = Nothing
-            uid = Helpers.GetNextUniqueID()
             ' state
             integrity = stats.integrity
             shield = stats.shield
@@ -360,9 +356,9 @@
         '===' Auto-Activation '==='
         If Me.bot_ship AndAlso Me.behavior <> BehaviorMode.Drift Then
             If Me.target Is Nothing Then
-                Dim NearUID As Ship = Me.GetClosestShip(2.0, 1.0)
-                If Not NearUID Is Nothing Then
-                    Me.target = NearUID
+                Dim nearest_ship As Ship = Me.GetClosestShip(2.0, 1.0)
+                If Not nearest_ship Is Nothing Then
+                    Me.target = nearest_ship
                     Me.behavior = BehaviorMode.Folow
                 End If
             Else
@@ -549,7 +545,7 @@
             Case "?S"
                 If stats.speed > 0 Then Return True
             Case "?Base"
-                If Me.uid = MainForm.MAIN_BASE Then Return True
+                If Me.stats.name.Contains("Station") Then Return True
             Case "+Lvl"
                 If Me.stats.level >= Spliter(1) Then Return True
             Case "+Speed" 'vitesse
