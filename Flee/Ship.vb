@@ -393,17 +393,17 @@
                 Me.AllowMining = True
                 If Not Me.target Is Nothing Then
                     ' has mining target already
-                    Dim oShip As Ship = Me.target
-                    QA = Helpers.GetQA(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
-                    Dim d As Integer = 50 : If weapons.Count > 0 Then d = Me.weapons(0).stats.range / 2
-                    If Helpers.Distance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y) <= d Then
+                    QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.target.position.X, Me.target.position.Y)
+                    Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = Me.weapons(0).stats.range * 0.65
+                    Dim rel_dist As Double = Helpers.Distance(Me.position, Me.target.position) - (Me.target.stats.width / 2)
+                    If rel_dist <= optimal_range Then
                         ' turn if too close
                         QA = QA + 180
                         NeedSpeed = False
                     Else
-                        NeedSpeed = True
+                        NeedSpeed = GetAngDif(Me.direction, QA) < 180
                     End If
-                    If Helpers.Distance(Me.TargetPTN, oShip.position) > world.ArenaSize.Width / 8 Then
+                    If Helpers.Distance(Me.TargetPTN, Me.target.position) > world.ArenaSize.Width / 8 Then
                         ' abort target if too far away from mining point
                         Me.target = Nothing
                     End If
@@ -420,27 +420,24 @@
                         NeedSpeed = True
                     End If
                 End If
+            Case BehaviorMode.Folow
+                If Not Me.target Is Nothing Then
+                    QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.target.position.X, Me.target.position.Y)
+                    Dim rel_dist As Double = Helpers.Distance(Me.position, Me.target.position) - (Me.target.stats.width / 2)
+                    Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = Me.weapons(0).stats.range * ((Me.weapons(0).stats.celerity * (Me.weapons(0).stats.range / Me.weapons(0).stats.celerity) / rel_dist)) * 0.75
+                    If rel_dist <= optimal_range Then
+                        QA = QA + 180
+                        NeedSpeed = (Me.stats.speed > 4 OrElse Me.stats.width < 35 OrElse Me.speed < 1.0)
+                    Else
+                        NeedSpeed = GetAngDif(Me.direction, QA) < 180
+                    End If
+                End If
             Case BehaviorMode.Stand
                 QA = direction
                 NeedSpeed = False
             Case BehaviorMode.Drift
                 QA = direction
                 NeedSpeed = True
-            Case BehaviorMode.Folow
-                If Not Me.target Is Nothing Then
-                    NeedSpeed = True
-                    Dim oShip As Ship = Me.target
-                    QA = Helpers.GetQA(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y)
-                    Dim d As Integer = 50 : If weapons.Count > 0 Then d = Me.weapons(0).stats.range / 2
-                    If Helpers.Distance(Me.position.X, Me.position.Y, oShip.position.X, oShip.position.Y) <= d Then
-                        If Me.stats.speed > 4 OrElse Me.stats.width < 35 OrElse Me.speed < 1.0 Then
-                            NeedSpeed = True
-                        Else
-                            NeedSpeed = False
-                        End If
-                        QA = QA + 180
-                    End If
-                End If
             Case BehaviorMode.GoToPoint
                 QA = Helpers.GetQA(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y)
                 If Helpers.Distance(Me.position.X, Me.position.Y, Me.TargetPTN.X, Me.TargetPTN.Y) <= 50 Then

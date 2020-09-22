@@ -42,6 +42,14 @@ Public NotInheritable Class Helpers
 		Return AncPoint
 	End Function
 
+	Public Shared Function Modulo(a As Double, n As Double) As Double
+		Return (a Mod n + n) Mod n
+	End Function
+
+	Public Shared Function GetAngleDiff(a1 As Double, a2 As Double) As Double
+		Return Modulo((a2 - a1 + 180), 360) - 180
+	End Function
+
 	Private Shared bitmaps As New Dictionary(Of String, Bitmap)
 	Public Shared Function GetSprite(ByVal img_name As String, ByVal x As Integer, ByVal y As Integer, Optional ByVal Scolor As Color = Nothing) As Bitmap
 		Dim bmp As Bitmap = Nothing
