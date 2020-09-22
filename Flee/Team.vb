@@ -71,7 +71,7 @@ Public Class Team
             available_colors.Add(Color.FromArgb(173, 34, 69)) ' crismon (pinkish 5th)
             available_colors.Add(Color.FromArgb(255, 128, 255)) ' pink (pinkish 4th)
             available_colors.Add(Color.FromArgb(255, 128, 0)) ' orange (orangish 2nd)
-            available_colors.Add(Color.FromArgb(255, 0, 192)) ' red purple (pinkish 3rd)
+            'available_colors.Add(Color.FromArgb(255, 0, 192)) ' red purple (pinkish 3rd, confusing)
             available_colors.Add(Color.FromArgb(255, 64, 0)) ' orange-red (orangish 1st)
             available_colors.Add(Color.FromArgb(255, 0, 128)) ' red pink (pinkish 2nd)
             available_colors.Add(Color.FromArgb(255, 255, 0)) ' primary yellow
