@@ -123,7 +123,7 @@
                         If rel_dist < 0 Then
                             Dim z As Double = (-1 * rel_dist / (Aship.stats.width / 2 + Bship.stats.width / 2)) * 0.0125
                             Dim a_to_b As PointF = New PointF(Bship.location.X - Aship.location.X, Bship.location.Y - Aship.location.Y)
-                            If Bship.stats.speed <> 0 Then Bship.speed_vec = New PointF(Bship.speed_vec.X + a_to_b.X * z, Bship.speed_vec.Y + a_to_b.Y * z)
+                            If Bship.stats.speed <> 0 Then Bship.speed_vec = New PointF(Bship.speed_vec.X + a_to_b.X * z, Bship.speed_vec.Y + a_to_b.Y * z + 0.001)
                             If Aship.stats.speed <> 0 Then Aship.speed_vec = New PointF(Aship.speed_vec.X - a_to_b.X * z, Aship.speed_vec.Y - a_to_b.Y * z)
                         End If
                     End If
