@@ -459,44 +459,55 @@
         If weapons.Count > 0 AndAlso (fram Mod 2 = 0) Then
             For Each AWeap As Weapon In weapons
                 If AWeap.Bar > 0 Then
-                    Dim closest_dist As Double = Double.MaxValue
-                    Dim closest_ship As Ship = Nothing 'Pas de cible
-                    Dim ToX As Integer = (Math.Sin(2 * Math.PI * (AWeap.Loc + direction) / 360) * (stats.width / 2)) + location.X
-                    Dim ToY As Integer = (Math.Cos(2 * Math.PI * (AWeap.Loc + direction) / 360) * (stats.width / 2)) + location.Y
-                    For Each OVessel As Ship In world.Ships
-                        If OVessel Is Me Then
-                            Continue For
+                    Dim closest_score As Double = Double.MaxValue
+                    Dim weapon_targeted_ship As Ship = Nothing 'Pas de cible
+                    Dim weapon_location_x As Integer = (Math.Sin(2 * Math.PI * (AWeap.Loc + direction) / 360) * (stats.width / 2)) + location.X
+                    Dim weapon_location_y As Integer = (Math.Cos(2 * Math.PI * (AWeap.Loc + direction) / 360) * (stats.width / 2)) + location.Y
+                    ' target in range
+                    If Not Me.target Is Nothing Then
+                        If Me.team Is Nothing OrElse Not Me.team.IsFriendWith(Me.target.team) Then
+                            Dim dist As Double = Helpers.Distance(Me.location, AWeap.ForseeShootingLocation(Me.target)) - (Me.target.stats.width / 2)
+                            If dist < AWeap.stats.range * 0.9 Then
+                                weapon_targeted_ship = Me.target
+                            End If
                         End If
-                        If Not Me.AllowMining AndAlso (OVessel.stats.default_weapons.Count = 0 OrElse AWeap.stats.power = 0) Then
-                            Continue For
-                        End If
-                        If Me.team Is Nothing OrElse Not Me.team.IsFriendWith(OVessel.team) Then
-                            'Dim dist As Integer = Helpers.Distance(ToX, ToY, OVessel.location.X, OVessel.location.Y) - OVessel.stats.width / 2
-                            Dim dist As Double = Helpers.Distance(Me.location, AWeap.ForseeShootingLocation(OVessel)) - (OVessel.stats.width / 2)
-                            If dist < AWeap.stats.range Then
-                                If Me.team Is Nothing OrElse Not OVessel.team Is Nothing AndAlso Not Me.team.IsFriendWith(OVessel.team) Then
-                                    dist /= 8
+                    End If
+                    ' target not in range
+                    If weapon_targeted_ship Is Nothing Then
+                        For Each OVessel As Ship In world.Ships
+                            If OVessel Is Me Then
+                                Continue For
+                            End If
+                            If Not Me.AllowMining AndAlso (OVessel.stats.default_weapons.Count = 0 OrElse AWeap.stats.power = 0) Then
+                                Continue For
+                            End If
+                            If Me.team Is Nothing OrElse Not Me.team.IsFriendWith(OVessel.team) Then
+                                'Dim dist As Integer = Helpers.Distance(ToX, ToY, OVessel.location.X, OVessel.location.Y) - OVessel.stats.width / 2
+                                Dim score As Double = Helpers.Distance(Me.location, AWeap.ForseeShootingLocation(OVessel)) - (OVessel.stats.width / 2)
+                                If score < AWeap.stats.range * 0.9 Then
+                                    If score < AWeap.stats.range Then
+                                        If Me.team Is Nothing OrElse Not OVessel.team Is Nothing AndAlso Not Me.team.IsFriendWith(OVessel.team) Then
+                                            score /= 8
+                                        End If
+                                        If Me.target Is OVessel Then
+                                            score /= 4
+                                        End If
+                                    End If
+                                    If score < closest_score Then
+                                        closest_score = score
+                                        weapon_targeted_ship = OVessel
+                                    End If
                                 End If
-                                If Me.target Is OVessel Then
-                                    dist /= 4
-                                End If
                             End If
-                            If dist < closest_dist Then
-                                closest_dist = dist
-                                closest_ship = OVessel
-                            End If
-                        End If
-                    Next
-                    If Not closest_ship Is Nothing Then
-                        Dim oShip As Ship = closest_ship
-                        Dim dist As Double = Helpers.Distance(Me.location, AWeap.ForseeShootingLocation(closest_ship)) - (closest_ship.stats.width / 2)
-                        If dist < AWeap.stats.range Then
-                            Dim NewPoint As PointF = AWeap.ForseeShootingLocation(closest_ship)
-                            Dim QA As Integer = Helpers.GetQA(ToX, ToY, NewPoint.X, NewPoint.Y)
-                            AWeap.Fire(QA, New Point(ToX, ToY), Me)
-                            If (AWeap.stats.special And Weapon.SpecialBits.SelfExplode) <> 0 OrElse (AWeap.stats.special And Weapon.SpecialBits.SelfExplode) <> 0 Then
-                                Me.integrity = -2048
-                            End If
+                        Next
+                    End If
+                    ' shooting if in range
+                    If Not weapon_targeted_ship Is Nothing Then
+                        Dim weapon_target_point As PointF = AWeap.ForseeShootingLocation(weapon_targeted_ship)
+                        Dim QA As Integer = Helpers.GetQA(weapon_location_x, weapon_location_y, weapon_target_point.X, weapon_target_point.Y)
+                        AWeap.Fire(QA, New Point(weapon_location_x, weapon_location_y), Me)
+                        If (AWeap.stats.special And Weapon.SpecialBits.SelfExplode) <> 0 Then
+                            Me.integrity = -2048
                         End If
                     End If
                 End If
