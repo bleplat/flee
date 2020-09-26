@@ -489,7 +489,8 @@
                     Next
                     If Not closest_ship Is Nothing Then
                         Dim oShip As Ship = closest_ship
-                        If closest_dist < AWeap.stats.range Then
+                        Dim dist As Double = Helpers.Distance(Me.location, AWeap.ForseeShootingLocation(closest_ship)) - (closest_ship.stats.width / 2)
+                        If dist < AWeap.stats.range Then
                             Dim NewPoint As PointF = AWeap.ForseeShootingLocation(closest_ship)
                             Dim QA As Integer = Helpers.GetQA(ToX, ToY, NewPoint.X, NewPoint.Y)
                             AWeap.Fire(QA, New Point(ToX, ToY), Me)
