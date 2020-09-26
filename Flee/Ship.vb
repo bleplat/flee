@@ -190,7 +190,7 @@
             direction = direction + 25 / Me.stats.width
         Else
             Dim new_speed As PointF = Helpers.GetNewPoint(New Point(0, 0), direction, speed)
-            Me.speed_vec = New PointF(speed_vec.X * 0.95 + new_speed.X * 0.05, speed_vec.Y * 0.95 + new_speed.Y * 0.05)
+            Me.speed_vec = New PointF(speed_vec.X * 0.925 + new_speed.X * 0.075, speed_vec.Y * 0.925 + new_speed.Y * 0.075)
             Me.location.X = Me.location.X + speed_vec.X
             Me.location.Y = Me.location.Y + speed_vec.Y
         End If
