@@ -137,8 +137,8 @@
         'Regen+
         Upgrades.Add(New Upgrade With {.Name = "Repair_Bots", .File = "Ups", .PTN = New Point(7, 1), .cost = New MaterialSet(400, 1, 0, 0), .Time = 100, .Need = "+Life:100", .Effect = "!Regen:1", .Install = True, .Desc = "Repair the ship faster."})
         Upgrades.Add(New Upgrade With {.Name = "Repair_Bots_II", .File = "Ups", .PTN = New Point(7, 2), .cost = New MaterialSet(700, 1, 0, 0), .Time = 120, .Need = "+Life:200" & NPU(), .Effect = "!Regen:1", .Install = True, .Desc = "Repair the ship faster."})
-        Upgrades.Add(New Upgrade With {.Name = "Repair_Bots_III", .File = "Ups", .PTN = New Point(7, 3), .cost = New MaterialSet(1, 1400, 0, 0), .Time = 130, .Need = "+Life:300" & NPU(), .Effect = "!Regen:1", .Install = True, .Desc = "Repair the ship faster."})
-        Upgrades.Add(New Upgrade With {.Name = "Repair_Bots_IV", .File = "Ups", .PTN = New Point(7, 4), .cost = New MaterialSet(1, 2500, 0, 0), .Time = 150, .Need = "+Life:400" & NPU(), .Effect = "!Regen:1", .Install = True, .Desc = "Repair the ship faster."})
+        Upgrades.Add(New Upgrade With {.Name = "Repair_Bots_III", .File = "Ups", .PTN = New Point(7, 3), .cost = New MaterialSet(1400, 1, 0, 0), .Time = 130, .Need = "+Life:300" & NPU(), .Effect = "!Regen:1", .Install = True, .Desc = "Repair the ship faster."})
+        Upgrades.Add(New Upgrade With {.Name = "Repair_Bots_IV", .File = "Ups", .PTN = New Point(7, 4), .cost = New MaterialSet(2000, 2, 0, 0), .Time = 150, .Need = "+Life:400" & NPU(), .Effect = "!Regen:1", .Install = True, .Desc = "Repair the ship faster."})
 
         'BASE radio
         Upgrades.Add(New Upgrade With {.Name = "Multiunit_Control", .File = "Ups", .PTN = New Point(6, 0), .cost = New MaterialSet(1000, 1, 0, 0), .Time = 100, .Need = "?Base", .Effect = "!Maxships:2", .Install = True, .Desc = "Control 2 more ships"})

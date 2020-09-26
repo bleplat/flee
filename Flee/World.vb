@@ -264,7 +264,7 @@
         Return True
     End Function
     Sub SpawnDerelictsObjects()
-        If (ticks Mod 90 = 0) Then
+        If (ticks Mod 128 = 0) Then
             ' Spawn Location
             Dim Spawn As New Point()
             Select Case Rand.Next(0, 4)

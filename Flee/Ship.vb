@@ -18,6 +18,7 @@
     Public behavior As BehaviorMode = BehaviorMode.Stand
     Public target As Ship = Nothing
     Public TargetPTN As New PointF(0, 0)
+    Public agressivity As Double = 1.0
 
     ' shield effect
     Public Const SHIELD_POINTS As Integer = 16
@@ -189,7 +190,7 @@
             direction = direction + 25 / Me.stats.width
         Else
             Dim new_speed As PointF = Helpers.GetNewPoint(New Point(0, 0), direction, speed)
-            Me.speed_vec = New PointF(speed_vec.X * 0.9 + new_speed.X * 0.1, speed_vec.Y * 0.9 + new_speed.Y * 0.1)
+            Me.speed_vec = New PointF(speed_vec.X * 0.95 + new_speed.X * 0.05, speed_vec.Y * 0.95 + new_speed.Y * 0.05)
             Me.location.X = Me.location.X + speed_vec.X
             Me.location.Y = Me.location.Y + speed_vec.Y
         End If
@@ -355,15 +356,18 @@
             Me.behavior = BehaviorMode.Drift
         End If
         '===' Auto-Activation '==='
+        If rnd_num < 100 Then
+            Me.agressivity += 0.05
+        End If
         If Me.bot_ship AndAlso Me.behavior <> BehaviorMode.Drift Then
             If Me.target Is Nothing Then
-                Dim nearest_ship As Ship = Me.GetClosestShip(2.0, 1.0)
+                Dim nearest_ship As Ship = Me.GetClosestShip(Me.agressivity, 1.0, 0.1)
                 If Not nearest_ship Is Nothing Then
                     Me.target = nearest_ship
                     Me.behavior = BehaviorMode.Folow
                 End If
             Else
-                If rnd_num < 6 Then 'chance to change target
+                If rnd_num < 6 OrElse (Not Me.team Is Me.target.team AndAlso rnd_num < 100) Then 'chance to change target
                     Me.target = Nothing
                     Me.behavior = BehaviorMode.Stand
                 End If
@@ -412,12 +416,16 @@
                     Dim rel_forseen_dist As Double = Helpers.Distance(Me.location, forseen_location) - (Me.target.stats.width / 2)
                     Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = (Me.weapons(0).stats.range * Me.weapons(0).stats.range / rel_forseen_dist) * 0.8 ' TODO: instead of this factor, just use the forseen location of the target
                     If Helpers.Distance(Me.location, Me.target.location) <= optimal_range Then
-                        If Helpers.GetAngleDiff(Me.direction, QA) < 135 Then
+                        If Helpers.GetAngleDiff(Me.direction, QA) < 112 Then
                             QA = QA + 180
+                            NeedSpeed = Helpers.GetAngleDiff(Me.direction, QA - 180) > 45
+                        Else
+                            NeedSpeed = Helpers.GetAngleDiff(Me.direction, QA) > 90
                         End If
+                    Else
+                        NeedSpeed = Helpers.GetAngleDiff(Me.direction, QA) < 90
                     End If
-                    'NeedSpeed = Helpers.GetAngleDiff(Me.direction, QA) < 90
-                    NeedSpeed = True
+                    'NeedSpeed = True
                 End If
             Case BehaviorMode.Stand
                 QA = direction
@@ -481,11 +489,6 @@
                     Next
                     If Not closest_ship Is Nothing Then
                         Dim oShip As Ship = closest_ship
-                        'closest_dist = Helpers.Distance(ToX, ToY, oShip.location.X, oShip.location.Y) - oShip.stats.width / 2
-                        'Dim closest_dist As Double = Helpers.Distance(Me.location, Me.ForseeLocation(closest_ship)) - (closest_ship.stats.width / 2)
-                        'If Not closest_ship.team Is Nothing AndAlso closest_ship.team.bot_team = False Then ' TODO: NOW: remove
-                        '    world.Effects.Add(New Effect With {.Type = "Cible", .Coo = AWeap.ForseeShootingLocation(closest_ship), .Direction = 45, .speed = 0})
-                        'End If
                         If closest_dist < AWeap.stats.range Then
                             Dim NewPoint As PointF = AWeap.ForseeShootingLocation(closest_ship)
                             Dim QA As Integer = Helpers.GetQA(ToX, ToY, NewPoint.X, NewPoint.Y)

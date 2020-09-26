@@ -4,7 +4,7 @@ ship Kastou
 	integrity=225
 	speed=3.00
 	turn=2.20
-	weapon=0;Heavy-Bombs
+	weapon=0;Heavy-PlasmaBomber
 	shield=100
 	shield_regeneration=20.00
 	shield_opacity=100.00
@@ -18,7 +18,7 @@ ship Yerka
 	integrity=75
 	speed=4.00
 	turn=4.20
-	weapon=270;Machine-Gun
+	weapon=270;MachineGun
 	cost=110;1;0;0
 	complexity=500
 	craft=MSL
@@ -42,7 +42,7 @@ ship Sacred
 	integrity=85
 	speed=3.50
 	turn=2.50
-	weapon=0;Light-Bombs
+	weapon=0;Light-PlasmaBomber
 	cost=106;1;0;0
 	complexity=500
 
@@ -63,8 +63,8 @@ ship Crusher
 	speed=2.20
 	turn=0.40
 	weapon=0;Intercepting-Artillery
-	weapon=-90;Longrange-Bombs
-	weapon=90;Longrange-Bombs
+	weapon=-90;Longrange-PlasmaBomber
+	weapon=90;Standard-PlasmaBomber
 	cost=304;1;0;0
 	complexity=1000
 
@@ -74,8 +74,8 @@ ship Civil_A
 	integrity=320
 	speed=2.20
 	turn=1.40
-	weapon=-90;Lazers
-	weapon=90;Lazers
+	weapon=-90;MachineGun
+	weapon=90;MachineGun
 	deflectors=6
 	deflectors_cooldown=32
 	cost=304;1;0;0

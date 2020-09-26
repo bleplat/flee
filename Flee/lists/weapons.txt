@@ -1,16 +1,18 @@
+# This file list weapon files
 #
-# Machineguns
+# Some specialization modifier prefixes may be used:
+# Standard: no mods
+# Basic: -damages -range
+# Light: -loadtime -damage
+# Heavy: +loadtime +damage -range
+# Longrange: +range -damage
+# Intercepting: +range
+
+#
+# Particle Guns
 #
 
-gun Mining-Gun
-	desc=A gun mainly used by small spaceships to mine asteroids.
-	sprite=A
-	range=80
-	celerity=14
-	power=4
-	loadtime=8
-
-gun Machine-Gun
+gun Standard-ParticleGun
 	desc=A fast firing gun, efficient against small targets.
 	sprite=A
 	range=200
@@ -18,18 +20,18 @@ gun Machine-Gun
 	power=2
 	loadtime=6
 
-gun Light-Machine-Gun
-	desc=More suited for drones.
+gun Basic-ParticleGun
+	desc=A weaker version of the ParticleGun.
 	sprite=A
 	range=160
 	celerity=16
 	power=1
-	loadtime=4
+	loadtime=6
 	
-gun Intercepting-Gun
-	desc=A less efficient but longer ranged version of the Machine-Gun.
+gun Longrange-ParticleGun
+	desc=A less efficient but longer ranged version of the ParticleGun.
 	sprite=A
-	range=320
+	range=310
 	celerity=18
 	power=1
 	loadtime=12
@@ -38,7 +40,7 @@ gun Intercepting-Gun
 # Basic
 #
 
-gun Basic-Gun
+gun Standard-Cannon
 	desc=A default must-have weapon.
 	sprite=B
 	range=220
@@ -46,7 +48,7 @@ gun Basic-Gun
 	power=14
 	loadtime=30
 	
-gun Light-Basic-Gun
+gun Basic-Cannon
 	desc=Suit drones.
 	sprite=B
 	range=170
@@ -70,9 +72,9 @@ gun Standard-Artillery
 gun Intercepting-Artillery
 	desc=A weaker but longer ranged artillery.
 	sprite=C
-	range=520
+	range=420
 	celerity=16
-	power=45
+	power=35
 	loadtime=35
 	special=Propeled;
 	
@@ -80,7 +82,7 @@ gun Intercepting-Artillery
 # Bombs
 #
 
-gun Light-Bombs
+gun Standard-PlasmaBomber
 	desc=A slow but deadly weapon
 	sprite=C
 	range=190
@@ -88,8 +90,17 @@ gun Light-Bombs
 	power=30
 	loadtime=35
 	special=Plasma;
-	
-gun Heavy-Bombs
+
+gun Light-PlasmaBomber
+	desc=A slow but deadly weapon
+	sprite=C
+	range=170
+	celerity=11
+	power=20
+	loadtime=30
+	special=Plasma;
+
+gun Heavy-PlasmaBomber
 	desc=A slow but deadly heavy weapon
 	sprite=C
 	range=250
@@ -97,8 +108,8 @@ gun Heavy-Bombs
 	power=50
 	loadtime=55
 	special=Plasma;
-	
-gun Longrange-Bombs
+
+gun Longrange-PlasmaBomber
 	desc=A slow but deadly heavy weapon
 	sprite=C
 	range=340
@@ -106,7 +117,7 @@ gun Longrange-Bombs
 	power=15
 	loadtime=21
 	special=Plasma;
-	
+
 #
 # Special
 #
@@ -128,14 +139,14 @@ gun Shuriken-Bombs
 	power=15
 	loadtime=50
 	
-gun Lazers
+gun MachineGun
 	desc=A old gun that still be used.
 	sprite=I
 	range=200
 	celerity=17
-	power=5
-	loadtime=15
-	salvo=2
+	power=3
+	loadtime=14
+	salvo=3
 
 gun Beam-4
 	desc=A powerful beam weapon.
@@ -183,7 +194,7 @@ gun Nuke-On-Contact
 # Boss guns
 #
 
-gun Rail-Gun
+gun RailGun
 	desc=Deadly weapon used by some bosses.
 	sprite=F
 	range=360

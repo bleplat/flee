@@ -4,9 +4,9 @@ ship Colonizer
 	integrity=185
 	speed=2.80
 	turn=1.80
-	weapon=0;Basic-Gun
-	weapon=-135;Light-Machine-Gun
-	weapon=135;Light-Machine-Gun
+	weapon=0;Basic-Cannon
+	weapon=-135;Basic-ParticleGun
+	weapon=135;Basic-ParticleGun
 	cost=166;1;0;0
 	complexity=700
 	craft=Outpost
@@ -19,8 +19,8 @@ ship MiniColonizer
 	speed=2.80
 	turn=1.80
 	weapon=0;Standard-Artillery
-	weapon=-135;Light-Machine-Gun
-	weapon=135;Light-Machine-Gun
+	weapon=-135;Basic-ParticleGun
+	weapon=135;Basic-ParticleGun
 	shield=200
 	shield_opacity=75.00
 	cost=166;1;0;0
@@ -33,9 +33,9 @@ ship Ambassador
 	integrity=175
 	speed=2.80
 	turn=1.80
-	weapon=45;Basic-Gun
-	weapon=-45;Basic-Gun
-	weapon=180;Light-Machine-Gun
+	weapon=45;Basic-Cannon
+	weapon=-45;Basic-Cannon
+	weapon=180;Basic-ParticleGun
 	cost=166;1;0;0
 	complexity=700
 	craft=Nuke
@@ -46,7 +46,7 @@ ship Hunter
 	integrity=60
 	speed=3.50
 	turn=2.80
-	weapon=0;Light-Machine-Gun
+	weapon=0;Basic-ParticleGun
 	cost=166;1;0;0
 	complexity=700
 
@@ -56,7 +56,7 @@ ship Harass
 	integrity=75
 	speed=3.30
 	turn=2.30
-	weapon=0;Light-Bombs
+	weapon=0;Light-PlasmaBomber
 	cost=76;0;0;0
 	complexity=400
 
@@ -65,7 +65,7 @@ ship Cargo
 	integrity=70
 	speed=3.20
 	turn=2.00
-	weapon=90;Mining-Gun
+	weapon=90;Basic-Cannon
 	cost=140;1;0;0
 	complexity=600
 
@@ -74,7 +74,7 @@ ship Simpleship
 	integrity=90
 	speed=2.80
 	turn=2.00
-	weapon=0;Basic-Gun
+	weapon=0;Basic-Cannon
 	cost=140;1;0;0
 	complexity=600
 
@@ -84,8 +84,8 @@ ship Scout
 	integrity=105
 	speed=3.50
 	turn=2.50
-	weapon=-45;Machine-Gun
-	weapon=45;Machine-Gun
+	weapon=-45;Standard-ParticleGun
+	weapon=45;Standard-ParticleGun
 	cost=140;1;0;0
 	complexity=600
 	craft=MSL
@@ -95,7 +95,7 @@ ship Bomber
 	integrity=210
 	speed=2.80
 	turn=1.80
-	weapon=45;Heavy-Bombs
+	weapon=45;Heavy-PlasmaBomber
 	cost=140;1;0;0
 	complexity=600
 
@@ -115,7 +115,7 @@ ship Dronner
 	repair=0
 	speed=3.10
 	turn=1.50
-	weapon=0;Basic-Gun
+	weapon=0;Basic-Cannon
 	cost=140;1;0;0
 	complexity=600
 	craft=Combat_Drone_1
@@ -130,51 +130,51 @@ ship Explorer
 	repair=0
 	speed=2.80
 	turn=8.50
-	weapon=0;Mining-Gun
+	weapon=0;MachineGun
 	cost=76;0;0;0
 	complexity=400
 
 ship Combat_Drone_1
 	level=0
 	width=14
-	integrity=35
+	integrity=25
 	repair=0
 	speed=3.50
-	weapon=180;Light-Machine-Gun
-	weapon=-180;Light-Machine-Gun
+	weapon=180;Basic-ParticleGun
+	weapon=-180;Basic-ParticleGun
 	cost=76;0;0;0
 	complexity=400
 
 ship Combat_Drone_2
 	level=0
 	width=14
-	integrity=45
+	integrity=35
 	repair=0
 	speed=3.50
 	turn=5.50
-	weapon=0;Light-Machine-Gun
+	weapon=0;Basic-ParticleGun
 	cost=76;0;0;0
 	complexity=400
 
 ship Combat_Drone_3
 	level=0
 	width=14
-	integrity=50
+	integrity=40
 	repair=0
 	speed=3.50
 	turn=1.50
-	weapon=0;Light-Basic-Gun
+	weapon=0;Basic-Cannon
 	cost=76;0;0;0
 	complexity=400
 
 ship Drone
 	level=2
 	width=25
-	integrity=75
+	integrity=70
 	repair=0
 	speed=3.50
 	turn=4.50
-	weapon=0;Basic-Gun
+	weapon=0;Basic-Cannon
 	cost=106;1;0;0
 	complexity=500
 
@@ -185,8 +185,8 @@ ship Legend_I
 	speed=3.20
 	turn=1.80
 	weapon=0;Standard-Artillery
-	weapon=-135;Light-Bombs
-	weapon=135;Light-Bombs
+	weapon=-135;Light-PlasmaBomber
+	weapon=135;Light-PlasmaBomber
 	cost=166;1;0;0
 	complexity=700
 	
@@ -229,9 +229,9 @@ ship Legend_Y
 	integrity=180
 	speed=3.20
 	turn=1.80
-	weapon=0;Light-Machine-Gun
-	weapon=-135;Machine-Gun
-	weapon=135;Machine-Gun
+	weapon=0;Basic-ParticleGun
+	weapon=-135;Standard-ParticleGun
+	weapon=135;Standard-ParticleGun
 	cost=166;1;0;0
 	complexity=700
 
@@ -240,7 +240,7 @@ ship PartialBomber
 	integrity=190
 	speed=2.80
 	turn=1.80
-	weapon=45;Heavy-Bombs
+	weapon=45;Heavy-PlasmaBomber
 	cost=140;1;0;0
 	complexity=600
 
@@ -259,6 +259,6 @@ ship Nuke
 	speed=3.00
 	turn=2.50
 	weapon=0;Explode-On-Contact
-	weapon=180;Mining-Gun
+	weapon=180;MachineGun
 	cost=140;1;0;0
 	complexity=600

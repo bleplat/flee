@@ -59,17 +59,17 @@ ship Station_Crushers
 	integrity=4000
 	cost=304;1;0;0
 	complexity=1000
-	weapon=0;Heavy-Bombs
+	weapon=0;Heavy-PlasmaBomber
 	craft=Crusher
 
 ship BomberFactory
 	level=20
 	width=64
 	integrity=190
-	weapon=0;Intercepting-Gun
-	weapon=-90;Intercepting-Gun
-	weapon=90;Intercepting-Gun
-	weapon=180;Intercepting-Gun
+	weapon=0;Longrange-ParticleGun
+	weapon=-90;Longrange-ParticleGun
+	weapon=90;Longrange-ParticleGun
+	weapon=180;Longrange-ParticleGun
 	cost=136;1;0;0
 	complexity=600
 
@@ -81,10 +81,10 @@ ship Outpost
 	level=2
 	width=40
 	integrity=190
-	weapon=0;Intercepting-Gun
-	weapon=-90;Intercepting-Gun
-	weapon=90;Intercepting-Gun
-	weapon=180;Intercepting-Gun
+	weapon=0;Longrange-ParticleGun
+	weapon=-90;Longrange-ParticleGun
+	weapon=90;Longrange-ParticleGun
+	weapon=180;Longrange-ParticleGun
 	cost=136;1;0;0
 	complexity=600
 

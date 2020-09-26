@@ -30,7 +30,7 @@ Public Class MainForm
 
 	' world
 	Dim world As World = Nothing
-	Dim player_team As Team = Nothing
+	Public player_team As Team = Nothing
 
 	Private Sub MainForm_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 		' culture
@@ -358,6 +358,11 @@ Public Class MainForm
 		If e.KeyData = Keys.F7 Then
 			Dim total As String = ShipStats.DumpClasses()
 			Clipboard.SetText(total)
+		End If
+		If e.KeyData = Keys.F8 Then
+			For Each a_ship As Ship In world.Ships
+				a_ship.agressivity = 1000.0
+			Next
 		End If
 		If Not KeyList.Contains(e.KeyData.ToString) Then
 			KeyList.Add(e.KeyData.ToString)
