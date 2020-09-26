@@ -27,7 +27,7 @@
         Upgrades.Add(New Upgrade With {.Name = "Paint_7", .File = "Ups", .PTN = New Point(5, 7), .cost = New MaterialSet(0, 0, 0, 0), .Time = 25, .Need = "", .Effect = "!C:DimGray", .Install = False, .not_for_bots = True, .Desc = "Apply paint."})
 
         Upgrades.Add(New Upgrade With {.Name = "Repair_Armor", .File = "Ups", .PTN = New Point(5, 0), .cost = New MaterialSet(200, 0, 0, 0), .Time = 150, .Need = "", .Effect = "!Fix:10", .Install = False, .Desc = "Help fixing the hull."})
-        Upgrades.Add(New Upgrade With {.Name = "Tardisication", .File = "Ups", .PTN = New Point(4, 0), .cost = New MaterialSet(1500, 16, 1, 1500), .Time = 50, .Need = "", .Effect = "!UpsMax:1", .Install = False, .not_for_bots = True, .Desc = "Break physics laws and increase the space inside the ship, allowing more upgrades."})
+        Upgrades.Add(New Upgrade With {.Name = "Tardisication", .File = "Ups", .PTN = New Point(4, 0), .cost = New MaterialSet(1500, 16, 1, 750), .Time = 50, .Need = "", .Effect = "!UpsMax:1", .Install = False, .not_for_bots = True, .Desc = "Break physics laws and increase the space inside the ship, allowing more upgrades."})
         Upgrades.Add(New Upgrade With {.Name = "Fielbots", .File = "Ups", .PTN = New Point(5, 0), .cost = New MaterialSet(200, 0, 0, 0), .Time = 50, .Need = "?Up:Auto_Nanobots", .Effect = "!FixSFull", .Install = False, .Desc = "Help fixing the shield"})
 
         Upgrades.Add(New Upgrade With {.Name = "Break_Uranium", .File = "Ups2", .PTN = New Point(7, 7), .cost = New MaterialSet(-1200, -8, 1, 0), .Time = 1, .Need = "?Type:Station", .Effect = "!Fix:1", .Install = False, .Desc = "Sacrifice some Uranium for crystal AndAlso metal."})

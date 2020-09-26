@@ -57,9 +57,9 @@ Public Class Team
         If available_colors.Count = 0 Then
             ' allies colors
             'available_colors.Add(Color.FromArgb(0, 160, 0)) ' dark green (confused with player)
+            'available_colors.Add(Color.FromArgb(0, 192, 96)) ' blueish green (confused with player)
             available_colors.Add(Color.FromArgb(0, 80, 255)) ' deep blue (perfect)
             available_colors.Add(Color.FromArgb(0, 128, 128)) ' dark cyan (perfect)
-            available_colors.Add(Color.FromArgb(0, 192, 96)) ' blueish green (good)
             available_colors.Add(Color.FromArgb(128, 128, 255)) ' pale blue (a bit light)
             available_colors.Add(Color.FromArgb(64, 128, 64)) ' desaturated green (looks neutral)
             available_colors.Add(Color.FromArgb(128, 255, 128)) ' pale green (a bit bright)
@@ -74,8 +74,8 @@ Public Class Team
             'available_colors.Add(Color.FromArgb(255, 0, 192)) ' red purple (pinkish 3rd, confusing)
             available_colors.Add(Color.FromArgb(255, 0, 128)) ' red pink (pinkish 2nd)
             available_colors.Add(Color.FromArgb(255, 64, 0)) ' orange-red (orangish 1st)
-            available_colors.Add(Color.FromArgb(255, 255, 0)) ' primary yellow
             available_colors.Add(Color.FromArgb(255, 0, 255)) ' primary magenta (pinkish 1st)
+            available_colors.Add(Color.FromArgb(255, 255, 0)) ' primary yellow
             available_colors.Add(Color.FromArgb(255, 48, 48)) ' coral
         End If
         If Me.affinity = AffinityEnum.ALOOF Then
