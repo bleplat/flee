@@ -91,13 +91,13 @@
             ' force a color
             Select Case Me.base_stats.name
                 Case "Asteroide"
-                    behavior = BehaviorMode.Drift : target = Me : color = Color.FromArgb(64, 64, 48)
+                    behavior = BehaviorMode.Drift : target = Nothing : color = Color.FromArgb(64, 64, 48)
                 Case "Meteoroide"
-                    behavior = BehaviorMode.Drift : target = Me : color = Color.FromArgb(80, 48, 80)
+                    behavior = BehaviorMode.Drift : target = Nothing : color = Color.FromArgb(80, 48, 80)
                 Case "Comet"
-                    behavior = BehaviorMode.Drift : target = Me : color = Color.FromArgb(0, 100, 0)
+                    behavior = BehaviorMode.Drift : target = Nothing : color = Color.FromArgb(0, 100, 0)
                 Case "Star"
-                    behavior = BehaviorMode.Drift : target = Me : color = Color.FromArgb(255, 255, 220)
+                    behavior = BehaviorMode.Drift : target = Nothing : color = Color.FromArgb(255, 255, 220)
             End Select
             '
             ResetStats()
@@ -359,7 +359,7 @@
         If rnd_num < 100 Then
             Me.agressivity += 0.05
         End If
-        If Me.bot_ship AndAlso Me.behavior <> BehaviorMode.Drift Then
+        If Me.bot_ship AndAlso Me.behavior <> BehaviorMode.Drift AndAlso Not Me.team Is Nothing Then
             If Me.target Is Nothing Then
                 Dim nearest_ship As Ship = Me.GetClosestShip(Me.agressivity, 1.0, 0.1)
                 If Not nearest_ship Is Nothing Then
