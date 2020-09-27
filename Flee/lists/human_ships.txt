@@ -74,7 +74,7 @@ ship Simpleship
 	integrity=90
 	speed=2.80
 	turn=2.00
-	weapon=0;Basic-Cannon
+	weapon=0;Standard-Cannon
 	cost=140;1;0;0
 	complexity=600
 
@@ -112,10 +112,9 @@ ship Artillery
 ship Dronner
 	level=8
 	integrity=135
-	repair=0
 	speed=3.10
 	turn=1.50
-	weapon=0;Basic-Cannon
+	weapon=0;Standard-Cannon
 	cost=140;1;0;0
 	complexity=600
 	craft=Combat_Drone_1

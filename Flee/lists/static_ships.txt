@@ -64,7 +64,7 @@ ship Station_Crushers
 
 ship BomberFactory
 	level=20
-	width=64
+	width=68 
 	integrity=190
 	weapon=0;Longrange-ParticleGun
 	weapon=-90;Longrange-ParticleGun
