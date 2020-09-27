@@ -50,7 +50,11 @@ Public Class Team
 
         'max ships
         If id <> 0 Then
-            ship_count_limit = 28
+            If Me.affinity = AffinityEnum.KIND Then
+                ship_count_limit = 24
+            Else
+                ship_count_limit = 32
+            End If
         End If
 
         'color
