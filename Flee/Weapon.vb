@@ -110,7 +110,7 @@
     ' calculat point to aim to reach a moving target
     Public Function ForseeShootingLocation(target_ship As Ship) As PointF
         Dim dist As Double = Helpers.Distance(Me.ship.location, target_ship.location)
-        Dim time As Double = dist / Me.stats.celerity * 0.95
+        Dim time As Double = dist / Me.stats.celerity * 0.9
         Return New PointF(target_ship.location.X + target_ship.speed_vec.X * time, target_ship.location.Y + target_ship.speed_vec.Y * time)
     End Function
 
