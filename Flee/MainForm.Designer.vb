@@ -39,8 +39,15 @@ Partial Class MainForm
 		Me.PriceM = New System.Windows.Forms.Label()
 		Me.UpDesc = New System.Windows.Forms.Label()
 		Me.UpName = New System.Windows.Forms.Label()
+		Me.PriceCIcon = New System.Windows.Forms.PictureBox()
+		Me.PriceAIcon = New System.Windows.Forms.PictureBox()
+		Me.PriceUIcon = New System.Windows.Forms.PictureBox()
+		Me.PriceMIcon = New System.Windows.Forms.PictureBox()
 		Me.SShipPanel = New System.Windows.Forms.Panel()
+		Me.AllowMiningBox = New System.Windows.Forms.PictureBox()
 		Me.SShipUpsMax = New System.Windows.Forms.Label()
+		Me.UpgradesBox = New System.Windows.Forms.PictureBox()
+		Me.SShipImageBox = New System.Windows.Forms.PictureBox()
 		Me.Label1 = New System.Windows.Forms.Label()
 		Me.SShipTypeBox = New System.Windows.Forms.Label()
 		Me.PanelRes = New System.Windows.Forms.Panel()
@@ -49,32 +56,25 @@ Partial Class MainForm
 		Me.UraniumTextBox = New System.Windows.Forms.Label()
 		Me.CristalTextBox = New System.Windows.Forms.Label()
 		Me.MetalTextBox = New System.Windows.Forms.Label()
-		Me.Ticker = New System.Windows.Forms.Timer(Me.components)
-		Me.PriceCIcon = New System.Windows.Forms.PictureBox()
-		Me.PriceAIcon = New System.Windows.Forms.PictureBox()
-		Me.PriceUIcon = New System.Windows.Forms.PictureBox()
-		Me.PriceMIcon = New System.Windows.Forms.PictureBox()
-		Me.AllowMiningBox = New System.Windows.Forms.PictureBox()
-		Me.UpgradesBox = New System.Windows.Forms.PictureBox()
-		Me.SShipImageBox = New System.Windows.Forms.PictureBox()
 		Me.PictureBox5 = New System.Windows.Forms.PictureBox()
 		Me.PictureBox6 = New System.Windows.Forms.PictureBox()
 		Me.PictureBox2 = New System.Windows.Forms.PictureBox()
 		Me.PictureBox1 = New System.Windows.Forms.PictureBox()
 		Me.MiniBox = New System.Windows.Forms.PictureBox()
 		Me.DrawBox = New System.Windows.Forms.PictureBox()
+		Me.Ticker = New System.Windows.Forms.Timer(Me.components)
 		Me.MainPanel.SuspendLayout()
 		Me.MenuPanel.SuspendLayout()
 		Me.UpgradeDetails.SuspendLayout()
-		Me.SShipPanel.SuspendLayout()
-		Me.PanelRes.SuspendLayout()
 		CType(Me.PriceCIcon, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.PriceAIcon, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.PriceUIcon, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.PriceMIcon, System.ComponentModel.ISupportInitialize).BeginInit()
+		Me.SShipPanel.SuspendLayout()
 		CType(Me.AllowMiningBox, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.UpgradesBox, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.SShipImageBox, System.ComponentModel.ISupportInitialize).BeginInit()
+		Me.PanelRes.SuspendLayout()
 		CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -265,6 +265,46 @@ Partial Class MainForm
 		Me.UpName.TabIndex = 0
 		Me.UpName.Text = "Upgrade name."
 		'
+		'PriceCIcon
+		'
+		Me.PriceCIcon.Image = Global.Flee.My.Resources.Resources.Crystal
+		Me.PriceCIcon.Location = New System.Drawing.Point(323, 3)
+		Me.PriceCIcon.Name = "PriceCIcon"
+		Me.PriceCIcon.Size = New System.Drawing.Size(20, 20)
+		Me.PriceCIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+		Me.PriceCIcon.TabIndex = 0
+		Me.PriceCIcon.TabStop = False
+		'
+		'PriceAIcon
+		'
+		Me.PriceAIcon.Image = Global.Flee.My.Resources.Resources.Antimatter
+		Me.PriceAIcon.Location = New System.Drawing.Point(275, 3)
+		Me.PriceAIcon.Name = "PriceAIcon"
+		Me.PriceAIcon.Size = New System.Drawing.Size(20, 20)
+		Me.PriceAIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+		Me.PriceAIcon.TabIndex = 0
+		Me.PriceAIcon.TabStop = False
+		'
+		'PriceUIcon
+		'
+		Me.PriceUIcon.Image = Global.Flee.My.Resources.Resources.Fissile
+		Me.PriceUIcon.Location = New System.Drawing.Point(213, 3)
+		Me.PriceUIcon.Name = "PriceUIcon"
+		Me.PriceUIcon.Size = New System.Drawing.Size(20, 20)
+		Me.PriceUIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+		Me.PriceUIcon.TabIndex = 0
+		Me.PriceUIcon.TabStop = False
+		'
+		'PriceMIcon
+		'
+		Me.PriceMIcon.Image = Global.Flee.My.Resources.Resources.Metal
+		Me.PriceMIcon.Location = New System.Drawing.Point(385, 3)
+		Me.PriceMIcon.Name = "PriceMIcon"
+		Me.PriceMIcon.Size = New System.Drawing.Size(20, 20)
+		Me.PriceMIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+		Me.PriceMIcon.TabIndex = 0
+		Me.PriceMIcon.TabStop = False
+		'
 		'SShipPanel
 		'
 		Me.SShipPanel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -280,6 +320,16 @@ Partial Class MainForm
 		Me.SShipPanel.Size = New System.Drawing.Size(200, 333)
 		Me.SShipPanel.TabIndex = 3
 		'
+		'AllowMiningBox
+		'
+		Me.AllowMiningBox.Image = Global.Flee.My.Resources.Resources.DeadSkull
+		Me.AllowMiningBox.Location = New System.Drawing.Point(55, 39)
+		Me.AllowMiningBox.Name = "AllowMiningBox"
+		Me.AllowMiningBox.Size = New System.Drawing.Size(16, 16)
+		Me.AllowMiningBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+		Me.AllowMiningBox.TabIndex = 4
+		Me.AllowMiningBox.TabStop = False
+		'
 		'SShipUpsMax
 		'
 		Me.SShipUpsMax.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -290,6 +340,24 @@ Partial Class MainForm
 		Me.SShipUpsMax.TabIndex = 3
 		Me.SShipUpsMax.Text = "00 / XX"
 		Me.SShipUpsMax.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		'
+		'UpgradesBox
+		'
+		Me.UpgradesBox.Location = New System.Drawing.Point(0, 55)
+		Me.UpgradesBox.Name = "UpgradesBox"
+		Me.UpgradesBox.Size = New System.Drawing.Size(200, 300)
+		Me.UpgradesBox.TabIndex = 2
+		Me.UpgradesBox.TabStop = False
+		'
+		'SShipImageBox
+		'
+		Me.SShipImageBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.SShipImageBox.Location = New System.Drawing.Point(2, 2)
+		Me.SShipImageBox.Name = "SShipImageBox"
+		Me.SShipImageBox.Size = New System.Drawing.Size(50, 50)
+		Me.SShipImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+		Me.SShipImageBox.TabIndex = 1
+		Me.SShipImageBox.TabStop = False
 		'
 		'Label1
 		'
@@ -385,78 +453,6 @@ Partial Class MainForm
 		Me.MetalTextBox.Text = "0"
 		Me.MetalTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
-		'Ticker
-		'
-		Me.Ticker.Interval = 40
-		'
-		'PriceCIcon
-		'
-		Me.PriceCIcon.Image = Global.Flee.My.Resources.Resources.Crystal
-		Me.PriceCIcon.Location = New System.Drawing.Point(323, 3)
-		Me.PriceCIcon.Name = "PriceCIcon"
-		Me.PriceCIcon.Size = New System.Drawing.Size(20, 20)
-		Me.PriceCIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-		Me.PriceCIcon.TabIndex = 0
-		Me.PriceCIcon.TabStop = False
-		'
-		'PriceAIcon
-		'
-		Me.PriceAIcon.Image = Global.Flee.My.Resources.Resources.Antimatter
-		Me.PriceAIcon.Location = New System.Drawing.Point(275, 3)
-		Me.PriceAIcon.Name = "PriceAIcon"
-		Me.PriceAIcon.Size = New System.Drawing.Size(20, 20)
-		Me.PriceAIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-		Me.PriceAIcon.TabIndex = 0
-		Me.PriceAIcon.TabStop = False
-		'
-		'PriceUIcon
-		'
-		Me.PriceUIcon.Image = Global.Flee.My.Resources.Resources.Fissile
-		Me.PriceUIcon.Location = New System.Drawing.Point(213, 3)
-		Me.PriceUIcon.Name = "PriceUIcon"
-		Me.PriceUIcon.Size = New System.Drawing.Size(20, 20)
-		Me.PriceUIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-		Me.PriceUIcon.TabIndex = 0
-		Me.PriceUIcon.TabStop = False
-		'
-		'PriceMIcon
-		'
-		Me.PriceMIcon.Image = Global.Flee.My.Resources.Resources.Metal
-		Me.PriceMIcon.Location = New System.Drawing.Point(385, 3)
-		Me.PriceMIcon.Name = "PriceMIcon"
-		Me.PriceMIcon.Size = New System.Drawing.Size(20, 20)
-		Me.PriceMIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-		Me.PriceMIcon.TabIndex = 0
-		Me.PriceMIcon.TabStop = False
-		'
-		'AllowMiningBox
-		'
-		Me.AllowMiningBox.Image = Global.Flee.My.Resources.Resources.DeadSkull
-		Me.AllowMiningBox.Location = New System.Drawing.Point(55, 39)
-		Me.AllowMiningBox.Name = "AllowMiningBox"
-		Me.AllowMiningBox.Size = New System.Drawing.Size(16, 16)
-		Me.AllowMiningBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-		Me.AllowMiningBox.TabIndex = 4
-		Me.AllowMiningBox.TabStop = False
-		'
-		'UpgradesBox
-		'
-		Me.UpgradesBox.Location = New System.Drawing.Point(0, 55)
-		Me.UpgradesBox.Name = "UpgradesBox"
-		Me.UpgradesBox.Size = New System.Drawing.Size(200, 300)
-		Me.UpgradesBox.TabIndex = 2
-		Me.UpgradesBox.TabStop = False
-		'
-		'SShipImageBox
-		'
-		Me.SShipImageBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.SShipImageBox.Location = New System.Drawing.Point(2, 2)
-		Me.SShipImageBox.Name = "SShipImageBox"
-		Me.SShipImageBox.Size = New System.Drawing.Size(50, 50)
-		Me.SShipImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-		Me.SShipImageBox.TabIndex = 1
-		Me.SShipImageBox.TabStop = False
-		'
 		'PictureBox5
 		'
 		Me.PictureBox5.Image = Global.Flee.My.Resources.Resources.Fissile
@@ -519,6 +515,10 @@ Partial Class MainForm
 		Me.DrawBox.TabIndex = 0
 		Me.DrawBox.TabStop = False
 		'
+		'Ticker
+		'
+		Me.Ticker.Interval = 33
+		'
 		'MainForm
 		'
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
@@ -539,17 +539,17 @@ Partial Class MainForm
 		Me.MenuPanel.PerformLayout()
 		Me.UpgradeDetails.ResumeLayout(False)
 		Me.UpgradeDetails.PerformLayout()
-		Me.SShipPanel.ResumeLayout(False)
-		Me.SShipPanel.PerformLayout()
-		Me.PanelRes.ResumeLayout(False)
-		Me.PanelRes.PerformLayout()
 		CType(Me.PriceCIcon, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.PriceAIcon, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.PriceUIcon, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.PriceMIcon, System.ComponentModel.ISupportInitialize).EndInit()
+		Me.SShipPanel.ResumeLayout(False)
+		Me.SShipPanel.PerformLayout()
 		CType(Me.AllowMiningBox, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.UpgradesBox, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.SShipImageBox, System.ComponentModel.ISupportInitialize).EndInit()
+		Me.PanelRes.ResumeLayout(False)
+		Me.PanelRes.PerformLayout()
 		CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()

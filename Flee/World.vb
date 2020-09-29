@@ -115,8 +115,9 @@
     Sub AntiSuperposition()
         If Ships.Count > 1 Then
             For a As Integer = 1 To Ships.Count - 1
+                Dim Aship As Ship = Ships(a)
                 For b As Integer = 0 To a - 1
-                    Dim Aship As Ship = Ships(a) : Dim Bship As Ship = Ships(b)
+                    Dim Bship As Ship = Ships(b)
                     If Aship.location.X + Aship.stats.width > Bship.location.X - Bship.stats.width AndAlso Bship.location.X + Bship.stats.width > Aship.location.X - Aship.stats.width AndAlso Aship.location.Y + Aship.stats.width > Bship.location.Y - Bship.stats.width AndAlso Bship.location.Y + Bship.stats.width > Aship.location.Y - Aship.stats.width Then
                         Dim dist As Double = Helpers.Distance(Aship.location, Bship.location)
                         Dim rel_dist As Double = dist - (Aship.stats.width / 2 + Bship.stats.width / 2)

@@ -472,7 +472,7 @@
                             End If
                         End If
                     End If
-                    ' target not in range
+                    ' target not in range, find another
                     If weapon_targeted_ship Is Nothing Then
                         For Each OVessel As Ship In world.Ships
                             If OVessel Is Me Then
@@ -481,21 +481,23 @@
                             If Not Me.AllowMining AndAlso (OVessel.stats.default_weapons.Count = 0 OrElse AWeap.stats.power = 0) Then
                                 Continue For
                             End If
-                            If Me.team Is Nothing OrElse Not Me.team.IsFriendWith(OVessel.team) Then
-                                'Dim dist As Integer = Helpers.Distance(ToX, ToY, OVessel.location.X, OVessel.location.Y) - OVessel.stats.width / 2
-                                Dim score As Double = Helpers.Distance(Me.location, AWeap.ForseeShootingLocation(OVessel)) - (OVessel.stats.width / 2)
-                                If score < AWeap.stats.range * 0.9 Then
-                                    If score < AWeap.stats.range Then
-                                        If Me.team Is Nothing OrElse Not OVessel.team Is Nothing AndAlso Not Me.team.IsFriendWith(OVessel.team) Then
-                                            score /= 8
+                            If Helpers.Distance(Me.location, OVessel.location) < AWeap.stats.range Then
+                                If Me.team Is Nothing OrElse Not Me.team.IsFriendWith(OVessel.team) Then
+                                    'Dim dist As Integer = Helpers.Distance(ToX, ToY, OVessel.location.X, OVessel.location.Y) - OVessel.stats.width / 2
+                                    Dim score As Double = Helpers.Distance(Me.location, AWeap.ForseeShootingLocation(OVessel)) - (OVessel.stats.width / 2)
+                                    If score < AWeap.stats.range * 0.9 Then
+                                        If score < AWeap.stats.range Then
+                                            If Me.team Is Nothing OrElse Not OVessel.team Is Nothing AndAlso Not Me.team.IsFriendWith(OVessel.team) Then
+                                                score /= 8
+                                            End If
+                                            If Me.target Is OVessel Then
+                                                score /= 4
+                                            End If
                                         End If
-                                        If Me.target Is OVessel Then
-                                            score /= 4
+                                        If score < closest_score Then
+                                            closest_score = score
+                                            weapon_targeted_ship = OVessel
                                         End If
-                                    End If
-                                    If score < closest_score Then
-                                        closest_score = score
-                                        weapon_targeted_ship = OVessel
                                     End If
                                 End If
                             End If

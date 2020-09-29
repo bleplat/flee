@@ -31,7 +31,7 @@ Public Class ShipStats
 	' stats (shields)
 	Public shield As Integer = 0
 	Public shield_regeneration As Integer = 10
-	Public shield_opacity As Double = 20
+	Public shield_opacity As Double = 0
 
 	' stats (deflectors)
 	Public deflectors As Integer = 0
@@ -120,7 +120,9 @@ Public Class ShipStats
 				If turn = 0 Then Me.turn = speed
 			Case "turn" : Me.turn = Helpers.ToDouble(value)
 			Case "weapon" : default_weapons.Add(value)
-			Case "shield" : Me.shield = value
+			Case "shield"
+				Me.shield = value
+				Me.shield_opacity = 25
 			Case "shield_regeneration" : Me.shield_regeneration = Helpers.ToDouble(value)
 			Case "shield_opacity" : Me.shield_opacity = Helpers.ToDouble(value)
 			Case "deflectors" : Me.deflectors = Convert.ToInt32(value)

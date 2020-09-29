@@ -45,7 +45,6 @@ Public Class MainForm
 		G = Graphics.FromImage(DrawBMP)
 		G.CompositingQuality = CompositingQuality.HighSpeed
 		G.InterpolationMode = InterpolationMode.Bicubic
-		Upgrade.LoadRegUpgrades()
 		Me.Width = Me.Width + 1
 		' Play the music if it's available
 		Try
@@ -54,7 +53,9 @@ Public Class MainForm
 			Me.Text = "Flee - Music was not found AndAlso therefore not loaded!"
 		End Try
 		' Load lists
+		Upgrade.LoadRegUpgrades()
 		Helpers.LoadLists()
+		Upgrade.LoadBuildUpgrades()
 
 	End Sub
 	Private Sub BeginButton_Click(sender As Object, e As EventArgs) Handles StartPlayingButton.Click
@@ -214,14 +215,23 @@ Public Class MainForm
 						Dim shields_colors(16 - 1) As Color
 						For i = 0 To shields_ptns.Length - 1
 							shields_ptns(i) = Helpers.GetNewPoint(New PointF(drawrect.X + drawrect.Width / 2, drawrect.Y + drawrect.Height / 2), i * 360 / 16 + AShip.direction, drawrect.Width / 2 + 5)
-							Dim c_charge = AShip.shield * 255 / AShip.stats.shield
-							Dim c_nocharge = 255 - c_charge
-							Dim c_speed = (AShip.stats.shield_regeneration - 10) * 255 / 30
-							Dim c_op = AShip.stats.shield_opacity * 255 / 100
-							Dim c_max = AShip.stats.shield
-							Dim c_i = AShip.ShieldPoints(i)
-							Dim c_p = Math.Max(1, AShip.ShieldPoints(i))
-							shields_colors(i) = Color.FromArgb(c_i, Math.Min(255, Math.Max(0, (c_op * c_i + c_nocharge * (255 - c_i)) / c_p)), Math.Min(255, Math.Max(0, (c_charge * c_i + c_max * (255 - c_i)) / c_p)), Math.Min(255, Math.Max(0, (c_speed * c_i + c_charge * (255 - c_i)) / c_p)))
+							'Dim c_charge = AShip.shield * 255 / AShip.stats.shield
+							'Dim c_nocharge = 255 - c_charge
+							'Dim c_speed = (AShip.stats.shield_regeneration - 10) * 255 / 30
+							'Dim c_op = AShip.stats.shield_opacity * 255 / 100
+							'Dim c_max = AShip.stats.shield
+							'Dim c_i = AShip.ShieldPoints(i)
+							'Dim c_p = Math.Max(1, AShip.ShieldPoints(i))
+							'shields_colors(i) = Color.FromArgb(c_i, Math.Min(255, Math.Max(0, (c_op * c_i + c_nocharge * (255 - c_i)) / c_p)), Math.Min(255, Math.Max(0, (c_charge * c_i + c_max * (255 - c_i)) / c_p)), Math.Min(255, Math.Max(0, (c_speed * c_i + c_charge * (255 - c_i)) / c_p)))
+
+							Dim f_alpha As Double = AShip.ShieldPoints(i) / 256.0
+							Dim f_red_0 As Double = 1.0 - (AShip.shield / AShip.stats.shield) / 2.0
+							Dim f_red_1 As Double = 1.0 - (AShip.shield / AShip.stats.shield)
+							Dim f_green_0 As Double = (AShip.stats.shield_opacity - 25) / 75.0 + AShip.stats.shield_regeneration / 40.0
+							Dim f_green_1 As Double = f_green_0 * Math.Sqrt(Math.Max(0, AShip.shield / AShip.stats.shield))
+							Dim f_blue_0 As Double = (Math.Sqrt(AShip.stats.shield) * 20.0) / 400.0
+							Dim f_blue_1 As Double = f_blue_0 * (AShip.shield / AShip.stats.shield)
+							shields_colors(i) = Color.FromArgb(Math.Min(255, f_alpha * 255 * 2), Math.Min(255, Math.Max(0, (1.0 - f_alpha) * f_red_0 * 256 + (f_alpha) * f_red_1 * 256)), Math.Min(255, Math.Max(0, (1.0 - f_alpha) * f_green_0 * 256 + (f_alpha) * f_green_1 * 256)), Math.Min(255, Math.Max(0, (1.0 - f_alpha) * f_blue_0 * 256 + (f_alpha) * f_blue_1 * 256)))
 						Next
 						Dim shieldsbrush As PathGradientBrush = New PathGradientBrush(shields_ptns)
 						shieldsbrush.SurroundColors = shields_colors

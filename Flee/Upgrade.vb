@@ -41,7 +41,7 @@
         Upgrades.Add(New Upgrade With {.Name = "Launch_8_MSL", .File = "MSL", .PTN = New Point(0, 0), .cost = New MaterialSet(1000, 0, 0, 0), .Time = 100, .Need = "?Up:Nothing", .Effect = "!Sum:MSL !Sum:MSL !Sum:MSL !Sum:MSL !Sum:MSL !Sum:MSL !Sum:MSL !Sum:MSL", .Install = False, .Desc = "Launch a missile you can control"})
         Upgrades.Add(New Upgrade With {.Name = "Launch_MSL_instant", .File = "MSL", .PTN = New Point(0, 0), .cost = New MaterialSet(0, 0, 0, 0), .Time = 0, .Need = "?Up:Nothing", .Effect = "!Sum:MSL", .Install = False, .Desc = "Launch a missile you can control"})
         Upgrades.Add(New Upgrade With {.Name = "Ascend", .File = "Ups", .PTN = New Point(7, 7), .cost = New MaterialSet(0, 0, 32, 0), .Time = 600, .Need = "?Up:Warp_Drive", .Effect = "!Ascend %Speed:300 %Life:100 !Regen:16 %Wloadmax:-100 !Shield:600 !Shieldop:100 !C:White %Shieldreg:2500", .Install = True, .not_for_bots = True, .Desc = "Reach the next level of existence."})
-        Upgrades.Add(New Upgrade With {.Name = "Build_Kastou", .File = "Kastou", .PTN = New Point(0, 0), .cost = New MaterialSet(0, 0, 0, 0), .Time = 1900, .Need = "?Up:Nothing", .Effect = "!Sum:Kastou", .Install = False, .Desc = "Ya kastou itsi vioctry granti" & vbNewLine & "'yi granti!'"})
+        Upgrades.Add(New Upgrade With {.Name = "Build_Kastou", .File = "Kastou", .PTN = New Point(0, 0), .cost = New MaterialSet(0, 0, 0, 0), .Time = 1500, .Need = "?Up:Nothing", .Effect = "!Sum:Kastou", .Install = False, .Desc = "Ya kastou itsi vioctry granti" & vbNewLine & "'yi granti!'"})
         Upgrades.Add(New Upgrade With {.Name = "Build_Crusher", .File = "Crusher", .PTN = New Point(0, 0), .cost = New MaterialSet(0, 0, 0, 0), .Time = 3500, .Need = "?Up:Nothing", .Effect = "!Sum:Crusher", .Install = False, .Desc = "It's gonna hurt!" & vbNewLine & "'Hmm... How could you even read this?'"})
         Upgrades.Add(New Upgrade With {.Name = "Build_Ori", .File = "Ori", .PTN = New Point(0, 0), .cost = New MaterialSet(0, 0, 0, 0), .Time = 100, .Need = "?Up:Nothing", .Effect = "!Sum:Ori", .Install = False, .Desc = "Hey"})
         Upgrades.Add(New Upgrade With {.Name = "Bugs", .File = "Bugs", .PTN = New Point(0, 0), .cost = New MaterialSet(0, 0, 0, 0), .Time = 100, .Need = "?Type:Nothing", .Effect = "!Sum:Bugs", .Install = False, .Desc = "What is this thing?"})
@@ -73,23 +73,23 @@
         Upgrades.Add(New Upgrade With {.Name = "Cold_Deflector", .File = "Deflected3", .PTN = New Point(7, 0), .cost = New MaterialSet(2300, 6, 0, 150), .Time = 200, .Need = "+Lvl:2 ?Up:Deflector", .Effect = "!ColdDeflector:1", .Install = True, .Desc = "This deflector is able to catch an incredible amount of fire, but prevent your weapons from reloading while it is recovering, AndAlso cause damage to your hull from the inside."})
 
         'Boucliers
-        Upgrades.Add(New Upgrade With {.Name = "Shield", .File = "Ups", .PTN = New Point(3, 0), .cost = New MaterialSet(200, 1, 0, 0), .Time = 100, .Need = "", .Effect = "!Shield:25 !Shieldop:25", .Install = True, .Desc = "Protection shield blocking 25% of incomming damages."})
-        Upgrades.Add(New Upgrade With {.Name = "Shield_II", .File = "Ups", .PTN = New Point(3, 1), .cost = New MaterialSet(400, 1, 0, 0), .Time = 100, .Need = "" & NPU(), .Effect = "%Shield:20 !Shieldop:25", .Install = True, .Desc = "Shield stop 50% of the shoots AndAlso increase in durability."})
-        Upgrades.Add(New Upgrade With {.Name = "Shield_III", .File = "Ups", .PTN = New Point(3, 2), .cost = New MaterialSet(600, 1, 0, 0), .Time = 100, .Need = "" & NPU(), .Effect = "%Shield:20 !Shieldop:25", .Install = True, .Desc = "Shield stop 75% of the shoots AndAlso increase in durability."})
-        Upgrades.Add(New Upgrade With {.Name = "Shield_IV", .File = "Ups", .PTN = New Point(3, 3), .cost = New MaterialSet(800, 2, 0, 50), .Time = 100, .Need = "" & NPU(), .Effect = "%Shield:20 !Shieldop:25", .Install = True, .Desc = "Shield stop 100% of the shoots AndAlso increase in durability"})
+        Upgrades.Add(New Upgrade With {.Name = "Shield", .File = "Ups", .PTN = New Point(3, 0), .cost = New MaterialSet(200, 1, 0, 0), .Time = 100, .Need = "", .Effect = "!Shield:40 !Shieldop:25", .Install = True, .Desc = "Protection shield blocking 25% of incomming damages."})
+        Upgrades.Add(New Upgrade With {.Name = "Shield_II", .File = "Ups", .PTN = New Point(3, 1), .cost = New MaterialSet(400, 1, 0, 0), .Time = 100, .Need = "" & NPU(), .Effect = "%Shield:10 !Shieldop:25", .Install = True, .Desc = "Shield stop 25% more damages."})
+        Upgrades.Add(New Upgrade With {.Name = "Shield_III", .File = "Ups", .PTN = New Point(3, 2), .cost = New MaterialSet(600, 1, 0, 0), .Time = 100, .Need = "" & NPU(), .Effect = "%Shield:10 !Shieldop:25", .Install = True, .Desc = "Shield stop 25% more damages."})
+        Upgrades.Add(New Upgrade With {.Name = "Shield_IV", .File = "Ups", .PTN = New Point(3, 3), .cost = New MaterialSet(800, 2, 0, 50), .Time = 100, .Need = "" & NPU(), .Effect = "%Shield:10 !Shieldop:25", .Install = True, .Desc = "Shield stop 25% more damages."})
         Upgrades.Add(New Upgrade With {.Name = "Shield_Capacitor", .File = "Ups", .PTN = New Point(3, 4), .cost = New MaterialSet(600, 1, 0, 0), .Time = 100, .Need = "?Up:Shield", .Effect = "%Shield:50", .Install = True, .Desc = "Shield last 50% longer."})
         Upgrades.Add(New Upgrade With {.Name = "Shield_Capacitor_II", .File = "Ups", .PTN = New Point(3, 5), .cost = New MaterialSet(700, 2, 0, 0), .Time = 100, .Need = "" & NPU(), .Effect = "%Shield:50", .Install = True, .Desc = "Shield last 50% longer."})
         Upgrades.Add(New Upgrade With {.Name = "Shield_Loader", .File = "Ups", .PTN = New Point(3, 7), .cost = New MaterialSet(800, 1, 0, 100), .Time = 100, .Need = "?Up:Shield", .Effect = "%Shieldreg:50", .Install = True, .Desc = "Shield recover 50% faster."})
 
         'Bouclier (autre)
         Upgrades.Add(New Upgrade With {.Name = "Dynamic_Shield", .File = "Ups2", .PTN = New Point(1, 0), .cost = New MaterialSet(700, 2, 0, 0), .Time = 100, .Need = "+Lvl:2 ?Up:Shield", .Effect = "%Shieldreg:100 %Shield:-50", .Install = True, .Desc = "Shield recover twice as fast, but last half as long."})
-        Upgrades.Add(New Upgrade With {.Name = "Partial_Shield", .File = "Ups2", .PTN = New Point(1, 1), .cost = New MaterialSet(700, 2, 0, 0), .Time = 100, .Need = "+Lvl:2 ?Up:Shield_II ?Up:Shield_Loader", .Effect = "%Shieldreg:75 !Shieldop:-25", .Install = True, .Desc = "Shield recover 75% faster, but let 25% of shoot damages pass."})
-        Upgrades.Add(New Upgrade With {.Name = "Surface_Shield", .File = "Ups2", .PTN = New Point(1, 2), .cost = New MaterialSet(700, 2, 0, 0), .Time = 100, .Need = "+Lvl:2 ?Up:Shield_II", .Effect = "%Shield:75 !Shieldop:-25", .Install = True, .Desc = "Shield last 75% longer, but let 25% of shoot damages pass."})
-        Upgrades.Add(New Upgrade With {.Name = "Alternative_Shield", .File = "Ups2", .PTN = New Point(1, 3), .cost = New MaterialSet(700, 3, 0, 100), .Time = 100, .Need = "+Lvl:2 ?Up:Shield_Loader", .Effect = "%Shieldreg:25 %Shield:25 !Shieldop:-50", .Install = True, .Desc = "Shield recover 25% faster AndAlso last 25% longer, but let 25% of shoot damages pass."})
+        Upgrades.Add(New Upgrade With {.Name = "Partial_Shield", .File = "Ups2", .PTN = New Point(1, 1), .cost = New MaterialSet(700, 2, 0, 0), .Time = 100, .Need = "+Lvl:2 ?Up:Shield_II ?Up:Shield_Loader", .Effect = "%Shieldreg:75 !Shieldop:-20", .Install = True, .Desc = "Shield recover 75% faster, but let 20% of shoot damages pass."})
+        Upgrades.Add(New Upgrade With {.Name = "Surface_Shield", .File = "Ups2", .PTN = New Point(1, 2), .cost = New MaterialSet(700, 2, 0, 0), .Time = 100, .Need = "+Lvl:2 ?Up:Shield_II", .Effect = "%Shield:75 !Shieldop:-20", .Install = True, .Desc = "Shield last 75% longer, but let 20% of shoot damages pass."})
+        Upgrades.Add(New Upgrade With {.Name = "Alternative_Shield", .File = "Ups2", .PTN = New Point(1, 3), .cost = New MaterialSet(700, 3, 0, 100), .Time = 100, .Need = "+Lvl:2 ?Up:Shield_Loader", .Effect = "%Shieldreg:25 %Shield:25 !Shieldop:-20", .Install = True, .Desc = "Shield recover 25% faster AndAlso last 25% longer, but let 20% of shoot damages pass."})
         Upgrades.Add(New Upgrade With {.Name = "Bidirectional_Shield", .File = "Ups2", .PTN = New Point(1, 4), .cost = New MaterialSet(700, 2, 0, 100), .Time = 100, .Need = "+Lvl:1 ?Up:Shield", .Effect = "%Shield:25 %Wloadmax:15", .Install = True, .Desc = "Shield last 25% longer, but weapons shoot slower."})
         Upgrades.Add(New Upgrade With {.Name = "Shield_Capacitor_III", .File = "Ups2", .PTN = New Point(3, 2), .cost = New MaterialSet(1200, 3, 1, 0), .Time = 200, .Need = "?Up:Shield_Capacitor_II", .Effect = "%Shield:75", .Install = True, .Desc = "Shield last 50% longer."})
         Upgrades.Add(New Upgrade With {.Name = "Shield_Loader_II", .File = "Ups2", .PTN = New Point(3, 4), .cost = New MaterialSet(1200, 3, 0, 200), .Time = 200, .Need = "?Up:Shield_Loader", .Effect = "%Shieldreg:35", .Install = True, .Desc = "Shield recover 35% faster."})
-        Upgrades.Add(New Upgrade With {.Name = "Shield_Patch", .File = "Ups2", .PTN = New Point(3, 0), .cost = New MaterialSet(600, 1, 1, 200), .Time = 200, .Need = "?Up:Shield_IV", .Effect = "!Shieldop:25", .Install = True, .Desc = "Shield stop +25% of the shoots (this can fix some of the other upgrades effects)"})
+        Upgrades.Add(New Upgrade With {.Name = "Shield_Patch", .File = "Ups2", .PTN = New Point(3, 0), .cost = New MaterialSet(600, 1, 1, 200), .Time = 200, .Need = "?Up:Shield_IV", .Effect = "!Shieldop:25", .Install = True, .Desc = "Shield stop +25% of the damages (this can fix some of the other upgrades effects)"})
 
         'Rechagement
         Upgrades.Add(New Upgrade With {.Name = "Reloader", .File = "Ups", .PTN = New Point(2, 0), .cost = New MaterialSet(100, 1, 0, 0), .Time = 100, .Need = "+Lvl:1 ?W", .Effect = "%Wloadmax:-15", .Install = True, .Desc = "Weapons reload 15% faster."})
@@ -202,6 +202,15 @@
 
         Upgrades.Add(New Upgrade With {.Name = "Build_PartialBomber", .File = "PartialBomber", .PTN = New Point(0, 0), .cost = New MaterialSet(600, 0, 0, 25), .Time = 2700, .Need = "?MS ?Type:BomberFactory", .Effect = "!Sum:PartialBomber", .Install = False, .Desc = ""})
     End Sub
+    Public Shared Sub LoadBuildUpgrades()
+        For Each ship_class As ShipStats In ShipStats.classes.Values
+            Dim build_ship_upgrade_name As String = "Build_" & ship_class.name
+            If UpgradeFromName(build_ship_upgrade_name) Is Nothing Then
+                Upgrades.Add(New Upgrade With {.Name = build_ship_upgrade_name, .File = ship_class.sprite, .PTN = New Point(0, 0), .cost = ship_class.cost, .Time = ship_class.complexity, .Need = "?MS ?Type:Finalizer", .Effect = "!Sum:" & ship_class.name, .Install = False, .Desc = "Build a " & ship_class.name & "."})
+            End If
+        Next
+    End Sub
+
     Public Shared Function NPU() As String
         Return " ?Up:" & Upgrades(Upgrades.Count - 1).Name
     End Function
