@@ -416,7 +416,7 @@
                 If aship.stats.speed <> 0.0 OrElse Not aship.stats.name.Contains("Station") Then
                     count = count + 1
                 End If
-                If (Not aship.Upgrading Is Nothing) AndAlso aship.Upgrading.Effect.StartsWith("!Sum") Then
+                If (Not aship.Upgrading Is Nothing) AndAlso aship.Upgrading.effect.StartsWith("!Sum") Then
                     count = count + 1
                 End If
             End If

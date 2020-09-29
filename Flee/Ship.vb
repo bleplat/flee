@@ -242,16 +242,16 @@
         End If
         '===' Upgrades '==='
         If Not Upgrading Is Nothing Then
-            If UpProgress < Upgrading.Time Then
+            If UpProgress < Upgrading.delay Then
                 UpProgress = UpProgress + 1
                 If MainForm.cheats_enabled Then
                     UpProgress = UpProgress + 99
                 End If
             Else
-                If Upgrading.Name.Contains("Pointvortex") Then
+                If Upgrading.name.Contains("Pointvortex") Then
                     Console.WriteLine()
                 End If
-                If Upgrading.Install Then
+                If Upgrading.upgrade_slots_requiered > 0 Then
                     Ups.Add(Upgrading)
                 End If
                 'Appliquation debugage 'TODO: NOW: test without this
@@ -520,7 +520,7 @@
     ' get all possible upgrades
     Public Function ConditionsMetUpgrades()
         Dim met_upgrades As List(Of Upgrade) = New List(Of Upgrade)
-        For Each upgrade As Upgrade In Upgrade.Upgrades
+        For Each upgrade As Upgrade In Upgrade.upgrades
             If IsUpgradeCompatible(upgrade) OrElse Me.Ups.Contains(upgrade) Then
                 met_upgrades.Add(upgrade)
             End If
@@ -530,7 +530,7 @@
     ' get all possible upgrades
     Public Function AvailableUpgrades()
         Dim possible_upgrades As List(Of Upgrade) = New List(Of Upgrade)
-        For Each upgrade As Upgrade In Upgrade.Upgrades
+        For Each upgrade As Upgrade In Upgrade.upgrades
             If CanUpgrade(upgrade) Then
                 possible_upgrades.Add(upgrade)
             End If
@@ -541,7 +541,7 @@
     Public Function CanUpgrade(upgrade As Upgrade) As Boolean
         If MainForm.cheats_enabled Then Return True
         If Not Me.Upgrading Is Nothing Then Return False
-        If upgrade.Install AndAlso Me.Ups.Count >= upgrade_slots Then Return False
+        If Me.upgrade_slots - Me.Ups.Count < upgrade.upgrade_slots_requiered Then Return False
         If upgrade.not_for_bots AndAlso Me.bot_ship Then Return False
         If Me.HaveUp(upgrade) Then Return False
         Return IsUpgradeCompatible(upgrade)
@@ -550,7 +550,10 @@
     Public Function IsUpgradeCompatible(upgrade As Upgrade) As Boolean
         If MainForm.cheats_enabled Then Return True
         If upgrade Is Me.Upgrading Then Return True
-        Dim conditions_strings() As String = upgrade.Need.Split(" ")
+        If Not upgrade.spawned_ship Is Nothing Then
+            If Not Me.stats.crafts.Contains(upgrade.spawned_ship) Then Return False
+        End If
+        Dim conditions_strings() As String = upgrade.need.Split(" ")
         For Each a_condition As String In conditions_strings
             If Not IsUpgradeConditionMet(a_condition) Then
                 Return False
@@ -597,7 +600,7 @@
     ' apply all upgrades effects this ship have
     Public Sub ApplyUpgrades()
         For Each AUp As Upgrade In Me.Ups
-            Dim spliter() As String = AUp.Effect.Split(" ")
+            Dim spliter() As String = AUp.effect.Split(" ")
             For Each Aspli As String In spliter
                 ApplyUpgradeEffect(Aspli, False)
             Next
@@ -605,7 +608,7 @@
     End Sub
     ' apply a single upgrade effects to this ship
     Public Sub ApplyUpgradeFirstTime(ByRef upgrade As Upgrade)
-        Dim spliter() As String = upgrade.Effect.Split(" ")
+        Dim spliter() As String = upgrade.effect.Split(" ")
         For Each Aspli As String In spliter
             ApplyUpgradeEffect(Aspli, True)
         Next

@@ -263,14 +263,10 @@ Public NotInheritable Class Helpers
 		Return d.ToString("0.00", culture)
 	End Function
 
-
-
-
-
 	Public Shared Function RandomStationName(rand As Random) As String
 		Dim station_names As List(Of String) = New List(Of String)
 		For Each ship_class_name As String In ShipStats.classes.Keys
-			If ship_class_name.Contains("Station") Then
+			If ship_class_name.Contains("Station") AndAlso Not ship_class_name.Contains("Player") Then
 				station_names.Add(ship_class_name)
 			End If
 		Next
@@ -288,9 +284,9 @@ Public NotInheritable Class Helpers
 	Public Shared Function GetSpawnUpgrades(ship As Ship) As List(Of String)
 		Dim upgrades As List(Of String) = New List(Of String)
 		For Each craft As String In ship.stats.crafts
-			For Each a_up As Upgrade In Upgrade.Upgrades
-				If a_up.Name = ("Build_" & craft) Then
-					upgrades.Add(a_up.Name)
+			For Each a_up As Upgrade In Upgrade.upgrades
+				If a_up.name = ("Build_" & craft) Then
+					upgrades.Add(a_up.name)
 				End If
 			Next
 		Next

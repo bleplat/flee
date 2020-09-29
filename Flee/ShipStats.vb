@@ -42,7 +42,7 @@ Public Class ShipStats
 	' crafting
 	Public crafts As New List(Of String)
 	Public cost As MaterialSet = New MaterialSet(0, 0, 0, 0)
-	Public complexity = 400
+	Public complexity = 0
 
 	' constructor
 	Public Sub New(name As String)
@@ -54,7 +54,6 @@ Public Class ShipStats
 		If Me.width >= 25 Then Me.repair = 1
 		Me.cost.Metal = Me.width * 2 + Me.level * 10
 		If Me.width >= 20 Then Me.cost.Crystal = 1
-		Me.complexity = Me.level * 100
 	End Sub
 
 	' Import/Export
@@ -85,7 +84,7 @@ Public Class ShipStats
 			If shield_regeneration <> 10 Then
 				total &= vbTab & "shield_regeneration=" & Helpers.ToString(Me.shield_regeneration) & vbLf
 			End If
-			If shield_opacity <> 20 Then
+			If shield_opacity <> 25 Then
 				total &= vbTab & "shield_opacity=" & Helpers.ToString(Me.shield_opacity) & vbLf
 			End If
 		End If
@@ -122,7 +121,7 @@ Public Class ShipStats
 			Case "weapon" : default_weapons.Add(value)
 			Case "shield"
 				Me.shield = value
-				Me.shield_opacity = 25
+				If Me.shield_opacity = 0 Then Me.shield_opacity = 25
 			Case "shield_regeneration" : Me.shield_regeneration = Helpers.ToDouble(value)
 			Case "shield_opacity" : Me.shield_opacity = Helpers.ToDouble(value)
 			Case "deflectors" : Me.deflectors = Convert.ToInt32(value)
@@ -130,7 +129,9 @@ Public Class ShipStats
 			Case "hot_deflector" : Me.hot_deflector = Helpers.ToDouble(value)
 			Case "cold_deflector" : Me.cold_deflector = Convert.ToInt32(value)
 			Case "craft" : Me.crafts.Add(value)
-			Case "cost" : Me.cost = New MaterialSet(value)
+			Case "cost"
+				Me.cost = New MaterialSet(value)
+				If Me.complexity = 0 Then Me.complexity = Me.width * 4 + Me.cost.Metal / 4 + Me.cost.Crystal * 20 + Me.cost.Antimatter + Me.cost.Fissile * 100
 			Case "complexity" : Me.complexity = Convert.ToInt32(value)
 		End Select
 	End Sub

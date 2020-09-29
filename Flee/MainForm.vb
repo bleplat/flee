@@ -584,8 +584,8 @@ Public Class MainForm
 			If x = UpX AndAlso y = UpY Then
 				PG.FillRectangle(Brushes.DimGray, x * 25, y * 25, 25, 25)
 				udV = True
-				UpName.Text = AUp.Name
-				UpDesc.Text = AUp.Desc
+				UpName.Text = AUp.name
+				UpDesc.Text = AUp.desc
 				' prices
 				PriceC.Text = AUp.cost.Crystal
 				PriceM.Text = AUp.cost.Metal
@@ -603,24 +603,24 @@ Public Class MainForm
 			End If
 			If Aship.HaveUp(AUp) Then
 				PG.DrawRectangle(New Pen(Brushes.White, 2), x * 25 + 1, y * 25 + 1, 24 - 1, 24 - 1)
-			ElseIf (Not Aship.Upgrading Is Nothing) AndAlso Aship.Upgrading.Name = AUp.Name Then
+			ElseIf (Not Aship.Upgrading Is Nothing) AndAlso Aship.Upgrading.name = AUp.name Then
 				PG.DrawRectangle(New Pen(Brushes.Yellow, 2), x * 25, y * 25, 24, 24)
-				Dim ph As Integer = Aship.UpProgress / Math.Max(1, AUp.Time) * 25
+				Dim ph As Integer = Aship.UpProgress / Math.Max(1, AUp.delay) * 25
 				PG.FillRectangle(Brushes.White, x * 25, y * 25 + 25 - ph, 25, ph)
-			ElseIf Aship.Ups.Count >= Aship.upgrade_slots AndAlso AUp.Install Then
+			ElseIf AUp.upgrade_slots_requiered > 0 AndAlso Aship.upgrade_slots - Aship.Ups.Count < AUp.upgrade_slots_requiered Then
 				PG.DrawRectangle(Pens.DarkBlue, x * 25, y * 25, 24, 24)
 			ElseIf Aship.team Is Nothing OrElse Not Aship.team.resources.HasEnough(AUp.cost) Then
-				If AUp.Install Then
+				If AUp.upgrade_slots_requiered > 0 Then
 					PG.DrawRectangle(Pens.DarkRed, x * 25, y * 25, 24, 24)
 				Else
 					PG.DrawRectangle(Pens.MediumPurple, x * 25, y * 25, 24, 24)
 				End If
-			ElseIf Not AUp.Install Then
+			ElseIf AUp.upgrade_slots_requiered = 0 Then
 				PG.DrawRectangle(Pens.Cyan, x * 25, y * 25, 24, 24)
 			Else
 				PG.DrawRectangle(Pens.DarkGreen, x * 25, y * 25, 24, 24)
 			End If
-			PG.DrawImage(Helpers.GetSprite(AUp.File, AUp.PTN.X, AUp.PTN.Y), New Rectangle(New Point(x * 25, y * 25), New Size(25, 25)))
+			PG.DrawImage(Helpers.GetSprite(AUp.file, AUp.frame_coords.X, AUp.frame_coords.Y), New Rectangle(New Point(x * 25, y * 25), New Size(25, 25)))
 
 			'item suivant
 			x = x + 1
