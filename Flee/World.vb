@@ -378,12 +378,6 @@
                         If a_ship.stats.name = "Loneboss" Then
                             If Rand.Next(0, 16) < 12 Then Upgrade.ForceUpgradeToShip(a_ship, "Launch_MSL_instant")
                         End If
-                        If a_ship.stats.name = "Yerka" Then
-                            'If Rand.Next(0, 16) < 1 Then Upgrade.ForceUpgradeToShip(a_ship, "Launch_MSL_from_yerka")
-                        End If
-                        If a_ship.stats.name = "Scout" Then
-                            'If Rand.Next(0, 16) < 1 Then Upgrade.ForceUpgradeToShip(a_ship, "Launch_MSL")
-                        End If
                     End If
                 End If
             Next
