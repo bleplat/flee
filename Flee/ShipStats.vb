@@ -47,16 +47,51 @@ Public Class ShipStats
 	' constructor
 	Public Sub New(name As String)
 		Me.name = name
+		SetSprite(name)
+	End Sub
+	Public Sub SetSprite(sprite As String)
 		Me.sprite = name
-		Me.width = Helpers.GetSprite(name, -1, -1, Nothing).Width / 8 - 2
-		Me.level = Math.Sqrt(Me.width)
-		Me.integrity = (Me.width * Me.width) / 12
-		If Me.width >= 25 Then Me.repair = 1
-		Me.cost.Metal = Me.width * 2 + Me.level * 10
-		If Me.width >= 20 Then Me.cost.Crystal = 1
+		Dim try_bmp As Bitmap = Helpers.GetSprite(Me.sprite, -1, -1, Nothing)
+		If Not try_bmp Is Nothing Then
+			Me.width = try_bmp.Width / 8 - 2
+			Me.level = Math.Sqrt(Me.width)
+			Me.integrity = (Me.width * Me.width) / 12
+			If Me.width >= 25 Then Me.repair = 1
+			Me.cost.Metal = Me.width * 2 + Me.level * 10
+			If Me.width >= 20 Then Me.cost.Crystal = 1
+		End If
 	End Sub
 
 	' Import/Export
+	Public Sub SetProperty(name As String, value As String)
+		Select Case name
+			Case "sprite"
+				SetSprite(value)
+			Case "level" : Me.level = Convert.ToInt32(value)
+			Case "width" : Me.width = Convert.ToInt32(value)
+			Case "integrity" : Me.integrity = Convert.ToInt32(value)
+			Case "repair" : Me.repair = Convert.ToInt32(value)
+			Case "speed"
+				Me.speed = Helpers.ToDouble(value)
+				If turn = 0 Then Me.turn = speed
+			Case "turn" : Me.turn = Helpers.ToDouble(value)
+			Case "weapon" : default_weapons.Add(value)
+			Case "shield"
+				Me.shield = value
+				If Me.shield_opacity = 0 Then Me.shield_opacity = 25
+			Case "shield_regeneration" : Me.shield_regeneration = Helpers.ToDouble(value)
+			Case "shield_opacity" : Me.shield_opacity = Helpers.ToDouble(value)
+			Case "deflectors" : Me.deflectors = Convert.ToInt32(value)
+			Case "deflectors_cooldown" : Me.deflectors_cooldown = Convert.ToInt32(value)
+			Case "hot_deflector" : Me.hot_deflector = Helpers.ToDouble(value)
+			Case "cold_deflector" : Me.cold_deflector = Convert.ToInt32(value)
+			Case "craft" : Me.crafts.Add(value)
+			Case "cost"
+				Me.cost = New MaterialSet(value)
+				If Me.complexity = 0 Then Me.complexity = Me.width * 4 + Me.cost.Metal / 4 + Me.cost.Crystal * 20 + Me.cost.Antimatter + Me.cost.Fissile * 100
+			Case "complexity" : Me.complexity = Convert.ToInt32(value)
+		End Select
+	End Sub
 	Public Function ToString() As String
 		Dim total As String = "ship " & Me.name & vbLf
 		If Me.sprite <> Me.name Then
@@ -107,34 +142,6 @@ Public Class ShipStats
 		total &= vbTab & "complexity=" & Me.complexity.ToString() & vbLf
 		Return total
 	End Function
-	Public Sub SetProperty(name As String, value As String)
-		Select Case name
-			Case "sprite" : Me.sprite = value
-			Case "level" : Me.level = Convert.ToInt32(value)
-			Case "width" : Me.width = Convert.ToInt32(value)
-			Case "integrity" : Me.integrity = Convert.ToInt32(value)
-			Case "repair" : Me.repair = Convert.ToInt32(value)
-			Case "speed"
-				Me.speed = Helpers.ToDouble(value)
-				If turn = 0 Then Me.turn = speed
-			Case "turn" : Me.turn = Helpers.ToDouble(value)
-			Case "weapon" : default_weapons.Add(value)
-			Case "shield"
-				Me.shield = value
-				If Me.shield_opacity = 0 Then Me.shield_opacity = 25
-			Case "shield_regeneration" : Me.shield_regeneration = Helpers.ToDouble(value)
-			Case "shield_opacity" : Me.shield_opacity = Helpers.ToDouble(value)
-			Case "deflectors" : Me.deflectors = Convert.ToInt32(value)
-			Case "deflectors_cooldown" : Me.deflectors_cooldown = Convert.ToInt32(value)
-			Case "hot_deflector" : Me.hot_deflector = Helpers.ToDouble(value)
-			Case "cold_deflector" : Me.cold_deflector = Convert.ToInt32(value)
-			Case "craft" : Me.crafts.Add(value)
-			Case "cost"
-				Me.cost = New MaterialSet(value)
-				If Me.complexity = 0 Then Me.complexity = Me.width * 4 + Me.cost.Metal / 4 + Me.cost.Crystal * 20 + Me.cost.Antimatter + Me.cost.Fissile * 100
-			Case "complexity" : Me.complexity = Convert.ToInt32(value)
-		End Select
-	End Sub
 	Public Function Clone() As ShipStats
 		Return DirectCast(Me.MemberwiseClone(), ShipStats)
 	End Function

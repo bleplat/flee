@@ -68,7 +68,11 @@ Public NotInheritable Class Helpers
 		If x = -1 AndAlso y = -1 Then
 			' Base image requested
 			Dim file_name As String = "./sprites/" & img_name & ".bmp"
-			bmp = New Bitmap(Image.FromFile(file_name)) ' My.Resources.ResourceManager.GetObject(img_name, My.Resources.Culture)
+			Try
+				bmp = New Bitmap(Image.FromFile(file_name)) ' My.Resources.ResourceManager.GetObject(img_name, My.Resources.Culture)
+			Catch ex As Exception
+				Return Nothing
+			End Try
 		Else
 			' Get base image
 			bmp = GetSprite(img_name, -1, -1, Nothing)
@@ -95,6 +99,9 @@ Public NotInheritable Class Helpers
 					Next
 				End With
 			End If
+		End If
+		If bmp Is Nothing Then
+			Return Nothing
 		End If
 		' Final processing
 		bmp.MakeTransparent(Color.Black)
@@ -266,7 +273,7 @@ Public NotInheritable Class Helpers
 	Public Shared Function RandomStationName(rand As Random) As String
 		Dim station_names As List(Of String) = New List(Of String)
 		For Each ship_class_name As String In ShipStats.classes.Keys
-			If ship_class_name.Contains("Station") AndAlso Not ship_class_name.Contains("Player") Then
+			If ship_class_name.Contains("Station") AndAlso Not ship_class_name.Contains("Player") AndAlso Not ship_class_name = "Station" Then
 				station_names.Add(ship_class_name)
 			End If
 		Next
