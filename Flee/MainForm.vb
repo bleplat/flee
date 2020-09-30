@@ -385,11 +385,11 @@ Public Class MainForm
 
 	'===' Clics '==='
 	Private Sub DrawBox_MouseDown(sender As System.Object, e As System.Windows.Forms.MouseEventArgs) Handles DrawBox.MouseDown
-		SelectPTN2 = New Point((e.X * 600 / DrawBox.Width) + See.X, (e.Y * 600 / DrawBox.Height) + See.Y)
+		SelectPTN2 = New Point((e.X * DrawBMP.Width / DrawBox.Width) + See.X, (e.Y * DrawBMP.Height / DrawBox.Height) + See.Y)
 		Select Case e.Button
 			Case Windows.Forms.MouseButtons.Left
 				SelectStarted = True
-				SelectPTN1 = New Point((e.X * 600 / DrawBox.Width) + See.X, (e.Y * 600 / DrawBox.Height) + See.Y)
+				SelectPTN1 = New Point((e.X * DrawBMP.Width / DrawBox.Width) + See.X, (e.Y * DrawBMP.Height / DrawBox.Height) + See.Y)
 			Case Windows.Forms.MouseButtons.Middle
 
 			Case Windows.Forms.MouseButtons.Right
@@ -397,13 +397,13 @@ Public Class MainForm
 		End Select
 	End Sub
 	Private Sub DrawBox_MouseMove(sender As System.Object, e As System.Windows.Forms.MouseEventArgs) Handles DrawBox.MouseMove
-		SelectPTN2 = New Point((e.X * 600 / DrawBox.Width) + See.X, (e.Y * 600 / DrawBox.Height) + See.Y)
+		SelectPTN2 = New Point((e.X * DrawBMP.Width / DrawBox.Width) + See.X, (e.Y * DrawBMP.Height / DrawBox.Height) + See.Y)
 	End Sub
 	Private Sub DrawBox_MouseUp(sender As System.Object, e As System.Windows.Forms.MouseEventArgs) Handles DrawBox.MouseUp
 		Select Case e.Button
 			Case Windows.Forms.MouseButtons.Left
 				SelectStarted = False
-				SelectPTN2 = New Point((e.X * 600 / DrawBox.Width) + See.X, (e.Y * 600 / DrawBox.Height) + See.Y)
+				SelectPTN2 = New Point((e.X * DrawBMP.Width / DrawBox.Width) + See.X, (e.Y * DrawBMP.Height / DrawBox.Height) + See.Y)
 				SelectInSquare()
 			Case Windows.Forms.MouseButtons.Middle
 
@@ -570,7 +570,7 @@ Public Class MainForm
 		UpY = e.Y \ 25
 		UpgradeDetails.Top = UpgradesBox.Location.Y + e.Y
 	End Sub
-	Dim PBMP As New Bitmap(200, 400)
+	Dim PBMP As New Bitmap(200, 600)
 	Dim PG As Graphics = Graphics.FromImage(PBMP)
 	Sub drawUpgrades()
 		Dim Aship As Ship = LastShipPaneload
@@ -667,4 +667,8 @@ Public Class MainForm
 		UpY = -1
 	End Sub
 
+	Private Sub DrawBox_SizeChanged(sender As Object, e As EventArgs) Handles DrawBox.SizeChanged
+		DrawBMP = New Bitmap(DrawBox.Size.Width, DrawBox.Size.Height)
+		G = Graphics.FromImage(DrawBMP)
+	End Sub
 End Class

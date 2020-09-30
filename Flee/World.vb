@@ -40,7 +40,13 @@
             main_type = Helpers.RandomStationName(Rand)
         End If
         Dim main_coords As Point = New Point(Rand.Next(1000, ArenaSize.Width - 1000), Rand.Next(1000, ArenaSize.Height - 1000))
-        Ships.Add(New Ship(Me, team, main_type) With {.location = main_coords})
+        For index = 1 To Math.Max(1, Math.Min(8, 1000 / ShipStats.classes(main_type).complexity))
+            If index = 1 Then
+                Ships.Add(New Ship(Me, team, main_type) With {.location = main_coords})
+            Else
+                Ships.Add(New Ship(Me, team, main_type) With {.location = New Point(main_coords.X + Rand.Next(-600, 600), main_coords.Y + Rand.Next(-600, 600))})
+            End If
+        Next
         ' turrets
         While spawn_allies > 0
             Dim ally_type As String = Helpers.RandomTurretName(Rand)

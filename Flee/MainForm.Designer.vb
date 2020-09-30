@@ -88,11 +88,11 @@ Partial Class MainForm
 		Me.MainPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
 			Or System.Windows.Forms.AnchorStyles.Left) _
 			Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+		Me.MainPanel.Controls.Add(Me.MiniBox)
 		Me.MainPanel.Controls.Add(Me.MenuPanel)
 		Me.MainPanel.Controls.Add(Me.UpgradeDetails)
 		Me.MainPanel.Controls.Add(Me.SShipPanel)
 		Me.MainPanel.Controls.Add(Me.PanelRes)
-		Me.MainPanel.Controls.Add(Me.MiniBox)
 		Me.MainPanel.Controls.Add(Me.DrawBox)
 		Me.MainPanel.Location = New System.Drawing.Point(0, 0)
 		Me.MainPanel.Name = "MainPanel"
@@ -307,7 +307,8 @@ Partial Class MainForm
 		'
 		'SShipPanel
 		'
-		Me.SShipPanel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+		Me.SShipPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+			Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
 		Me.SShipPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.SShipPanel.Controls.Add(Me.AllowMiningBox)
 		Me.SShipPanel.Controls.Add(Me.SShipUpsMax)
@@ -317,7 +318,7 @@ Partial Class MainForm
 		Me.SShipPanel.Controls.Add(Me.SShipTypeBox)
 		Me.SShipPanel.Location = New System.Drawing.Point(600, 67)
 		Me.SShipPanel.Name = "SShipPanel"
-		Me.SShipPanel.Size = New System.Drawing.Size(200, 333)
+		Me.SShipPanel.Size = New System.Drawing.Size(200, 332)
 		Me.SShipPanel.TabIndex = 3
 		'
 		'AllowMiningBox
@@ -343,9 +344,12 @@ Partial Class MainForm
 		'
 		'UpgradesBox
 		'
+		Me.UpgradesBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+			Or System.Windows.Forms.AnchorStyles.Left) _
+			Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
 		Me.UpgradesBox.Location = New System.Drawing.Point(0, 55)
 		Me.UpgradesBox.Name = "UpgradesBox"
-		Me.UpgradesBox.Size = New System.Drawing.Size(200, 300)
+		Me.UpgradesBox.Size = New System.Drawing.Size(200, 272)
 		Me.UpgradesBox.TabIndex = 2
 		Me.UpgradesBox.TabStop = False
 		'
