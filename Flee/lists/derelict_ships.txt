@@ -28,6 +28,7 @@ ship Comet
 	width=25
 	integrity=2
 	speed=12.00
+	turn=0.0001
 	turn=3.00
 	weapon=180;Explode-On-Contact
 	cost=0;8;2;0

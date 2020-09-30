@@ -18,7 +18,7 @@ ship Station_Simples
 	sprite=Station
 	level=100
 	width=100
-	integrity=2000
+	integrity=2500
 	cost=5000;32;2;0
 	complexity=1000
 	craft=Hunter
@@ -31,7 +31,7 @@ ship Station_Simples
 ship Station_Legendaries
 	level=100
 	width=100
-	integrity=2000
+	integrity=2500
 	cost=5000;32;2;0
 	craft=Legend_I
 	craft=Legend_K
@@ -42,7 +42,7 @@ ship Station_Legendaries
 ship Station_Drones
 	level=100
 	width=100
-	integrity=2000
+	integrity=2500
 	cost=5000;32;2;0
 	craft=Hunter
 	craft=Harass
@@ -51,14 +51,14 @@ ship Station_Drones
 ship Station_Kastous
 	level=100
 	width=100
-	integrity=2000
+	integrity=2500
 	cost=5000;32;2;0
 	craft=Kastou
 
 ship Station_Stranges
 	level=100
 	width=100
-	integrity=2000
+	integrity=2500
 	cost=5000;32;2;0
 	craft=Strange
 	craft=Sacred
@@ -68,7 +68,7 @@ ship Station_Crushers
 	level=100
 	width=100
 	turn=0.01
-	integrity=2000
+	integrity=2500
 	cost=5000;32;2;0
 	weapon=0;Heavy-PlasmaBomber
 	craft=Crusher
