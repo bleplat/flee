@@ -8,7 +8,6 @@ ship Colonizer
 	weapon=-135;Basic-ParticleGun
 	weapon=135;Basic-ParticleGun
 	cost=166;1;0;0
-	complexity=700
 	craft=Outpost
 	craft=Defense
 	craft=Pointvortex
@@ -24,7 +23,6 @@ ship MiniColonizer
 	shield=200
 	shield_opacity=75.00
 	cost=166;1;0;0
-	complexity=700
 	craft=MSL
 
 ship Ambassador
@@ -37,7 +35,6 @@ ship Ambassador
 	weapon=-45;Basic-Cannon
 	weapon=180;Basic-ParticleGun
 	cost=166;1;0;0
-	complexity=700
 	craft=Nuke
 
 ship Hunter
@@ -47,8 +44,7 @@ ship Hunter
 	speed=3.50
 	turn=2.80
 	weapon=0;Basic-ParticleGun
-	cost=166;1;0;0
-	complexity=700
+	cost=700;0;0;0
 
 ship Harass
 	level=2
@@ -57,8 +53,7 @@ ship Harass
 	speed=3.30
 	turn=2.30
 	weapon=0;Light-PlasmaBomber
-	cost=76;0;0;0
-	complexity=400
+	cost=800;1;0;0
 
 ship Cargo
 	level=4
@@ -66,8 +61,7 @@ ship Cargo
 	speed=3.20
 	turn=2.00
 	weapon=90;Basic-Cannon
-	cost=140;1;0;0
-	complexity=600
+	cost=800;0;0;0
 
 ship Simpleship
 	level=6
@@ -75,8 +69,7 @@ ship Simpleship
 	speed=2.80
 	turn=2.00
 	weapon=0;Standard-Cannon
-	cost=140;1;0;0
-	complexity=600
+	cost=1000;1;0;0
 
 ship Scout
 	level=8
@@ -86,8 +79,7 @@ ship Scout
 	turn=2.50
 	weapon=-45;Standard-ParticleGun
 	weapon=45;Standard-ParticleGun
-	cost=140;1;0;0
-	complexity=600
+	cost=2000;4;0;0
 	craft=MSL
 
 ship Bomber
@@ -96,8 +88,7 @@ ship Bomber
 	speed=2.80
 	turn=1.80
 	weapon=45;Heavy-PlasmaBomber
-	cost=140;1;0;0
-	complexity=600
+	cost=2500;4;0;0
 
 ship Artillery
 	level=10
@@ -106,22 +97,20 @@ ship Artillery
 	speed=2.80
 	turn=1.80
 	weapon=0;Standard-Artillery
-	cost=140;1;0;0
-	complexity=600
-	
+	cost=3000;4;0;0
+
 ship Dronner
 	level=8
 	integrity=135
 	speed=3.10
 	turn=1.50
 	weapon=0;Standard-Cannon
-	cost=140;1;0;0
-	complexity=600
+	cost=3500;8;0;0
 	craft=Combat_Drone_1
 	craft=Combat_Drone_2
 	craft=Combat_Drone_3
 	craft=Drone
-	
+
 ship Explorer
 	level=0
 	width=15
@@ -130,8 +119,7 @@ ship Explorer
 	speed=2.80
 	turn=8.50
 	weapon=0;MachineGun
-	cost=76;0;0;0
-	complexity=400
+	cost=150;0;0;0
 
 ship Combat_Drone_1
 	level=0
@@ -141,8 +129,7 @@ ship Combat_Drone_1
 	speed=3.50
 	weapon=180;Basic-ParticleGun
 	weapon=-180;Basic-ParticleGun
-	cost=76;0;0;0
-	complexity=400
+	cost=300;0;0;0
 
 ship Combat_Drone_2
 	level=0
@@ -152,8 +139,7 @@ ship Combat_Drone_2
 	speed=3.50
 	turn=5.50
 	weapon=0;Basic-ParticleGun
-	cost=76;0;0;0
-	complexity=400
+	cost=250;0;0;0
 
 ship Combat_Drone_3
 	level=0
@@ -163,8 +149,7 @@ ship Combat_Drone_3
 	speed=3.50
 	turn=1.50
 	weapon=0;Basic-Cannon
-	cost=76;0;0;0
-	complexity=400
+	cost=300;0;0;0
 
 ship Drone
 	level=2
@@ -174,8 +159,7 @@ ship Drone
 	speed=3.50
 	turn=4.50
 	weapon=0;Basic-Cannon
-	cost=106;1;0;0
-	complexity=500
+	cost=700;1;0;0
 
 ship Legend_I
 	level=12
@@ -186,8 +170,7 @@ ship Legend_I
 	weapon=0;Standard-Artillery
 	weapon=-135;Light-PlasmaBomber
 	weapon=135;Light-PlasmaBomber
-	cost=166;1;0;0
-	complexity=700
+	cost=3000;16;1;0
 	
 ship Legend_K
 	level=14
@@ -198,8 +181,7 @@ ship Legend_K
 	weapon=0;Shuriken-Bombs
 	weapon=-135;Shuriken-Bombs
 	weapon=135;Shuriken-Bombs
-	cost=166;1;0;0
-	complexity=700
+	cost=3000;24;0;600
 	
 ship Legend_L
 	level=12
@@ -208,8 +190,7 @@ ship Legend_L
 	speed=2.80
 	turn=1.80
 	weapon=0;Beam-4
-	cost=166;1;0;0
-	complexity=700
+	cost=3000;24;0;600
 
 ship Legend_U
 	level=12
@@ -219,8 +200,7 @@ ship Legend_U
 	turn=1.80
 	weapon=90;Pusher
 	weapon=-90;Pusher
-	cost=166;1;0;0
-	complexity=700
+	cost=3000;24;0;600
 
 ship Legend_Y
 	level=12
@@ -231,8 +211,7 @@ ship Legend_Y
 	weapon=0;Basic-ParticleGun
 	weapon=-135;Standard-ParticleGun
 	weapon=135;Standard-ParticleGun
-	cost=166;1;0;0
-	complexity=700
+	cost=3000;24;0;600
 
 ship PartialBomber
 	level=1
@@ -240,8 +219,7 @@ ship PartialBomber
 	speed=2.80
 	turn=1.80
 	weapon=45;Heavy-PlasmaBomber
-	cost=140;1;0;0
-	complexity=600
+	cost=1200;2;0;0
 
 ship MSL
 	width=15
@@ -250,8 +228,7 @@ ship MSL
 	speed=8.00
 	turn=3.50
 	weapon=-90;Explode-On-Contact
-	cost=110;1;0;0
-	complexity=500
+	cost=950;1;0;0
 
 ship Nuke
 	integrity=72
@@ -259,5 +236,4 @@ ship Nuke
 	turn=2.50
 	weapon=0;Explode-On-Contact
 	weapon=180;MachineGun
-	cost=140;1;0;0
-	complexity=600
+	cost=8000;32;1;800

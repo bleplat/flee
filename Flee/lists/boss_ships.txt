@@ -8,8 +8,7 @@ ship Loneboss
 	weapon=0;RailGun
 	deflectors=4
 	hot_deflector=55.00
-	cost=140;1;0;0
-	complexity=600
+	cost=6000;32;8;800
 	craft=MSL
 
 ship Bugs
@@ -23,8 +22,7 @@ ship Bugs
 	weapon=180;Bio-Gun
 	hot_deflector=8.00
 	cold_deflector=1
-	cost=668;1;0;0
-	complexity=1600
+	cost=8000;64;16;900
 
 ship Converter
 	level=2
@@ -42,8 +40,7 @@ ship Converter
 	shield=1200
 	shield_regeneration=30.00
 	shield_opacity=100.00
-	cost=304;1;0;0
-	complexity=1000
+	cost=6000;32;8;800
 	craft=Converter_A
 	craft=Converter_B
 
@@ -59,8 +56,7 @@ ship Converter_A
 	shield=350
 	shield_regeneration=0.00
 	shield_opacity=65.00
-	cost=140;1;0;0
-	complexity=600
+	cost=400;4;0;0
 
 ship Converter_B
 	level=0
@@ -73,8 +69,7 @@ ship Converter_B
 	shield=350
 	shield_regeneration=0.00
 	shield_opacity=65.00
-	cost=140;1;0;0
-	complexity=600
+	cost=400;4;0;0
 
 ship Purger_Dronner
 	level=4
@@ -87,8 +82,7 @@ ship Purger_Dronner
 	shield=300
 	shield_regeneration=20.00
 	shield_opacity=75.00
-	cost=170;1;0;0
-	complexity=700
+	cost=6000;32;8;800
 	craft=Purger_Drone_1
 	craft=Purger_Drone_2
 	craft=Purger_Drone_3
@@ -103,8 +97,7 @@ ship Purger_Drone_1
 	shield=8
 	shield_regeneration=2.00
 	shield_opacity=75.00
-	cost=76;0;0;0
-	complexity=400
+	cost=200;8;0;0
 
 ship Purger_Drone_2
 	level=0
@@ -116,8 +109,7 @@ ship Purger_Drone_2
 	shield=8
 	shield_regeneration=2.00
 	shield_opacity=85.00
-	cost=76;0;0;0
-	complexity=400
+	cost=200;8;0;0
 
 ship Purger_Drone_3
 	level=0
@@ -129,8 +121,7 @@ ship Purger_Drone_3
 	shield=8
 	shield_regeneration=2.00
 	shield_opacity=100.00
-	cost=76;0;0;0
-	complexity=400
+	cost=200;8;0;0
 
 ship Finalizer
 	level=0
@@ -143,8 +134,15 @@ ship Finalizer
 	shield=1800
 	shield_regeneration=350.00
 	shield_opacity=100.00
-	cost=166;1;0;0
-	complexity=700
+	cost=10000;64;16;1000
+	craft=Station
+	craft=Station_Drones
+	craft=Station_Legendaries
+	craft=Station_Kastous
+	craft=Station_Stranges
+	craft=Station_Crushers
+	craft=BomberFactory
+	craft=Kastou
 
 ship Ori
 	level=0
@@ -157,5 +155,4 @@ ship Ori
 	shield=2200
 	shield_regeneration=380.00
 	shield_opacity=100.00
-	cost=304;1;0;0
-	complexity=1000
+	cost=10000;64;16;1000

@@ -8,8 +8,7 @@ ship Kastou
 	shield=100
 	shield_regeneration=20.00
 	shield_opacity=100.00
-	cost=140;1;0;0
-	complexity=600
+	cost=2000;4;0;0
 	craft=Yerka
 
 ship Yerka
@@ -19,8 +18,7 @@ ship Yerka
 	speed=4.00
 	turn=4.20
 	weapon=270;MachineGun
-	cost=110;1;0;0
-	complexity=500
+	cost=700;3;0;0
 	craft=MSL
 
 ship Strange
@@ -33,8 +31,7 @@ ship Strange
 	shield=25
 	shield_regeneration=25.00
 	shield_opacity=25.00
-	cost=140;1;0;0
-	complexity=600
+	cost=1800;4;0;0
 
 ship Sacred
 	level=8
@@ -43,8 +40,7 @@ ship Sacred
 	speed=3.50
 	turn=2.50
 	weapon=0;Light-PlasmaBomber
-	cost=106;1;0;0
-	complexity=500
+	cost=700;2;0;0
 
 ship Pusher
 	level=2
@@ -53,8 +49,7 @@ ship Pusher
 	speed=2.80
 	turn=3.80
 	weapon=0;Pusher
-	cost=106;1;0;0
-	complexity=500
+	cost=700;2;0;0
 
 ship Crusher
 	level=4
@@ -65,8 +60,7 @@ ship Crusher
 	weapon=0;Intercepting-Artillery
 	weapon=-90;Longrange-PlasmaBomber
 	weapon=90;Standard-PlasmaBomber
-	cost=304;1;0;0
-	complexity=1000
+	cost=7000;0;0;0
 
 ship Civil_A
 	level=4
@@ -78,5 +72,4 @@ ship Civil_A
 	weapon=90;MachineGun
 	deflectors=6
 	deflectors_cooldown=32
-	cost=304;1;0;0
-	complexity=1000
+	cost=4000;4;2;400
