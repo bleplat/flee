@@ -718,6 +718,7 @@
                 If world.Ships(world.Ships.Count - 1).weapons.Count() > 0 AndAlso (world.Ships(world.Ships.Count - 1).weapons(0).stats.special And Weapon.SpecialBits.SelfExplode) <> 0 Then
                     world.Ships(world.Ships.Count - 1).behavior = BehaviorMode.Folow
                     world.Ships(world.Ships.Count - 1).target = Me.target
+                    world.Ships(world.Ships.Count - 1).agressivity = Me.agressivity * 100
                 Else
                     world.Ships(world.Ships.Count - 1).behavior = BehaviorMode.Folow
                     world.Ships(world.Ships.Count - 1).target = Me

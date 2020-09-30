@@ -50,7 +50,7 @@ Public Class ShipStats
 		SetSprite(name)
 	End Sub
 	Public Sub SetSprite(sprite As String)
-		Me.sprite = name
+		Me.sprite = sprite
 		Dim try_bmp As Bitmap = Helpers.GetSprite(Me.sprite, -1, -1, Nothing)
 		If Not try_bmp Is Nothing Then
 			Me.width = try_bmp.Width / 8 - 2
@@ -90,6 +90,7 @@ Public Class ShipStats
 				Me.cost = New MaterialSet(value)
 				If Me.complexity = 0 Then Me.complexity = Me.width * 4 + Me.cost.Metal / 4 + Me.cost.Crystal * 20 + Me.cost.Antimatter + Me.cost.Fissile * 100
 			Case "complexity" : Me.complexity = Convert.ToInt32(value)
+			Case Else : Throw New Exception("'" & name & "' is not a valid ship property")
 		End Select
 	End Sub
 	Public Function ToString() As String
