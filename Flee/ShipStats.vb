@@ -35,7 +35,7 @@ Public Class ShipStats
 
 	' stats (deflectors)
 	Public deflectors As Integer = 0
-	Public deflectors_cooldown As Integer = 128
+	Public deflectors_cooldown As Integer = 64
 	Public hot_deflector As Double = 0
 	Public cold_deflector As Boolean = 0
 
@@ -126,7 +126,7 @@ Public Class ShipStats
 		End If
 		If deflectors > 0 Then
 			total &= vbTab & "deflectors=" & Me.deflectors.ToString() & vbLf
-			If deflectors_cooldown <> 128 Then
+			If deflectors_cooldown <> 64 Then
 				total &= vbTab & "deflectors_cooldown=" & Me.deflectors_cooldown.ToString() & vbLf
 			End If
 		End If
