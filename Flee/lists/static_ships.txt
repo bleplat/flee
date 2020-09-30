@@ -21,9 +21,7 @@ ship Station_Simples
 	integrity=2500
 	cost=5000;32;2;0
 	complexity=1000
-	craft=Hunter
 	craft=Harass
-	craft=Simpleship
 	craft=Artillery
 	craft=Bomber
 	craft=Scout

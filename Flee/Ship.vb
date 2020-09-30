@@ -647,7 +647,7 @@
             Case "!HotDeflector"
                 Me.stats.hot_deflector += Spliter(1)
             Case "!ColdDeflector"
-                Me.stats.cold_deflector = Spliter(1)
+                Me.stats.cold_deflector = (Convert.ToInt32(Spliter(1)) = 1)
             Case "%Shield"
                 Me.stats.shield += (Me.stats.shield * (Spliter(1) / 100))
                 If first_application Then Me.ResetShieldPoint()

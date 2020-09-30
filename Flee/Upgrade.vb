@@ -29,6 +29,9 @@
             Me.spawned_ship = name.Split(undercase_separators, 2)(1)
             Me.file = ShipStats.classes(Me.spawned_ship).sprite
             Me.cost = ShipStats.classes(Me.spawned_ship).cost
+            If Not ShipStats.classes(Me.spawned_ship).cost Is Nothing Then
+                Me.desc = ShipStats.classes(Me.spawned_ship).desc
+            End If
             Me.upgrade_slots_requiered = 0
         End If
     End Sub
@@ -58,7 +61,7 @@
         upgrades.Add(New Upgrade With {.name = "Launch_2_MSL", .file = "MSL", .frame_coords = New Point(0, 0), .cost = New MaterialSet(1000, 0, 0, 0), .delay = 10, .need = "?Up:Nothing", .effect = "!Sum:MSL !Sum:MSL", .upgrade_slots_requiered = 0, .desc = "Launch a missile you can control"})
         upgrades.Add(New Upgrade With {.name = "Launch_8_MSL", .file = "MSL", .frame_coords = New Point(0, 0), .cost = New MaterialSet(1000, 0, 0, 0), .delay = 100, .need = "?Up:Nothing", .effect = "!Sum:MSL !Sum:MSL !Sum:MSL !Sum:MSL !Sum:MSL !Sum:MSL !Sum:MSL !Sum:MSL", .upgrade_slots_requiered = 0, .desc = "Launch a missile you can control"})
         upgrades.Add(New Upgrade With {.name = "Launch_MSL_instant", .file = "MSL", .frame_coords = New Point(0, 0), .cost = New MaterialSet(0, 0, 0, 0), .delay = 0, .need = "?Up:Nothing", .effect = "!Sum:MSL", .upgrade_slots_requiered = 0, .desc = "Launch a missile you can control"})
-        upgrades.Add(New Upgrade With {.name = "Ascend", .file = "Ups", .frame_coords = New Point(7, 7), .cost = New MaterialSet(0, 0, 32, 0), .delay = 600, .need = "?Up:Warp_Drive", .effect = "!Ascend %Speed:300 %Life:100 !Regen:16 %Wloadmax:-100 !Shield:600 !Shieldop:100 !C:White %Shieldreg:2500", .upgrade_slots_requiered = 1, .not_for_bots = True, .desc = "Reach the next level of existence."})
+        upgrades.Add(New Upgrade With {.name = "Ascend", .file = "Ups", .frame_coords = New Point(7, 7), .cost = New MaterialSet(0, 0, 24, 0), .delay = 600, .need = "?Up:Warp_Drive", .effect = "!Ascend %Speed:300 %Life:100 !Regen:16 %Wloadmax:-100 !Shield:600 !Shieldop:100 !C:White %Shieldreg:2500", .upgrade_slots_requiered = 1, .not_for_bots = True, .desc = "Reach the next level of existence."})
         upgrades.Add(New Upgrade With {.name = "Bugs", .file = "Bugs", .frame_coords = New Point(0, 0), .cost = New MaterialSet(0, 0, 0, 0), .delay = 100, .need = "?Type:Nothing", .effect = "!Sum:Bugs", .upgrade_slots_requiered = 0, .desc = "What is this thing?"})
         upgrades.Add(New Upgrade With {.name = "Build_Finalizer", .file = "Finalizer", .frame_coords = New Point(0, 0), .cost = New MaterialSet(0, 0, 0, 0), .delay = 600, .need = "?Up:Ascend", .effect = "!Sum:Finalizer", .upgrade_slots_requiered = 0, .desc = "Yet, not everybody made it through." & vbNewLine & "We will return for them."})
         upgrades.Add(New Upgrade With {.name = "Auto_Nanobots", .file = "Ups", .frame_coords = New Point(5, 0), .cost = New MaterialSet(0, 0, 0, 0), .delay = 50, .need = "?Type:Nothing", .effect = "%Life:1000 !Regen:1000", .upgrade_slots_requiered = 1, .desc = "Gives lots of hull"})
@@ -178,10 +181,6 @@
         upgrades.Add(New Upgrade With {.name = "Conceive_Legend_L", .file = "Legend_L", .frame_coords = New Point(0, 0), .cost = New MaterialSet(1300, 15, 0, 400), .delay = 650, .need = "?MS ?Type:Station", .effect = "!Sum:Legend_L", .upgrade_slots_requiered = 1, .desc = "Build a legendary ship." & vbNewLine & "/!\ You can only build this ship once!"})
         upgrades.Add(New Upgrade With {.name = "Conceive_Legend_U", .file = "Legend_U", .frame_coords = New Point(0, 0), .cost = New MaterialSet(1200, 16, 0, 200), .delay = 650, .need = "?MS ?Type:Station", .effect = "!Sum:Legend_U", .upgrade_slots_requiered = 1, .desc = "Build a legendary ship." & vbNewLine & "/!\ You can only build this ship once!"})
         upgrades.Add(New Upgrade With {.name = "Conceive_Legend_Y", .file = "Legend_Y", .frame_coords = New Point(0, 0), .cost = New MaterialSet(1400, 14, 0, 300), .delay = 650, .need = "?MS ?Type:Station", .effect = "!Sum:Legend_Y", .upgrade_slots_requiered = 1, .desc = "Build a legendary ship." & vbNewLine & "/!\ You can only build this ship once!"})
-
-        'NPC Spawn
-
-        'Drone Spawn
 
         'Purger Drones
         upgrades.Add(New Upgrade With {.name = "Purger_Control", .file = "Ups", .frame_coords = New Point(6, 7), .cost = New MaterialSet(32000, 32, 0, 0), .delay = 300, .need = "?Type:Purger_Dronner", .effect = "!Maxships:8", .upgrade_slots_requiered = 1, .desc = "Control 8 more ships"})

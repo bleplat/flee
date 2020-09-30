@@ -15,6 +15,7 @@ Public Class ShipStats
 
 	' identity
 	Public name As String = "Default"
+	Public desc As String = Nothing
 
 	' visual
 	Public sprite As String = "Plasma"
@@ -65,6 +66,7 @@ Public Class ShipStats
 	' Import/Export
 	Public Sub SetProperty(name As String, value As String)
 		Select Case name
+			Case "desc" : Me.desc = value
 			Case "sprite"
 				SetSprite(value)
 			Case "level" : Me.level = Convert.ToInt32(value)
@@ -88,7 +90,7 @@ Public Class ShipStats
 			Case "craft" : Me.crafts.Add(value)
 			Case "cost"
 				Me.cost = New MaterialSet(value)
-				If Me.complexity = 0 Then Me.complexity = Me.width * 4 + Me.cost.Metal / 4 + Me.cost.Crystal * 20 + Me.cost.Antimatter + Me.cost.Fissile * 100
+				If Me.complexity = 0 Then Me.complexity = Me.width * 4 + Me.cost.Metal / 4 + Me.cost.Crystal * 20 + Me.cost.Antimatter / 3 + Me.cost.Fissile * 100
 			Case "complexity" : Me.complexity = Convert.ToInt32(value)
 			Case Else : Throw New Exception("'" & name & "' is not a valid ship property")
 		End Select

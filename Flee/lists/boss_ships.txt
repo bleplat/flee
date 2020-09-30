@@ -47,13 +47,13 @@ ship Converter
 ship Converter_A
 	level=0
 	width=45
-	integrity=125
+	integrity=115
 	repair=0
 	speed=3.50
 	turn=6.50
 	weapon=-45;MachineGun
 	weapon=45;MachineGun
-	shield=350
+	shield=250
 	shield_regeneration=0.00
 	shield_opacity=65.00
 	cost=400;4;0;0
@@ -61,12 +61,12 @@ ship Converter_A
 ship Converter_B
 	level=0
 	width=45
-	integrity=145
+	integrity=125
 	repair=0
 	speed=2.80
 	turn=1.50
 	weapon=0;Heavy-PlasmaBomber
-	shield=350
+	shield=250
 	shield_regeneration=0.00
 	shield_opacity=65.00
 	cost=400;4;0;0
