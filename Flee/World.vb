@@ -215,7 +215,7 @@
                         Next
                     End If
                     If Not Ships(i).last_damager_team Is Nothing Then
-                        Ships(i).last_damager_team.resources.Add(0, 1, 0, 0)
+                        Ships(i).last_damager_team.resources.AddLoot(Ships(i).stats.cost)
                     End If
                     Ships.RemoveAt(i)
                 End If
