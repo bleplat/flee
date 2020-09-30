@@ -83,7 +83,7 @@
             power -= 25
         End If
         While power > 0
-            Dim types As String() = {"Pusher", "Sacred", "Simpleship", "Artillery", "Bomber", "Dronner", "Scout", "Kastou", "Strange", "MiniColonizer", "Civil_A"}
+            Dim types As String() = {"MiniColonizer", "MiniColonizer", "Artillery", "Bomber", "Scout", "Simpleship", "Pusher", "Hunter"}
             Ships.Add(New Ship(Me, player_team, types(Rand.Next(0, types.Length))) With {.location = New Point(origin.X - 1, origin.Y)})
             Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).location.X, Ships(0).location.Y, origin.X, origin.Y)
             Ships(Ships.Count - 1).upgrade_slots += Rand.Next(6, 12)
