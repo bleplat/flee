@@ -148,7 +148,7 @@ Public Class MainForm
 			If AShip.location.X + (AShip.stats.width / 2) > See.X AndAlso AShip.location.X - (AShip.stats.width / 2) < See.X + DrawBox.Width AndAlso AShip.location.Y + (AShip.stats.width / 2) > See.Y AndAlso AShip.location.Y - (AShip.stats.width / 2) < See.Y + DrawBox.Height Then
 				Dim img As New Bitmap(Helpers.GetSprite(AShip.stats.sprite, AShip.fram, 0, mini_color)) 'image
 				Dim center As New Point(AShip.location.X - See.X, AShip.location.Y - See.Y) 'centre
-				Dim AddD As Integer = 0 : If AShip.team Is Nothing Then AddD = world.ticks Mod 360
+				Dim AddD As Integer = 0 : If AShip.team Is Nothing AndAlso AShip.stats.turn = 0 Then AddD = world.ticks Mod 360
 				Dim MonM As Matrix = New Matrix : MonM.RotateAt(-AShip.direction + 180 + AddD, center) 'rotation
 				G.Transform = MonM 'affectation
 				G.DrawImage(img, New Point(center.X - img.Size.Width / 2, center.Y - img.Size.Width / 2)) 'dessin

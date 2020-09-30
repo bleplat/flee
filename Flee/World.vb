@@ -278,7 +278,6 @@
                 Count = Rand.Next(6, 12)
             ElseIf Rand.Next(0, 5) = 0 Then
                 Type = "Comet"
-                Team = boss_team
                 Count = 1
             ElseIf Rand.Next(0, 30) = 0 Then
                 Type = "Cargo"
