@@ -215,21 +215,7 @@
                         Next
                     End If
                     If Not Ships(i).last_damager_team Is Nothing Then
-                        If Ships(i).stats.sprite = "Meteoroide" Then
-                            Ships(i).last_damager_team.resources.Add(0, 1, 0, 0)
-                        ElseIf Ships(i).stats.sprite = "Comet" Then
-                            Ships(i).last_damager_team.resources.Add(1200, 8, 1, 0)
-                        ElseIf Ships(i).stats.name.Contains("Station") Then
-                            Ships(i).last_damager_team.resources.Add(1200, 16, 2, 0)
-                        ElseIf Ships(i).stats.sprite = "Loneboss" Then
-                            Ships(i).last_damager_team.resources.Add(0, 8, 4, 0)
-                        ElseIf Ships(i).stats.sprite = "Bugs" Then
-                            Ships(i).last_damager_team.resources.Add(0, 16, 8, 0)
-                        ElseIf Ships(i).stats.sprite = "Converter" Then
-                            Ships(i).last_damager_team.resources.Add(3200, 12, 6, 0)
-                        ElseIf Ships(i).stats.sprite = "Purger_Dronner" Then
-                            Ships(i).last_damager_team.resources.Add(1200, 22, 3, 0)
-                        End If
+                        Ships(i).last_damager_team.resources.Add(0, 1, 0, 0)
                     End If
                     Ships.RemoveAt(i)
                 End If

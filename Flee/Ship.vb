@@ -326,7 +326,7 @@
         If Not From Is Nothing AndAlso Not From.Team Is Nothing Then
             If Me.stats.sprite = "Star" Then
                 From.Team.resources.Antimatter += Amount / 8
-            Else
+            ElseIf Me.stats.sprite = "Asteroide" Then
                 If Me.integrity > Amount Then
                     From.Team.resources.Metal += Amount
                 ElseIf Me.integrity > 0 Then
