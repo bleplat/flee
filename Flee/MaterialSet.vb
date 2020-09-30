@@ -55,15 +55,15 @@
 
 	' Import / Export
 	Public Function ToString() As String
-		Return (Metal & ";" & Crystal & ";" & Antimatter & ";" & Fissile)
+		Return (Metal & ";" & Crystal & ";" & Fissile & ";" & Antimatter)
 	End Function
 	Public Sub LoadFromString(input As String)
 		Dim inputs(5) As String
 		inputs = input.Split(";")
 		Metal = Convert.ToInt64(inputs(0))
 		Crystal = Convert.ToInt64(inputs(1))
-		Antimatter = Convert.ToInt64(inputs(2))
-		Fissile = Convert.ToInt64(inputs(3))
+		Fissile = Convert.ToInt64(inputs(2))
+		Antimatter = Convert.ToInt64(inputs(3))
 	End Sub
 
 End Class
