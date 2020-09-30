@@ -42,7 +42,7 @@
     Public speed_vec As New PointF()
     Public direction As Single = 0
     Public speed As Single = 0
-    Public cold_deflector_charge As Integer = -1
+    Public cold_deflector_charge As Integer = 0
     Public deflectors_loaded As Integer = 0
     Public deflector_loading As Integer = 0
     Public shield As Single = 0
@@ -116,7 +116,6 @@
         If Me.stats Is Nothing Then
             Me.integrity = Me.base_stats.integrity
             Me.shield = Me.base_stats.shield
-            If Me.base_stats.cold_deflector Then Me.cold_deflector_charge = 0 Else Me.cold_deflector_charge = -1
         End If
         Me.stats = Me.base_stats.Clone()
         For Each weapon As Weapon In weapons
@@ -222,7 +221,9 @@
         If Me.cold_deflector_charge > 0 Then
             Me.cold_deflector_charge *= 0.99
             Me.cold_deflector_charge -= 1
-            Me.integrity -= 1
+            If world.ticks Mod 2 Then
+                Me.integrity -= 1
+            End If
         End If
         If deflectors_loaded < stats.deflectors Then
             deflector_loading -= 1
@@ -319,9 +320,9 @@
                 If ShieldPoints((shield_ptn_index + 15) Mod 16) < 128 Then ShieldPoints((shield_ptn_index + 15) Mod 16) = 128
             End If
         End If
-        If Me.cold_deflector_charge >= 0 AndAlso Me.cold_deflector_charge < Me.integrity * 2 Then
-            Me.cold_deflector_charge += Amount / 2
-            Amount /= 6
+        If Me.stats.cold_deflector AndAlso Me.cold_deflector_charge < Me.integrity * 4 Then
+            Me.cold_deflector_charge += Amount
+            Amount /= 8
         End If
         If Not From Is Nothing AndAlso Not From.Team Is Nothing Then
             If Me.stats.sprite = "Star" Then
