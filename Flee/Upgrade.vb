@@ -187,6 +187,9 @@
             Dim launch_ship_upgrade_name As String = "Launch_" & ship_class.name
             If UpgradeFromName(build_ship_upgrade_name) Is Nothing AndAlso UpgradeFromName(launch_ship_upgrade_name) Is Nothing Then
                 upgrades.Add(New Upgrade(build_ship_upgrade_name) With {.cost = ship_class.cost, .delay = ship_class.complexity, .need = "?MS", .effect = "!Sum:" & ship_class.name, .upgrade_slots_requiered = False, .desc = "Build a " & ship_class.name & "."})
+                If ship_class.desc Is Nothing Then
+                    upgrades(upgrades.Count - 1).desc = ship_class.desc
+                End If
             End If
         Next
     End Sub
