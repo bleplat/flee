@@ -723,14 +723,12 @@
                 If first_application Then world.Ships.Add(New Ship(world, Me.team, Spliter(1)) With {.location = New Point(Me.location.X + world.Rand.Next(-10, 11), Me.location.Y + world.Rand.Next(-10, 11))})
                 world.Ships(world.Ships.Count - 1).direction = Me.direction
                 If world.Ships(world.Ships.Count - 1).weapons.Count() > 0 AndAlso (world.Ships(world.Ships.Count - 1).weapons(0).stats.special And Weapon.SpecialBits.SelfExplode) <> 0 Then
-                    world.Ships(world.Ships.Count - 1).target = Me.target
-                    If Me.target Is Nothing OrElse Me.team Is Nothing Then
-                        world.Ships(world.Ships.Count - 1).behavior = BehaviorMode.Stand
-                    ElseIf Not Me.team.IsFriendWith(Me.target.team) Then
-                        world.Ships(world.Ships.Count - 1).behavior = BehaviorMode.Folow
+                    If Me.team Is Nothing OrElse Me.target Is Nothing OrElse Me.target.team Is Nothing OrElse Not Me.team.IsFriendWith(Me.target.team) Then
+                        world.Ships(world.Ships.Count - 1).target = Me.target
                     Else
-                        world.Ships(world.Ships.Count - 1).behavior = BehaviorMode.Stand
+                        world.Ships(world.Ships.Count - 1).target = Nothing
                     End If
+                    world.Ships(world.Ships.Count - 1).behavior = BehaviorMode.Folow
                     world.Ships(world.Ships.Count - 1).agressivity = Me.agressivity * 100
                     world.Ships(world.Ships.Count - 1).bot_ship = True
                 Else
