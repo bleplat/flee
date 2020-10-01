@@ -7,7 +7,7 @@ ship Station
 	level=100
 	width=100
 	integrity=2000
-	cost=5000;32;2;0
+	cost=5000;32;4;0
 	complexity=1000
 	craft=Cargo
 	craft=Hunter
@@ -19,7 +19,7 @@ ship Station_Simples
 	level=100
 	width=100
 	integrity=2500
-	cost=5000;32;2;0
+	cost=5000;32;4;0
 	complexity=1000
 	craft=Harass
 	craft=Artillery
@@ -30,7 +30,7 @@ ship Station_Legendaries
 	level=100
 	width=100
 	integrity=2500
-	cost=5000;32;2;0
+	cost=5000;32;4;0
 	craft=Legend_I
 	craft=Legend_K
 	craft=Legend_L
@@ -41,7 +41,7 @@ ship Station_Drones
 	level=100
 	width=100
 	integrity=2500
-	cost=5000;32;2;0
+	cost=5000;32;4;0
 	craft=Hunter
 	craft=Harass
 	craft=Dronner
@@ -50,14 +50,15 @@ ship Station_Kastous
 	level=100
 	width=100
 	integrity=2500
-	cost=5000;32;2;0
+	cost=5000;32;4;0
 	craft=Kastou
 
 ship Station_Stranges
 	level=100
 	width=100
 	integrity=2500
-	cost=5000;32;2;0
+	cost=5000;32;4;0
+	craft=Strange
 	craft=Strange
 	craft=Sacred
 	craft=Pusher
@@ -67,7 +68,7 @@ ship Station_Crushers
 	width=100
 	turn=0.01
 	integrity=2500
-	cost=5000;32;2;0
+	cost=5000;32;4;0
 	weapon=0;Heavy-PlasmaBomber
 	craft=Crusher
 

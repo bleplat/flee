@@ -56,12 +56,14 @@ ship Harass
 	cost=800;1;0;0
 
 ship Cargo
+	desc=Weak ship but comes with a builtin jump engine.
 	level=4
 	integrity=70
 	speed=3.20
 	turn=2.00
 	weapon=90;Basic-Cannon
 	cost=800;0;0;0
+	native_upgrade=Jump_Engine
 
 ship Simpleship
 	level=6
@@ -163,6 +165,7 @@ ship Drone
 
 ship Legend_I
 	level=12
+	complexity=600
 	width=45
 	integrity=170
 	speed=3.20
@@ -174,6 +177,7 @@ ship Legend_I
 	
 ship Legend_K
 	level=14
+	complexity=600
 	width=45
 	integrity=220
 	speed=2.80
@@ -185,6 +189,7 @@ ship Legend_K
 	
 ship Legend_L
 	level=12
+	complexity=600
 	width=45
 	integrity=240
 	speed=2.80
@@ -194,6 +199,7 @@ ship Legend_L
 
 ship Legend_U
 	level=12
+	complexity=600
 	width=45
 	integrity=200
 	speed=2.80
@@ -204,6 +210,7 @@ ship Legend_U
 
 ship Legend_Y
 	level=12
+	complexity=600
 	width=50
 	integrity=180
 	speed=3.20
@@ -222,13 +229,15 @@ ship PartialBomber
 	cost=1200;2;0;0
 
 ship MSL
+	level=0
 	width=15
-	integrity=8
+	integrity=3
 	repair=0
 	speed=8.00
 	turn=3.50
-	weapon=-90;Explode-On-Contact
-	cost=950;1;0;0
+	weapon=0;Explode-On-Contact
+	cost=400;0;0;0
+	complexity=350
 
 ship Nuke
 	integrity=72

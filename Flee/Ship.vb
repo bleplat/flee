@@ -74,6 +74,12 @@
     Public Sub SetStats(stats As ShipStats)
         If Not Me.base_stats Is stats Then
             Me.base_stats = stats
+            ' native upgrades
+            If Me.Ups.Count = 0 Then
+                For Each native_upgrade_name As String In Me.base_stats.native_upgrades
+                    Me.Ups.Add(Upgrade.UpgradeFromName(native_upgrade_name))
+                Next
+            End If
             ' upgrade_slots
             If Me.upgrade_slots < 0 Then ' initial value is -1
                 Me.upgrade_slots = Me.base_stats.level
@@ -717,9 +723,16 @@
                 If first_application Then world.Ships.Add(New Ship(world, Me.team, Spliter(1)) With {.location = New Point(Me.location.X + world.Rand.Next(-10, 11), Me.location.Y + world.Rand.Next(-10, 11))})
                 world.Ships(world.Ships.Count - 1).direction = Me.direction
                 If world.Ships(world.Ships.Count - 1).weapons.Count() > 0 AndAlso (world.Ships(world.Ships.Count - 1).weapons(0).stats.special And Weapon.SpecialBits.SelfExplode) <> 0 Then
-                    world.Ships(world.Ships.Count - 1).behavior = BehaviorMode.Folow
                     world.Ships(world.Ships.Count - 1).target = Me.target
+                    If Me.target Is Nothing OrElse Me.team Is Nothing Then
+                        world.Ships(world.Ships.Count - 1).behavior = BehaviorMode.Stand
+                    ElseIf Not Me.team.IsFriendWith(Me.target.team) Then
+                        world.Ships(world.Ships.Count - 1).behavior = BehaviorMode.Folow
+                    Else
+                        world.Ships(world.Ships.Count - 1).behavior = BehaviorMode.Stand
+                    End If
                     world.Ships(world.Ships.Count - 1).agressivity = Me.agressivity * 100
+                    world.Ships(world.Ships.Count - 1).bot_ship = True
                 Else
                     world.Ships(world.Ships.Count - 1).behavior = BehaviorMode.Folow
                     world.Ships(world.Ships.Count - 1).target = Me
@@ -730,8 +743,13 @@
                     MainForm.help = True
                 End If
             Case "!Suicide"
-                'Me.TakeDamages(7777777)
+                Me.last_damager_team = Me.team
+                Me.stats.repair = 0
+                Me.integrity = -2048
+            Case "!Free"
                 Me.SetTeam(Me.world.Teams(world.Rand.Next(0, Me.world.Teams.Count())))
+            Case "!Cheats"
+                MainForm.cheats_enabled = Not MainForm.cheats_enabled
             Case Else
                 Throw New Exception("Erreur : " & Chain & " (invalid effect)")
         End Select

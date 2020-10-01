@@ -668,7 +668,9 @@ Public Class MainForm
 	End Sub
 
 	Private Sub DrawBox_SizeChanged(sender As Object, e As EventArgs) Handles DrawBox.SizeChanged
-		DrawBMP = New Bitmap(DrawBox.Size.Width, DrawBox.Size.Height)
-		G = Graphics.FromImage(DrawBMP)
+		If DrawBox.Size.Width > 0 AndAlso DrawBox.Size.Height > 0 Then
+			DrawBMP = New Bitmap(DrawBox.Size.Width, DrawBox.Size.Height)
+			G = Graphics.FromImage(DrawBMP)
+		End If
 	End Sub
 End Class

@@ -23,6 +23,7 @@ ship Bugs
 	hot_deflector=8.00
 	cold_deflector=1
 	cost=8000;64;16;900
+	native_upgrade=Jump_Engine
 
 ship Converter
 	level=2
@@ -43,6 +44,7 @@ ship Converter
 	cost=6000;32;8;800
 	craft=Converter_A
 	craft=Converter_B
+	native_upgrade=Jump_Engine_II
 
 ship Converter_A
 	level=0
@@ -86,6 +88,7 @@ ship Purger_Dronner
 	craft=Purger_Drone_1
 	craft=Purger_Drone_2
 	craft=Purger_Drone_3
+	native_upgrade=Jump_Engine_II
 
 ship Purger_Drone_1
 	level=0
@@ -143,6 +146,7 @@ ship Finalizer
 	craft=Station_Crushers
 	craft=BomberFactory
 	craft=Kastou
+	native_upgrade=Warp_Engine
 
 ship Ori
 	level=0

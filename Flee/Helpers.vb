@@ -292,7 +292,7 @@ Public NotInheritable Class Helpers
 		Dim upgrades As List(Of String) = New List(Of String)
 		For Each craft As String In ship.stats.crafts
 			For Each a_up As Upgrade In Upgrade.upgrades
-				If a_up.name = ("Build_" & craft) Then
+				If a_up.name = ("Build_" & craft) OrElse a_up.name = ("Launch_" & craft) Then
 					upgrades.Add(a_up.name)
 				End If
 			Next

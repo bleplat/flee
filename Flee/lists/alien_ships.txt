@@ -50,6 +50,7 @@ ship Pusher
 	turn=3.80
 	weapon=0;Pusher
 	cost=700;2;0;0
+	native_upgrade=Jump_Engine
 
 ship Crusher
 	level=4
@@ -61,6 +62,7 @@ ship Crusher
 	weapon=-90;Longrange-PlasmaBomber
 	weapon=90;Standard-PlasmaBomber
 	cost=7000;0;0;0
+	native_upgrade=Jump_Engine_II
 
 ship Civil_A
 	level=4

@@ -356,33 +356,36 @@
                                 Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
                             End If
                         End If
-                    ElseIf Rand.Next(0, 8) = 0 Then
+                    ElseIf Rand.Next(0, 4) = 0 Then
                         ' upgrading
                         Dim PossibleUps As List(Of Upgrade) = a_ship.AvailableUpgrades()
                         If PossibleUps.Count >= 1 Then
                             a_ship.Upgrading = PossibleUps(Rand.Next(0, PossibleUps.Count))
                         End If
                     Else
-                        ' hardcoded special things
-                        ' Crusher jumping
-                        If a_ship.stats.name = "Crusher" Then
-                            If Rand.Next(0, 16) < 4 Then Upgrade.ForceUpgradeToShip(a_ship, "Jump_II")
+                        ' boss bases must suicide to not use the max ship counter
+                        If a_ship.team.affinity = AffinityEnum.ALOOF AndAlso a_ship.stats.turn = 0.0 Then
+                            Upgrade.ForceUpgradeToShip(a_ship, "Suicide")
                         End If
-                        ' Bugs jumping
-                        If a_ship.stats.name = "Bugs" AndAlso a_ship.cold_deflector_charge > 25 Then
-                            Upgrade.ForceUpgradeToShip(a_ship, "Jump")
+                        ' ships equiped with cold deflectors jumps when unable to fire
+                        If a_ship.cold_deflector_charge > 24 Then
+                            If a_ship.CanUpgrade(Upgrade.UpgradeFromName("Jump")) Then
+                                Upgrade.ForceUpgradeToShip(a_ship, "Jump")
+                            ElseIf a_ship.CanUpgrade(Upgrade.UpgradeFromName("Jump_II")) Then
+                                Upgrade.ForceUpgradeToShip(a_ship, "Jump_II")
+                            ElseIf a_ship.CanUpgrade(Upgrade.UpgradeFromName("Warp")) Then
+                                Upgrade.ForceUpgradeToShip(a_ship, "Warp")
+                            End If
                         End If
-                        ' Converter jumping when not in combat
-                        If a_ship.stats.name = "Converter" AndAlso (a_ship.shield >= a_ship.stats.shield OrElse a_ship.shield < a_ship.stats.shield / 8) Then
-                            Upgrade.ForceUpgradeToShip(a_ship, "Jump")
-                        End If
-                        ' Purger jumping
-                        If a_ship.stats.name = "Purger_Dronner" Then
-                            If Rand.Next(0, 48) < 4 Then Upgrade.ForceUpgradeToShip(a_ship, "Jump_II")
-                        End If
-                        ' Missiles summoning
-                        If a_ship.stats.name = "Loneboss" Then
-                            If Rand.Next(0, 16) < 12 Then Upgrade.ForceUpgradeToShip(a_ship, "Launch_MSL_instant")
+                        ' ship jumping when not in good shape
+                        If (a_ship.integrity + a_ship.shield) < (a_ship.stats.integrity + a_ship.stats.shield) / 3 Then
+                            If a_ship.CanUpgrade(Upgrade.UpgradeFromName("Jump")) Then
+                                Upgrade.ForceUpgradeToShip(a_ship, "Jump")
+                            ElseIf a_ship.CanUpgrade(Upgrade.UpgradeFromName("Jump_II")) Then
+                                Upgrade.ForceUpgradeToShip(a_ship, "Jump_II")
+                            ElseIf a_ship.CanUpgrade(Upgrade.UpgradeFromName("Warp")) Then
+                                Upgrade.ForceUpgradeToShip(a_ship, "Warp")
+                            End If
                         End If
                     End If
                 End If

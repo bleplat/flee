@@ -45,6 +45,9 @@ Public Class ShipStats
 	Public cost As MaterialSet = New MaterialSet(0, 0, 0, 0)
 	Public complexity = 0
 
+	' upgrades
+	Public native_upgrades As New List(Of String)
+
 	' constructor
 	Public Sub New(name As String)
 		Me.name = name
@@ -88,9 +91,10 @@ Public Class ShipStats
 			Case "hot_deflector" : Me.hot_deflector = Helpers.ToDouble(value)
 			Case "cold_deflector" : Me.cold_deflector = Convert.ToInt32(value)
 			Case "craft" : Me.crafts.Add(value)
+			Case "native_upgrade" : Me.native_upgrades.Add(value)
 			Case "cost"
 				Me.cost = New MaterialSet(value)
-				If Me.complexity = 0 Then Me.complexity = Me.width * 4 + Me.cost.Metal / 4 + Me.cost.Crystal * 20 + Me.cost.Antimatter / 3 + Me.cost.Fissile * 100
+				If Me.complexity = 0 Then Me.complexity = Me.width * 4 + Me.cost.Metal / 6 + Me.cost.Crystal * 15 + Me.cost.Antimatter / 3 + Me.cost.Fissile * 100
 			Case "complexity" : Me.complexity = Convert.ToInt32(value)
 			Case Else : Throw New Exception("'" & name & "' is not a valid ship property")
 		End Select
@@ -100,9 +104,7 @@ Public Class ShipStats
 		If Me.sprite <> Me.name Then
 			total &= vbTab & "sprite=" & Me.sprite & vbLf
 		End If
-		If Me.level <> 0 Then
-			total &= vbTab & "level=" & Me.level.ToString() & vbLf
-		End If
+		total &= vbTab & "level=" & Me.level.ToString() & vbLf
 		If Me.width <> Helpers.GetSprite(Me.sprite, -1, -1, Nothing).Width / 8 - 2 Then
 			total &= vbTab & "width=" & Me.width.ToString() & vbLf
 		End If
@@ -140,6 +142,9 @@ Public Class ShipStats
 		End If
 		For Each item As String In crafts
 			total &= vbTab & "craft=" & item & vbLf
+		Next
+		For Each item As String In native_upgrades
+			total &= vbTab & "native_upgrade=" & item & vbLf
 		Next
 		total &= vbTab & "cost=" & Me.cost.ToString() & vbLf
 		total &= vbTab & "complexity=" & Me.complexity.ToString() & vbLf
