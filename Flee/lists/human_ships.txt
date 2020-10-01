@@ -237,7 +237,7 @@ ship MSL
 	turn=3.50
 	weapon=0;Explode-On-Contact
 	cost=250;0;0;0
-	complexity=350
+	complexity=400
 
 ship Nuke
 	integrity=72
