@@ -236,7 +236,7 @@ ship MSL
 	speed=8.00
 	turn=3.50
 	weapon=0;Explode-On-Contact
-	cost=400;0;0;0
+	cost=250;0;0;0
 	complexity=350
 
 ship Nuke

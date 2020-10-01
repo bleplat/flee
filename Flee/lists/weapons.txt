@@ -178,7 +178,7 @@ gun Explode-On-Contact
 	sprite=Z
 	range=8
 	celerity=8
-	power=50
+	power=45
 	loadtime=2
 	special=SelfExplode;
 
