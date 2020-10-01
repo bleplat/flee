@@ -94,7 +94,7 @@ Public Class ShipStats
 			Case "native_upgrade" : Me.native_upgrades.Add(value)
 			Case "cost"
 				Me.cost = New MaterialSet(value)
-				If Me.complexity = 0 Then Me.complexity = Me.width * 4 + Me.cost.Metal / 6 + Me.cost.Crystal * 15 + Me.cost.Antimatter / 3 + Me.cost.Fissile * 100
+				If Me.complexity = 0 Then Me.complexity = Me.width * 5 + Me.cost.Metal / 8 + Me.cost.Crystal * 15 + Me.cost.Antimatter / 4 + Me.cost.Fissile * 100
 			Case "complexity" : Me.complexity = Convert.ToInt32(value)
 			Case Else : Throw New Exception("'" & name & "' is not a valid ship property")
 		End Select

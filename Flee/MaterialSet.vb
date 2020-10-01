@@ -47,7 +47,7 @@
 		Me.Antimatter += ResA
 	End Sub
 	Public Sub AddLoot(ByRef looted_addition As MaterialSet)
-		Metal += looted_addition.Metal / 4
+		Metal += looted_addition.Metal / 8
 		Crystal += looted_addition.Crystal / 2
 		Fissile += looted_addition.Fissile / 2
 		Antimatter += looted_addition.Antimatter / 4

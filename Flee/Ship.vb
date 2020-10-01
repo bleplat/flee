@@ -430,7 +430,7 @@
                             NeedSpeed = Helpers.GetAngleDiff(Me.direction, QA) > 90
                         End If
                     Else
-                        If Me.target.stats.speed > Me.stats.speed Then
+                        If Me.target.stats.speed * 1.1 >= Me.stats.speed Then
                             Dim angle_to_target As Double = Helpers.GetQA(Me.location.X, Me.location.Y, target.location.X, target.location.Y)
                             If Helpers.GetAngleDiff(angle_to_target, QA) > 90 Then
                                 QA = angle_to_target
