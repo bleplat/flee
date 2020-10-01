@@ -310,8 +310,8 @@
                 Count = 1
             End If
             If HasTeamWon(Teams(0)) Then
-                If Rand.Next(0, 4) = 0 Then
-                    Dim possibles = New List(Of String) From {"Loneboss", "Pusher", "Legend_U", "Legend_I", "Legend_L", "Legend_K", "Cargo", "Colonizer", "Converter_A", "Converter_B"}
+                If True Then
+                    Dim possibles = New List(Of String) From {"Loneboss", "Legend_I", "Legend_L", "Legend_K", "Cargo", "Colonizer"}
                     If Teams(0).affinity = AffinityEnum.ALOOF Then
                         possibles.Add("Nuke")
                         possibles.Add("Ambassador")
