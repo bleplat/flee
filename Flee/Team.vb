@@ -48,17 +48,19 @@ Public Class Team
             Me.affinity = affinity
         End If
 
-        'max ships
-        If id <> 0 Then
+		'max ships
+		If id <> 0 Then
             If Me.affinity = AffinityEnum.KIND Then
                 ship_count_limit = 24
-            Else
+            ElseIf Me.affinity = AffinityEnum.MEAN Then
                 ship_count_limit = 32
+            Else
+                ship_count_limit = 40
             End If
-        End If
+		End If
 
-        'color
-        If available_colors.Count = 0 Then
+		'color
+		If available_colors.Count = 0 Then
             ' allies colors
             'available_colors.Add(Color.FromArgb(0, 160, 0)) ' dark green (confused with player)
             'available_colors.Add(Color.FromArgb(0, 192, 96)) ' blueish green (confused with player)
