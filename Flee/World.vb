@@ -191,7 +191,7 @@
                     For c As Integer = 1 To Ships(i).stats.width / 8
                         Effects.Add(New Effect With {.Type = "DebrisA", .Coo = Ships(i).location, .Direction = Rand.Next(0, 360), .Life = Rand.Next(80, 120), .speed = Rand.Next(3, 7)})
                     Next
-                    If Ships(i).stats.sprite = "Nuke" Then
+                    If Ships(i).weapons.Count > 1 AndAlso (Ships(i).weapons(0).stats.special And Weapon.SpecialBits.SelfNuke) <> 0 Then
                         NuclearEffect = 255
                         For c As Integer = 1 To 256
                             Effects.Add(New Effect With {.Type = "ExplosionA", .Coo = Ships(i).location, .Direction = Rand.Next(0, 360), .Life = 8, .speed = Rand.Next(5, 256)})

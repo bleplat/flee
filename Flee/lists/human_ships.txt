@@ -224,7 +224,7 @@ ship PartialBomber
 	level=1
 	integrity=190
 	speed=2.80
-	turn=1.80
+	turn=1.80 
 	weapon=45;Heavy-PlasmaBomber
 	cost=1200;2;0;0
 
@@ -240,9 +240,12 @@ ship MSL
 	complexity=500
 
 ship Nuke
+	level=0
 	integrity=72
+	repair=0
 	speed=3.00
 	turn=2.50
+	weapon=0;Nuke-On-Contact
 	weapon=0;Explode-On-Contact
 	weapon=180;MachineGun
 	cost=8000;32;1;800
