@@ -110,4 +110,4 @@ ship Pointvortex
 	width=25
 	integrity=130
 	weapon=0;Intercepting-Artillery
-	cost=750;2;0;0
+	cost=950;2;0;25
