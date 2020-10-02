@@ -544,7 +544,7 @@
     Public Function AvailableUpgrades()
         Dim possible_upgrades As List(Of Upgrade) = New List(Of Upgrade)
         For Each upgrade As Upgrade In Upgrade.upgrades
-            If CanUpgrade(upgrade) Then
+            If CanUpgrade(upgrade) AndAlso (Not Me.bot_ship OrElse Not upgrade.not_for_bots) Then
                 possible_upgrades.Add(upgrade)
             End If
         Next

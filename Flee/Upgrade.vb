@@ -38,7 +38,16 @@
 
     Public Shared Sub LoadRegUpgrades()
 
-        upgrades.Add(New Upgrade With {.name = "Developper_Mode", .file = "Ups", .frame_coords = New Point(7, 7), .cost = New MaterialSet(0, 0, 0, 0), .delay = 600, .need = "?Up:Ascend", .effect = "!Cheats", .upgrade_slots_requiered = 1, .not_for_bots = True, .desc = "You deserved it."})
+        ' dev mode
+        upgrades.Add(New Upgrade With {.name = "Developper_Mode", .file = "Ups", .frame_coords = New Point(7, 7), .cost = New MaterialSet(0, 0, 0, 0), .delay = 10, .need = "?Up:Ascend", .effect = "!Cheats", .upgrade_slots_requiered = 0, .not_for_bots = True, .desc = "You deserved it."})
+        upgrades.Add(New Upgrade With {.name = "Developper_Mode", .file = "Ups", .frame_coords = New Point(7, 7), .cost = New MaterialSet(0, 0, 0, 0), .delay = 10, .need = "?Up:Ascend", .effect = "!Cheats", .upgrade_slots_requiered = 0, .not_for_bots = True, .desc = "You deserved it."})
+        upgrades.Add(New Upgrade With {.name = "Developper_Mode", .file = "Ups", .frame_coords = New Point(7, 7), .cost = New MaterialSet(0, 0, 0, 0), .delay = 10, .need = "?Up:Ascend", .effect = "!Cheats", .upgrade_slots_requiered = 0, .not_for_bots = True, .desc = "You deserved it."})
+        upgrades.Add(New Upgrade With {.name = "Developper_Mode", .file = "Ups", .frame_coords = New Point(7, 7), .cost = New MaterialSet(0, 0, 0, 0), .delay = 10, .need = "?Up:Ascend", .effect = "!Cheats", .upgrade_slots_requiered = 0, .not_for_bots = True, .desc = "You deserved it."})
+        upgrades.Add(New Upgrade With {.name = "Developper_Mode", .file = "Ups", .frame_coords = New Point(7, 7), .cost = New MaterialSet(0, 0, 0, 0), .delay = 10, .need = "?Up:Ascend", .effect = "!Cheats", .upgrade_slots_requiered = 0, .not_for_bots = True, .desc = "You deserved it."})
+        upgrades.Add(New Upgrade With {.name = "Developper_Mode", .file = "Ups", .frame_coords = New Point(7, 7), .cost = New MaterialSet(0, 0, 0, 0), .delay = 10, .need = "?Up:Ascend", .effect = "!Cheats", .upgrade_slots_requiered = 0, .not_for_bots = True, .desc = "You deserved it."})
+        upgrades.Add(New Upgrade With {.name = "Developper_Mode", .file = "Ups", .frame_coords = New Point(7, 7), .cost = New MaterialSet(0, 0, 0, 0), .delay = 10, .need = "?Up:Ascend", .effect = "!Cheats", .upgrade_slots_requiered = 0, .not_for_bots = True, .desc = "You deserved it."})
+        upgrades.Add(New Upgrade With {.name = "Developper_Mode", .file = "Ups", .frame_coords = New Point(7, 7), .cost = New MaterialSet(0, 0, 0, 0), .delay = 10, .need = "?Up:Ascend", .effect = "!Cheats", .upgrade_slots_requiered = 0, .not_for_bots = True, .desc = "You deserved it."})
+
         upgrades.Add(New Upgrade With {.name = "Free", .file = "Ups", .frame_coords = New Point(4, 7), .cost = New MaterialSet(), .delay = 10, .need = "", .effect = "!Free", .upgrade_slots_requiered = 0, .not_for_bots = True, .desc = "Release this ship's crew."})
         upgrades.Add(New Upgrade With {.name = "Suicide", .file = "Ups", .frame_coords = New Point(4, 7), .cost = New MaterialSet(), .delay = 10, .need = "?Type:Nothing", .effect = "!Suicide", .upgrade_slots_requiered = 0, .not_for_bots = True, .desc = "Release this ship's crew in space."})
 
