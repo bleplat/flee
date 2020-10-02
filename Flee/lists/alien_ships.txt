@@ -21,7 +21,7 @@ ship Yerka
 	weapon=270;MachineGun
 	cost=900;6;0;0
 	craft=MSL
-	complexity=1700
+	complexity=1600
 
 ship Strange
 	level=2

@@ -146,7 +146,7 @@ ship Finalizer
 	craft=Station_Crushers
 	craft=BomberFactory
 	craft=Kastou
-	native_upgrade=Warp_Engine
+	native_upgrade=Warp_Drive
 
 ship Ori
 	level=0
