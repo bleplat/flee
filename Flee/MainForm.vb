@@ -646,7 +646,7 @@ Public Class MainForm
 		For Each AUp As Upgrade In ListedUps
 			If x = UpX AndAlso y = UpY Then
 				If MainForm.cheats_enabled OrElse (AShip.CanUpgrade(AUp) AndAlso AShip.team Is player_team) Then
-					If AShip.team Is Nothing OrElse AShip.team.resources.HasEnough(AUp.cost) Then
+					If AShip.team Is Nothing OrElse AShip.team.resources.HasEnough(AUp.cost) OrElse MainForm.cheats_enabled Then
 						If Not AShip.team Is Nothing Then AShip.team.resources.Deplete(AUp.cost)
 						AShip.Upgrading = AUp
 						Exit Sub
