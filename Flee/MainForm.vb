@@ -429,6 +429,9 @@ Public Class MainForm
 							If aship.location.Y - aship.stats.width / 2 < SS.Y + SS.Height Then
 								If Not selected_ships.Contains(aship) Then
 									selected_ships.Add(aship)
+									If Not aship.team Is Nothing Then
+										player_team = aship.team
+									End If
 									If SelectPTN1 = SelectPTN2 Then
 										Return
 									End If
@@ -490,7 +493,6 @@ Public Class MainForm
 			Dim team As Team = player_team
 			If selected_ships.Count() > 0 AndAlso Not selected_ships(0).team Is Nothing Then
 				team = selected_ships(0).team
-				player_team = selected_ships(0).team
 			End If
 			team.resources = New MaterialSet(999999, 999, 9999, 999999)
 		End If
