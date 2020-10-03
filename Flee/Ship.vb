@@ -1,4 +1,4 @@
-﻿Public Class Ship : Public selected As Boolean
+﻿Public Class Ship
 
     ' mode of behavior
     Public Enum BehaviorMode
@@ -530,8 +530,19 @@
         End If
     End Sub
 
+    ' get updates to display
+    Public Shared Function ListedUpgrades(ships As List(Of Ship))
+        Dim met_upgrades As List(Of Upgrade) = New List(Of Upgrade)
+        For Each upgrade As Upgrade In Upgrade.upgrades
+            If Ship.CountShipsListingUpgrade(ships, upgrade) = ships.Count() Then
+                met_upgrades.Add(upgrade)
+            End If
+        Next
+        Return met_upgrades
+    End Function
+
     ' get all possible upgrades
-    Public Function ConditionsMetUpgrades()
+    Public Function ConditionsMetUpgrades() As List(Of Upgrade)
         Dim met_upgrades As List(Of Upgrade) = New List(Of Upgrade)
         For Each upgrade As Upgrade In Upgrade.upgrades
             If IsUpgradeCompatible(upgrade) OrElse Me.Ups.Contains(upgrade) Then
@@ -541,7 +552,7 @@
         Return met_upgrades
     End Function
     ' get all possible upgrades
-    Public Function AvailableUpgrades()
+    Public Function AvailableUpgrades() As List(Of Upgrade)
         Dim possible_upgrades As List(Of Upgrade) = New List(Of Upgrade)
         For Each upgrade As Upgrade In Upgrade.upgrades
             If CanUpgrade(upgrade) AndAlso (Not Me.bot_ship OrElse Not upgrade.not_for_bots) Then
@@ -573,6 +584,35 @@
             End If
         Next
         Return True
+    End Function
+    Public Shared Function CountShipsListingUpgrade(ships As List(Of Ship), upgrade As Upgrade) As Integer
+        Dim count As Integer = 0
+        For Each ship As Ship In ships
+            If ship.IsUpgradeCompatible(upgrade) OrElse ship.Ups.Contains(upgrade) Then
+                count += 1
+            End If
+        Next
+        Return count
+    End Function
+    Public Shared Function CountShipsBuyableNowUpgrade(ships As List(Of Ship), upgrade As Upgrade) As Integer
+        Dim count As Integer = 0
+        For Each ship As Ship In ships
+            If ship.Upgrading Is Nothing Then
+                If ship.IsUpgradeCompatible(upgrade) AndAlso Not ship.Ups.Contains(upgrade) AndAlso ship.upgrade_slots - ship.Ups.Count - upgrade.upgrade_slots_requiered >= 0 Then
+                    count += 1
+                End If
+            End If
+        Next
+        Return count
+    End Function
+    Public Shared Function CountShipsHavingUpgrade(ships As List(Of Ship), upgrade As Upgrade) As Integer
+        Dim count As Integer = 0
+        For Each ship As Ship In ships
+            If ship.Ups.Contains(upgrade) Then
+                count += 1
+            End If
+        Next
+        Return count
     End Function
     ' test a single upgrade condition
     Public Function IsUpgradeConditionMet(ByVal chain As String) As Boolean
@@ -608,6 +648,17 @@
                 Throw New Exception("Erreur : " & chain & " (invalid condition)")
         End Select
         Return False
+    End Function
+
+    ' get the minimum loading progress of an upgrade for a list of ship, or int.MaxValue if not being upgraded
+    Public Shared Function MinUpgradeProgress(ships As List(Of Ship), upgrade As Upgrade) As Integer
+        Dim min As Integer = Int32.MaxValue
+        For Each ship As Ship In ships
+            If ship.Upgrading Is upgrade Then
+                min = Math.Min(min, ship.UpProgress)
+            End If
+        Next
+        Return min
     End Function
 
     ' apply all upgrades effects this ship have

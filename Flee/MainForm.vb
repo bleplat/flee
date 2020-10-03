@@ -91,7 +91,6 @@ Public Class MainForm
 		End If
 		CheckRightPanel()
 		KeysCheck()
-		SelectCheck()
 		drawUpgrades()
 		DrawAll()
 		'debugstr += vbNewLine + "DrawAll: " + (DateTime.Now - start_time).ToString() : start_time = DateTime.Now
@@ -206,7 +205,7 @@ Public Class MainForm
 							G.DrawRectangle(Pens.Red, drawrect)
 						End If
 					End If
-					If AShip.selected Then
+					If selected_ships.Contains(AShip) Then
 						G.DrawRectangle(New Pen(AShip.team.color), drawrect)
 					End If
 					' shields
@@ -411,32 +410,26 @@ Public Class MainForm
 				SelectOrder()
 		End Select
 	End Sub
-	Dim SelectCount As Integer = 0
 	Dim SelectPTN1 As New Point(0, 0)
 	Dim SelectPTN2 As New Point(0, 0)
 	Dim SelectStarted As Boolean = False
-	Sub SelectCheck()
-		SelectCount = 0
-		For Each AShip As Ship In world.Ships
-			If AShip.selected Then
-				SelectCount = SelectCount + 1
-			End If
-		Next
-	End Sub
 	Public Sub SelectInSquare()
 		Dim SS As Rectangle = Helpers.GetRect(SelectPTN1, SelectPTN2)
 		If MenuPanel.Visible Then
 			Return
 		End If
+		If Not ModifierKeys.HasFlag(Keys.Control) Then
+			selected_ships.Clear()
+		End If
 		For Each aship As Ship In world.Ships
-			aship.selected = False
 			If aship.team Is player_team OrElse cheats_enabled Then 'Si mode debug ou equipe correcte
 				If aship.location.X + aship.stats.width / 2 > SS.X Then
 					If aship.location.X - aship.stats.width / 2 < SS.X + SS.Width Then
 						If aship.location.Y + aship.stats.width / 2 > SS.Y Then
 							If aship.location.Y - aship.stats.width / 2 < SS.Y + SS.Height Then
-								aship.selected = True
-								LastSShipSelect = aship
+								If Not selected_ships.Contains(aship) Then
+									selected_ships.Add(aship)
+								End If
 							End If
 						End If
 					End If
@@ -445,50 +438,46 @@ Public Class MainForm
 		Next
 	End Sub
 	Public Sub SelectOrder()
-		If SelectCount = 0 Then
+		If selected_ships.Count() = 0 Then
 			Exit Sub
 		End If
-		Dim other_ship As Ship = Nothing
+		Dim target_ship As Ship = Nothing
 		'===' Recherche '==='
 		For Each AShip As Ship In world.Ships
 			If AShip.location.X + AShip.stats.width / 2 > SelectPTN2.X Then
 				If AShip.location.X - AShip.stats.width / 2 < SelectPTN2.X Then
 					If AShip.location.Y + AShip.stats.width / 2 > SelectPTN2.Y Then
 						If AShip.location.Y - AShip.stats.width / 2 < SelectPTN2.Y Then
-							other_ship = AShip
+							target_ship = AShip
 						End If
 					End If
 				End If
 			End If
 		Next
 		'===' Validation '==='
-		If other_ship Is Nothing Then
-			For Each AShip As Ship In world.Ships
-				If AShip.selected Then
-					If AShip.TargetPTN = SelectPTN2 Then
-						world.Effects.Add(New Effect With {.Type = "Patrouille", .Coo = SelectPTN2})
-						AShip.behavior = Ship.BehaviorMode.Mine
-						AShip.TargetPTN = SelectPTN2
-						AShip.target = Nothing
-					Else
-						world.Effects.Add(New Effect With {.Type = "Fleche", .Coo = SelectPTN2})
-						AShip.behavior = Ship.BehaviorMode.GoToPoint
-						AShip.TargetPTN = SelectPTN2
-						AShip.target = Nothing
-					End If
+		If target_ship Is Nothing Then
+			For Each AShip As Ship In selected_ships
+				If AShip.TargetPTN = SelectPTN2 Then
+					world.Effects.Add(New Effect With {.Type = "Patrouille", .Coo = SelectPTN2})
+					AShip.behavior = Ship.BehaviorMode.Mine
+					AShip.TargetPTN = SelectPTN2
+					AShip.target = Nothing
+				Else
+					world.Effects.Add(New Effect With {.Type = "Fleche", .Coo = SelectPTN2})
+					AShip.behavior = Ship.BehaviorMode.GoToPoint
+					AShip.TargetPTN = SelectPTN2
+					AShip.target = Nothing
 				End If
 			Next
 		Else
-			For Each AShip As Ship In world.Ships
-				If AShip.selected Then
-					If AShip Is other_ship Then
-						world.Effects.Add(New Effect With {.Type = "Cible2", .Coo = SelectPTN2})
-						AShip.AllowMining = False
-					Else
-						world.Effects.Add(New Effect With {.Type = "Cible", .Coo = SelectPTN2})
-						AShip.behavior = Ship.BehaviorMode.Folow
-						AShip.target = other_ship
-					End If
+			For Each AShip As Ship In selected_ships
+				If AShip Is target_ship Then
+					world.Effects.Add(New Effect With {.Type = "Cible2", .Coo = SelectPTN2})
+					AShip.AllowMining = False
+				Else
+					world.Effects.Add(New Effect With {.Type = "Cible", .Coo = SelectPTN2})
+					AShip.behavior = Ship.BehaviorMode.Folow
+					AShip.target = target_ship
 				End If
 			Next
 		End If
@@ -496,8 +485,9 @@ Public Class MainForm
 	Private Sub PictureBox2_Click(sender As System.Object, e As System.EventArgs) Handles PictureBox2.Click, PictureBox5.Click, PictureBox6.Click
 		If cheats_enabled Then
 			Dim team As Team = player_team
-			If Not LastSShipSelect Is Nothing AndAlso Not LastSShipSelect.team Is Nothing Then
-				team = LastSShipSelect.team
+			If selected_ships.Count() > 0 AndAlso Not selected_ships(0).team Is Nothing Then
+				team = selected_ships(0).team
+				player_team = selected_ships(0).team
 			End If
 			team.resources = New MaterialSet(999999, 999, 9999, 999999)
 		End If
@@ -517,51 +507,47 @@ Public Class MainForm
 
 
 
+	' Selection and right panel
+	Public listed_upgrades As List(Of Upgrade) = New List(Of Upgrade)
+	Public selected_ships As List(Of Ship) = New List(Of Ship)
 
-
-
-	'===' UPGRADES '==='
-
-	Public ListedUps As New List(Of Upgrade)
-
-	'===' SHIP PANEL & Cie '==='
-
-	Public LastSShipSelect As Ship = Nothing
-	Public LastShipPaneload As Ship = Nothing
-	Sub CheckRightPanel()
-		Dim team As Team = player_team
-		If Not LastSShipSelect Is Nothing AndAlso Not LastSShipSelect.team Is Nothing Then
-			team = LastSShipSelect.team
-		End If
-
-		MetalTextBox.Text = team.resources.Metal
-		CristalTextBox.Text = team.resources.Crystal
-		UraniumTextBox.Text = team.resources.Fissile
-		AntimatterTextBox.Text = team.resources.Antimatter
-		If SelectCount = 1 Then
-			SelectSShip(LastSShipSelect)
-		Else
-			SelectSShip(Nothing)
-		End If
+	Public Sub CheckRightPanel()
+		update_displayed_materials()
+		update_selected_ships_details()
 	End Sub
-	Sub SelectSShip(ByRef ship As Ship)
-		If ship Is Nothing Then
+	Public Sub update_displayed_materials()
+		Dim selected_team As Team = player_team
+		If selected_ships.Count > 0 AndAlso Not selected_ships(0).team Is Nothing Then
+			selected_team = selected_ships(0).team
+		End If
+		MetalTextBox.Text = selected_team.resources.Metal
+		CristalTextBox.Text = selected_team.resources.Crystal
+		UraniumTextBox.Text = selected_team.resources.Fissile
+		AntimatterTextBox.Text = selected_team.resources.Antimatter
+	End Sub
+	Sub update_selected_ships_details()
+		' panel visibility
+		If selected_ships.Count = 0 Then
 			SShipPanel.Visible = False
 			Exit Sub
 		End If
 		If SShipPanel.Visible = False Then
 			SShipPanel.Visible = True
 		End If
-		LastShipPaneload = ship
-
-		'===' Afficher infos '==='
-		SShipImageBox.Image = Helpers.GetSprite(ship.stats.sprite, 0, 0, ship.color)
-		SShipTypeBox.Text = ship.stats.sprite
-		SShipUpsMax.Text = ship.Ups.Count & " / " & ship.upgrade_slots
-		AllowMiningBox.Visible = Not ship.AllowMining
-
-		'===' Upgrades '==='
-		ListedUps = ship.ConditionsMetUpgrades()
+		' ship details
+		If selected_ships.Count = 1 Then
+			SShipImageBox.Image = Helpers.GetSprite(selected_ships(0).stats.sprite, 0, 0, selected_ships(0).color)
+			SShipTypeBox.Text = selected_ships(0).stats.name
+			SShipUpsMax.Text = selected_ships(0).Ups.Count & " / " & selected_ships(0).upgrade_slots
+			AllowMiningBox.Visible = Not selected_ships(0).AllowMining
+		Else
+			SShipImageBox.Image = My.Resources.Fleet
+			SShipTypeBox.Text = selected_ships.Count().ToString() & " units"
+			SShipUpsMax.Text = "- / -"
+			AllowMiningBox.Visible = False
+		End If
+		' upgrade list
+		listed_upgrades = Ship.ListedUpgrades(selected_ships)
 	End Sub
 
 	Dim UpX As Integer = -1 : Dim UpY As Integer = -1
@@ -573,24 +559,29 @@ Public Class MainForm
 	Dim PBMP As New Bitmap(200, 600)
 	Dim PG As Graphics = Graphics.FromImage(PBMP)
 	Sub drawUpgrades()
-		Dim Aship As Ship = LastShipPaneload
-		If SShipPanel.Visible = False OrElse Aship Is Nothing Then
+		If SShipPanel.Visible = False OrElse selected_ships.Count() = 0 Then
 			Exit Sub
 		End If
 		PG.Clear(Color.Black)
 		Dim x As Integer = 0 : Dim y As Integer = 0
 		Dim udV As Boolean = False
-		For Each AUp As Upgrade In ListedUps
+		For Each AUp As Upgrade In listed_upgrades
+			Dim ships_upgradable As Integer = Ship.CountShipsBuyableNowUpgrade(selected_ships, AUp)
+			Dim ships_installed As Integer = Ship.CountShipsHavingUpgrade(selected_ships, AUp)
+			Dim min_progress As Integer = Ship.MinUpgradeProgress(selected_ships, AUp)
 			If x = UpX AndAlso y = UpY Then
 				PG.FillRectangle(Brushes.DimGray, x * 25, y * 25, 25, 25)
 				udV = True
 				UpName.Text = AUp.name
+				If ships_upgradable > 1 Then
+					UpName.Text &= " (" & ships_upgradable.ToString() & ")"
+				End If
 				UpDesc.Text = AUp.desc
 				' prices
-				PriceC.Text = AUp.cost.Crystal
-				PriceM.Text = AUp.cost.Metal
-				PriceU.Text = AUp.cost.Fissile
-				PriceA.Text = AUp.cost.Antimatter
+				PriceC.Text = AUp.cost.Crystal * Math.Max(1, ships_upgradable)
+				PriceM.Text = AUp.cost.Metal * Math.Max(1, ships_upgradable)
+				PriceU.Text = AUp.cost.Fissile * Math.Max(1, ships_upgradable)
+				PriceA.Text = AUp.cost.Antimatter * Math.Max(1, ships_upgradable)
 				' invisible resources
 				PriceM.Visible = (AUp.cost.Metal <> 0)
 				PriceMIcon.Visible = (AUp.cost.Metal <> 0)
@@ -601,24 +592,35 @@ Public Class MainForm
 				PriceA.Visible = (AUp.cost.Antimatter <> 0)
 				PriceAIcon.Visible = (AUp.cost.Antimatter <> 0)
 			End If
-			If Aship.HaveUp(AUp) Then
+			If ships_installed = selected_ships.Count() Then
+				' already installed
 				PG.DrawRectangle(New Pen(Brushes.White, 2), x * 25 + 1, y * 25 + 1, 24 - 1, 24 - 1)
-			ElseIf (Not Aship.Upgrading Is Nothing) AndAlso Aship.Upgrading.name = AUp.name Then
+			ElseIf min_progress < Int32.MaxValue Then
+				' being installing
 				PG.DrawRectangle(New Pen(Brushes.Yellow, 2), x * 25, y * 25, 24, 24)
-				Dim ph As Integer = Aship.UpProgress / Math.Max(1, AUp.delay) * 25
+				Dim ph As Integer = min_progress / Math.Max(1, AUp.delay) * 25
 				PG.FillRectangle(Brushes.White, x * 25, y * 25 + 25 - ph, 25, ph)
-			ElseIf AUp.upgrade_slots_requiered > 0 AndAlso Aship.upgrade_slots - Aship.Ups.Count < AUp.upgrade_slots_requiered Then
-				PG.DrawRectangle(Pens.DarkBlue, x * 25, y * 25, 24, 24)
-			ElseIf Aship.team Is Nothing OrElse Not Aship.team.resources.HasEnough(AUp.cost) Then
+			ElseIf ships_upgradable = 0 Then
+				' no update slot remaining
+				If ships_installed Then
+					PG.DrawRectangle(New Pen(Brushes.LightGray, 2), x * 25 + 1, y * 25 + 1, 24 - 1, 24 - 1)
+				Else
+					PG.DrawRectangle(Pens.DarkBlue, x * 25, y * 25, 24, 24)
+				End If
+			ElseIf selected_ships(0).team Is Nothing OrElse Not selected_ships(0).team.resources.HasEnough(AUp.cost.MultipliedBy(ships_upgradable)) Then
+				' cannot afford
 				If AUp.upgrade_slots_requiered > 0 Then
 					PG.DrawRectangle(Pens.DarkRed, x * 25, y * 25, 24, 24)
 				Else
 					PG.DrawRectangle(Pens.MediumPurple, x * 25, y * 25, 24, 24)
 				End If
-			ElseIf AUp.upgrade_slots_requiered = 0 Then
-				PG.DrawRectangle(Pens.Cyan, x * 25, y * 25, 24, 24)
 			Else
-				PG.DrawRectangle(Pens.DarkGreen, x * 25, y * 25, 24, 24)
+				'can afford
+				If AUp.upgrade_slots_requiered = 0 Then
+					PG.DrawRectangle(Pens.Cyan, x * 25, y * 25, 24, 24)
+				Else
+					PG.DrawRectangle(Pens.DarkGreen, x * 25, y * 25, 24, 24)
+				End If
 			End If
 			PG.DrawImage(Helpers.GetSprite(AUp.file, AUp.frame_coords.X, AUp.frame_coords.Y), New Rectangle(New Point(x * 25, y * 25), New Size(25, 25)))
 
@@ -641,17 +643,17 @@ Public Class MainForm
 		If MenuPanel.Visible Then
 			Return
 		End If
-		Dim AShip As Ship = LastShipPaneload
 		Dim x As Integer = 0 : Dim y As Integer = 0
-		For Each AUp As Upgrade In ListedUps
+		For Each AUp As Upgrade In listed_upgrades
 			If x = UpX AndAlso y = UpY Then
-				If MainForm.cheats_enabled OrElse (AShip.CanUpgrade(AUp) AndAlso AShip.team Is player_team) Then
-					If AShip.team Is Nothing OrElse AShip.team.resources.HasEnough(AUp.cost) OrElse MainForm.cheats_enabled Then
-						If Not AShip.team Is Nothing Then AShip.team.resources.Deplete(AUp.cost)
-						AShip.Upgrading = AUp
-						Exit Sub
+				For Each ship As Ship In selected_ships
+					If ((ship.CanUpgrade(AUp) AndAlso ship.team Is player_team)) OrElse MainForm.cheats_enabled Then
+						If ship.team Is Nothing OrElse ship.team.resources.HasEnough(AUp.cost) OrElse MainForm.cheats_enabled Then
+							If Not ship.team Is Nothing Then ship.team.resources.Deplete(AUp.cost)
+							ship.Upgrading = AUp
+						End If
 					End If
-				End If
+				Next
 			End If
 			'item suivant
 			x = x + 1

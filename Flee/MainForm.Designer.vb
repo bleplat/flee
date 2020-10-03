@@ -25,6 +25,7 @@ Partial Class MainForm
 		Me.components = New System.ComponentModel.Container()
 		Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
 		Me.MainPanel = New System.Windows.Forms.Panel()
+		Me.MiniBox = New System.Windows.Forms.PictureBox()
 		Me.MenuPanel = New System.Windows.Forms.Panel()
 		Me.Label4 = New System.Windows.Forms.Label()
 		Me.RandomizeButton = New System.Windows.Forms.Button()
@@ -60,10 +61,10 @@ Partial Class MainForm
 		Me.PictureBox6 = New System.Windows.Forms.PictureBox()
 		Me.PictureBox2 = New System.Windows.Forms.PictureBox()
 		Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-		Me.MiniBox = New System.Windows.Forms.PictureBox()
 		Me.DrawBox = New System.Windows.Forms.PictureBox()
 		Me.Ticker = New System.Windows.Forms.Timer(Me.components)
 		Me.MainPanel.SuspendLayout()
+		CType(Me.MiniBox, System.ComponentModel.ISupportInitialize).BeginInit()
 		Me.MenuPanel.SuspendLayout()
 		Me.UpgradeDetails.SuspendLayout()
 		CType(Me.PriceCIcon, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -79,7 +80,6 @@ Partial Class MainForm
 		CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-		CType(Me.MiniBox, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.DrawBox, System.ComponentModel.ISupportInitialize).BeginInit()
 		Me.SuspendLayout()
 		'
@@ -98,6 +98,17 @@ Partial Class MainForm
 		Me.MainPanel.Name = "MainPanel"
 		Me.MainPanel.Size = New System.Drawing.Size(800, 600)
 		Me.MainPanel.TabIndex = 0
+		'
+		'MiniBox
+		'
+		Me.MiniBox.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+		Me.MiniBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.MiniBox.Location = New System.Drawing.Point(599, 399)
+		Me.MiniBox.Name = "MiniBox"
+		Me.MiniBox.Size = New System.Drawing.Size(202, 202)
+		Me.MiniBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+		Me.MiniBox.TabIndex = 1
+		Me.MiniBox.TabStop = False
 		'
 		'MenuPanel
 		'
@@ -497,17 +508,6 @@ Partial Class MainForm
 		Me.PictureBox1.TabIndex = 0
 		Me.PictureBox1.TabStop = False
 		'
-		'MiniBox
-		'
-		Me.MiniBox.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-		Me.MiniBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.MiniBox.Location = New System.Drawing.Point(599, 399)
-		Me.MiniBox.Name = "MiniBox"
-		Me.MiniBox.Size = New System.Drawing.Size(202, 202)
-		Me.MiniBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-		Me.MiniBox.TabIndex = 1
-		Me.MiniBox.TabStop = False
-		'
 		'DrawBox
 		'
 		Me.DrawBox.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
@@ -539,6 +539,7 @@ Partial Class MainForm
 		Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
 		Me.Text = "Flee"
 		Me.MainPanel.ResumeLayout(False)
+		CType(Me.MiniBox, System.ComponentModel.ISupportInitialize).EndInit()
 		Me.MenuPanel.ResumeLayout(False)
 		Me.MenuPanel.PerformLayout()
 		Me.UpgradeDetails.ResumeLayout(False)
@@ -558,7 +559,6 @@ Partial Class MainForm
 		CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-		CType(Me.MiniBox, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.DrawBox, System.ComponentModel.ISupportInitialize).EndInit()
 		Me.ResumeLayout(False)
 

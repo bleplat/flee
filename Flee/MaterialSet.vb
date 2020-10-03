@@ -52,6 +52,9 @@
 		Fissile += looted_addition.Fissile / 2
 		Antimatter += looted_addition.Antimatter / 4
 	End Sub
+	Public Function MultipliedBy(amount As Double) As MaterialSet
+		Return New MaterialSet(Metal * amount, Crystal * amount, Fissile * amount, Antimatter * amount)
+	End Function
 
 	' Import / Export
 	Public Function ToString() As String
