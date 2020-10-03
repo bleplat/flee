@@ -448,6 +448,15 @@ Public Class MainForm
 			Exit Sub
 		End If
 		Dim target_ship As Ship = Nothing
+		' disable bots
+		For Each ship As Ship In selected_ships
+			ship.bot_ship = False
+			If ship.stats.name.Contains("Station") Then
+				If Not ship.team Is Nothing Then
+					ship.team.bot_team = False
+				End If
+			End If
+		Next
 		'===' Recherche '==='
 		For Each AShip As Ship In world.Ships
 			If AShip.location.X + AShip.stats.width / 2 > SelectPTN2.X Then
@@ -468,6 +477,11 @@ Public Class MainForm
 					AShip.behavior = Ship.BehaviorMode.Mine
 					AShip.TargetPTN = SelectPTN2
 					AShip.target = Nothing
+					If AShip.stats.name.Contains("Station") Then
+						If Not AShip.team Is Nothing AndAlso Not player_team Is AShip.team Then
+							AShip.team.bot_team = True
+						End If
+					End If
 				Else
 					world.Effects.Add(New Effect With {.Type = "Fleche", .Coo = SelectPTN2})
 					AShip.behavior = Ship.BehaviorMode.GoToPoint
