@@ -429,6 +429,9 @@ Public Class MainForm
 							If aship.location.Y - aship.stats.width / 2 < SS.Y + SS.Height Then
 								If Not selected_ships.Contains(aship) Then
 									selected_ships.Add(aship)
+									If SelectPTN1 = SelectPTN2 Then
+										Return
+									End If
 								End If
 							End If
 						End If
@@ -605,19 +608,31 @@ Public Class MainForm
 				If ships_installed Then
 					PG.DrawRectangle(New Pen(Brushes.LightGray, 2), x * 25 + 1, y * 25 + 1, 24 - 1, 24 - 1)
 				Else
-					PG.DrawRectangle(Pens.DarkBlue, x * 25, y * 25, 24, 24)
+					PG.DrawRectangle(Pens.DimGray, x * 25, y * 25, 24, 24)
 				End If
 			ElseIf selected_ships(0).team Is Nothing OrElse Not selected_ships(0).team.resources.HasEnough(AUp.cost.MultipliedBy(ships_upgradable)) Then
-				' cannot afford
+				' cannot afford all
 				If AUp.upgrade_slots_requiered > 0 Then
-					PG.DrawRectangle(Pens.DarkRed, x * 25, y * 25, 24, 24)
+					If selected_ships(0).team.resources.HasEnough(AUp.cost) Then
+						' can afford at least one
+						PG.DrawRectangle(Pens.DarkOrange, x * 25, y * 25, 24, 24)
+					Else
+						' cannot even afford one
+						PG.DrawRectangle(Pens.DarkRed, x * 25, y * 25, 24, 24)
+					End If
 				Else
-					PG.DrawRectangle(Pens.MediumPurple, x * 25, y * 25, 24, 24)
+					If selected_ships(0).team.resources.HasEnough(AUp.cost) Then
+						' can afford at least one
+						PG.DrawRectangle(Pens.PaleGoldenrod, x * 25, y * 25, 24, 24)
+					Else
+						' cannot even afford one
+						PG.DrawRectangle(Pens.PaleVioletRed, x * 25, y * 25, 24, 24)
+					End If
 				End If
 			Else
 				'can afford
 				If AUp.upgrade_slots_requiered = 0 Then
-					PG.DrawRectangle(Pens.Cyan, x * 25, y * 25, 24, 24)
+					PG.DrawRectangle(Pens.PaleGreen, x * 25, y * 25, 24, 24)
 				Else
 					PG.DrawRectangle(Pens.DarkGreen, x * 25, y * 25, 24, 24)
 				End If
