@@ -532,6 +532,7 @@ Public Class MainForm
 
 	Public Sub CheckRightPanel()
 		update_displayed_materials()
+		verify_selected_ships_existence()
 		update_selected_ships_details()
 	End Sub
 	Public Sub update_displayed_materials()
@@ -543,6 +544,13 @@ Public Class MainForm
 		CristalTextBox.Text = selected_team.resources.Crystal
 		UraniumTextBox.Text = selected_team.resources.Fissile
 		AntimatterTextBox.Text = selected_team.resources.Antimatter
+	End Sub
+	Sub verify_selected_ships_existence()
+		For index = selected_ships.Count - 1 To 0 Step -1
+			If Not world.Ships.Contains(selected_ships(index)) Then
+				selected_ships.RemoveAt(index)
+			End If
+		Next
 	End Sub
 	Sub update_selected_ships_details()
 		' panel visibility
