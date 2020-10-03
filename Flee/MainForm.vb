@@ -599,9 +599,10 @@ Public Class MainForm
 			If x = UpX AndAlso y = UpY Then
 				PG.FillRectangle(Brushes.DimGray, x * 25, y * 25, 25, 25)
 				udV = True
-				UpName.Text = AUp.name
-				If ships_upgradable > 1 Then
-					UpName.Text &= " (" & ships_upgradable.ToString() & ")"
+				If selected_ships.Count() > 1 Then
+					UpName.Text = AUp.name & " (" & ships_upgradable.ToString() & ")"
+				Else
+					UpName.Text = AUp.name
 				End If
 				UpDesc.Text = AUp.desc
 				' prices
@@ -630,7 +631,7 @@ Public Class MainForm
 			ElseIf ships_upgradable = 0 Then
 				' no update slot remaining
 				If ships_installed Then
-					PG.DrawRectangle(New Pen(Brushes.Gray, 2), x * 25 + 1, y * 25 + 1, 24 - 1, 24 - 1)
+					PG.DrawRectangle(New Pen(Brushes.LightGray), x * 25, y * 25, 24, 24)
 				Else
 					PG.DrawRectangle(Pens.DimGray, x * 25, y * 25, 24, 24)
 				End If
