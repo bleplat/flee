@@ -630,7 +630,7 @@ Public Class MainForm
 			ElseIf ships_upgradable = 0 Then
 				' no update slot remaining
 				If ships_installed Then
-					PG.DrawRectangle(New Pen(Brushes.LightGray, 2), x * 25 + 1, y * 25 + 1, 24 - 1, 24 - 1)
+					PG.DrawRectangle(New Pen(Brushes.Gray, 2), x * 25 + 1, y * 25 + 1, 24 - 1, 24 - 1)
 				Else
 					PG.DrawRectangle(Pens.DimGray, x * 25, y * 25, 24, 24)
 				End If
