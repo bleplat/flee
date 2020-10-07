@@ -16,14 +16,14 @@
         Life = Life - 1
         '===' Spécial '==='
         If (Me.special And Weapon.SpecialBits.Plasma) <> 0 Then
-            world.Effects.Add(New Effect With {.Type = "Plasma", .Coo = Coo, .Direction = world.Rand.Next(0, 360), .Life = 6, .speed = 1})
+            world.Effects.Add(New Effect With {.Type = "Plasma", .Coo = Coo, .Direction = world.gameplay_random.Next(0, 360), .Life = 6, .speed = 1})
         End If
         If (Me.special And Weapon.SpecialBits.Propeled) <> 0 Then
-            world.Shoots.Add(New Shoot(Me.world) With {.Type = "A", .Coo = Coo, .Direction = world.Rand.Next(0, 360), .Life = 5, .speed = 2, .Power = 1, .Team = Me.Team})
+            world.Shoots.Add(New Shoot(Me.world) With {.Type = "A", .Coo = Coo, .Direction = world.gameplay_random.Next(0, 360), .Life = 5, .speed = 2, .Power = 1, .Team = Me.Team})
         End If
         If (Me.special And Weapon.SpecialBits.BioDrops) <> 0 Then
-            world.Shoots.Add(New Shoot(Me.world) With {.Type = "B", .Coo = Coo, .Direction = Direction + world.Rand.Next(-90, 90), .Life = 8, .speed = world.Rand.Next(4, 8), .Power = 2, .Team = Me.Team})
-            world.Shoots.Add(New Shoot(Me.world) With {.Type = "B", .Coo = Coo, .Direction = world.Rand.Next(0, 360), .Life = 8, .speed = world.Rand.Next(6, 10), .Power = Power / 2, .Team = Me.Team})
+            world.Shoots.Add(New Shoot(Me.world) With {.Type = "B", .Coo = Coo, .Direction = Direction + world.gameplay_random.Next(-90, 90), .Life = 8, .speed = world.gameplay_random.Next(4, 8), .Power = 2, .Team = Me.Team})
+            world.Shoots.Add(New Shoot(Me.world) With {.Type = "B", .Coo = Coo, .Direction = world.gameplay_random.Next(0, 360), .Life = 8, .speed = world.gameplay_random.Next(6, 10), .Power = Power / 2, .Team = Me.Team})
         End If
     End Sub
     Public world As World = Nothing

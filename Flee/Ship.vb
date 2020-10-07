@@ -626,6 +626,8 @@
                 If stats.speed > 0 Then Return True
             Case "?Base"
                 If Me.stats.name.Contains("Station") Then Return True
+            Case "?NotStation"
+                If Not Me.stats.name.Contains("Station") Then Return True
             Case "+Lvl"
                 If Me.stats.level >= Spliter(1) Then Return True
             Case "+Speed" 'vitesse
@@ -697,7 +699,7 @@
                 If Not Me.target Is Nothing Then
                     tp_dst = Me.target.location
                 End If
-                Me.location = New PointF(tp_dst.X + world.Rand.Next(-512, 512), tp_dst.Y + world.Rand.Next(-512, 512))
+                Me.location = New PointF(tp_dst.X + world.gameplay_random.Next(-512, 512), tp_dst.Y + world.gameplay_random.Next(-512, 512))
                 world.Effects.Add(New Effect With {.Type = "Teleported", .Coo = Me.location, .Direction = 0, .speed = 0})
             Case "!Upsbonus"
                 If first_application Then Me.team.upgrade_slots_bonus += Spliter(1) 'FN
@@ -777,7 +779,7 @@
                     Me.weapons(0).stats.celerity += Me.weapons(0).stats.celerity * (Helpers.ToDouble(Spliter(1)) / 100.0)
                 End If
             Case "!Sum"
-                If first_application Then world.Ships.Add(New Ship(world, Me.team, Spliter(1)) With {.location = New Point(Me.location.X + world.Rand.Next(-10, 11), Me.location.Y + world.Rand.Next(-10, 11))})
+                If first_application Then world.Ships.Add(New Ship(world, Me.team, Spliter(1)) With {.location = New Point(Me.location.X + world.gameplay_random.Next(-10, 11), Me.location.Y + world.gameplay_random.Next(-10, 11))})
                 world.Ships(world.Ships.Count - 1).direction = Me.direction
                 If world.Ships(world.Ships.Count - 1).weapons.Count() > 0 AndAlso (world.Ships(world.Ships.Count - 1).weapons(0).stats.special And Weapon.SpecialBits.SelfExplode) <> 0 Then
                     If Me.team Is Nothing OrElse Me.target Is Nothing OrElse Me.target.team Is Nothing OrElse Not Me.team.IsFriendWith(Me.target.team) Then
@@ -802,7 +804,7 @@
                 Me.stats.repair = 0
                 Me.integrity = -2048
             Case "!Free"
-                Me.SetTeam(Me.world.Teams(world.Rand.Next(0, Me.world.Teams.Count())))
+                Me.SetTeam(Me.world.Teams(world.gameplay_random.Next(0, Me.world.Teams.Count())))
             Case "!Cheats"
                 MainForm.cheats_enabled = Not MainForm.cheats_enabled
             Case Else

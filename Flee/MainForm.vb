@@ -33,8 +33,6 @@ Public Class MainForm
 	Public player_team As Team = Nothing
 
 	Private Sub MainForm_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
-		' culture
-		'Thread.CurrentThread.CurrentCulture = New CultureInfo("en-US")
 		' Commandline
 		If My.Application.CommandLineArgs.Count > 1 Then
 			SeedTextBox.Text = My.Application.CommandLineArgs(1)
@@ -56,26 +54,25 @@ Public Class MainForm
 		Upgrade.LoadRegUpgrades()
 		Helpers.LoadLists()
 		Upgrade.LoadBuildUpgrades()
-
 	End Sub
 	Private Sub BeginButton_Click(sender As Object, e As EventArgs) Handles StartPlayingButton.Click
+		' get the seed, checking that it's correct
 		Dim Seed As Integer
 		Try
 			Seed = Convert.ToInt32(SeedTextBox.Text)
 		Catch ex As Exception
 			Return
 		End Try
-
+		Me.Text = "Flee - Seed: " & SeedTextBox.Text
+		' close menu
 		StartPlayingButton.Enabled = False
 		MenuPanel.Visible = False
-
+		' create the world
 		world = New World(Seed)
 		player_team = world.Teams(0)
-		Me.Text = "Flee - Seed: " & SeedTextBox.Text
-
 		' Place camera on player
 		See = New Point(world.Ships(0).location.X - 200, world.Ships(0).location.Y - 200)
-
+		' finaly enable timer
 		Ticker.Enabled = True
 	End Sub
 

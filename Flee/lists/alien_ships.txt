@@ -10,6 +10,7 @@ ship Kastou
 	shield_opacity=100.00
 	cost=4500;6;0;50
 	craft=Yerka
+	craft=MSL
 	complexity=900
 
 ship Yerka
@@ -20,8 +21,7 @@ ship Yerka
 	turn=4.20
 	weapon=270;MachineGun
 	cost=900;6;0;0
-	craft=MSL
-	complexity=1600
+	complexity=1300
 
 ship Strange
 	level=2

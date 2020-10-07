@@ -175,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cell.ICO" />
+    <None Include="Resources\Fleet.bmp" />
     <None Include="Resources\DeadSkull.bmp" />
     <None Include="Resources\Antimatter.bmp" />
   </ItemGroup>

@@ -91,9 +91,9 @@ Public Class Team
         Else
             Dim i_color As Integer
             If (Me.affinity And AffinityEnum.KIND) <> 0 Then
-                i_color = world.Rand.Next(0, available_colors.Count / 4)
+                i_color = world.gameplay_random.Next(0, available_colors.Count / 4)
             Else
-                i_color = world.Rand.Next(available_colors.Count / 4 * 3, available_colors.Count)
+                i_color = world.gameplay_random.Next(available_colors.Count / 4 * 3, available_colors.Count)
             End If
             Me.color = available_colors(i_color)
             available_colors.RemoveAt(i_color)

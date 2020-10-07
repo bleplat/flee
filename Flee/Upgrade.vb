@@ -141,7 +141,7 @@
         ' jump engines
         upgrades.Add(New Upgrade With {.name = "Jump_Engine", .file = "Ups2", .frame_coords = New Point(0, 0), .cost = New MaterialSet(800, 2, 0, 0), .delay = 200, .need = "?S", .effect = "", .upgrade_slots_requiered = 1, .desc = "Allow the ship to make jumps, at the price of crystals."})
         upgrades.Add(New Upgrade With {.name = "Jump_Engine_II", .file = "Ups2", .frame_coords = New Point(0, 2), .cost = New MaterialSet(1000, 2, 0, 25), .delay = 250, .need = "?S ?Up:Jump_Engine", .effect = "", .upgrade_slots_requiered = 1, .desc = "Allow higher jumps, but is more expensive in crystals."})
-        upgrades.Add(New Upgrade With {.name = "Warp_Drive", .file = "Ups2", .frame_coords = New Point(0, 4), .cost = New MaterialSet(1200, 3, 0, 600), .delay = 300, .need = "", .effect = "", .upgrade_slots_requiered = 1, .desc = "Allow you to warp anywhere."})
+        upgrades.Add(New Upgrade With {.name = "Warp_Drive", .file = "Ups2", .frame_coords = New Point(0, 4), .cost = New MaterialSet(1200, 3, 0, 600), .delay = 300, .need = "?NotStation", .effect = "", .upgrade_slots_requiered = 1, .desc = "Allow you to warp anywhere."})
 
         ' hull
         upgrades.Add(New Upgrade With {.name = "Hull", .file = "Ups", .frame_coords = New Point(0, 0), .cost = New MaterialSet(200, 0, 0, 0), .delay = 80, .need = "", .effect = "%Life:5", .upgrade_slots_requiered = 1, .desc = "Increase the hull."})

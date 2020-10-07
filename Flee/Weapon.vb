@@ -81,7 +81,7 @@
 
             Dim spawn_point As PointF = PTN
             If (Me.base_stats.special And Weapon.SpecialBits.SpreadOrigin) <> 0 Then
-                spawn_point = New PointF(PTN.X + ship.world.Rand.Next(-7, 8), PTN.Y + ship.world.Rand.Next(-7, 8))
+                spawn_point = New PointF(PTN.X + ship.world.gameplay_random.Next(-7, 8), PTN.Y + ship.world.gameplay_random.Next(-7, 8))
             End If
 
             If (Me.base_stats.special And Weapon.SpecialBits.Rail) <> 0 Then

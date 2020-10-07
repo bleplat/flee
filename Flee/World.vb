@@ -3,7 +3,10 @@
     ' Definition
     Public ArenaSize As New Size(20000, 20000)
     Public Seed As Integer
-    Public Rand As Random = Nothing
+
+    ' Randoms
+    Public generation_random As Random = Nothing
+    Public gameplay_random As Random = Nothing
 
     ' Content
     Public Teams As New List(Of Team)
@@ -18,13 +21,18 @@
 
     Sub New(Seed As Integer)
         Me.Seed = Seed
-        Me.Rand = New Random(Seed)
-        InitPlayerTeam()
-        InitBotsTeams()
+        Me.gameplay_random = New Random(Seed)
+        Me.generation_random = New Random(Seed)
+        InitTeams()
+        InitPlayer()
+        InitDerelicts()
+        InitBots()
+
     End Sub
 
     Sub Tick()
-        AutoSpawn()
+        SpawnDerelictsObjects()
+        NPCUpgrades()
         AntiSuperposition()
         CheckAll()
         AutoColide()
@@ -32,88 +40,112 @@
         ticks += 1
     End Sub
 
-
-
-    Sub SPAWN_STATION_RANDOMLY(main_type As String, team As Team, spawn_allies As Integer)
-        ' main station
+    Sub SPAWN_STATION_RANDOMLY(from_rand As Random, main_type As String, team As Team, spawn_allies As Integer)
+        Dim rand As Random = New Random(from_rand.Next())
+        ' spawn main station
         If main_type Is Nothing Then
-            main_type = Helpers.RandomStationName(Rand)
+            main_type = Helpers.RandomStationName(rand)
         End If
-        Dim main_coords As Point = New Point(Rand.Next(1000, ArenaSize.Width - 1000), Rand.Next(1000, ArenaSize.Height - 1000))
+        Dim main_coords As Point = New Point(rand.Next(1000, ArenaSize.Width - 1000), rand.Next(1000, ArenaSize.Height - 1000))
         For index = 1 To Math.Max(1, Math.Min(8, 1000 / ShipStats.classes(main_type).complexity))
             If index = 1 Then
                 Ships.Add(New Ship(Me, team, main_type) With {.location = main_coords})
             Else
-                Ships.Add(New Ship(Me, team, main_type) With {.location = New Point(main_coords.X + Rand.Next(-600, 600), main_coords.Y + Rand.Next(-600, 600))})
+                Ships.Add(New Ship(Me, team, main_type) With {.location = New Point(main_coords.X + rand.Next(-512, 513), main_coords.Y + rand.Next(-512, 513))})
             End If
         Next
-        ' turrets
+        ' spawn turrets
         While spawn_allies > 0
-            Dim ally_type As String = Helpers.RandomTurretName(Rand)
-            Dim ally_coords As Point = New Point(main_coords.X + Rand.Next(-600, 600), main_coords.Y + Rand.Next(-600, 600))
+            Dim ally_type As String = Helpers.RandomTurretName(rand)
+            Dim ally_coords As Point = New Point(main_coords.X + rand.Next(-512, 513), main_coords.Y + rand.Next(-512, 513))
             Ships.Add(New Ship(Me, team, ally_type) With {.location = ally_coords})
             spawn_allies -= 1
         End While
     End Sub
-    Private Sub InitPlayerTeam()
+    Private Sub InitTeams()
+        Dim rand As New Random(generation_random.Next())
+        ' player team
+        Teams.Add(New Team(Me, AffinityEnum.KIND))
+        ' boss team
+        Teams.Add(New Team(Me, AffinityEnum.ALOOF))
+        boss_team = Teams(Teams.Count - 1)
+        ' 1 allied NPC team
+        Teams.Add(New Team(Me, AffinityEnum.KIND))
+        ' enemy NPC team
+        Teams.Add(New Team(Me, AffinityEnum.MEAN))
+        ' random teams
+        Dim npc_team_count = rand.Next(3, 6)
+        For i = 0 To npc_team_count - 1
+            Teams.Add(New Team(Me, Nothing))
+        Next
+    End Sub
+    Private Sub InitPlayer()
+        Dim rand As New Random(generation_random.Next())
         Dim power = 100
         Dim origin As PointF
         ' Player Team
-        Teams.Add(New Team(Me, AffinityEnum.KIND))
-        Dim player_team As Team = Teams(Teams.Count - 1)
+        Dim player_team As Team = Teams(0)
         player_team.bot_team = False
         ' Player Ships
-        If Rand.Next(0, 100) < 85 Then
-            SPAWN_STATION_RANDOMLY("Station", player_team, 3)
+        If rand.Next(0, 100) < 85 Then
+            SPAWN_STATION_RANDOMLY(rand, "Station", player_team, 3)
             origin = Ships(0).location
             power -= 25
         Else
-            origin = New Point(Rand.Next(1000, ArenaSize.Width - 1000), Rand.Next(1000, ArenaSize.Height - 1000))
+            origin = New Point(rand.Next(1000, ArenaSize.Width - 1000), rand.Next(1000, ArenaSize.Height - 1000))
         End If
-        If Rand.Next(0, 100) < 75 Then
+        If rand.Next(0, 100) < 75 Then
             Ships.Add(New Ship(Me, player_team, "Colonizer") With {.location = New Point(origin.X, origin.Y - 1)})
             Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).location.X, Ships(0).location.Y, origin.X, origin.Y)
-            Ships(Ships.Count - 1).upgrade_slots += Rand.Next(4, 10)
+            Ships(Ships.Count - 1).upgrade_slots += rand.Next(4, 10)
             power -= 15
         End If
-        If Rand.Next(0, 100) < 75 Then
+        If rand.Next(0, 100) < 75 Then
             Ships.Add(New Ship(Me, player_team, "Ambassador") With {.location = New Point(origin.X + 1, origin.Y)})
             Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).location.X, Ships(0).location.Y, origin.X, origin.Y)
-            Ships(Ships.Count - 1).upgrade_slots += Rand.Next(4, 10)
+            Ships(Ships.Count - 1).upgrade_slots += rand.Next(4, 10)
             power -= 25
         End If
         While power > 0
             Dim types As String() = {"MiniColonizer", "MiniColonizer", "Artillery", "Bomber", "Scout", "Simpleship", "Pusher", "Hunter"}
-            Ships.Add(New Ship(Me, player_team, types(Rand.Next(0, types.Length))) With {.location = New Point(origin.X - 1, origin.Y)})
+            Ships.Add(New Ship(Me, player_team, types(rand.Next(0, types.Length))) With {.location = New Point(origin.X - 1, origin.Y)})
             Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).location.X, Ships(0).location.Y, origin.X, origin.Y)
-            Ships(Ships.Count - 1).upgrade_slots += Rand.Next(6, 12)
+            Ships(Ships.Count - 1).upgrade_slots += rand.Next(6, 12)
             power -= 15
         End While
     End Sub
-    Sub InitBotsTeams()
-        Teams.Add(New Team(Me, AffinityEnum.ALOOF))
-        boss_team = Teams(Teams.Count - 1)
-        ' Derelict Asteroids
-        For i As Integer = 1 To 85
-            Dim T As String = "Asteroide" : If Rand.Next(0, 3) = 0 Then T = "Meteoroide"
-            Ships.Add(New Ship(Me, Nothing, T) With {.location = New Point(Rand.Next(0, ArenaSize.Width), Rand.Next(0, ArenaSize.Width)), .direction = Rand.Next(0, 360)})
-        Next
+    Sub InitDerelicts()
+        Dim rand As New Random(generation_random.Next())
         ' Stars
-        For i = 0 To Rand.Next(1, 3)
+        For i = 0 To rand.Next(1, 3)
             Dim T As String = "Star"
-            Ships.Add(New Ship(Me, Nothing, T) With {.location = New Point(Rand.Next(0, ArenaSize.Width), Rand.Next(0, ArenaSize.Width)), .direction = Rand.Next(0, 360)})
+            Ships.Add(New Ship(Me, Nothing, T) With {.location = New Point(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Width)), .direction = rand.Next(0, 360)})
         Next
-        ' allied NPC
-        Teams.Add(New Team(Me, AffinityEnum.KIND))
-        SPAWN_STATION_RANDOMLY(Nothing, Teams(Teams.Count - 1), Rand.Next(2, 6))
-        ' enemy NPC
-        Teams.Add(New Team(Me, AffinityEnum.MEAN))
-        SPAWN_STATION_RANDOMLY(Nothing, Teams(Teams.Count - 1), Rand.Next(3, 7))
-        ' random NPC Teams and Ships
-        Dim npc_team_count = Rand.Next(3, 6)
-        For i = 0 To npc_team_count - 1
-            Teams.Add(New Team(Me, Nothing))
-            SPAWN_STATION_RANDOMLY(Nothing, Teams(Teams.Count - 1), Rand.Next(4, 8))
+        ' Asteroids
+        For i As Integer = 1 To 25
+            Dim T As String = "Asteroide"
+            Dim location As PointF = New PointF(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Height))
+            Dim direction As Double = rand.Next(0, 360)
+            For j = 0 To rand.Next(0, 4)
+                Ships.Add(New Ship(Me, Nothing, T) With {.location = New PointF(location.X + rand.Next(-4, 5), location.Y + rand.Next(-4, 5)), .direction = direction})
+            Next
+        Next
+        ' Meteoroids
+        For i As Integer = 1 To 6
+            Dim T As String = "Meteoroide"
+            Dim location As PointF = New PointF(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Height))
+            Dim direction As Double = rand.Next(0, 360)
+            For j = 0 To rand.Next(4, 12)
+                Ships.Add(New Ship(Me, Nothing, T) With {.location = New PointF(location.X + rand.Next(-4, 5), location.Y + rand.Next(-4, 5)), .direction = direction})
+            Next
+        Next
+    End Sub
+    Sub InitBots()
+        Dim rand As New Random(generation_random.Next())
+        For Each team As Team In Teams
+            If Not team.affinity = AffinityEnum.ALOOF AndAlso team.bot_team Then
+                SPAWN_STATION_RANDOMLY(rand, Nothing, team, rand.Next(6, 12))
+            End If
         Next
     End Sub
 
@@ -144,7 +176,7 @@
             Ships(i).Check()
         Next
         For Each AShip As Ship In Ships
-            AShip.IA(Rand.Next(0, 10000))
+            AShip.IA(gameplay_random.Next(0, 10000))
         Next
         '===' Shoots '==='
         For i As Integer = Shoots.Count - 1 To 0 Step -1
@@ -163,7 +195,7 @@
                 If Not AShoot.Team Is AShip.team AndAlso (AShoot.Team Is Nothing OrElse Not AShoot.Team.IsFriendWith(AShip.team)) Then
                     If Helpers.Distance(AShoot.Coo.X, AShoot.Coo.Y, AShip.location.X, AShip.location.Y) < AShip.stats.width / 2 Then
                         AShoot.Life = 0
-                        If AShip.stats.hot_deflector > 0 AndAlso Rand.Next(0, 100) < AShip.stats.hot_deflector Then
+                        If AShip.stats.hot_deflector > 0 AndAlso gameplay_random.Next(0, 100) < AShip.stats.hot_deflector Then
                             Effects.Add(New Effect With {.Type = "Deflected2", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
                         Else
                             If AShip.deflectors_loaded > 0 Then
@@ -189,12 +221,12 @@
                 If Ships(i).integrity <= 0 Then
                     Effects.Add(New Effect With {.Type = "ExplosionA", .Coo = Ships(i).location, .Direction = 0, .Life = 8, .speed = 0})
                     For c As Integer = 1 To Ships(i).stats.width / 8
-                        Effects.Add(New Effect With {.Type = "DebrisA", .Coo = Ships(i).location, .Direction = Rand.Next(0, 360), .Life = Rand.Next(80, 120), .speed = Rand.Next(3, 7)})
+                        Effects.Add(New Effect With {.Type = "DebrisA", .Coo = Ships(i).location, .Direction = gameplay_random.Next(0, 360), .Life = gameplay_random.Next(80, 120), .speed = gameplay_random.Next(3, 7)})
                     Next
                     If Ships(i).weapons.Count > 1 AndAlso (Ships(i).weapons(0).stats.special And Weapon.SpecialBits.SelfNuke) <> 0 Then
                         NuclearEffect = 255
                         For c As Integer = 1 To 256
-                            Effects.Add(New Effect With {.Type = "ExplosionA", .Coo = Ships(i).location, .Direction = Rand.Next(0, 360), .Life = 8, .speed = Rand.Next(5, 256)})
+                            Effects.Add(New Effect With {.Type = "ExplosionA", .Coo = Ships(i).location, .Direction = gameplay_random.Next(0, 360), .Life = 8, .speed = gameplay_random.Next(5, 256)})
                         Next
                         Dim FriendlyFireCount As Integer = 0
                         For Each a_ship As Ship In Ships
@@ -257,61 +289,62 @@
         Return True
     End Function
     Sub SpawnDerelictsObjects()
+        Dim rand As Random = generation_random
         If (ticks Mod 128 = 0) Then
             ' Spawn Location
             Dim Spawn As New Point()
-            Select Case Rand.Next(0, 4)
+            Select Case rand.Next(0, 4)
                 Case 0 'haut
-                    Spawn = New Point(Rand.Next(50, ArenaSize.Width - 50), 0)
+                    Spawn = New Point(rand.Next(50, ArenaSize.Width - 50), 0)
                 Case 1 'bas
-                    Spawn = New Point(Rand.Next(50, ArenaSize.Width - 50), ArenaSize.Height)
+                    Spawn = New Point(rand.Next(50, ArenaSize.Width - 50), ArenaSize.Height)
                 Case 2 'gauche
-                    Spawn = New Point(0, Rand.Next(50, ArenaSize.Height - 50))
+                    Spawn = New Point(0, rand.Next(50, ArenaSize.Height - 50))
                 Case 3 'droite
-                    Spawn = New Point(ArenaSize.Width, Rand.Next(50, ArenaSize.Height - 50))
+                    Spawn = New Point(ArenaSize.Width, rand.Next(50, ArenaSize.Height - 50))
             End Select
             ' Spawn Direction
             Dim dir As Single = 0
-            dir = Helpers.GetQA(Spawn.X, Spawn.Y, ArenaSize.Width / 2, ArenaSize.Height / 2) + Rand.Next(-75, 75)
+            dir = Helpers.GetQA(Spawn.X, Spawn.Y, ArenaSize.Width / 2, ArenaSize.Height / 2) + rand.Next(-75, 75)
             ' Type AndAlso count
             Dim Type As String = "Asteroide"
             Dim Team As Team = Nothing
             Dim AltTeam = boss_team
-            If Rand.Next(0, 3) = 0 Then AltTeam = Teams(Rand.Next(2, Teams.Count))
-            Dim Count As Integer = Rand.Next(1, 5)
-            If Rand.Next(0, 4) = 0 Then
+            If rand.Next(0, 3) = 0 Then AltTeam = Teams(rand.Next(2, Teams.Count))
+            Dim Count As Integer = rand.Next(1, 5)
+            If rand.Next(0, 4) = 0 Then
                 Type = "Meteoroide"
-                Count = Rand.Next(6, 12)
-            ElseIf Rand.Next(0, 5) = 0 Then
+                Count = rand.Next(6, 12)
+            ElseIf rand.Next(0, 5) = 0 Then
                 Type = "Comet"
                 Count = 1
-            ElseIf Rand.Next(0, 30) = 0 Then
+            ElseIf rand.Next(0, 30) = 0 Then
                 Type = "Cargo"
                 Count = 1
-            ElseIf Rand.Next(0, 90) = 0 Then
+            ElseIf rand.Next(0, 90) = 0 Then
                 Type = "Civil_A"
                 Team = AltTeam
                 Count = 1
-            ElseIf Rand.Next(0, 150) = 0 Then
+            ElseIf rand.Next(0, 150) = 0 Then
                 Type = "Purger_Dronner"
                 Team = AltTeam
                 Count = 1
-            ElseIf Rand.Next(0, 175) = 0 Then
+            ElseIf rand.Next(0, 175) = 0 Then
                 Type = "Loneboss"
                 Team = AltTeam
                 Count = 1
-            ElseIf Rand.Next(0, 350) = 0 Then
+            ElseIf rand.Next(0, 350) = 0 Then
                 Type = "Converter"
                 Team = AltTeam
                 Count = 1
-            ElseIf Rand.Next(0, 1250) = 0 Then
+            ElseIf rand.Next(0, 1250) = 0 Then
                 Type = "Bugs"
                 Team = AltTeam
                 Count = 1
             End If
             If HasTeamWon(Teams(0)) Then
-                If True Then
-                    Dim possibles = New List(Of String) From {"Loneboss", "Legend_I", "Legend_L", "Legend_K", "Cargo", "Colonizer"}
+                If rand.Next(0, 2) = 0 Then
+                    Dim possibles = New List(Of String) From {"Loneboss", "Civil_A", "Legend_I", "Legend_L", "Legend_K", "Colonizer"}
                     If Teams(0).affinity = AffinityEnum.ALOOF Then
                         possibles.Add("Nuke")
                         possibles.Add("Ambassador")
@@ -322,18 +355,19 @@
                         possibles.Add("Ori")
                         possibles.Add("Ori")
                     End If
-                    Type = possibles(Rand.Next(0, possibles.Count))
+                    Type = possibles(rand.Next(0, possibles.Count))
                     Team = boss_team
                     Count = 1
                 End If
             End If
             For j As Integer = 1 To Count
-                Ships.Add(New Ship(Me, Team, Type) With {.location = New Point(Spawn.X + Rand.Next(-50, 50), Spawn.Y + Rand.Next(-50, 50)), .direction = dir})
+                Ships.Add(New Ship(Me, Team, Type) With {.location = New Point(Spawn.X + rand.Next(-4, 5), Spawn.Y + rand.Next(-4, 5)), .direction = dir})
             Next
         End If
     End Sub
 
-    Sub SpawnNPCShips()
+    Sub NPCUpgrades()
+        Dim rand As Random = generation_random
         If (ticks Mod 80 = 0) Then
             ' Count Teams's ships
             For Each a_team As Team In Teams
@@ -348,19 +382,19 @@
             For Each a_ship As Ship In Ships
                 If Not a_ship.team Is Nothing AndAlso a_ship.bot_ship AndAlso a_ship.UpProgress = 0 AndAlso a_ship.team.ship_count_approximation < a_ship.team.ship_count_limit Then
                     Dim wished_upgrade = Nothing
-                    If Rand.Next(0, 16) < 8 Then
+                    If rand.Next(0, 16) < 8 Then
                         ' building ships
                         If a_ship.stats.crafts.Count() > 0 Then
-                            wished_upgrade = Helpers.GetRandomSpawnUpgrade(Rand, a_ship)
+                            wished_upgrade = Helpers.GetRandomSpawnUpgrade(rand, a_ship)
                             If Not wished_upgrade Is Nothing Then
                                 Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
                             End If
                         End If
-                    ElseIf Rand.Next(0, 4) = 0 Then
+                    ElseIf rand.Next(0, 4) = 0 Then
                         ' upgrading
                         Dim PossibleUps As List(Of Upgrade) = a_ship.AvailableUpgrades()
                         If PossibleUps.Count >= 1 Then
-                            a_ship.Upgrading = PossibleUps(Rand.Next(0, PossibleUps.Count))
+                            a_ship.Upgrading = PossibleUps(rand.Next(0, PossibleUps.Count))
                         End If
                     Else
                         ' boss bases must suicide to not use the max ship counter
@@ -390,11 +424,7 @@
                     End If
                 End If
             Next
-		End If
-	End Sub
-    Sub AutoSpawn(Optional ByVal force As Boolean = False)
-        SpawnDerelictsObjects()
-        SpawnNPCShips()
+        End If
     End Sub
 
     '===' UPGRADES SHIPS '==='
