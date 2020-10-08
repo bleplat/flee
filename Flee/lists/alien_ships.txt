@@ -63,17 +63,6 @@ ship Crusher
 	weapon=0;Intercepting-Artillery
 	weapon=-90;Longrange-PlasmaBomber
 	weapon=90;Standard-PlasmaBomber
-	cost=7000;0;0;0
+	cost=6000;4;0;0
+	native_upgrade=Jump_Engine
 	native_upgrade=Jump_Engine_II
-
-ship Civil_A
-	level=4
-	width=60
-	integrity=320
-	speed=2.20
-	turn=1.40
-	weapon=-90;MachineGun
-	weapon=90;MachineGun
-	deflectors=6
-	deflectors_cooldown=32
-	cost=4000;4;2;400

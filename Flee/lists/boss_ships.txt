@@ -126,6 +126,18 @@ ship Purger_Drone_3
 	shield_opacity=100.00
 	cost=200;8;0;0
 
+ship Civil_A
+	level=0
+	width=60
+	integrity=320
+	speed=2.20
+	turn=1.40
+	weapon=-90;MachineGun
+	weapon=90;MachineGun
+	deflectors=6
+	deflectors_cooldown=32
+	cost=4000;4;2;400
+
 ship Finalizer
 	level=0
 	width=60

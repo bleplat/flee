@@ -47,7 +47,7 @@
             main_type = Helpers.RandomStationName(rand)
         End If
         Dim main_coords As Point = New Point(rand.Next(1000, ArenaSize.Width - 1000), rand.Next(1000, ArenaSize.Height - 1000))
-        For index = 1 To Math.Max(1, Math.Min(8, 1000 / ShipStats.classes(main_type).complexity))
+        For index = 1 To Math.Max(1, Math.Min(8, 2000 / ShipStats.classes(main_type).complexity))
             If index = 1 Then
                 Ships.Add(New Ship(Me, team, main_type) With {.location = main_coords})
             Else
@@ -123,7 +123,7 @@
         Next
         ' Asteroids
         For i As Integer = 1 To 25
-            Dim T As String = "Asteroide"
+            Dim T As String = "Asteroid"
             Dim location As PointF = New PointF(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Height))
             Dim direction As Double = rand.Next(0, 360)
             For j = 0 To rand.Next(0, 4)
@@ -132,7 +132,7 @@
         Next
         ' Meteoroids
         For i As Integer = 1 To 6
-            Dim T As String = "Meteoroide"
+            Dim T As String = "Meteoroid"
             Dim location As PointF = New PointF(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Height))
             Dim direction As Double = rand.Next(0, 360)
             For j = 0 To rand.Next(4, 12)
@@ -307,13 +307,13 @@
             Dim dir As Single = 0
             dir = Helpers.GetQA(Spawn.X, Spawn.Y, ArenaSize.Width / 2, ArenaSize.Height / 2) + rand.Next(-75, 75)
             ' Type AndAlso count
-            Dim Type As String = "Asteroide"
+            Dim Type As String = "Asteroid"
             Dim Team As Team = Nothing
             Dim AltTeam = boss_team
             If rand.Next(0, 3) = 0 Then AltTeam = Teams(rand.Next(2, Teams.Count))
             Dim Count As Integer = rand.Next(1, 5)
             If rand.Next(0, 4) = 0 Then
-                Type = "Meteoroide"
+                Type = "Meteoroid"
                 Count = rand.Next(6, 12)
             ElseIf rand.Next(0, 5) = 0 Then
                 Type = "Comet"

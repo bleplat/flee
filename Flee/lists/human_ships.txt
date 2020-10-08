@@ -8,9 +8,9 @@ ship Colonizer
 	weapon=-135;Basic-ParticleGun
 	weapon=135;Basic-ParticleGun
 	cost=166;1;0;0
-	craft=Outpost
-	craft=Defense
-	craft=Pointvortex
+	craft=Anti-Light_Turret
+	craft=Anti-Heavy_Turret
+	craft=Pointvortex_Turret
 
 ship MiniColonizer
 	width=55
@@ -63,6 +63,7 @@ ship Cargo
 	turn=2.00
 	weapon=90;Basic-Cannon
 	cost=800;0;0;0
+	craft=Miner_Drone
 	native_upgrade=Jump_Engine
 
 ship Simpleship
@@ -108,22 +109,22 @@ ship Dronner
 	turn=1.50
 	weapon=0;Standard-Cannon
 	cost=3500;8;0;0
-	craft=Combat_Drone_1
-	craft=Combat_Drone_2
-	craft=Combat_Drone_3
-	craft=Drone
+	craft=Fighter_Drone
+	craft=Dodger_Drone
+	craft=Bomber_Drone
+	craft=Master_Drone
 
-ship Explorer
+ship Miner_Drone
 	level=0
 	width=15
-	integrity=10
+	integrity=5
 	repair=0
 	speed=2.80
 	turn=8.50
 	weapon=0;MachineGun
 	cost=150;0;0;0
 
-ship Combat_Drone_1
+ship Fighter_Drone
 	level=0
 	width=14
 	integrity=25
@@ -133,7 +134,7 @@ ship Combat_Drone_1
 	weapon=-180;Basic-ParticleGun
 	cost=300;0;0;0
 
-ship Combat_Drone_2
+ship Dodger_Drone
 	level=0
 	width=14
 	integrity=35
@@ -143,7 +144,7 @@ ship Combat_Drone_2
 	weapon=0;Basic-ParticleGun
 	cost=250;0;0;0
 
-ship Combat_Drone_3
+ship Bomber_Drone
 	level=0
 	width=14
 	integrity=40
@@ -153,7 +154,7 @@ ship Combat_Drone_3
 	weapon=0;Basic-Cannon
 	cost=300;0;0;0
 
-ship Drone
+ship Master_Drone
 	level=2
 	width=25
 	integrity=70
@@ -220,7 +221,7 @@ ship Legend_Y
 	weapon=135;Standard-ParticleGun
 	cost=3000;24;0;600
 
-ship PartialBomber
+ship Minimum_Warship
 	level=1
 	integrity=190
 	speed=2.80

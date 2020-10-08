@@ -281,9 +281,9 @@ Public NotInheritable Class Helpers
 	End Function
 	Public Shared Function RandomTurretName(rand As Random) As String
 		Select Case rand.Next(0, 3)
-			Case 0 : Return "Outpost"
-			Case 1 : Return "Defense"
-			Case 2 : Return "Pointvortex"
+			Case 0 : Return "Anti-Light_Turret"
+			Case 1 : Return "Anti-Heavy_Turret"
+			Case 2 : Return "Pointvortex_Turret"
 		End Select
 	End Function
 

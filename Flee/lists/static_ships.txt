@@ -72,21 +72,24 @@ ship Station_Crushers
 	weapon=0;Heavy-PlasmaBomber
 	craft=Crusher
 
-ship BomberFactory
-	level=20
+ship Station_Minimum_Warship
+	level=4
+	complexity=250
 	width=68 
-	integrity=400
+	integrity=650
 	weapon=0;Longrange-ParticleGun
 	weapon=-90;Longrange-ParticleGun
 	weapon=90;Longrange-ParticleGun
 	weapon=180;Longrange-ParticleGun
-	cost=3500;16;1;0
+	cost=3500;16;1;400
+	craft=Minimum_Warship
 
 #
 # Turrets
 #
 
-ship Outpost
+ship Anti-Light_Turret
+	sprite=Anti-Light
 	level=2
 	width=40
 	integrity=190
@@ -96,7 +99,8 @@ ship Outpost
 	weapon=180;Longrange-ParticleGun
 	cost=550;2;0;0
 
-ship Defense
+ship Anti-Heavy_Turret
+	sprite=Anti-Heavy
 	level=2
 	width=25
 	integrity=170
@@ -105,7 +109,8 @@ ship Defense
 	weapon=120;Shuriken-Bombs
 	cost=550;2;0;0
 
-ship Pointvortex
+ship Pointvortex_Turret
+	sprite=Pointvortex
 	level=4
 	width=25
 	integrity=130

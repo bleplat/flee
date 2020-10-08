@@ -80,7 +80,6 @@
         upgrades.Add(New Upgrade With {.name = "Improve_To_Bomber", .file = "Bomber", .frame_coords = New Point(0, 0), .cost = New MaterialSet(1600, 3, 0, 0), .delay = 300, .need = "?Type:Simpleship", .effect = "!Type:Bomber", .upgrade_slots_requiered = 1, .desc = "Change into attack ship."})
         upgrades.Add(New Upgrade With {.name = "Improve_To_Artillery", .file = "Artillery", .frame_coords = New Point(0, 0), .cost = New MaterialSet(1600, 3, 0, 0), .delay = 300, .need = "?Type:Simpleship", .effect = "!Type:Artillery", .upgrade_slots_requiered = 1, .desc = "Change into artillery."})
         upgrades.Add(New Upgrade With {.name = "Improve_To_Dronner", .file = "Dronner", .frame_coords = New Point(0, 0), .cost = New MaterialSet(2000, 5, 0, 0), .delay = 300, .need = "?Type:Simpleship", .effect = "!Type:Dronner", .upgrade_slots_requiered = 1, .desc = "Change into ship builder."})
-        upgrades.Add(New Upgrade With {.name = "BomberFactory", .file = "BomberFactory", .frame_coords = New Point(0, 0), .cost = New MaterialSet(3300, 12, 0, 0), .delay = 300, .need = "?Type:Outpost", .effect = "!Type:BomberFactory", .upgrade_slots_requiered = 1, .desc = "Change into an automated ship factory"})
 
         ' deflectors
         upgrades.Add(New Upgrade With {.name = "Deflector", .file = "Deflected", .frame_coords = New Point(0, 0), .cost = New MaterialSet(400, 1, 0, 25), .delay = 200, .need = "", .effect = "!Deflector:1", .upgrade_slots_requiered = 1, .desc = "As an alternative to shields, this device block any projectile, but is very slow to reload." & vbNewLine & "Due to the way it works, It is not efficient against fast reloading weapons."})
@@ -186,7 +185,6 @@
         ' other spawns
         upgrades.Add(New Upgrade With {.name = "Launch_MSL", .file = "MSL", .frame_coords = New Point(0, 0), .cost = New MaterialSet(400, 0, 0, 50), .delay = 100, .need = "?Type:Scout ?MS", .effect = "!Sum:MSL", .upgrade_slots_requiered = 0, .desc = "Launch a missile." & vbNewLine & "/!\ Requires a free ship slot!"})
         upgrades.Add(New Upgrade With {.name = "Build_Nuke", .file = "Nuke", .frame_coords = New Point(0, 0), .cost = New MaterialSet(8000, 32, 8, 2000), .delay = 250, .need = "?Type:Ambassador", .effect = "!Sum:Nuke", .upgrade_slots_requiered = 0, .desc = "When something go wrong, it still can go worse." & vbNewLine & "/!\ Playing with the atom may lead to unexpected results."})
-        upgrades.Add(New Upgrade With {.name = "Build_PartialBomber", .file = "PartialBomber", .frame_coords = New Point(0, 0), .cost = New MaterialSet(600, 0, 0, 25), .delay = 2700, .need = "?MS ?Type:BomberFactory", .effect = "!Sum:PartialBomber", .upgrade_slots_requiered = 0, .desc = "The minimum warship."})
         upgrades.Add(New Upgrade With {.name = "Build_Finalizer", .file = "Finalizer", .frame_coords = New Point(0, 0), .cost = New MaterialSet(0, 0, 0, 0), .delay = 600, .need = "?Up:Ascend", .effect = "!Sum:Finalizer", .upgrade_slots_requiered = 0, .desc = "Yet, not everybody made it through." & vbNewLine & "We will return for them."})
 
     End Sub

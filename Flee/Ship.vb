@@ -96,14 +96,14 @@
             Next
             ' force a color
             Select Case Me.base_stats.name
-                Case "Asteroide"
+                Case "Star"
+                    behavior = BehaviorMode.Drift : target = Nothing : color = Color.FromArgb(255, 255, 220)
+                Case "Asteroid"
                     behavior = BehaviorMode.Drift : target = Nothing : color = Color.FromArgb(64, 64, 48)
-                Case "Meteoroide"
+                Case "Meteoroid"
                     behavior = BehaviorMode.Drift : target = Nothing : color = Color.FromArgb(80, 48, 80)
                 Case "Comet"
                     behavior = BehaviorMode.Drift : target = Nothing : color = Color.FromArgb(0, 100, 0)
-                Case "Star"
-                    behavior = BehaviorMode.Drift : target = Nothing : color = Color.FromArgb(255, 255, 220)
             End Select
             '
             ResetStats()
@@ -333,7 +333,7 @@
         If Not From Is Nothing AndAlso Not From.Team Is Nothing Then
             If Me.stats.sprite = "Star" Then
                 From.Team.resources.Antimatter += Amount / 8
-            ElseIf Me.stats.sprite = "Asteroide" Then
+            ElseIf Me.stats.sprite = "Asteroid" Then
                 If Me.integrity > Amount Then
                     From.Team.resources.Metal += Amount
                 ElseIf Me.integrity > 0 Then
