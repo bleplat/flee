@@ -391,7 +391,7 @@
                                 Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade)
                             End If
                         End If
-                    ElseIf rand.Next(0, 4) = 0 Then
+                    ElseIf rand.Next(0, 2) = 0 Then
                         ' upgrading
                         Dim PossibleUps As List(Of Upgrade) = a_ship.AvailableUpgrades()
                         If PossibleUps.Count >= 1 Then
