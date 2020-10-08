@@ -225,10 +225,10 @@
         End If
         '===' Deflector '==='
         If Me.cold_deflector_charge > 0 Then
-            Me.cold_deflector_charge *= 0.99
-            Me.cold_deflector_charge -= 1
+            Me.cold_deflector_charge *= 0.999
             If world.ticks Mod 2 Then
-                Me.integrity -= 1
+                Me.integrity -= Math.Max(1, cold_deflector_charge / 16)
+                Me.cold_deflector_charge -= Math.Max(1, cold_deflector_charge / 16)
             End If
         End If
         If deflectors_loaded < stats.deflectors Then
@@ -327,7 +327,7 @@
             End If
         End If
         If Me.stats.cold_deflector AndAlso Me.cold_deflector_charge < Me.integrity * 4 Then
-            Me.cold_deflector_charge += Amount
+            Me.cold_deflector_charge += Amount * 7 / 8
             Amount /= 8
         End If
         If Not From Is Nothing AndAlso Not From.Team Is Nothing Then

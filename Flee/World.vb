@@ -200,13 +200,14 @@
                         Else
                             If AShip.deflectors_loaded > 0 Then
                                 Effects.Add(New Effect With {.Type = "Deflected", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
-                            ElseIf AShip.stats.cold_deflector AndAlso AShip.cold_deflector_charge < AShip.stats.integrity * 4 Then
-                                Effects.Add(New Effect With {.Type = "Deflected3", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
                             Else
                                 Effects.Add(New Effect With {.Type = "ImpactA", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
                             End If
                             AShip.TakeDamages(AShoot.Power, AShoot)
                             AShip.last_damager_team = AShoot.Team
+                            If AShip.stats.cold_deflector AndAlso AShip.cold_deflector_charge < AShip.stats.integrity * 4 Then
+                                Effects.Add(New Effect With {.Type = "Deflected3", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
+                            End If
                         End If
                     End If
                 End If
