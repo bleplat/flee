@@ -132,7 +132,7 @@ Partial Class MainForm
 		Me.Label4.Name = "Label4"
 		Me.Label4.Size = New System.Drawing.Size(302, 57)
 		Me.Label4.TabIndex = 8
-		Me.Label4.Text = "" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "some sprites are from MillionthVector"
+		Me.Label4.Text = "" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Some sprites are from MillionthVector." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "The music is from PhilippWeigl."
 		'
 		'RandomizeButton
 		'
@@ -192,6 +192,7 @@ Partial Class MainForm
 		'
 		'UpgradeDetails
 		'
+		Me.UpgradeDetails.Anchor = System.Windows.Forms.AnchorStyles.Top
 		Me.UpgradeDetails.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
 		Me.UpgradeDetails.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.UpgradeDetails.Controls.Add(Me.PriceA)

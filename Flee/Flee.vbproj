@@ -78,6 +78,15 @@
   <PropertyGroup>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>pi.private.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -165,6 +174,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="pi.private.snk" />
+    <None Include="pi.public.snk" />
     <None Include="Resources\Metal.bmp" />
   </ItemGroup>
   <ItemGroup>

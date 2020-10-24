@@ -8,7 +8,6 @@ ship Station
 	width=100
 	integrity=2000
 	cost=5000;32;4;0
-	complexity=1000
 	craft=Cargo
 	craft=Hunter
 	craft=Harass
@@ -20,7 +19,6 @@ ship Station_Simples
 	width=100
 	integrity=2500
 	cost=5000;32;4;0
-	complexity=1000
 	craft=Harass
 	craft=Artillery
 	craft=Bomber
