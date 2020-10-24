@@ -15,4 +15,4 @@ Do not loose time, as your foe will quickly rise in power.
 Bosses will randomly spawn, just to make your task a little bit harder.
 
 ## Usage
-A .exe binary is available in bin/x64/Release, but you can always compile it yourself. 
+A .exe binary is available in Flee, but you can always compile it yourself, in which case, the compiled program is outputed to Flee/bin/x64/Release and should be run inside Flee/. 
