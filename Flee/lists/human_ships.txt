@@ -25,6 +25,24 @@ ship MiniColonizer
 	cost=166;1;0;0
 	craft=MSL
 
+ship DeinsCruiser
+	width=60
+	integrity=370
+	speed=3.00
+	turn=1.20
+	weapon=-45;DeinsGun2
+	weapon=45;DeinsGun2
+	weapon=-90;DeinsGun3
+	weapon=90;DeinsGun3
+	weapon=-135;DeinsGun1
+	weapon=135;DeinsGun1
+	shield=256
+	shield_opacity=256.00
+	shield_regeneration=100
+	cost=4000;32;2;600
+	craft=MSL
+	native_upgrade=Jump_Engine_II
+
 ship Ambassador
 	level=9
 	width=50

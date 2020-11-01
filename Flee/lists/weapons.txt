@@ -237,3 +237,25 @@ gun Ori
 	loadtime=35
 	salvo=7
 	special=Propeled;
+
+gun DeinsGun1
+	sprite=DeinsProj
+	range=320
+	celerity=18
+	power=45
+	loadtime=55
+	salvo=1
+gun DeinsGun2
+	sprite=DeinsProj
+	range=300
+	celerity=18
+	power=40
+	loadtime=50
+	salvo=1
+gun DeinsGun3
+	sprite=DeinsProj
+	range=280
+	celerity=18
+	power=35
+	loadtime=45
+	salvo=1

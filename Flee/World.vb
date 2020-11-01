@@ -87,7 +87,12 @@
         Dim player_team As Team = Teams(0)
         player_team.bot_team = False
         ' Player Ships
-        If rand.Next(0, 100) < 85 Then
+        If Seed.ToString().Contains("777") Then
+            origin = New Point(rand.Next(1000, ArenaSize.Width - 1000), rand.Next(1000, ArenaSize.Height - 1000))
+            Ships.Add(New Ship(Me, player_team, "DeinsCruiser") With {.location = New Point(origin.X, origin.Y - 1)})
+            Ships(Ships.Count - 1).direction = Helpers.GetQA(Ships(0).location.X, Ships(0).location.Y, origin.X, origin.Y)
+            power -= 35
+        ElseIf rand.Next(0, 100) < 85 Then
             SPAWN_STATION_RANDOMLY(rand, "Station", player_team, 3)
             origin = Ships(0).location
             power -= 25
