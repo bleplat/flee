@@ -148,6 +148,7 @@
     <Compile Include="Upgrade2.vb" />
     <Compile Include="Weapon.vb" />
     <Compile Include="World.vb" />
+    <Compile Include="WorldSector.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainForm.resx">
@@ -186,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cell.ICO" />
+    <Content Include="0-Slow.txt" />
     <None Include="Resources\Fleet.bmp" />
     <None Include="Resources\DeadSkull.bmp" />
     <None Include="Resources\Antimatter.bmp" />
