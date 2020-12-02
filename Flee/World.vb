@@ -201,17 +201,25 @@
                     If Helpers.Distance(AShoot.Coo.X, AShoot.Coo.Y, AShip.location.X, AShip.location.Y) < AShip.stats.width / 2 Then
                         AShoot.Life = 0
                         If AShip.stats.hot_deflector > 0 AndAlso gameplay_random.Next(0, 100) < AShip.stats.hot_deflector Then
-                            Effects.Add(New Effect With {.Type = "Deflected2", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
+                            Effects.Add(New Effect With {.Type = "EFF_Deflected2", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
                         Else
                             If AShip.deflectors_loaded > 0 Then
-                                Effects.Add(New Effect With {.Type = "Deflected", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
+                                Effects.Add(New Effect With {.Type = "EFF_Deflected", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
                             Else
-                                Effects.Add(New Effect With {.Type = "ImpactA", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
+                                If AShoot.Power < 16 Then
+                                    Effects.Add(New Effect With {.Type = "EFF_Impact0", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
+                                ElseIf AShoot.Power < 32 Then
+                                    Effects.Add(New Effect With {.Type = "EFF_Impact1", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0, .sprite_y = gameplay_random.Next(0, 4)})
+                                ElseIf AShoot.Power < 48 Then
+                                    Effects.Add(New Effect With {.Type = "EFF_Impact2", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0, .sprite_y = gameplay_random.Next(0, 4)})
+                                Else
+                                    Effects.Add(New Effect With {.Type = "EFF_Impact3", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0, .sprite_y = gameplay_random.Next(0, 4)})
+                                End If
                             End If
                             AShip.TakeDamages(AShoot.Power, AShoot)
                             AShip.last_damager_team = AShoot.Team
                             If AShip.stats.cold_deflector AndAlso AShip.cold_deflector_charge < AShip.stats.integrity * 4 Then
-                                Effects.Add(New Effect With {.Type = "Deflected3", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
+                                Effects.Add(New Effect With {.Type = "EFF_Deflected3", .Coo = AShoot.Coo, .Direction = AShoot.Direction, .speed = 0})
                             End If
                         End If
                     End If
@@ -225,14 +233,14 @@
         If Ships.Count > 0 Then
             For i As Integer = Ships.Count - 1 To 0 Step -1
                 If Ships(i).integrity <= 0 Then
-                    Effects.Add(New Effect With {.Type = "ExplosionA", .Coo = Ships(i).location, .Direction = 0, .Life = 8, .speed = 0})
+                    Effects.Add(New Effect With {.Type = "EFF_Destroyed", .Coo = Ships(i).location, .Direction = 0, .Life = 8, .speed = 0})
                     For c As Integer = 1 To Ships(i).stats.width / 8
-                        Effects.Add(New Effect With {.Type = "DebrisA", .Coo = Ships(i).location, .Direction = gameplay_random.Next(0, 360), .Life = gameplay_random.Next(80, 120), .speed = gameplay_random.Next(3, 7)})
+                        Effects.Add(New Effect With {.Type = "EFF_Debris", .Coo = Ships(i).location, .Direction = gameplay_random.Next(0, 360), .Life = gameplay_random.Next(80, 120), .speed = gameplay_random.Next(3, 7)})
                     Next
                     If Ships(i).weapons.Count > 1 AndAlso (Ships(i).weapons(0).stats.special And Weapon.SpecialBits.SelfNuke) <> 0 Then
                         NuclearEffect = 255
                         For c As Integer = 1 To 256
-                            Effects.Add(New Effect With {.Type = "ExplosionA", .Coo = Ships(i).location, .Direction = gameplay_random.Next(0, 360), .Life = 8, .speed = gameplay_random.Next(5, 256)})
+                            Effects.Add(New Effect With {.Type = "EFF_Destroyed", .Coo = Ships(i).location, .Direction = gameplay_random.Next(0, 360), .Life = 8, .speed = gameplay_random.Next(5, 256)})
                         Next
                         Dim FriendlyFireCount As Integer = 0
                         For Each a_ship As Ship In Ships

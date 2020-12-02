@@ -215,7 +215,7 @@ Partial Class MainForm
 		'
 		Me.PriceA.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.PriceA.ForeColor = System.Drawing.Color.Yellow
-		Me.PriceA.Location = New System.Drawing.Point(234, 3)
+		Me.PriceA.Location = New System.Drawing.Point(236, 19)
 		Me.PriceA.Name = "PriceA"
 		Me.PriceA.Size = New System.Drawing.Size(40, 20)
 		Me.PriceA.TabIndex = 1
@@ -226,7 +226,7 @@ Partial Class MainForm
 		'
 		Me.PriceU.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.PriceU.ForeColor = System.Drawing.Color.Lime
-		Me.PriceU.Location = New System.Drawing.Point(187, 3)
+		Me.PriceU.Location = New System.Drawing.Point(189, 19)
 		Me.PriceU.Name = "PriceU"
 		Me.PriceU.Size = New System.Drawing.Size(25, 20)
 		Me.PriceU.TabIndex = 1
@@ -237,7 +237,7 @@ Partial Class MainForm
 		'
 		Me.PriceC.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.PriceC.ForeColor = System.Drawing.Color.Violet
-		Me.PriceC.Location = New System.Drawing.Point(294, 3)
+		Me.PriceC.Location = New System.Drawing.Point(296, 19)
 		Me.PriceC.Name = "PriceC"
 		Me.PriceC.Size = New System.Drawing.Size(28, 20)
 		Me.PriceC.TabIndex = 1
@@ -248,7 +248,7 @@ Partial Class MainForm
 		'
 		Me.PriceM.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.PriceM.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
-		Me.PriceM.Location = New System.Drawing.Point(344, 3)
+		Me.PriceM.Location = New System.Drawing.Point(346, 19)
 		Me.PriceM.Name = "PriceM"
 		Me.PriceM.Size = New System.Drawing.Size(40, 20)
 		Me.PriceM.TabIndex = 1
@@ -259,28 +259,27 @@ Partial Class MainForm
 		'
 		Me.UpDesc.Dock = System.Windows.Forms.DockStyle.Bottom
 		Me.UpDesc.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-		Me.UpDesc.Location = New System.Drawing.Point(0, 25)
+		Me.UpDesc.Location = New System.Drawing.Point(0, 42)
 		Me.UpDesc.Name = "UpDesc"
-		Me.UpDesc.Size = New System.Drawing.Size(410, 67)
+		Me.UpDesc.Size = New System.Drawing.Size(410, 50)
 		Me.UpDesc.TabIndex = 0
 		Me.UpDesc.Text = "Description"
 		'
 		'UpName
 		'
-		Me.UpName.AutoSize = True
 		Me.UpName.Dock = System.Windows.Forms.DockStyle.Top
 		Me.UpName.Font = New System.Drawing.Font("Consolas", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.UpName.ForeColor = System.Drawing.Color.White
 		Me.UpName.Location = New System.Drawing.Point(0, 0)
 		Me.UpName.Name = "UpName"
-		Me.UpName.Size = New System.Drawing.Size(112, 18)
+		Me.UpName.Size = New System.Drawing.Size(410, 18)
 		Me.UpName.TabIndex = 0
 		Me.UpName.Text = "Upgrade name."
 		'
 		'PriceCIcon
 		'
 		Me.PriceCIcon.Image = Global.Flee.My.Resources.Resources.Crystal
-		Me.PriceCIcon.Location = New System.Drawing.Point(323, 3)
+		Me.PriceCIcon.Location = New System.Drawing.Point(325, 19)
 		Me.PriceCIcon.Name = "PriceCIcon"
 		Me.PriceCIcon.Size = New System.Drawing.Size(20, 20)
 		Me.PriceCIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -290,7 +289,7 @@ Partial Class MainForm
 		'PriceAIcon
 		'
 		Me.PriceAIcon.Image = Global.Flee.My.Resources.Resources.Antimatter
-		Me.PriceAIcon.Location = New System.Drawing.Point(275, 3)
+		Me.PriceAIcon.Location = New System.Drawing.Point(277, 19)
 		Me.PriceAIcon.Name = "PriceAIcon"
 		Me.PriceAIcon.Size = New System.Drawing.Size(20, 20)
 		Me.PriceAIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -300,7 +299,7 @@ Partial Class MainForm
 		'PriceUIcon
 		'
 		Me.PriceUIcon.Image = Global.Flee.My.Resources.Resources.Fissile
-		Me.PriceUIcon.Location = New System.Drawing.Point(213, 3)
+		Me.PriceUIcon.Location = New System.Drawing.Point(215, 19)
 		Me.PriceUIcon.Name = "PriceUIcon"
 		Me.PriceUIcon.Size = New System.Drawing.Size(20, 20)
 		Me.PriceUIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -310,7 +309,7 @@ Partial Class MainForm
 		'PriceMIcon
 		'
 		Me.PriceMIcon.Image = Global.Flee.My.Resources.Resources.Metal
-		Me.PriceMIcon.Location = New System.Drawing.Point(385, 3)
+		Me.PriceMIcon.Location = New System.Drawing.Point(387, 19)
 		Me.PriceMIcon.Name = "PriceMIcon"
 		Me.PriceMIcon.Size = New System.Drawing.Size(20, 20)
 		Me.PriceMIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -544,7 +543,6 @@ Partial Class MainForm
 		Me.MenuPanel.ResumeLayout(False)
 		Me.MenuPanel.PerformLayout()
 		Me.UpgradeDetails.ResumeLayout(False)
-		Me.UpgradeDetails.PerformLayout()
 		CType(Me.PriceCIcon, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.PriceAIcon, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.PriceUIcon, System.ComponentModel.ISupportInitialize).EndInit()

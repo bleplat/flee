@@ -418,7 +418,7 @@
             Case BehaviorMode.Folow
                 If Not Me.target Is Nothing Then
                     Dim forseen_location As PointF = Me.ForseeLocation(Me.target)
-                    'world.Effects.Add(New Effect With {.Type = "Cible", .Coo = forseen_location, .Direction = 45, .speed = 0})
+                    'world.Effects.Add(New Effect With {.Type = "EFF_OrderTarget", .Coo = forseen_location, .Direction = 45, .speed = 0})
                     QA = Helpers.GetQA(Me.location.X, Me.location.Y, forseen_location.X, forseen_location.Y)
                     Dim rel_forseen_dist As Double = Helpers.Distance(Me.location, forseen_location) - (Me.target.stats.width / 2)
                     Dim optimal_range As Double = 50 : If weapons.Count > 0 Then optimal_range = (Me.weapons(0).stats.range * Me.weapons(0).stats.range / rel_forseen_dist) * 0.8 ' TODO: instead of this factor, just use the forseen location of the target
@@ -690,17 +690,18 @@
                     Me.team.color = Me.color
                 End If
             Case "!Jump"
+                world.Effects.Add(New Effect With {.Type = "EFF_Jumped", .Coo = Me.location, .Direction = 0, .speed = 0})
                 Me.speed = Convert.ToInt32(Spliter(1))
             Case "!Agility"
                 Me.stats.turn += Spliter(1)
             Case "!Teleport"
-                world.Effects.Add(New Effect With {.Type = "Teleported", .Coo = Me.location, .Direction = 0, .speed = 0})
+                world.Effects.Add(New Effect With {.Type = "EFF_Teleported", .Coo = Me.location, .Direction = 0, .speed = 0})
                 Dim tp_dst As PointF = Me.TargetPTN
                 If Not Me.target Is Nothing Then
                     tp_dst = Me.target.location
                 End If
                 Me.location = New PointF(tp_dst.X + world.gameplay_random.Next(-512, 512), tp_dst.Y + world.gameplay_random.Next(-512, 512))
-                world.Effects.Add(New Effect With {.Type = "Teleported", .Coo = Me.location, .Direction = 0, .speed = 0})
+                world.Effects.Add(New Effect With {.Type = "EFF_Teleported", .Coo = Me.location, .Direction = 0, .speed = 0})
             Case "!Upsbonus"
                 If first_application Then Me.team.upgrade_slots_bonus += Spliter(1) 'FN
             Case "!Maxships"

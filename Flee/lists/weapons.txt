@@ -14,7 +14,7 @@
 
 gun Standard-ParticleGun
 	desc=A fast firing gun, efficient against small targets.
-	sprite=A
+	sprite=PRJ_A
 	range=200
 	celerity=16
 	power=2
@@ -22,7 +22,7 @@ gun Standard-ParticleGun
 
 gun Basic-ParticleGun
 	desc=A weaker version of the ParticleGun.
-	sprite=A
+	sprite=PRJ_A
 	range=160
 	celerity=16
 	power=1
@@ -30,7 +30,7 @@ gun Basic-ParticleGun
 	
 gun Longrange-ParticleGun
 	desc=A less efficient but longer ranged version of the ParticleGun.
-	sprite=A
+	sprite=PRJ_A
 	range=310
 	celerity=18
 	power=1
@@ -42,7 +42,7 @@ gun Longrange-ParticleGun
 
 gun Standard-Cannon
 	desc=A default must-have weapon.
-	sprite=B
+	sprite=PRJ_B
 	range=220
 	celerity=11
 	power=14
@@ -50,7 +50,7 @@ gun Standard-Cannon
 	
 gun Basic-Cannon
 	desc=Suit drones.
-	sprite=B
+	sprite=PRJ_B
 	range=170
 	celerity=11
 	power=10
@@ -62,7 +62,7 @@ gun Basic-Cannon
 
 gun Standard-Artillery
 	desc=A deadly long ranged gun.
-	sprite=D
+	sprite=PRJ_D
 	range=370
 	celerity=12
 	power=55
@@ -71,7 +71,7 @@ gun Standard-Artillery
 
 gun Intercepting-Artillery
 	desc=A weaker but longer ranged artillery.
-	sprite=C
+	sprite=PRJ_C
 	range=420
 	celerity=16
 	power=35
@@ -84,7 +84,7 @@ gun Intercepting-Artillery
 
 gun Standard-PlasmaBomber
 	desc=A slow but deadly weapon
-	sprite=C
+	sprite=PRJ_C
 	range=190
 	celerity=10
 	power=30
@@ -93,7 +93,7 @@ gun Standard-PlasmaBomber
 
 gun Light-PlasmaBomber
 	desc=A slow but deadly weapon
-	sprite=C
+	sprite=PRJ_C
 	range=170
 	celerity=11
 	power=20
@@ -102,7 +102,7 @@ gun Light-PlasmaBomber
 
 gun Heavy-PlasmaBomber
 	desc=A slow but deadly heavy weapon
-	sprite=C
+	sprite=PRJ_C
 	range=250
 	celerity=9
 	power=50
@@ -111,7 +111,7 @@ gun Heavy-PlasmaBomber
 
 gun Longrange-PlasmaBomber
 	desc=A slow but deadly heavy weapon
-	sprite=C
+	sprite=PRJ_C
 	range=340
 	celerity=6
 	power=15
@@ -124,7 +124,7 @@ gun Longrange-PlasmaBomber
 
 gun Pusher
 	desc=A slow but deadly heavy weapon
-	sprite=Q
+	sprite=PRJ_Q
 	range=160
 	celerity=10
 	power=15
@@ -133,7 +133,7 @@ gun Pusher
 
 gun Shuriken-Bombs
 	desc=Long ranged but slow weapon, useful against slow targets.
-	sprite=E
+	sprite=PRJ_E
 	range=350
 	celerity=8
 	power=15
@@ -141,7 +141,7 @@ gun Shuriken-Bombs
 	
 gun MachineGun
 	desc=A old gun that still be used.
-	sprite=I
+	sprite=PRJ_I
 	range=200
 	celerity=17
 	power=3
@@ -150,7 +150,7 @@ gun MachineGun
 
 gun Beam-4
 	desc=A powerful beam weapon.
-	sprite=G
+	sprite=PRJ_G
 	range=250
 	celerity=14
 	power=16
@@ -159,7 +159,7 @@ gun Beam-4
 
 gun Beam-6
 	desc=A powerful beam weapon.
-	sprite=G
+	sprite=PRJ_G
 	range=250
 	celerity=14
 	power=16
@@ -167,7 +167,7 @@ gun Beam-6
 	salvo=6
 
 gun Star-Waves
-	sprite=C
+	sprite=PRJ_C
 	range=210
 	celerity=4
 	power=0
@@ -175,7 +175,7 @@ gun Star-Waves
 	salvo=8
 
 gun Explode-On-Contact
-	sprite=Z
+	sprite=PRJ_Z
 	range=8
 	celerity=8
 	power=45
@@ -183,7 +183,7 @@ gun Explode-On-Contact
 	special=SelfExplode;
 
 gun Nuke-On-Contact
-	sprite=Z
+	sprite=PRJ_Z
 	range=32
 	celerity=8
 	power=50
@@ -196,7 +196,7 @@ gun Nuke-On-Contact
 
 gun RailGun
 	desc=Deadly weapon used by some bosses.
-	sprite=F
+	sprite=PRJ_F
 	range=360
 	celerity=16
 	power=32
@@ -205,7 +205,7 @@ gun RailGun
 
 gun Bio-Gun
 	desc=Deadly weapon used by bugs bosses.
-	sprite=R
+	sprite=PRJ_R
 	range=310
 	celerity=24
 	power=16
@@ -214,7 +214,7 @@ gun Bio-Gun
 
 gun Heavy-Bio-Gun
 	desc=Deadly weapon used by bugs bosses.
-	sprite=R
+	sprite=PRJ_R
 	range=200
 	celerity=12
 	power=24
@@ -222,7 +222,7 @@ gun Heavy-Bio-Gun
 	special=BioDrops;
 
 gun Finalizer
-	sprite=D
+	sprite=PRJ_D
 	range=860
 	celerity=22
 	power=64
@@ -230,7 +230,7 @@ gun Finalizer
 	salvo=3
 
 gun Ori
-	sprite=C
+	sprite=PRJ_C
 	range=460
 	celerity=20
 	power=55
@@ -239,21 +239,21 @@ gun Ori
 	special=Propeled;
 
 gun DeinsGun1
-	sprite=DeinsProj
+	sprite=PRJ_RedCharge
 	range=320
 	celerity=18
 	power=45
 	loadtime=55
 	salvo=1
 gun DeinsGun2
-	sprite=DeinsProj
+	sprite=PRJ_BlueCharge
 	range=300
 	celerity=18
 	power=40
 	loadtime=50
 	salvo=1
 gun DeinsGun3
-	sprite=DeinsProj
+	sprite=PRJ_GreenCharge
 	range=280
 	celerity=18
 	power=35

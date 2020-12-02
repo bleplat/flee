@@ -67,11 +67,16 @@ Public NotInheritable Class Helpers
 		' Non sprited image
 		If x = -1 AndAlso y = -1 Then
 			' Base image requested
-			Dim file_name As String = "./sprites/" & img_name & ".bmp"
 			Try
+				Dim file_name As String = "./sprites/" & img_name & ".bmp"
 				bmp = New Bitmap(Image.FromFile(file_name)) ' My.Resources.ResourceManager.GetObject(img_name, My.Resources.Culture)
-			Catch ex As Exception
-				Return Nothing
+			Catch ex1 As Exception
+				Try
+					Dim file_name As String = "./sprites/" & img_name & ".png"
+					bmp = New Bitmap(Image.FromFile(file_name)) ' My.Resources.ResourceManager.GetObject(img_name, My.Resources.Culture)
+				Catch ex2 As Exception
+					Return Nothing
+				End Try
 			End Try
 		Else
 			' Get base image

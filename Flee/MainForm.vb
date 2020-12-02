@@ -42,7 +42,7 @@ Public Class MainForm
 		' Graphics settings
 		G = Graphics.FromImage(DrawBMP)
 		G.CompositingQuality = CompositingQuality.HighSpeed
-		G.InterpolationMode = InterpolationMode.Bicubic
+		G.InterpolationMode = InterpolationMode.Bilinear
 		Me.Width = Me.Width + 1
 		' Play the music if it's available
 		Try
@@ -172,7 +172,7 @@ Public Class MainForm
 		'===' Effets '==='
 		For Each AEffect As Effect In world.Effects
 			If AEffect.Coo.X > See.X AndAlso AEffect.Coo.X < See.X + DrawBox.Width AndAlso AEffect.Coo.Y > See.Y AndAlso AEffect.Coo.Y < See.Y + DrawBox.Height Then
-				Dim img As New Bitmap(Helpers.GetSprite(AEffect.Type, AEffect.fram, 0)) 'image
+				Dim img As New Bitmap(Helpers.GetSprite(AEffect.Type, AEffect.fram, AEffect.sprite_y)) 'image
 				Dim center As New Point(AEffect.Coo.X - See.X, AEffect.Coo.Y - See.Y) 'centre
 				Dim MonM As Matrix = New Matrix : MonM.RotateAt(-AEffect.Direction + 180, center) 'rotation
 				G.Transform = MonM 'affectation
@@ -210,7 +210,7 @@ Public Class MainForm
 						Dim shields_ptns(16 - 1) As PointF
 						Dim shields_colors(16 - 1) As Color
 						For i = 0 To shields_ptns.Length - 1
-							shields_ptns(i) = Helpers.GetNewPoint(New PointF(drawrect.X + drawrect.Width / 2, drawrect.Y + drawrect.Height / 2), i * 360 / 16 + AShip.direction, drawrect.Width / 2 + 5)
+							shields_ptns(i) = Helpers.GetNewPoint(New PointF(drawrect.X + drawrect.Width / 2, drawrect.Y + drawrect.Height / 2), i * 360 / 16 + AShip.direction, drawrect.Width / 2 + drawrect.Width / 4 + 16) 'border location
 							'Dim c_charge = AShip.shield * 255 / AShip.stats.shield
 							'Dim c_nocharge = 255 - c_charge
 							'Dim c_speed = (AShip.stats.shield_regeneration - 10) * 255 / 30
@@ -232,7 +232,7 @@ Public Class MainForm
 						Dim shieldsbrush As PathGradientBrush = New PathGradientBrush(shields_ptns)
 						shieldsbrush.SurroundColors = shields_colors
 						shieldsbrush.CenterColor = Color.FromArgb(0, 0, 0, 0)
-						G.FillEllipse(shieldsbrush, drawrect)
+						G.FillEllipse(shieldsbrush, New Rectangle(New Point(drawrect.X - drawrect.Width / 16 - 4, drawrect.Y - drawrect.Height / 16 - 4), New Size(drawrect.Width + drawrect.Width / 8 + 8, drawrect.Height + drawrect.Height / 8 + 8)))
 					End If
 					'life   'New Pen(getSColor(AShip.Color))
 					If AShip.stats.integrity > 20 Then
@@ -470,7 +470,7 @@ Public Class MainForm
 		If target_ship Is Nothing Then
 			For Each AShip As Ship In selected_ships
 				If AShip.TargetPTN = SelectPTN2 Then
-					world.Effects.Add(New Effect With {.Type = "Patrouille", .Coo = SelectPTN2})
+					world.Effects.Add(New Effect With {.Type = "EFF_Mine", .Coo = SelectPTN2})
 					AShip.behavior = Ship.BehaviorMode.Mine
 					AShip.TargetPTN = SelectPTN2
 					AShip.target = Nothing
@@ -480,7 +480,7 @@ Public Class MainForm
 						End If
 					End If
 				Else
-					world.Effects.Add(New Effect With {.Type = "Fleche", .Coo = SelectPTN2})
+					world.Effects.Add(New Effect With {.Type = "EFF_Goto", .Coo = SelectPTN2})
 					AShip.behavior = Ship.BehaviorMode.GoToPoint
 					AShip.TargetPTN = SelectPTN2
 					AShip.target = Nothing
@@ -489,12 +489,16 @@ Public Class MainForm
 		Else
 			For Each AShip As Ship In selected_ships
 				If AShip Is target_ship Then
-					world.Effects.Add(New Effect With {.Type = "Cible2", .Coo = SelectPTN2})
+					world.Effects.Add(New Effect With {.Type = "EFF_OrderDefend", .Coo = SelectPTN2})
 					AShip.AllowMining = False
 				Else
-					world.Effects.Add(New Effect With {.Type = "Cible", .Coo = SelectPTN2})
 					AShip.behavior = Ship.BehaviorMode.Folow
 					AShip.target = target_ship
+					If (Not AShip.team Is Nothing) AndAlso AShip.team.IsFriendWith(target_ship.team) Then
+						world.Effects.Add(New Effect With {.Type = "EFF_Assist", .Coo = SelectPTN2, .Direction = 180})
+					Else
+						world.Effects.Add(New Effect With {.Type = "EFF_OrderTarget", .Coo = SelectPTN2})
+					End If
 				End If
 			Next
 		End If

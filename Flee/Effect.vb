@@ -12,6 +12,7 @@
     End Sub
     'Primaire
     Public fram As UShort = 0
+    Public sprite_y As UShort = 0
     Public Type As String = "Default"
     Public Coo As New PointF : Public Vec As New PointF()
     Public Direction As Single = 0
