@@ -33,7 +33,7 @@
         Next
         Return total
     End Function
-    Shared Function SpecialToString(weapon_effect As Integer) As String
+    Shared Function SpecialToString() As String
         Dim total As String = ""
         If (total And SpecialBits.Plasma) <> 0 Then total &= "Plasma;"
         If (total And SpecialBits.Propeled) <> 0 Then total &= "Propeled;"
@@ -120,7 +120,7 @@
     End Function
 
     ' Import/Export
-    Public Function ToString() As String
+    Public Overrides Function ToString() As String
         Return (Me.Loc.ToString() & ";" & Me.stats.name)
     End Function
     Public Sub FromString(input As String)

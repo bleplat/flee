@@ -23,7 +23,7 @@
 	End Sub
 
 	' Import/Export
-	Public Function ToString() As String
+	Public Overrides Function ToString() As String
 		Dim total As String = "gun " & Me.name & vbLf
 		If desc <> "" Then
 			total &= vbTab & "desc=" & Me.desc & vbLf

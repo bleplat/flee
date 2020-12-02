@@ -99,7 +99,7 @@ Public Class ShipStats
 			Case Else : Throw New Exception("'" & name & "' is not a valid ship property")
 		End Select
 	End Sub
-	Public Function ToString() As String
+	Public Overrides Function ToString() As String
 		Dim total As String = "ship " & Me.name & vbLf
 		If Me.sprite <> Me.name Then
 			total &= vbTab & "sprite=" & Me.sprite & vbLf

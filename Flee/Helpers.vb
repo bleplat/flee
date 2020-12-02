@@ -289,6 +289,7 @@ Public NotInheritable Class Helpers
 			Case 0 : Return "Anti-Light_Turret"
 			Case 1 : Return "Anti-Heavy_Turret"
 			Case 2 : Return "Pointvortex_Turret"
+			Case Else : Return ""
 		End Select
 	End Function
 
