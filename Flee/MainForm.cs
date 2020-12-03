@@ -160,7 +160,7 @@ namespace Flee {
 				MiniG.FillRectangle(new SolidBrush(mini_color), new Rectangle((int)(AShip.location.X / world.ArenaSize.Width * MiniBMP.Width - W / 2d), (int)(AShip.location.Y / world.ArenaSize.Height * MiniBMP.Height - W / 2d), W, W));
 				// Main screen '
 				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + DrawBox.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + DrawBox.Height) {
-					var img = new Bitmap(Helpers.GetSprite(AShip.stats.sprite, AShip.fram, 0, mini_color)); // image
+					var img = Helpers.GetSprite(AShip.stats.sprite, AShip.fram, 0, mini_color); // image
 					var center = new Point((int)(AShip.location.X - See.X), (int)(AShip.location.Y - See.Y)); // centre
 					int AddD = 0;
 					if (AShip.team is null && AShip.stats.turn == 0d)
