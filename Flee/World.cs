@@ -269,7 +269,7 @@ namespace Flee {
 		public void AutoColide() {
 			for (int i_shoot = 0; i_shoot < Shoots.Count; i_shoot += 1) {
 				Shoot AShoot = Shoots[i_shoot];
-				foreach (Ship AShip in Ships) {
+				foreach (Ship AShip in AShoot.sector.EnumerateNearbyShips()) {
 					if (!ReferenceEquals(AShoot.Team, AShip.team) && (AShoot.Team is null || !AShoot.Team.IsFriendWith(AShip.team)))
 						if (Helpers.Distance(AShoot.location.X, AShoot.location.Y, AShip.location.X, AShip.location.Y) < AShip.stats.width / 2d) {
 							AShoot.Life = 0;
