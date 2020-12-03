@@ -52,7 +52,7 @@ namespace Flee {
 				main_type = Helpers.RandomStationName(rand);
 
 			var main_coords = new Point(rand.Next(1000, ArenaSize.Width - 1000), rand.Next(1000, ArenaSize.Height - 1000));
-			for (int index = 1, loopTo = Conversions.ToInteger(Math.Max(1, Math.Min(8, 2000 / ShipStats.classes[main_type].complexity))); index <= loopTo; index++)
+			for (int index = 1, loopTo = (Math.Max(1, Math.Min(8, 2000 / ShipStats.classes[main_type].complexity))); index <= loopTo; index++)
 				if (index == 1) {
 					var argworld = this;
 					Ships.Add(new Ship(ref argworld, team, main_type) { location = main_coords });
@@ -416,13 +416,13 @@ namespace Flee {
 						a_ship.team.ship_count_approximation += 1;
 				// Summoning / upgrades
 				foreach (Ship a_ship in Ships)
-					if (a_ship.team is object && a_ship.bot_ship && a_ship.UpProgress == 0 && Conversions.ToBoolean(Operators.ConditionalCompareObjectLess(a_ship.team.ship_count_approximation, a_ship.team.ship_count_limit, false))) {
-						object wished_upgrade = null;
+					if (a_ship.team is object && a_ship.bot_ship && a_ship.UpProgress == 0 && a_ship.team.ship_count_approximation < a_ship.team.ship_count_limit) {
+						string wished_upgrade = null;
 						if (rand.Next(0, 16) < 8)                         // building ships
 							if (a_ship.stats.crafts.Count > 0) {
 								wished_upgrade = Helpers.GetRandomSpawnUpgrade(rand, a_ship);
 								if (wished_upgrade is object)
-									Upgrade.ForceUpgradeToShip(a_ship, Conversions.ToString(wished_upgrade));
+									Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade);
 							} else if (rand.Next(0, 2) == 0) {
 								// upgrading
 								var PossibleUps = a_ship.AvailableUpgrades();

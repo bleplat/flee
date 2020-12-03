@@ -229,7 +229,7 @@ namespace Flee {
 			// ===' Deflector '==='
 			if (cold_deflector_charge > 0) {
 				cold_deflector_charge = (int)(cold_deflector_charge * 0.999d);
-				if (Conversions.ToBoolean(world.ticks % 2)) {
+				if ((world.ticks % 2) != 0) {
 					integrity = (int)(integrity - Math.Max(1d, cold_deflector_charge / 16d));
 					cold_deflector_charge = (int)(cold_deflector_charge - Math.Max(1d, cold_deflector_charge / 16d));
 				}
@@ -598,31 +598,31 @@ namespace Flee {
 					}
 
 				case "+Lvl": {
-						if (stats.level >= Conversions.ToDouble(Spliter[1]))
+						if (stats.level >= Helpers.ToDouble(Spliter[1]))
 							return true;
 						break;
 					}
 
 				case "+Speed": { // vitesse
-						if (stats.speed >= Conversions.ToDouble(Spliter[1]))
+						if (stats.speed >= Helpers.ToDouble(Spliter[1]))
 							return true;
 						break;
 					}
 
 				case "-Speed": {
-						if (stats.speed <= Conversions.ToDouble(Spliter[1]))
+						if (stats.speed <= Helpers.ToDouble(Spliter[1]))
 							return true;
 						break;
 					}
 
 				case "+Life": { // Resistance
-						if (stats.integrity >= Conversions.ToDouble(Spliter[1]))
+						if (stats.integrity >= Helpers.ToDouble(Spliter[1]))
 							return true;
 						break;
 					}
 
 				case "-Life": { // 
-						if (stats.integrity <= Conversions.ToDouble(Spliter[1]))
+						if (stats.integrity <= Helpers.ToDouble(Spliter[1]))
 							return true;
 						break;
 					}
@@ -705,7 +705,7 @@ namespace Flee {
 					}
 
 				case "!Agility": {
-						stats.turn += Conversions.ToDouble(Spliter[1]);
+						stats.turn += Helpers.ToDouble(Spliter[1]);
 						break;
 					}
 
@@ -721,30 +721,30 @@ namespace Flee {
 
 				case "!Upsbonus": {
 						if (first_application)
-							team.upgrade_slots_bonus = (ushort)(team.upgrade_slots_bonus + Conversions.ToDouble(Spliter[1])); // FN
+							team.upgrade_slots_bonus = (ushort)(team.upgrade_slots_bonus + Helpers.ToDouble(Spliter[1])); // FN
 						break;
 					}
 
 				case "!Maxships": {
 						if (first_application)
-							team.ship_count_limit = (ushort)(team.ship_count_limit + Conversions.ToDouble(Spliter[1])); // FN
+							team.ship_count_limit = (ushort)(team.ship_count_limit + Helpers.ToDouble(Spliter[1])); // FN
 						break;
 					}
 
 				case "!Shield": {
-						stats.shield = (int)(stats.shield + Conversions.ToDouble(Spliter[1]));
+						stats.shield = (int)(stats.shield + Helpers.ToDouble(Spliter[1]));
 						if (first_application)
 							ResetShieldPoint();
 						break;
 					}
 
 				case "!Deflector": {
-						stats.deflectors = (int)(stats.deflectors + Conversions.ToDouble(Spliter[1]));
+						stats.deflectors = (int)(stats.deflectors + Helpers.ToDouble(Spliter[1]));
 						break;
 					}
 
 				case "!HotDeflector": {
-						stats.hot_deflector += Conversions.ToDouble(Spliter[1]);
+						stats.hot_deflector += Helpers.ToDouble(Spliter[1]);
 						break;
 					}
 
@@ -754,33 +754,33 @@ namespace Flee {
 					}
 
 				case "%Shield": {
-						stats.shield = (int)(stats.shield + stats.shield * (Conversions.ToDouble(Spliter[1]) / 100d));
+						stats.shield = (int)(stats.shield + stats.shield * (Helpers.ToDouble(Spliter[1]) / 100d));
 						if (first_application)
 							ResetShieldPoint();
 						break;
 					}
 
 				case "!Shieldop": {
-						stats.shield_opacity += Conversions.ToDouble(Spliter[1]);
+						stats.shield_opacity += Helpers.ToDouble(Spliter[1]);
 						if (first_application)
 							ResetShieldPoint();
 						break;
 					}
 
 				case "%Shieldreg": {
-						stats.shield_regeneration = (int)(stats.shield_regeneration + stats.shield_regeneration * (Conversions.ToDouble(Spliter[1]) / 100d));
+						stats.shield_regeneration = (int)(stats.shield_regeneration + stats.shield_regeneration * (Helpers.ToDouble(Spliter[1]) / 100d));
 						if (first_application)
 							ResetShieldPoint();
 						break;
 					}
 
 				case "!UpsMax": {
-						upgrade_slots = (int)(upgrade_slots + Conversions.ToDouble(Spliter[1]));
+						upgrade_slots = (int)(upgrade_slots + Helpers.ToDouble(Spliter[1]));
 						break;
 					}
 
 				case "!Fix": {
-						integrity = (int)(integrity + stats.integrity * (Conversions.ToDouble(Spliter[1]) / 100.0d));
+						integrity = (int)(integrity + stats.integrity * (Helpers.ToDouble(Spliter[1]) / 100.0d));
 						break;
 					}
 
@@ -790,15 +790,15 @@ namespace Flee {
 					}
 
 				case "%Speed": {
-						stats.speed += stats.speed * (Conversions.ToDouble(Spliter[1]) / 100d);
-						stats.turn += stats.turn * (Conversions.ToDouble(Spliter[1]) / 100d);
+						stats.speed += stats.speed * (Helpers.ToDouble(Spliter[1]) / 100d);
+						stats.turn += stats.turn * (Helpers.ToDouble(Spliter[1]) / 100d);
 						break;
 					}
 
 				case "%Life": {
-						stats.integrity = (int)(stats.integrity + stats.integrity * (Conversions.ToDouble(Spliter[1]) / 100d));
+						stats.integrity = (int)(stats.integrity + stats.integrity * (Helpers.ToDouble(Spliter[1]) / 100d));
 						if (first_application)
-							integrity = (int)(integrity + stats.integrity * (Conversions.ToDouble(Spliter[1]) / 100d)); // FN
+							integrity = (int)(integrity + stats.integrity * (Helpers.ToDouble(Spliter[1]) / 100d)); // FN
 						break;
 					}
 

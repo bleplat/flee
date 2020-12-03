@@ -194,7 +194,7 @@ namespace Flee {
 
 		public static int GetIndentation(string line) {
 			int count = 0;
-			foreach (char c in line) if (Conversions.ToString(c) == @"\t" || Conversions.ToString(c) == " ") count += 1;
+			foreach (char c in line) if (c == '\t' || c == ' ') count += 1;
 				else break;
 
 			return count;
@@ -244,19 +244,21 @@ namespace Flee {
 			// use as LoadList(File.ReadAllText("./lists/weapons.txt").Replace(vbCr & vbLf, vbLf))
 			data += Constants.vbLf;
 			var list_classes = new List<ListClass>();
-			var lines = data.Split(Conversions.ToChar(Constants.vbLf));
+			var lines = data.Split('\n');
 			string header = "";
 			var paragraph = new List<string>();
 			foreach (string line in lines) { // reading lines one by one
-				if (header.Length > 0) if (line.Length > 0 && (Conversions.ToString(line[0]) == Constants.vbTab || Conversions.ToString(line[0]) == " ")) paragraph.Add(line.Substring(1, line.Length - 1));
+				if (header.Length > 0)
+					if (line.Length > 0 && (line[0] == '\t' || line[0] == ' '))
+						paragraph.Add(line.Substring(1, line.Length - 1));
 					else {
 						list_classes.Add(new ListClass(header, paragraph));
 						header = "";
 						paragraph.Clear();
 					}
 
-				if (header.Length == 0) if (line.Length == 0 || Conversions.ToString(line[0]) == "#") continue;
-					else if (Conversions.ToString(line[0]) == " " || Conversions.ToString(line[0]) == Constants.vbTab) throw new Exception("Malformed line: " + line);
+				if (header.Length == 0) if (line.Length == 0 || line[0] == '#') continue;
+					else if (line[0] == ' ' || line[0] == '\t') throw new Exception("Malformed line: " + line);
 					else header = line;
 			}
 

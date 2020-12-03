@@ -198,7 +198,7 @@ namespace Flee {
 				string build_ship_upgrade_name = "Build_" + ship_class.name;
 				string launch_ship_upgrade_name = "Launch_" + ship_class.name;
 				if (UpgradeFromName(build_ship_upgrade_name) is null && UpgradeFromName(launch_ship_upgrade_name) is null) {
-					upgrades.Add(new Upgrade(build_ship_upgrade_name) { cost = ship_class.cost, delay = Conversions.ToULong(ship_class.complexity), need = "?MS", effect = "!Sum:" + ship_class.name, upgrade_slots_requiered = Conversions.ToInteger(false), desc = "Build a " + ship_class.name + "." });
+					upgrades.Add(new Upgrade(build_ship_upgrade_name) { cost = ship_class.cost, delay = (ulong)(ship_class.complexity), need = "?MS", effect = "!Sum:" + ship_class.name, upgrade_slots_requiered = 0, desc = "Build a " + ship_class.name + "." });
 					if (ship_class.desc is null) upgrades[upgrades.Count - 1].desc = ship_class.desc;
 				}
 			}

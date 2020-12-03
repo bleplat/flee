@@ -94,7 +94,7 @@ namespace Flee {
 		// ===' Boucle '==='
 		private void Ticker_Tick(object sender, EventArgs e) {
 			var start_time = DateTime.Now;
-			if (play_state != PlayState.Paused) for (int i = 1, loopTo = Conversions.ToInteger(Operators.MultiplyObject(Interaction.IIf(play_state == PlayState.Timelapse, 8, 1), Interaction.IIf(timelapsev2, 16, 1))); i <= loopTo; i++)
+			if (play_state != PlayState.Paused) for (int i = 1, loopTo = (int)(((play_state == PlayState.Timelapse) ? 8 : 1) * (timelapsev2 ? 16 : 1)); i <= loopTo; i++)
 					world.Tick();
 
 			CheckRightPanel();
@@ -304,8 +304,8 @@ namespace Flee {
 			if (MenuPanel.Visible) return;
 
 			MiniMDown = true;
-			See.X = Conversions.ToInteger(Operators.SubtractObject(Operators.MultiplyObject(Operators.DivideObject(e.X, MiniBox.Width), world.ArenaSize.Width), DrawBMP.Width / 2d));
-			See.Y = Conversions.ToInteger(Operators.SubtractObject(Operators.MultiplyObject(Operators.DivideObject(e.Y, MiniBox.Height), world.ArenaSize.Height), DrawBMP.Height / 2d));
+			See.X = (int)(((e.X / MiniBox.Width) * world.ArenaSize.Width) - DrawBMP.Width / 2d);
+			See.Y = (int)(((e.Y / MiniBox.Height) * world.ArenaSize.Height) - DrawBMP.Height / 2d);
 			CheckSee();
 		}
 
@@ -315,8 +315,8 @@ namespace Flee {
 
 		private void MiniBox_MouseMove(object sender, MouseEventArgs e) {
 			if (MiniMDown) {
-				See.X = Conversions.ToInteger(Operators.SubtractObject(Operators.MultiplyObject(Operators.DivideObject(e.X, MiniBox.Width), world.ArenaSize.Width), DrawBMP.Width / 2d));
-				See.Y = Conversions.ToInteger(Operators.SubtractObject(Operators.MultiplyObject(Operators.DivideObject(e.Y, MiniBox.Height), world.ArenaSize.Height), DrawBMP.Height / 2d));
+				See.X = (int)(((e.X / MiniBox.Width) * world.ArenaSize.Width) - DrawBMP.Width / 2d);
+				See.Y = (int)(((e.Y / MiniBox.Height) * world.ArenaSize.Height) - DrawBMP.Height / 2d);
 				CheckSee();
 			}
 		}
@@ -589,7 +589,8 @@ namespace Flee {
 					int ph = (int)(min_progress / Math.Max(1m, AUp.delay) * 25m);
 					PG.FillRectangle(Brushes.White, x * 25, y * 25 + 25 - ph, 25, ph);
 				} else if (ships_upgradable == 0)               // no update slot remaining
-					if (Conversions.ToBoolean(ships_installed)) PG.DrawRectangle(new Pen(Brushes.LightGray), x * 25, y * 25, 24, 24);
+					if (ships_installed != 0)
+						PG.DrawRectangle(new Pen(Brushes.LightGray), x * 25, y * 25, 24, 24);
 					else PG.DrawRectangle(Pens.DimGray, x * 25, y * 25, 24, 24);
 				else if (selected_ships[0].team is null || !localHasEnough())               // cannot afford all
 					if (AUp.upgrade_slots_requiered > 0) if (selected_ships[0].team.resources.HasEnough(ref AUp.cost))                      // can afford at least one

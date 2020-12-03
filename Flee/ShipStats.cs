@@ -44,7 +44,7 @@ namespace Flee {
 		public int deflectors = 0;
 		public int deflectors_cooldown = 64;
 		public double hot_deflector = 0d;
-		public bool cold_deflector = Conversions.ToBoolean(0);
+		public bool cold_deflector = false;
 
 		// crafting
 		public List<string> crafts = new List<string>();
@@ -126,7 +126,7 @@ namespace Flee {
 					}
 
 				case "shield": {
-						shield = Conversions.ToInteger(value);
+						shield = Convert.ToInt32(value);
 						if (shield_opacity == 0d)
 							shield_opacity = 25d;
 						break;
@@ -158,7 +158,7 @@ namespace Flee {
 					}
 
 				case "cold_deflector": {
-						cold_deflector = Conversions.ToBoolean(Convert.ToInt32(value));
+						cold_deflector = (Convert.ToInt32(value)) != 0;
 						break;
 					}
 
@@ -218,7 +218,8 @@ namespace Flee {
 				if (deflectors_cooldown != 64) total += Constants.vbTab + "deflectors_cooldown=" + deflectors_cooldown.ToString() + Constants.vbLf;
 			}
 
-			if (Conversions.ToBoolean(hot_deflector)) total += Constants.vbTab + "hot_deflector=" + Helpers.ToString(hot_deflector) + Constants.vbLf;
+			if (hot_deflector != 0)
+				total += Constants.vbTab + "hot_deflector=" + Helpers.ToString(hot_deflector) + Constants.vbLf;
 
 			if (cold_deflector) total += Constants.vbTab + "cold_deflector=" + Convert.ToInt32(cold_deflector).ToString() + Constants.vbLf;
 

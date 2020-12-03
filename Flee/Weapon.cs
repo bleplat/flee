@@ -83,23 +83,23 @@ namespace Flee {
 
 		public static string SpecialToString() {
 			string total = "";
-			if ((Conversions.ToLong(total) & (long)SpecialBits.Plasma) != 0L)
+			if ((Convert.ToInt64(total) & (long)SpecialBits.Plasma) != 0L)
 				total += "Plasma;";
-			if ((Conversions.ToLong(total) & (long)SpecialBits.Propeled) != 0L)
+			if ((Convert.ToInt64(total) & (long)SpecialBits.Propeled) != 0L)
 				total += "Propeled;";
-			if ((Conversions.ToLong(total) & (long)SpecialBits.Explode) != 0L)
+			if ((Convert.ToInt64(total) & (long)SpecialBits.Explode) != 0L)
 				total += "Explode;";
-			if ((Conversions.ToLong(total) & (long)SpecialBits.BioDrops) != 0L)
+			if ((Convert.ToInt64(total) & (long)SpecialBits.BioDrops) != 0L)
 				total += "BioDrops;";
-			if ((Conversions.ToLong(total) & (long)SpecialBits.SelfExplode) != 0L)
+			if ((Convert.ToInt64(total) & (long)SpecialBits.SelfExplode) != 0L)
 				total += "SelfExplode;";
-			if ((Conversions.ToLong(total) & (long)SpecialBits.SelfNuke) != 0L)
+			if ((Convert.ToInt64(total) & (long)SpecialBits.SelfNuke) != 0L)
 				total += "SelfNuke;";
-			if ((Conversions.ToLong(total) & (long)SpecialBits.SpreadOrigin) != 0L)
+			if ((Convert.ToInt64(total) & (long)SpecialBits.SpreadOrigin) != 0L)
 				total += "SpreadOrigin;";
-			if ((Conversions.ToLong(total) & (long)SpecialBits.Rail) != 0L)
+			if ((Convert.ToInt64(total) & (long)SpecialBits.Rail) != 0L)
 				total += "Rail;";
-			if ((Conversions.ToLong(total) & (long)SpecialBits.Flak) != 0L)
+			if ((Convert.ToInt64(total) & (long)SpecialBits.Flak) != 0L)
 				total += "Flak;";
 			return total;
 		}
