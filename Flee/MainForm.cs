@@ -193,9 +193,9 @@ namespace Flee {
 					col = AShoot.Team.color;
 
 				var img = new Bitmap(Helpers.GetSprite(AShoot.Type, AShoot.fram, 0, col)); // image
-				var center = new Point((int)(AShoot.Coo.X - See.X), (int)(AShoot.Coo.Y - See.Y)); // centre
+				var center = new Point((int)(AShoot.location.X - See.X), (int)(AShoot.location.Y - See.Y)); // centre
 				var MonM = new Matrix();
-				MonM.RotateAt(-AShoot.Direction + 180f, center); // rotation
+				MonM.RotateAt(-AShoot.direction + 180f, center); // rotation
 				G.Transform = MonM; // affectation
 				G.DrawImage(img, new Point((int)(center.X - img.Size.Width / 2d), (int)(center.Y - img.Size.Width / 2d))); // dessin
 				G.ResetTransform(); // reset

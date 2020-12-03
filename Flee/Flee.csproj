@@ -163,6 +163,7 @@
     <Compile Include="Upgrade2.cs" />
     <Compile Include="Weapon.cs" />
     <Compile Include="World.cs" />
+    <Compile Include="WorldEntity.cs" />
     <Compile Include="WorldSector.cs" />
   </ItemGroup>
   <ItemGroup>

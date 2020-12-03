@@ -212,26 +212,26 @@ namespace Flee {
 				Shoot AShoot = Shoots[i_shoot];
 				foreach (Ship AShip in Ships) {
 					if (!ReferenceEquals(AShoot.Team, AShip.team) && (AShoot.Team is null || !AShoot.Team.IsFriendWith(AShip.team)))
-						if (Helpers.Distance(AShoot.Coo.X, AShoot.Coo.Y, AShip.location.X, AShip.location.Y) < AShip.stats.width / 2d) {
+						if (Helpers.Distance(AShoot.location.X, AShoot.location.Y, AShip.location.X, AShip.location.Y) < AShip.stats.width / 2d) {
 							AShoot.Life = 0;
 							if (AShip.stats.hot_deflector > 0d && gameplay_random.Next(0, 100) < AShip.stats.hot_deflector)
-								Effects.Add(new Effect() { Type = "EFF_Deflected2", Coo = AShoot.Coo, Direction = AShoot.Direction, speed = 0f });
+								Effects.Add(new Effect() { Type = "EFF_Deflected2", Coo = AShoot.location, Direction = AShoot.direction, speed = 0f });
 							else {
 								if (AShip.deflectors_loaded > 0)
-									Effects.Add(new Effect() { Type = "EFF_Deflected", Coo = AShoot.Coo, Direction = AShoot.Direction, speed = 0f });
+									Effects.Add(new Effect() { Type = "EFF_Deflected", Coo = AShoot.location, Direction = AShoot.direction, speed = 0f });
 								else if (AShoot.Power < 16)
-									Effects.Add(new Effect() { Type = "EFF_Impact0", Coo = AShoot.Coo, Direction = AShoot.Direction, speed = 0f });
+									Effects.Add(new Effect() { Type = "EFF_Impact0", Coo = AShoot.location, Direction = AShoot.direction, speed = 0f });
 								else if (AShoot.Power < 32)
-									Effects.Add(new Effect() { Type = "EFF_Impact1", Coo = AShoot.Coo, Direction = AShoot.Direction, speed = 0f, sprite_y = (ushort)gameplay_random.Next(0, 4) });
+									Effects.Add(new Effect() { Type = "EFF_Impact1", Coo = AShoot.location, Direction = AShoot.direction, speed = 0f, sprite_y = (ushort)gameplay_random.Next(0, 4) });
 								else if (AShoot.Power < 48)
-									Effects.Add(new Effect() { Type = "EFF_Impact2", Coo = AShoot.Coo, Direction = AShoot.Direction, speed = 0f, sprite_y = (ushort)gameplay_random.Next(0, 4) });
+									Effects.Add(new Effect() { Type = "EFF_Impact2", Coo = AShoot.location, Direction = AShoot.direction, speed = 0f, sprite_y = (ushort)gameplay_random.Next(0, 4) });
 								else
-									Effects.Add(new Effect() { Type = "EFF_Impact3", Coo = AShoot.Coo, Direction = AShoot.Direction, speed = 0f, sprite_y = (ushort)gameplay_random.Next(0, 4) });
+									Effects.Add(new Effect() { Type = "EFF_Impact3", Coo = AShoot.location, Direction = AShoot.direction, speed = 0f, sprite_y = (ushort)gameplay_random.Next(0, 4) });
 
 								AShip.TakeDamages(AShoot.Power, ref AShoot);
 								AShip.last_damager_team = AShoot.Team;
 								if (AShip.stats.cold_deflector && AShip.cold_deflector_charge < AShip.stats.integrity * 4)
-									Effects.Add(new Effect() { Type = "EFF_Deflected3", Coo = AShoot.Coo, Direction = AShoot.Direction, speed = 0f });
+									Effects.Add(new Effect() { Type = "EFF_Deflected3", Coo = AShoot.location, Direction = AShoot.direction, speed = 0f });
 							}
 						}
 				}

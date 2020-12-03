@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualBasic.CompilerServices;
 
 namespace Flee {
-	public class Ship {
+	public class Ship : WorldEntity {
 
 		// mode of behavior
 		public enum BehaviorMode {
@@ -16,8 +16,6 @@ namespace Flee {
 			Mine,
 			GoToPoint
 		}
-
-		public World world;
 
 		// IA
 		public bool bot_ship = true;
@@ -45,10 +43,6 @@ namespace Flee {
 
 		// state
 		public int integrity = 20;
-		public PointF location = new PointF(5000f, 5000f);
-		public PointF speed_vec = new PointF();
-		public float direction = 0f;
-		public float speed = 0f;
 		public int cold_deflector_charge = 0;
 		public int deflectors_loaded = 0;
 		public int deflector_loading = 0;
@@ -57,21 +51,18 @@ namespace Flee {
 		public Team last_damager_team = null;
 
 		// creation
-		public Ship(ref World world) {
-			this.world = world;
+		public Ship(ref World world) : base(ref world) {
 			ResetShieldPoint();
 			TargetPTN = new PointF(location.X, location.Y);
 		}
 
-		public Ship(ref World world, string ship_class) {
-			this.world = world;
+		public Ship(ref World world, string ship_class) : base(ref world) {
 			SetStats(ship_class);
 			ResetShieldPoint();
 			TargetPTN = new PointF(location.X, location.Y);
 		}
 
-		public Ship(ref World world, Team team, string ship_class) {
-			this.world = world;
+		public Ship(ref World world, Team team, string ship_class) : base(ref world) {
 			SetTeam(team);
 			SetStats(ship_class);
 			ResetShieldPoint();
@@ -329,7 +320,7 @@ namespace Flee {
 				shield = shield - Amount;
 				Amount = (int)(Amount - Amount * stats.shield_opacity / 100d);
 				if (From is object) {
-					double angle_ship_shoot_rel = Helpers.NormalizeAngleUnsigned(Helpers.GetAngle(location.X, location.Y, From.Coo.X, From.Coo.Y) - direction);
+					double angle_ship_shoot_rel = Helpers.NormalizeAngleUnsigned(Helpers.GetAngle(location.X, location.Y, From.location.X, From.location.Y) - direction);
 					int shield_ptn_index = (int)(angle_ship_shoot_rel * 16d / 360d);
 					ShieldPoints[shield_ptn_index % 16] = 255;
 					if (ShieldPoints[(shield_ptn_index + 1) % 16] < 128)
