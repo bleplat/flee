@@ -54,12 +54,14 @@ namespace Flee {
 		public Ship(ref World world) : base(ref world) {
 			ResetShieldPoint();
 			TargetPTN = new PointF(location.X, location.Y);
+			UpdateSector();
 		}
 
 		public Ship(ref World world, string ship_class) : base(ref world) {
 			SetStats(ship_class);
 			ResetShieldPoint();
 			TargetPTN = new PointF(location.X, location.Y);
+			UpdateSector();
 		}
 
 		public Ship(ref World world, Team team, string ship_class) : base(ref world) {
@@ -67,6 +69,12 @@ namespace Flee {
 			SetStats(ship_class);
 			ResetShieldPoint();
 			TargetPTN = new PointF(location.X, location.Y);
+			UpdateSector();
+		}
+
+		~Ship() {
+			if (sector is object)
+				sector.ships.Remove(this);
 		}
 
 		public void SetStats(string ship_class) {
@@ -1042,6 +1050,17 @@ namespace Flee {
 			double dist = Helpers.Distance(ref location, ref target_ship.location);
 			double time = dist / Math.Max(1.0d, stats.speed);
 			return new PointF((float)(target_ship.location.X + target_ship.speed_vec.X * time), (float)(target_ship.location.Y + target_ship.speed_vec.Y * time));
+		}
+
+		public override void UpdateSector() {
+			Point new_sector_coords = ComputeCurrentSectorCoords();
+			if (new_sector_coords == sector_coords)
+				return;
+			if (sector is object)
+				sector.ships.Remove(this); // < Remove ship/shoot from ships/shoots here >
+			sector_coords = new_sector_coords;
+			sector = world.sectors[sector_coords.X, sector_coords.Y];
+			sector.ships.Add(this); // < Add ship/shoot to ships/shoots here >
 		}
 	}
 }

@@ -3,6 +3,12 @@
 namespace Flee {
 	public class Shoot : WorldEntity {
 		public Shoot(ref World world) : base(ref world) {
+			// UpdateSector(); // useless in practice
+		}
+
+		~Shoot() {
+			if (sector is object)
+				sector.shoots.Remove(this);
 		}
 
 		public void Check() {
@@ -27,6 +33,17 @@ namespace Flee {
 				world.Shoots.Add(new Shoot(ref world) { Type = "PRJ_B", location = location, direction = direction + world.gameplay_random.Next(-90, 90), Life = 8, speed = world.gameplay_random.Next(4, 8), Power = 2, Team = Team });
 				world.Shoots.Add(new Shoot(ref world) { Type = "PRJ_B", location = location, direction = world.gameplay_random.Next(0, 360), Life = 8, speed = world.gameplay_random.Next(6, 10), Power = (int)(Power / 2d), Team = Team });
 			}
+		}
+
+		public override void UpdateSector() {
+			Point new_sector_coords = ComputeCurrentSectorCoords();
+			if (new_sector_coords == sector_coords)
+				return;
+			if (sector is object)
+				sector.shoots.Remove(this); // < Remove ship/shoot from ships/shoots here >
+			sector_coords = new_sector_coords;
+			sector = world.sectors[sector_coords.X, sector_coords.Y];
+			sector.shoots.Add(this); // < Add ship/shoot to ships/shoots here >
 		}
 
 		// Primaire

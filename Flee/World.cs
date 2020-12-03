@@ -20,12 +20,38 @@ namespace Flee {
 		public List<Shoot> Shoots = new List<Shoot>();
 		public List<Effect> Effects = new List<Effect>();
 
+		// Sectors
+		public const int sectors_count_x = 16;
+		public const int sectors_count_y = 16;
+		public WorldSector[,] sectors = new WorldSector[sectors_count_x, sectors_count_y];
+		public void InitSectors() {
+			for (int x = 0; x < sectors_count_x; x++) {
+				for (int y = 0; y < sectors_count_x; y++) {
+					sectors[x, y] = new WorldSector(this, x, y);
+				}
+			}
+			for (int x = 0; x < sectors_count_x; x++) {
+				for (int y = 0; y < sectors_count_x; y++) {
+					sectors[x, y].InitForeignSectors();
+				}
+			}
+		}
+		public void UpdateSectors() {
+			foreach (Ship ship in Ships) {
+				ship.UpdateSector();
+			}
+			foreach (Shoot shoot in Shoots) {
+				shoot.UpdateSector();
+			}
+		}
+
 		// State
 		public int ticks = 0;
 		public int NuclearEffect = 0;
 		public Team boss_team = null;
 
 		public World(int Seed) {
+			InitSectors();
 			this.Seed = Seed;
 			gameplay_random = new Random(Seed);
 			generation_random = new Random(Seed);
@@ -38,9 +64,10 @@ namespace Flee {
 		public void Tick() {
 			SpawnDerelictsObjects();
 			NPCUpgrades();
-			AntiSuperposition();
 			CheckAll();
+			UpdateSectors(); // Done after movements. This may be innacurate. This could be done per ship/shoot on every movement.
 			AutoColide();
+			AntiSuperposition();
 			AutoUnspawn();
 			ticks += 1;
 		}
@@ -172,6 +199,7 @@ namespace Flee {
 		}
 
 		public void AntiSuperposition() {
+			/*
 			if (Ships.Count > 1)
 				for (int a = 1, loopTo = Ships.Count - 1; a <= loopTo; a++) {
 					var Aship = Ships[a];
@@ -191,6 +219,27 @@ namespace Flee {
 						}
 					}
 				}
+			*/
+			///*
+			foreach (Ship Aship in Ships) {
+				foreach (Ship Bship in Aship.sector.ships) {
+					if (!(Aship == Bship)) {
+						if (Aship.location.X + Aship.stats.width > Bship.location.X - Bship.stats.width && Bship.location.X + Bship.stats.width > Aship.location.X - Aship.stats.width && Aship.location.Y + Aship.stats.width > Bship.location.Y - Bship.stats.width && Bship.location.Y + Bship.stats.width > Aship.location.Y - Aship.stats.width) {
+							double dist = Helpers.Distance(ref Aship.location, ref Bship.location);
+							double rel_dist = dist - (Aship.stats.width / 2d + Bship.stats.width / 2d);
+							if (rel_dist < 0d) {
+								double z = -1 * rel_dist / (Aship.stats.width / 2d + Bship.stats.width / 2d) * 0.0125d;
+								var a_to_b = new PointF(Bship.location.X - Aship.location.X, Bship.location.Y - Aship.location.Y);
+								if (Bship.stats.speed != 0) {
+									Bship.speed_vec = new PointF((float)(Bship.speed_vec.X + a_to_b.X * z), (float)(Bship.speed_vec.Y + a_to_b.Y * z));
+									Bship.location.X += 0.001f;
+								}
+							}
+						}
+					}
+				}
+			}
+			//*/
 		}
 
 		public void CheckAll() {
