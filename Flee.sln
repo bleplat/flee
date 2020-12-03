@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29025.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Flee", "Flee\Flee.vbproj", "{9C6441B9-BA61-488B-A5BA-A7A6F66CF6B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flee", "Flee\Flee.csproj", "{2E40C0D2-7639-077A-27E2-6DD894FBC216}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5ABFF797-CE2A-4628-823B-A247C8C344B3}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +18,14 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9C6441B9-BA61-488B-A5BA-A7A6F66CF6B6}.Debug|x64.ActiveCfg = Debug|x64
-		{9C6441B9-BA61-488B-A5BA-A7A6F66CF6B6}.Debug|x64.Build.0 = Debug|x64
-		{9C6441B9-BA61-488B-A5BA-A7A6F66CF6B6}.Debug|x86.ActiveCfg = Debug|x86
-		{9C6441B9-BA61-488B-A5BA-A7A6F66CF6B6}.Debug|x86.Build.0 = Debug|x86
-		{9C6441B9-BA61-488B-A5BA-A7A6F66CF6B6}.Release|x64.ActiveCfg = Release|x64
-		{9C6441B9-BA61-488B-A5BA-A7A6F66CF6B6}.Release|x64.Build.0 = Release|x64
-		{9C6441B9-BA61-488B-A5BA-A7A6F66CF6B6}.Release|x86.ActiveCfg = Release|x86
-		{9C6441B9-BA61-488B-A5BA-A7A6F66CF6B6}.Release|x86.Build.0 = Release|x86
+		{2E40C0D2-7639-077A-27E2-6DD894FBC216}.Debug|x64.ActiveCfg = Debug|x64
+		{2E40C0D2-7639-077A-27E2-6DD894FBC216}.Debug|x64.Build.0 = Debug|x64
+		{2E40C0D2-7639-077A-27E2-6DD894FBC216}.Debug|x86.ActiveCfg = Debug|x86
+		{2E40C0D2-7639-077A-27E2-6DD894FBC216}.Debug|x86.Build.0 = Debug|x86
+		{2E40C0D2-7639-077A-27E2-6DD894FBC216}.Release|x64.ActiveCfg = Release|x64
+		{2E40C0D2-7639-077A-27E2-6DD894FBC216}.Release|x64.Build.0 = Release|x64
+		{2E40C0D2-7639-077A-27E2-6DD894FBC216}.Release|x86.ActiveCfg = Release|x86
+		{2E40C0D2-7639-077A-27E2-6DD894FBC216}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
