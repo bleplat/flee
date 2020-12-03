@@ -90,6 +90,11 @@ namespace Flee {
 			See = new Point((int)(world.Ships[0].location.X - 200f), (int)(world.Ships[0].location.Y - 200f));
 			// finaly enable timer
 			Ticker.Enabled = true;
+
+			//
+			if (checkBoxFPS.Checked) {
+				Ticker.Interval = 25;
+			}
 		}
 
 
@@ -99,9 +104,9 @@ namespace Flee {
 			if (play_state != PlayState.Paused)
 				for (int i = 1, loopTo = (int)(((play_state == PlayState.Timelapse) ? 8 : 1) * (timelapsev2 ? 16 : 1)); i <= loopTo; i++)
 					world.Tick();
-
+			for (int i = 1, loopTo = (int)(((play_state == PlayState.Timelapse) ? 2 : 1) * (timelapsev2 ? 3 : 1)); i <= loopTo; i++)
+				KeysCheck();
 			CheckRightPanel();
-			KeysCheck();
 			drawUpgrades();
 			DrawAll();
 			// debugstr += vbNewLine + "DrawAll: " + (DateTime.Now - start_time).ToString() : start_time = DateTime.Now

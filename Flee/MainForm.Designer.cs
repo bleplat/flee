@@ -68,6 +68,7 @@ namespace Flee {
 			this.PictureBox1 = new System.Windows.Forms.PictureBox();
 			this._DrawBox = new System.Windows.Forms.PictureBox();
 			this._Ticker = new System.Windows.Forms.Timer(this.components);
+			this.checkBoxFPS = new System.Windows.Forms.CheckBox();
 			this.MainPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._MiniBox)).BeginInit();
 			this.MenuPanel.SuspendLayout();
@@ -121,6 +122,7 @@ namespace Flee {
 			// MenuPanel
 			// 
 			this.MenuPanel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.MenuPanel.Controls.Add(this.checkBoxFPS);
 			this.MenuPanel.Controls.Add(this.Label4);
 			this.MenuPanel.Controls.Add(this._RandomizeButton);
 			this.MenuPanel.Controls.Add(this.Label3);
@@ -136,11 +138,11 @@ namespace Flee {
 			// Label4
 			// 
 			this.Label4.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.Label4.Location = new System.Drawing.Point(5, 144);
+			this.Label4.Location = new System.Drawing.Point(5, 148);
 			this.Label4.Name = "Label4";
-			this.Label4.Size = new System.Drawing.Size(302, 57);
+			this.Label4.Size = new System.Drawing.Size(302, 41);
 			this.Label4.TabIndex = 8;
-			this.Label4.Text = "\r\nSome sprites are from MillionthVector.\r\nThe music is from PhilippWeigl.";
+			this.Label4.Text = "Some sprites are from MillionthVector.\r\nThe music is from PhilippWeigl.";
 			// 
 			// _RandomizeButton
 			// 
@@ -544,6 +546,17 @@ namespace Flee {
 			this._Ticker.Interval = 33;
 			this._Ticker.Tick += new System.EventHandler(this.Ticker_Tick);
 			// 
+			// checkBoxFPS
+			// 
+			this.checkBoxFPS.AutoSize = true;
+			this.checkBoxFPS.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.checkBoxFPS.Location = new System.Drawing.Point(10, 188);
+			this.checkBoxFPS.Name = "checkBoxFPS";
+			this.checkBoxFPS.Size = new System.Drawing.Size(206, 17);
+			this.checkBoxFPS.TabIndex = 9;
+			this.checkBoxFPS.Text = "increase FPS (game will slightly faster)";
+			this.checkBoxFPS.UseVisualStyleBackColor = true;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -797,5 +810,6 @@ namespace Flee {
 		internal Label PriceA;
 		internal PictureBox PriceAIcon;
 		internal Label Label4;
+		private CheckBox checkBoxFPS;
 	}
 }
