@@ -72,11 +72,6 @@ namespace Flee {
 			UpdateSector();
 		}
 
-		~Ship() {
-			if (sector is object)
-				sector.ships.Remove(this);
-		}
-
 		public void SetStats(string ship_class) {
 			SetStats(ShipStats.classes[ship_class]);
 		}
@@ -513,7 +508,7 @@ namespace Flee {
 							}
 						// target not in range, find another
 						if (weapon_targeted_ship is null)
-							foreach (Ship OVessel in world.Ships) {
+							foreach (Ship OVessel in this.sector.EnumerateNearbyShips()) {
 								if (ReferenceEquals(OVessel, this))
 									continue;
 

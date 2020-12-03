@@ -6,11 +6,6 @@ namespace Flee {
 			// UpdateSector(); // useless in practice
 		}
 
-		~Shoot() {
-			if (sector is object)
-				sector.shoots.Remove(this);
-		}
-
 		public void Check() {
 			// ===' Fram '==='
 			fram = (ushort)(fram + 1);

@@ -44,6 +44,16 @@ namespace Flee {
 				shoot.UpdateSector();
 			}
 		}
+		public void Unspawn(in Ship ship) {
+			if (ship.sector is object)
+				ship.sector.ships.Remove(ship);
+			Ships.Remove(ship);
+		}
+		public void Unspawn(in Shoot shoot) {
+			if (shoot.sector is object)
+				shoot.sector.shoots.Remove(shoot);
+			Shoots.Remove(shoot);
+		}
 
 		// State
 		public int ticks = 0;
@@ -334,13 +344,13 @@ namespace Flee {
 						if (Ships[i].last_damager_team is object)
 							Ships[i].last_damager_team.resources.AddLoot(ref Ships[i].stats.cost);
 
-						Ships.RemoveAt(i);
+						this.Unspawn(Ships[i]);
 					}
 			// Shoots
 			if (Shoots.Count > 0)
 				for (int i = Shoots.Count - 1; i >= 0; i -= 1)
 					if (Shoots[i].Life <= 0)
-						Shoots.RemoveAt(i);
+						this.Unspawn(Shoots[i]);
 			// Effects
 			if (Effects.Count > 0)
 				for (int i = Effects.Count - 1; i >= 0; i -= 1)
