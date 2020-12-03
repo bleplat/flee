@@ -500,7 +500,7 @@ namespace Flee {
 						int weapon_location_x = (int)(Math.Sin(2d * Math.PI * (AWeap.Loc + direction) / 360d) * (stats.width / 2d) + location.X);
 						int weapon_location_y = (int)(Math.Cos(2d * Math.PI * (AWeap.Loc + direction) / 360d) * (stats.width / 2d) + location.Y);
 						// target in range
-						if (target is object)
+						if (target is object && behavior != BehaviorMode.Mine)
 							if (team is null || !team.IsFriendWith(target.team)) {
 								var argp2 = AWeap.ForseeShootingLocation(target);
 								double dist = Helpers.Distance(ref location, ref argp2) - target.stats.width / 2d;
