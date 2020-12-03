@@ -322,7 +322,7 @@ namespace Flee {
 
 			if (shield > 0f) {
 				shield = shield - Amount;
-				Amount = (int)(Amount - Amount * stats.shield_opacity / 100d);
+				Amount = (int)(Amount - Amount * (double)stats.shield_opacity / 100.0);
 				if (From is object) {
 					double angle_ship_shoot_rel = Helpers.NormalizeAngleUnsigned(Helpers.GetAngle(location.X, location.Y, From.location.X, From.location.Y) - direction);
 					int shield_ptn_index = (int)(angle_ship_shoot_rel * 16d / 360d);

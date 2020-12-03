@@ -143,13 +143,13 @@ namespace Flee {
 					spawn_point = new PointF(PTN.X + ship.world.gameplay_random.Next(-7, 8), PTN.Y + ship.world.gameplay_random.Next(-7, 8));
 
 				if ((base_stats.special & (int)SpecialBits.Rail) != 0) {
-					int dispersion = 16;
+					int dispersion = 8;
 					for (int i = 0, loopTo = dispersion; i <= loopTo; i++)
 						ship.world.Shoots.Add(new Shoot(ref ship.world) { location = spawn_point, Type = base_stats.sprite, direction = QA, speed = (float)(stats.celerity + i / 2d), Life = (int)(stats.range / (double)stats.celerity), Power = (int)(stats.power / (double)dispersion), Team = Launcher.team, special = base_stats.special });
 				} else if ((base_stats.special & (int)SpecialBits.Flak) != 0) {
-					int dispersion = 16;
+					int dispersion = 8;
 					for (double i = -(dispersion / 2d), loopTo1 = dispersion / 2d; i <= loopTo1; i++)
-						ship.world.Shoots.Add(new Shoot(ref ship.world) { location = spawn_point, Type = base_stats.sprite, direction = (float)(QA + i * (360d / dispersion / 16d)), speed = (float)(stats.celerity + (i + dispersion) % 4d / 2.0d), Life = (int)(stats.range / (double)stats.celerity + (i + dispersion) % 3d), Power = (int)(stats.power / (double)dispersion), Team = Launcher.team, special = base_stats.special });
+						ship.world.Shoots.Add(new Shoot(ref ship.world) { location = spawn_point, Type = base_stats.sprite, direction = (float)(QA + i * (360d / dispersion / 16d)), speed = (float)(stats.celerity + (i + dispersion) % 4d / 2.0d), Life = (int)(stats.range / (double)stats.celerity + (i + dispersion) % 3d), Power = (int)((double)stats.power / (double)dispersion), Team = Launcher.team, special = base_stats.special });
 				} else if ((base_stats.special & (int)SpecialBits.SelfExplode) != 0 || (base_stats.special & (int)SpecialBits.SelfNuke) != 0) {
 					int dispersion = 16;
 					for (double i = -(dispersion / 2d), loopTo2 = dispersion / 2d; i <= loopTo2; i++)

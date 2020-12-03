@@ -127,7 +127,7 @@ gun Pusher
 	sprite=PRJ_Q
 	range=160
 	celerity=10
-	power=15
+	power=16
 	loadtime=25
 	special=Flak;
 

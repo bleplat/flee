@@ -684,7 +684,7 @@ namespace Flee {
 							PG.DrawRectangle(Pens.DarkOrange, x * 25, y * 25, 24, 24);
 						else                        // cannot even afford one
 							PG.DrawRectangle(Pens.DarkRed, x * 25, y * 25, 24, 24);
-					else if (selected_ships[0].team.resources.HasEnough(ref AUp.cost))                      // can afford at least one
+					else if (selected_ships[0].team is object && selected_ships[0].team.resources.HasEnough(ref AUp.cost))                      // can afford at least one
 						PG.DrawRectangle(Pens.PaleGoldenrod, x * 25, y * 25, 24, 24);
 					else                        // cannot even afford one
 						PG.DrawRectangle(Pens.PaleVioletRed, x * 25, y * 25, 24, 24);
