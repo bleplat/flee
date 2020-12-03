@@ -38,7 +38,8 @@ namespace Flee {
 				spawned_ship = name.Split(undercase_separators, 2)[1];
 				file = ShipStats.classes[spawned_ship].sprite;
 				cost = ShipStats.classes[spawned_ship].cost;
-				if (ShipStats.classes[spawned_ship].cost is object) desc = ShipStats.classes[spawned_ship].desc;
+				if (ShipStats.classes[spawned_ship].cost is object)
+					desc = ShipStats.classes[spawned_ship].desc;
 
 				upgrade_slots_requiered = 0;
 			}
@@ -199,7 +200,8 @@ namespace Flee {
 				string launch_ship_upgrade_name = "Launch_" + ship_class.name;
 				if (UpgradeFromName(build_ship_upgrade_name) is null && UpgradeFromName(launch_ship_upgrade_name) is null) {
 					upgrades.Add(new Upgrade(build_ship_upgrade_name) { cost = ship_class.cost, delay = (ulong)(ship_class.complexity), need = "?MS", effect = "!Sum:" + ship_class.name, upgrade_slots_requiered = 0, desc = "Build a " + ship_class.name + "." });
-					if (ship_class.desc is null) upgrades[upgrades.Count - 1].desc = ship_class.desc;
+					if (ship_class.desc is null)
+						upgrades[upgrades.Count - 1].desc = ship_class.desc;
 				}
 			}
 		}
@@ -209,13 +211,17 @@ namespace Flee {
 		}
 
 		public static Upgrade UpgradeFromName(string up_name) {
-			foreach (var aUp in upgrades) if ((aUp.name ?? "") == (up_name ?? "")) return aUp;
+			foreach (var aUp in upgrades)
+				if ((aUp.name ?? "") == (up_name ?? ""))
+					return aUp;
 
 			return null;
 		}
 
 		public static void ForceUpgradeToShip(Ship a_ship, string up_name) {
-			foreach (var aUp in upgrades) if ((aUp.name ?? "") == (up_name ?? "")) a_ship.Upgrading = aUp;
+			foreach (var aUp in upgrades)
+				if ((aUp.name ?? "") == (up_name ?? ""))
+					a_ship.Upgrading = aUp;
 		}
 	}
 }

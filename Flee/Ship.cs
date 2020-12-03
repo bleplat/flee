@@ -86,12 +86,15 @@ namespace Flee {
 			if (!ReferenceEquals(base_stats, stats)) {
 				base_stats = stats;
 				// native upgrades
-				if (Ups.Count == 0) foreach (string native_upgrade_name in base_stats.native_upgrades)
+				if (Ups.Count == 0)
+					foreach (string native_upgrade_name in base_stats.native_upgrades)
 						Ups.Add(Upgrade.UpgradeFromName(native_upgrade_name));
 				// upgrade_slots
 				if (upgrade_slots < 0) { // initial value is -1
 					upgrade_slots = base_stats.level;
-					if (base_stats.repair > 0) if (team is object) upgrade_slots += team.upgrade_slots_bonus;
+					if (base_stats.repair > 0)
+						if (team is object)
+							upgrade_slots += team.upgrade_slots_bonus;
 				}
 				// Reset Weapons
 				weapons.Clear();
@@ -99,33 +102,33 @@ namespace Flee {
 					weapons.Add(new Weapon(this, gun_name));
 				// force a color
 				switch (base_stats.name ?? "") {
-					case "Star": {
-							behavior = BehaviorMode.Drift;
-							target = null;
-							color = Color.FromArgb(255, 255, 220);
-							break;
-						}
+				case "Star": {
+					behavior = BehaviorMode.Drift;
+					target = null;
+					color = Color.FromArgb(255, 255, 220);
+					break;
+				}
 
-					case "Asteroid": {
-							behavior = BehaviorMode.Drift;
-							target = null;
-							color = Color.FromArgb(64, 64, 48);
-							break;
-						}
+				case "Asteroid": {
+					behavior = BehaviorMode.Drift;
+					target = null;
+					color = Color.FromArgb(64, 64, 48);
+					break;
+				}
 
-					case "Meteoroid": {
-							behavior = BehaviorMode.Drift;
-							target = null;
-							color = Color.FromArgb(80, 48, 80);
-							break;
-						}
+				case "Meteoroid": {
+					behavior = BehaviorMode.Drift;
+					target = null;
+					color = Color.FromArgb(80, 48, 80);
+					break;
+				}
 
-					case "Comet": {
-							behavior = BehaviorMode.Drift;
-							target = null;
-							color = Color.FromArgb(0, 100, 0);
-							break;
-						}
+				case "Comet": {
+					behavior = BehaviorMode.Drift;
+					target = null;
+					color = Color.FromArgb(0, 100, 0);
+					break;
+				}
 				}
 				// 
 				ResetStats();
@@ -160,12 +163,14 @@ namespace Flee {
 				base_stats.default_weapons.Clear();
 				foreach (Weapon a_weapon in weapons)
 					base_stats.default_weapons.Add(a_weapon.ToString());
-				if (!ShipStats.classes.ContainsKey(base_stats.name)) ShipStats.classes[base_stats.name] = base_stats.Clone();
+				if (!ShipStats.classes.ContainsKey(base_stats.name))
+					ShipStats.classes[base_stats.name] = base_stats.Clone();
 			}
 		}
 
 		public void SetType(string SType, Team STeam, bool IsNew = false) {
-			if (base_stats is null) SetStats(SType);
+			if (base_stats is null)
+				SetStats(SType);
 
 			SetTeam(STeam);
 			// Ship just created TODO: NOW: move to constructor
@@ -174,12 +179,16 @@ namespace Flee {
 				// state
 				integrity = stats.integrity;
 				shield = stats.shield;
-				if (STeam is null || STeam.id == 0) bot_ship = false;
-				else bot_ship = true;
+				if (STeam is null || STeam.id == 0)
+					bot_ship = false;
+				else
+					bot_ship = true;
 
-				if (STeam is object && behavior != BehaviorMode.Drift) color = STeam.color;
+				if (STeam is object && behavior != BehaviorMode.Drift)
+					color = STeam.color;
 
-				if (team is object && upgrade_slots > 0) upgrade_slots += team.upgrade_slots_bonus;
+				if (team is object && upgrade_slots > 0)
+					upgrade_slots += team.upgrade_slots_bonus;
 			}
 		}
 
@@ -190,17 +199,23 @@ namespace Flee {
 				fram = 0;
 			// ===' Bordures '==='
 			if (team is object && team.id == 0) {
-				if (location.X < 0f) location.X = 0f;
+				if (location.X < 0f)
+					location.X = 0f;
 
-				if (location.Y < 0f) location.Y = 0f;
+				if (location.Y < 0f)
+					location.Y = 0f;
 
-				if (location.X > world.ArenaSize.Width) location.X = world.ArenaSize.Width;
+				if (location.X > world.ArenaSize.Width)
+					location.X = world.ArenaSize.Width;
 
-				if (location.Y > world.ArenaSize.Height) location.Y = world.ArenaSize.Height;
-			} else if (location.X < -100 || location.Y < -100 || location.X > world.ArenaSize.Width + 100 || location.Y > world.ArenaSize.Height + 100) if (bot_ship == false)
+				if (location.Y > world.ArenaSize.Height)
+					location.Y = world.ArenaSize.Height;
+			} else if (location.X < -100 || location.Y < -100 || location.X > world.ArenaSize.Width + 100 || location.Y > world.ArenaSize.Height + 100)
+				if (bot_ship == false)
 					integrity = 0;
 			// movement
-			if (stats.turn == 0d && stats.speed == 0d) direction = (float)(direction + 25d / stats.width);
+			if (stats.turn == 0d && stats.speed == 0d)
+				direction = (float)(direction + 25d / stats.width);
 			else {
 				var new_speed = Helpers.GetNewPoint(new Point(0, 0), direction, speed);
 				speed_vec = new PointF((float)(speed_vec.X * 0.925d + new_speed.X * 0.075d), (float)(speed_vec.Y * 0.925d + new_speed.Y * 0.075d));
@@ -208,7 +223,9 @@ namespace Flee {
 				location.Y = location.Y + speed_vec.Y;
 			}
 			// ===' Armes '==='
-			if (cold_deflector_charge <= 0) foreach (Weapon AWeapon in weapons) if (AWeapon.Bar == 0) {
+			if (cold_deflector_charge <= 0)
+				foreach (Weapon AWeapon in weapons)
+					if (AWeapon.Bar == 0) {
 						AWeapon.Load = AWeapon.Load + 1;
 						if (AWeapon.Load >= AWeapon.stats.loadtime) {
 							AWeapon.Load = 0;
@@ -223,7 +240,8 @@ namespace Flee {
 				float point_min = Math.Max(0f, shield * 32f / stats.shield);
 				for (int i = 0; i <= SHIELD_POINTS - 1; i++) {
 					ShieldPoints[i] -= 4;
-					if (ShieldPoints[i] < point_min) ShieldPoints[i] = (int)point_min;
+					if (ShieldPoints[i] < point_min)
+						ShieldPoints[i] = (int)point_min;
 				}
 			}
 			// ===' Deflector '==='
@@ -241,21 +259,27 @@ namespace Flee {
 					deflectors_loaded += 1;
 					deflector_loading = stats.deflectors_cooldown;
 				}
-			} else deflector_loading = stats.deflectors_cooldown;
+			} else
+				deflector_loading = stats.deflectors_cooldown;
 			// ===' Vie '==='
-			if (world.ticks % 40 == 0) if (team is object) {
+			if (world.ticks % 40 == 0)
+				if (team is object) {
 					integrity = integrity + stats.repair;
 					if (integrity > stats.integrity)
 						integrity = stats.integrity;
 				}
 			// ===' Upgrades '==='
-			if (Upgrading is object) if (UpProgress < (decimal)Upgrading.delay) {
+			if (Upgrading is object)
+				if (UpProgress < (decimal)Upgrading.delay) {
 					UpProgress = UpProgress + 1;
-					if (MainForm.cheats_enabled) UpProgress = UpProgress + 99;
+					if (MainForm.cheats_enabled)
+						UpProgress = UpProgress + 99;
 				} else {
-					if (Upgrading.name.Contains("Pointvortex")) Console.WriteLine();
+					if (Upgrading.name.Contains("Pointvortex"))
+						Console.WriteLine();
 
-					if (Upgrading.upgrade_slots_requiered > 0) Ups.Add(Upgrading);
+					if (Upgrading.upgrade_slots_requiered > 0)
+						Ups.Add(Upgrading);
 					// Appliquation debugage 'TODO: NOW: test without this
 					// Dim spliter() As String = Upgrading.Effect.Split(" ")
 					// For Each aspli As String In spliter
@@ -284,10 +308,15 @@ namespace Flee {
 			if (Helpers.GetAngleDiff(direction, qa) < stats.turn) {
 				direction = qa;
 				return;
-			} else if (qa > 180f) if (direction > qa - 180f && direction < qa) direction = (float)(direction + stats.turn);
-				else direction = (float)(direction - stats.turn);
-			else if (direction < qa + 180f && direction > qa) direction = (float)(direction - stats.turn);
-			else direction = (float)(direction + stats.turn);
+			} else if (qa > 180f)
+				if (direction > qa - 180f && direction < qa)
+					direction = (float)(direction + stats.turn);
+				else
+					direction = (float)(direction - stats.turn);
+			else if (direction < qa + 180f && direction > qa)
+				direction = (float)(direction - stats.turn);
+			else
+				direction = (float)(direction + stats.turn);
 		}
 
 		public void TakeDamages(int Amount, [Optional, DefaultParameterValue(null)] ref Shoot From) {
@@ -315,9 +344,14 @@ namespace Flee {
 				Amount = (int)(Amount / 8d);
 			}
 
-			if (From is object && From.Team is object) if (stats.sprite == "Star") From.Team.resources.Antimatter = (long)(From.Team.resources.Antimatter + Amount / 8d);
-				else if (stats.sprite == "Asteroid") if (integrity > Amount) From.Team.resources.Metal += Amount;
-					else if (integrity > 0) From.Team.resources.Metal += integrity;
+			if (From is object && From.Team is object)
+				if (stats.sprite == "Star")
+					From.Team.resources.Antimatter = (long)(From.Team.resources.Antimatter + Amount / 8d);
+				else if (stats.sprite == "Asteroid")
+					if (integrity > Amount)
+						From.Team.resources.Metal += Amount;
+					else if (integrity > 0)
+						From.Team.resources.Metal += integrity;
 
 			if (Amount < 0)
 				return;
@@ -330,15 +364,20 @@ namespace Flee {
 			var QA = default(float);
 			bool NeedSpeed = false;
 			// remove destroyed target
-			if (target is object && target.IsDestroyed()) target = null;
+			if (target is object && target.IsDestroyed())
+				target = null;
 			// ===' Fin de poursuite '==='
-			if (behavior == BehaviorMode.Folow && target is null) behavior = BehaviorMode.Stand;
+			if (behavior == BehaviorMode.Folow && target is null)
+				behavior = BehaviorMode.Stand;
 			// no team mean drifting
-			if (team is null) behavior = BehaviorMode.Drift;
+			if (team is null)
+				behavior = BehaviorMode.Drift;
 			// ===' Auto-Activation '==='
-			if (rnd_num < 100) agressivity += 0.05d;
+			if (rnd_num < 100)
+				agressivity += 0.05d;
 
-			if (bot_ship && behavior != BehaviorMode.Drift && team is object) if (target is null) {
+			if (bot_ship && behavior != BehaviorMode.Drift && team is object)
+				if (target is null) {
 					var nearest_ship = GetClosestShip(agressivity, 1.0d, 0.1d);
 					if (nearest_ship is object) {
 						target = nearest_ship;
@@ -350,91 +389,100 @@ namespace Flee {
 				}
 			// ===' Execution '==='
 			switch (behavior) {
-				case BehaviorMode.Mine: {
-						AllowMining = true;
-						if (target is object) {
-							// has mining target already
-							QA = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)target.location.X, (int)target.location.Y);
-							double optimal_range = 50d;
-							if (weapons.Count > 0)
-								optimal_range = weapons[0].stats.range * 0.5d;
-							double rel_dist = Helpers.Distance(ref location, ref target.location) - target.stats.width / 2d;
-							if (rel_dist <= optimal_range) {
-								// turn if too close
-								if (Helpers.GetAngleDiff(direction, QA) < 120d) QA = QA + 180f;
+			case BehaviorMode.Mine: {
+				AllowMining = true;
+				if (target is object) {
+					// has mining target already
+					QA = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)target.location.X, (int)target.location.Y);
+					double optimal_range = 50d;
+					if (weapons.Count > 0)
+						optimal_range = weapons[0].stats.range * 0.5d;
+					double rel_dist = Helpers.Distance(ref location, ref target.location) - target.stats.width / 2d;
+					if (rel_dist <= optimal_range) {
+						// turn if too close
+						if (Helpers.GetAngleDiff(direction, QA) < 120d)
+							QA = QA + 180f;
 
-								NeedSpeed = true;
-							} else NeedSpeed = Helpers.GetAngleDiff(direction, QA) < 90d;
-
-							if (Helpers.Distance(ref TargetPTN, ref target.location) > world.ArenaSize.Width / 8d)                         // abort target if too far away from mining point
-								target = null;
-						} else {
-							// no current mining target
-							int max_mining_distance = (int)(world.ArenaSize.Width / 8d);
-							var mining_target = GetClosestShip(0.0d, 1.0d);
-							if (mining_target is object && Helpers.Distance(ref TargetPTN, ref mining_target.location) > max_mining_distance) mining_target = null;
-
-							target = mining_target;
-							if (target is null) {
-								QA = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)TargetPTN.X, (int)TargetPTN.Y);
-								NeedSpeed = true;
-							}
-						}
-
-						break;
-					}
-
-				case BehaviorMode.Folow: {
-						if (target is object) {
-							var forseen_location = ForseeLocation(target);
-							// world.Effects.Add(New Effect With {.Type = "EFF_OrderTarget", .Coo = forseen_location, .Direction = 45, .speed = 0})
-							QA = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)forseen_location.X, (int)forseen_location.Y);
-							double rel_forseen_dist = Helpers.Distance(ref location, ref forseen_location) - target.stats.width / 2d;
-							double optimal_range = 50d;
-							if (weapons.Count > 0)
-								optimal_range = weapons[0].stats.range * weapons[0].stats.range / rel_forseen_dist * 0.8d; // TODO: instead of this factor, just use the forseen location of the target
-							if (Helpers.Distance(ref location, ref target.location) <= optimal_range) if (Helpers.GetAngleDiff(direction, QA) < 112d) {
-									QA = QA + 180f;
-									NeedSpeed = Helpers.GetAngleDiff(direction, QA - 180f) > 45d;
-								} else NeedSpeed = Helpers.GetAngleDiff(direction, QA) > 90d;
-							else {
-								if (target.stats.speed * 1.1d >= stats.speed) {
-									double angle_to_target = Helpers.GetQA((int)location.X, (int)location.Y, (int)target.location.X, (int)target.location.Y);
-									if (Helpers.GetAngleDiff(angle_to_target, QA) > 90d) QA = (float)angle_to_target;
-								}
-
-								NeedSpeed = Helpers.GetAngleDiff(direction, QA) < 90d;
-							}
-							// NeedSpeed = True
-						}
-
-						break;
-					}
-
-				case BehaviorMode.Stand: {
-						QA = direction;
-						NeedSpeed = false;
-						break;
-					}
-
-				case BehaviorMode.Drift: {
-						QA = direction;
 						NeedSpeed = true;
-						break;
-					}
+					} else
+						NeedSpeed = Helpers.GetAngleDiff(direction, QA) < 90d;
 
-				case BehaviorMode.GoToPoint: {
+					if (Helpers.Distance(ref TargetPTN, ref target.location) > world.ArenaSize.Width / 8d)                         // abort target if too far away from mining point
+						target = null;
+				} else {
+					// no current mining target
+					int max_mining_distance = (int)(world.ArenaSize.Width / 8d);
+					var mining_target = GetClosestShip(0.0d, 1.0d);
+					if (mining_target is object && Helpers.Distance(ref TargetPTN, ref mining_target.location) > max_mining_distance)
+						mining_target = null;
+
+					target = mining_target;
+					if (target is null) {
 						QA = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)TargetPTN.X, (int)TargetPTN.Y);
-						if (Helpers.Distance(location.X, location.Y, TargetPTN.X, TargetPTN.Y) <= 50d) behavior = BehaviorMode.Stand;
-
 						NeedSpeed = true;
-						break;
 					}
+				}
+
+				break;
+			}
+
+			case BehaviorMode.Folow: {
+				if (target is object) {
+					var forseen_location = ForseeLocation(target);
+					// world.Effects.Add(New Effect With {.Type = "EFF_OrderTarget", .Coo = forseen_location, .Direction = 45, .speed = 0})
+					QA = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)forseen_location.X, (int)forseen_location.Y);
+					double rel_forseen_dist = Helpers.Distance(ref location, ref forseen_location) - target.stats.width / 2d;
+					double optimal_range = 50d;
+					if (weapons.Count > 0)
+						optimal_range = weapons[0].stats.range * weapons[0].stats.range / rel_forseen_dist * 0.8d; // TODO: instead of this factor, just use the forseen location of the target
+					if (Helpers.Distance(ref location, ref target.location) <= optimal_range)
+						if (Helpers.GetAngleDiff(direction, QA) < 112d) {
+							QA = QA + 180f;
+							NeedSpeed = Helpers.GetAngleDiff(direction, QA - 180f) > 45d;
+						} else
+							NeedSpeed = Helpers.GetAngleDiff(direction, QA) > 90d;
+					else {
+						if (target.stats.speed * 1.1d >= stats.speed) {
+							double angle_to_target = Helpers.GetQA((int)location.X, (int)location.Y, (int)target.location.X, (int)target.location.Y);
+							if (Helpers.GetAngleDiff(angle_to_target, QA) > 90d)
+								QA = (float)angle_to_target;
+						}
+
+						NeedSpeed = Helpers.GetAngleDiff(direction, QA) < 90d;
+					}
+					// NeedSpeed = True
+				}
+
+				break;
+			}
+
+			case BehaviorMode.Stand: {
+				QA = direction;
+				NeedSpeed = false;
+				break;
+			}
+
+			case BehaviorMode.Drift: {
+				QA = direction;
+				NeedSpeed = true;
+				break;
+			}
+
+			case BehaviorMode.GoToPoint: {
+				QA = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)TargetPTN.X, (int)TargetPTN.Y);
+				if (Helpers.Distance(location.X, location.Y, TargetPTN.X, TargetPTN.Y) <= 50d)
+					behavior = BehaviorMode.Stand;
+
+				NeedSpeed = true;
+				break;
+			}
 			}
 			// ===' Appliquation '==='
 			TurnToQA(QA);
-			if (NeedSpeed) speed = (float)(speed + stats.turn / 20d);
-			else speed = (float)(speed - stats.turn / 20d);
+			if (NeedSpeed)
+				speed = (float)(speed + stats.turn / 20d);
+			else
+				speed = (float)(speed - stats.turn / 20d);
 
 			if (speed > stats.speed) {
 				speed -= 1f;
@@ -449,32 +497,42 @@ namespace Flee {
 
 		public void IAFire() {
 			// ===' Tirer '==='
-			if (weapons.Count > 0 && fram % 2 == 0) foreach (Weapon AWeap in weapons) if (AWeap.Bar > 0) {
+			if (weapons.Count > 0 && fram % 2 == 0)
+				foreach (Weapon AWeap in weapons)
+					if (AWeap.Bar > 0) {
 						double closest_score = double.MaxValue;
 						Ship weapon_targeted_ship = null; // Pas de cible
 						int weapon_location_x = (int)(Math.Sin(2d * Math.PI * (AWeap.Loc + direction) / 360d) * (stats.width / 2d) + location.X);
 						int weapon_location_y = (int)(Math.Cos(2d * Math.PI * (AWeap.Loc + direction) / 360d) * (stats.width / 2d) + location.Y);
 						// target in range
-						if (target is object) if (team is null || !team.IsFriendWith(target.team)) {
+						if (target is object)
+							if (team is null || !team.IsFriendWith(target.team)) {
 								var argp2 = AWeap.ForseeShootingLocation(target);
 								double dist = Helpers.Distance(ref location, ref argp2) - target.stats.width / 2d;
-								if (dist < AWeap.stats.range * 0.9d) weapon_targeted_ship = target;
+								if (dist < AWeap.stats.range * 0.9d)
+									weapon_targeted_ship = target;
 							}
 						// target not in range, find another
-						if (weapon_targeted_ship is null) foreach (Ship OVessel in world.Ships) {
-								if (ReferenceEquals(OVessel, this)) continue;
+						if (weapon_targeted_ship is null)
+							foreach (Ship OVessel in world.Ships) {
+								if (ReferenceEquals(OVessel, this))
+									continue;
 
-								if (!AllowMining && (OVessel.stats.default_weapons.Count == 0 || AWeap.stats.power == 0)) continue;
+								if (!AllowMining && (OVessel.stats.default_weapons.Count == 0 || AWeap.stats.power == 0))
+									continue;
 
-								if (Helpers.Distance(ref location, ref OVessel.location) < AWeap.stats.range) if (team is null || !team.IsFriendWith(OVessel.team)) {
+								if (Helpers.Distance(ref location, ref OVessel.location) < AWeap.stats.range)
+									if (team is null || !team.IsFriendWith(OVessel.team)) {
 										// Dim dist As Integer = Helpers.Distance(ToX, ToY, OVessel.location.X, OVessel.location.Y) - OVessel.stats.width / 2
 										var argp21 = AWeap.ForseeShootingLocation(OVessel);
 										double score = Helpers.Distance(ref location, ref argp21) - OVessel.stats.width / 2d;
 										if (score < AWeap.stats.range * 0.9d) {
 											if (score < AWeap.stats.range) {
-												if (team is null || OVessel.team is object && !team.IsFriendWith(OVessel.team)) score /= 8d;
+												if (team is null || OVessel.team is object && !team.IsFriendWith(OVessel.team))
+													score /= 8d;
 
-												if (ReferenceEquals(target, OVessel)) score /= 4d;
+												if (ReferenceEquals(target, OVessel))
+													score /= 4d;
 											}
 
 											if (score < closest_score) {
@@ -489,7 +547,8 @@ namespace Flee {
 							var weapon_target_point = AWeap.ForseeShootingLocation(weapon_targeted_ship);
 							int QA = (int)Helpers.GetQA(weapon_location_x, weapon_location_y, (int)weapon_target_point.X, (int)weapon_target_point.Y);
 							AWeap.Fire(QA, new Point(weapon_location_x, weapon_location_y), this);
-							if ((AWeap.stats.special & (int)Weapon.SpecialBits.SelfExplode) != 0) integrity = -2048;
+							if ((AWeap.stats.special & (int)Weapon.SpecialBits.SelfExplode) != 0)
+								integrity = -2048;
 						}
 					}
 		}
@@ -497,7 +556,9 @@ namespace Flee {
 		// get updates to display
 		public static object ListedUpgrades(List<Ship> ships) {
 			var met_upgrades = new List<Upgrade>();
-			foreach (Upgrade upgrade in Upgrade.upgrades) if (CountShipsListingUpgrade(ships, upgrade) == ships.Count) met_upgrades.Add(upgrade);
+			foreach (Upgrade upgrade in Upgrade.upgrades)
+				if (CountShipsListingUpgrade(ships, upgrade) == ships.Count)
+					met_upgrades.Add(upgrade);
 
 			return met_upgrades;
 		}
@@ -505,14 +566,18 @@ namespace Flee {
 		// get all possible upgrades
 		public List<Upgrade> ConditionsMetUpgrades() {
 			var met_upgrades = new List<Upgrade>();
-			foreach (Upgrade upgrade in Upgrade.upgrades) if (IsUpgradeCompatible(upgrade) || Ups.Contains(upgrade)) met_upgrades.Add(upgrade);
+			foreach (Upgrade upgrade in Upgrade.upgrades)
+				if (IsUpgradeCompatible(upgrade) || Ups.Contains(upgrade))
+					met_upgrades.Add(upgrade);
 
 			return met_upgrades;
 		}
 		// get all possible upgrades
 		public List<Upgrade> AvailableUpgrades() {
 			var possible_upgrades = new List<Upgrade>();
-			foreach (Upgrade upgrade in Upgrade.upgrades) if (CanUpgrade(upgrade) && (!bot_ship || !upgrade.not_for_bots)) possible_upgrades.Add(upgrade);
+			foreach (Upgrade upgrade in Upgrade.upgrades)
+				if (CanUpgrade(upgrade) && (!bot_ship || !upgrade.not_for_bots))
+					possible_upgrades.Add(upgrade);
 
 			return possible_upgrades;
 		}
@@ -536,32 +601,42 @@ namespace Flee {
 				return true;
 			if (ReferenceEquals(upgrade, Upgrading))
 				return true;
-			if (upgrade.spawned_ship is object) if (!stats.crafts.Contains(upgrade.spawned_ship))
+			if (upgrade.spawned_ship is object)
+				if (!stats.crafts.Contains(upgrade.spawned_ship))
 					return false;
 
 			var conditions_strings = upgrade.need.Split(' ');
-			foreach (string a_condition in conditions_strings) if (!IsUpgradeConditionMet(a_condition)) return false;
+			foreach (string a_condition in conditions_strings)
+				if (!IsUpgradeConditionMet(a_condition))
+					return false;
 
 			return true;
 		}
 
 		public static int CountShipsListingUpgrade(List<Ship> ships, Upgrade upgrade) {
 			int count = 0;
-			foreach (Ship ship in ships) if (ship.IsUpgradeCompatible(upgrade) || ship.Ups.Contains(upgrade)) count += 1;
+			foreach (Ship ship in ships)
+				if (ship.IsUpgradeCompatible(upgrade) || ship.Ups.Contains(upgrade))
+					count += 1;
 
 			return count;
 		}
 
 		public static int CountShipsBuyableNowUpgrade(List<Ship> ships, Upgrade upgrade) {
 			int count = 0;
-			foreach (Ship ship in ships) if (ship.Upgrading is null) if (ship.IsUpgradeCompatible(upgrade) && !ship.Ups.Contains(upgrade) && ship.upgrade_slots - ship.Ups.Count - upgrade.upgrade_slots_requiered >= 0) count += 1;
+			foreach (Ship ship in ships)
+				if (ship.Upgrading is null)
+					if (ship.IsUpgradeCompatible(upgrade) && !ship.Ups.Contains(upgrade) && ship.upgrade_slots - ship.Ups.Count - upgrade.upgrade_slots_requiered >= 0)
+						count += 1;
 
 			return count;
 		}
 
 		public static int CountShipsHavingUpgrade(List<Ship> ships, Upgrade upgrade) {
 			int count = 0;
-			foreach (Ship ship in ships) if (ship.Ups.Contains(upgrade)) count += 1;
+			foreach (Ship ship in ships)
+				if (ship.Ups.Contains(upgrade))
+					count += 1;
 
 			return count;
 		}
@@ -569,93 +644,93 @@ namespace Flee {
 		public bool IsUpgradeConditionMet(string chain) {
 			var Spliter = chain.Split(':');
 			switch (Spliter[0] ?? "") { // Debug
-				case var @case when @case == "": {
-						return true;
-					}
+			case var @case when @case == "": {
+				return true;
+			}
 
-				case "?W": {
-						if (weapons.Count > 0)
-							return true;
-						break;
-					}
+			case "?W": {
+				if (weapons.Count > 0)
+					return true;
+				break;
+			}
 
-				case "?S": {
-						if (stats.speed > 0d)
-							return true;
-						break;
-					}
+			case "?S": {
+				if (stats.speed > 0d)
+					return true;
+				break;
+			}
 
-				case "?Base": {
-						if (stats.name.Contains("Station"))
-							return true;
-						break;
-					}
+			case "?Base": {
+				if (stats.name.Contains("Station"))
+					return true;
+				break;
+			}
 
-				case "?NotStation": {
-						if (!stats.name.Contains("Station"))
-							return true;
-						break;
-					}
+			case "?NotStation": {
+				if (!stats.name.Contains("Station"))
+					return true;
+				break;
+			}
 
-				case "+Lvl": {
-						if (stats.level >= Helpers.ToDouble(Spliter[1]))
-							return true;
-						break;
-					}
+			case "+Lvl": {
+				if (stats.level >= Helpers.ToDouble(Spliter[1]))
+					return true;
+				break;
+			}
 
-				case "+Speed": { // vitesse
-						if (stats.speed >= Helpers.ToDouble(Spliter[1]))
-							return true;
-						break;
-					}
+			case "+Speed": { // vitesse
+				if (stats.speed >= Helpers.ToDouble(Spliter[1]))
+					return true;
+				break;
+			}
 
-				case "-Speed": {
-						if (stats.speed <= Helpers.ToDouble(Spliter[1]))
-							return true;
-						break;
-					}
+			case "-Speed": {
+				if (stats.speed <= Helpers.ToDouble(Spliter[1]))
+					return true;
+				break;
+			}
 
-				case "+Life": { // Resistance
-						if (stats.integrity >= Helpers.ToDouble(Spliter[1]))
-							return true;
-						break;
-					}
+			case "+Life": { // Resistance
+				if (stats.integrity >= Helpers.ToDouble(Spliter[1]))
+					return true;
+				break;
+			}
 
-				case "-Life": { // 
-						if (stats.integrity <= Helpers.ToDouble(Spliter[1]))
-							return true;
-						break;
-					}
+			case "-Life": { // 
+				if (stats.integrity <= Helpers.ToDouble(Spliter[1]))
+					return true;
+				break;
+			}
 
-				case "?Up": {
-						var argupgrade = Upgrade.UpgradeFromName(Spliter[1]);
-						if (HaveUp(ref argupgrade))
-							return true;
-						break;
-					}
+			case "?Up": {
+				var argupgrade = Upgrade.UpgradeFromName(Spliter[1]);
+				if (HaveUp(ref argupgrade))
+					return true;
+				break;
+			}
 
-				case "?Type": { // Type
-						if ((stats.sprite ?? "") == (Spliter[1] ?? ""))
-							return true;
-						break;
-					}
+			case "?Type": { // Type
+				if ((stats.sprite ?? "") == (Spliter[1] ?? ""))
+					return true;
+				break;
+			}
 
-				case "?Wtype": { // armement
-						if ((weapons[0].stats.sprite ?? "") == (Spliter[1] ?? ""))
-							return true;
-						break;
-					}
+			case "?Wtype": { // armement
+				if ((weapons[0].stats.sprite ?? "") == (Spliter[1] ?? ""))
+					return true;
+				break;
+			}
 
-				case "?MS": {
-						if (team is null || world.CountTeamShips(team) < team.ship_count_limit)
-							return true;
-						break;
-					}
+			case "?MS": {
+				if (team is null || world.CountTeamShips(team) < team.ship_count_limit)
+					return true;
+				break;
+			}
 
-				default: {
-						throw new Exception("Erreur : " + chain + " (invalid condition)");
-						break;
-					}
+			default: {
+				throw new Exception("Erreur : " + chain + " (invalid condition)");
+				break;
+			}
 			}
 
 			return false;
@@ -664,7 +739,9 @@ namespace Flee {
 		// get the minimum loading progress of an upgrade for a list of ship, or int.MaxValue if not being upgraded
 		public static int MinUpgradeProgress(List<Ship> ships, Upgrade upgrade) {
 			int min = int.MaxValue;
-			foreach (Ship ship in ships) if (ReferenceEquals(ship.Upgrading, upgrade)) min = Math.Min(min, ship.UpProgress);
+			foreach (Ship ship in ships)
+				if (ReferenceEquals(ship.Upgrading, upgrade))
+					min = Math.Min(min, ship.UpProgress);
 
 			return min;
 		}
@@ -687,232 +764,240 @@ namespace Flee {
 		public void ApplyUpgradeEffect(string Chain, bool first_application) {
 			var Spliter = Chain.Split(':');
 			switch (Spliter[0] ?? "") {
-				case var @case when @case == "": {
-						break;
+			case var @case when @case == "": {
+				break;
+			}
+
+			case "!C": {
+				color = Color.FromName(Spliter[1]);
+				if (stats.sprite == "Station")
+					team.color = color;
+
+				break;
+			}
+
+			case "!Jump": {
+				world.Effects.Add(new Effect() { Type = "EFF_Jumped", Coo = location, Direction = 0f, speed = 0f });
+				speed = Convert.ToInt32(Spliter[1]);
+				break;
+			}
+
+			case "!Agility": {
+				stats.turn += Helpers.ToDouble(Spliter[1]);
+				break;
+			}
+
+			case "!Teleport": {
+				world.Effects.Add(new Effect() { Type = "EFF_Teleported", Coo = location, Direction = 0f, speed = 0f });
+				var tp_dst = TargetPTN;
+				if (target is object)
+					tp_dst = target.location;
+
+				location = new PointF(tp_dst.X + world.gameplay_random.Next(-512, 512), tp_dst.Y + world.gameplay_random.Next(-512, 512));
+				world.Effects.Add(new Effect() { Type = "EFF_Teleported", Coo = location, Direction = 0f, speed = 0f });
+				break;
+			}
+
+			case "!Upsbonus": {
+				if (first_application)
+					team.upgrade_slots_bonus = (ushort)(team.upgrade_slots_bonus + Helpers.ToDouble(Spliter[1])); // FN
+				break;
+			}
+
+			case "!Maxships": {
+				if (first_application)
+					team.ship_count_limit = (ushort)(team.ship_count_limit + Helpers.ToDouble(Spliter[1])); // FN
+				break;
+			}
+
+			case "!Shield": {
+				stats.shield = (int)(stats.shield + Helpers.ToDouble(Spliter[1]));
+				if (first_application)
+					ResetShieldPoint();
+				break;
+			}
+
+			case "!Deflector": {
+				stats.deflectors = (int)(stats.deflectors + Helpers.ToDouble(Spliter[1]));
+				break;
+			}
+
+			case "!HotDeflector": {
+				stats.hot_deflector += Helpers.ToDouble(Spliter[1]);
+				break;
+			}
+
+			case "!ColdDeflector": {
+				stats.cold_deflector = Convert.ToInt32(Spliter[1]) == 1;
+				break;
+			}
+
+			case "%Shield": {
+				stats.shield = (int)(stats.shield + stats.shield * (Helpers.ToDouble(Spliter[1]) / 100d));
+				if (first_application)
+					ResetShieldPoint();
+				break;
+			}
+
+			case "!Shieldop": {
+				stats.shield_opacity += Helpers.ToDouble(Spliter[1]);
+				if (first_application)
+					ResetShieldPoint();
+				break;
+			}
+
+			case "%Shieldreg": {
+				stats.shield_regeneration = (int)(stats.shield_regeneration + stats.shield_regeneration * (Helpers.ToDouble(Spliter[1]) / 100d));
+				if (first_application)
+					ResetShieldPoint();
+				break;
+			}
+
+			case "!UpsMax": {
+				upgrade_slots = (int)(upgrade_slots + Helpers.ToDouble(Spliter[1]));
+				break;
+			}
+
+			case "!Fix": {
+				integrity = (int)(integrity + stats.integrity * (Helpers.ToDouble(Spliter[1]) / 100.0d));
+				break;
+			}
+
+			case "!FixSFull": {
+				shield = stats.shield;
+				break;
+			}
+
+			case "%Speed": {
+				stats.speed += stats.speed * (Helpers.ToDouble(Spliter[1]) / 100d);
+				stats.turn += stats.turn * (Helpers.ToDouble(Spliter[1]) / 100d);
+				break;
+			}
+
+			case "%Life": {
+				stats.integrity = (int)(stats.integrity + stats.integrity * (Helpers.ToDouble(Spliter[1]) / 100d));
+				if (first_application)
+					integrity = (int)(integrity + stats.integrity * (Helpers.ToDouble(Spliter[1]) / 100d)); // FN
+				break;
+			}
+
+			case "!Regen": {
+				stats.repair += Convert.ToInt32(Spliter[1]); // FN
+				break;
+			}
+
+			case "!Type": {
+				if (first_application)
+					SetStats(Spliter[1]);// : Me.stats.sprite = Spliter(1)
+				break;
+			}
+
+			case "%Wloadmax": {
+				// For Each AW As Weapon In weapons
+				// AW.stats.loadtime += AW.stats.loadtime * (Spliter(1) / 100)
+				// Next
+				if (weapons.Count != 0)
+					weapons[0].stats.loadtime = (int)(weapons[0].stats.loadtime + weapons[0].stats.loadtime * (Helpers.ToDouble(Spliter[1]) / 100.0d));
+
+				break;
+			}
+
+			case "%Wbar": {
+				// For Each AW As Weapon In weapons
+				// AW.stats.salvo += AW.stats.salvo * (Spliter(1) / 100)
+				// Next
+				if (weapons.Count != 0) {
+					weapons[0].stats.salvo = (int)(weapons[0].stats.salvo + weapons[0].stats.salvo * (Helpers.ToDouble(Spliter[1]) / 100.0d));
+					if (first_application) {
+						weapons[0].Bar = 0;
+						weapons[0].Load = 0;
 					}
+				}
 
-				case "!C": {
-						color = Color.FromName(Spliter[1]);
-						if (stats.sprite == "Station") team.color = color;
+				break;
+			}
 
-						break;
-					}
+			case "%Wpower": {
+				// For Each AW As Weapon In weapons
+				// AW.stats.power += AW.stats.power * (Spliter(1) / 100)
+				// Next
+				if (weapons.Count != 0)
+					weapons[0].stats.power = (int)(weapons[0].stats.power + weapons[0].stats.power * (Helpers.ToDouble(Spliter[1]) / 100.0d));
 
-				case "!Jump": {
-						world.Effects.Add(new Effect() { Type = "EFF_Jumped", Coo = location, Direction = 0f, speed = 0f });
-						speed = Convert.ToInt32(Spliter[1]);
-						break;
-					}
+				break;
+			}
 
-				case "!Agility": {
-						stats.turn += Helpers.ToDouble(Spliter[1]);
-						break;
-					}
+			case "%Wrange": {
+				// For Each AW As Weapon In weapons
+				// AW.stats.range += AW.stats.range * (Spliter(1) / 100)
+				// Next
+				if (weapons.Count != 0)
+					weapons[0].stats.range = (int)(weapons[0].stats.range + weapons[0].stats.range * (Helpers.ToDouble(Spliter[1]) / 100.0d));
 
-				case "!Teleport": {
-						world.Effects.Add(new Effect() { Type = "EFF_Teleported", Coo = location, Direction = 0f, speed = 0f });
-						var tp_dst = TargetPTN;
-						if (target is object) tp_dst = target.location;
+				break;
+			}
 
-						location = new PointF(tp_dst.X + world.gameplay_random.Next(-512, 512), tp_dst.Y + world.gameplay_random.Next(-512, 512));
-						world.Effects.Add(new Effect() { Type = "EFF_Teleported", Coo = location, Direction = 0f, speed = 0f });
-						break;
-					}
+			case "%Wcelerity": {
+				// For Each AW As Weapon In weapons
+				// AW.stats.celerity += AW.stats.celerity * (Spliter(1) / 100)
+				// Next
+				if (weapons.Count != 0)
+					weapons[0].stats.celerity = (int)(weapons[0].stats.celerity + weapons[0].stats.celerity * (Helpers.ToDouble(Spliter[1]) / 100.0d));
 
-				case "!Upsbonus": {
-						if (first_application)
-							team.upgrade_slots_bonus = (ushort)(team.upgrade_slots_bonus + Helpers.ToDouble(Spliter[1])); // FN
-						break;
-					}
+				break;
+			}
 
-				case "!Maxships": {
-						if (first_application)
-							team.ship_count_limit = (ushort)(team.ship_count_limit + Helpers.ToDouble(Spliter[1])); // FN
-						break;
-					}
+			case "!Sum": {
+				if (first_application)
+					world.Ships.Add(new Ship(ref world, team, Spliter[1]) { location = new Point((int)(location.X + world.gameplay_random.Next(-10, 11)), (int)(location.Y + world.gameplay_random.Next(-10, 11))) });
+				world.Ships[world.Ships.Count - 1].direction = direction;
+				if (world.Ships[world.Ships.Count - 1].weapons.Count > 0 && (world.Ships[world.Ships.Count - 1].weapons[0].stats.special & (int)Weapon.SpecialBits.SelfExplode) != 0) {
+					if (team is null || target is null || target.team is null || !team.IsFriendWith(target.team))
+						world.Ships[world.Ships.Count - 1].target = target;
+					else
+						world.Ships[world.Ships.Count - 1].target = null;
 
-				case "!Shield": {
-						stats.shield = (int)(stats.shield + Helpers.ToDouble(Spliter[1]));
-						if (first_application)
-							ResetShieldPoint();
-						break;
-					}
+					world.Ships[world.Ships.Count - 1].behavior = BehaviorMode.Folow;
+					world.Ships[world.Ships.Count - 1].agressivity = agressivity * 100d;
+					world.Ships[world.Ships.Count - 1].bot_ship = true;
+				} else {
+					world.Ships[world.Ships.Count - 1].behavior = BehaviorMode.Folow;
+					world.Ships[world.Ships.Count - 1].target = this;
+				}
 
-				case "!Deflector": {
-						stats.deflectors = (int)(stats.deflectors + Helpers.ToDouble(Spliter[1]));
-						break;
-					}
+				break;
+			}
 
-				case "!HotDeflector": {
-						stats.hot_deflector += Helpers.ToDouble(Spliter[1]);
-						break;
-					}
+			case "!Ascend": {
+				if (first_application && team.id == 0) {
+					MainForm.has_ascended = true;
+					MainForm.help = true;
+				}
 
-				case "!ColdDeflector": {
-						stats.cold_deflector = Convert.ToInt32(Spliter[1]) == 1;
-						break;
-					}
+				break;
+			}
 
-				case "%Shield": {
-						stats.shield = (int)(stats.shield + stats.shield * (Helpers.ToDouble(Spliter[1]) / 100d));
-						if (first_application)
-							ResetShieldPoint();
-						break;
-					}
+			case "!Suicide": {
+				last_damager_team = team;
+				stats.repair = 0;
+				integrity = -2048;
+				break;
+			}
 
-				case "!Shieldop": {
-						stats.shield_opacity += Helpers.ToDouble(Spliter[1]);
-						if (first_application)
-							ResetShieldPoint();
-						break;
-					}
+			case "!Free": {
+				SetTeam(world.Teams[world.gameplay_random.Next(0, world.Teams.Count)]);
+				break;
+			}
 
-				case "%Shieldreg": {
-						stats.shield_regeneration = (int)(stats.shield_regeneration + stats.shield_regeneration * (Helpers.ToDouble(Spliter[1]) / 100d));
-						if (first_application)
-							ResetShieldPoint();
-						break;
-					}
+			case "!Cheats": {
+				MainForm.cheats_enabled = !MainForm.cheats_enabled;
+				break;
+			}
 
-				case "!UpsMax": {
-						upgrade_slots = (int)(upgrade_slots + Helpers.ToDouble(Spliter[1]));
-						break;
-					}
-
-				case "!Fix": {
-						integrity = (int)(integrity + stats.integrity * (Helpers.ToDouble(Spliter[1]) / 100.0d));
-						break;
-					}
-
-				case "!FixSFull": {
-						shield = stats.shield;
-						break;
-					}
-
-				case "%Speed": {
-						stats.speed += stats.speed * (Helpers.ToDouble(Spliter[1]) / 100d);
-						stats.turn += stats.turn * (Helpers.ToDouble(Spliter[1]) / 100d);
-						break;
-					}
-
-				case "%Life": {
-						stats.integrity = (int)(stats.integrity + stats.integrity * (Helpers.ToDouble(Spliter[1]) / 100d));
-						if (first_application)
-							integrity = (int)(integrity + stats.integrity * (Helpers.ToDouble(Spliter[1]) / 100d)); // FN
-						break;
-					}
-
-				case "!Regen": {
-						stats.repair += Convert.ToInt32(Spliter[1]); // FN
-						break;
-					}
-
-				case "!Type": {
-						if (first_application)
-							SetStats(Spliter[1]);// : Me.stats.sprite = Spliter(1)
-						break;
-					}
-
-				case "%Wloadmax": {
-						// For Each AW As Weapon In weapons
-						// AW.stats.loadtime += AW.stats.loadtime * (Spliter(1) / 100)
-						// Next
-						if (weapons.Count != 0) weapons[0].stats.loadtime = (int)(weapons[0].stats.loadtime + weapons[0].stats.loadtime * (Helpers.ToDouble(Spliter[1]) / 100.0d));
-
-						break;
-					}
-
-				case "%Wbar": {
-						// For Each AW As Weapon In weapons
-						// AW.stats.salvo += AW.stats.salvo * (Spliter(1) / 100)
-						// Next
-						if (weapons.Count != 0) {
-							weapons[0].stats.salvo = (int)(weapons[0].stats.salvo + weapons[0].stats.salvo * (Helpers.ToDouble(Spliter[1]) / 100.0d));
-							if (first_application) {
-								weapons[0].Bar = 0;
-								weapons[0].Load = 0;
-							}
-						}
-
-						break;
-					}
-
-				case "%Wpower": {
-						// For Each AW As Weapon In weapons
-						// AW.stats.power += AW.stats.power * (Spliter(1) / 100)
-						// Next
-						if (weapons.Count != 0) weapons[0].stats.power = (int)(weapons[0].stats.power + weapons[0].stats.power * (Helpers.ToDouble(Spliter[1]) / 100.0d));
-
-						break;
-					}
-
-				case "%Wrange": {
-						// For Each AW As Weapon In weapons
-						// AW.stats.range += AW.stats.range * (Spliter(1) / 100)
-						// Next
-						if (weapons.Count != 0) weapons[0].stats.range = (int)(weapons[0].stats.range + weapons[0].stats.range * (Helpers.ToDouble(Spliter[1]) / 100.0d));
-
-						break;
-					}
-
-				case "%Wcelerity": {
-						// For Each AW As Weapon In weapons
-						// AW.stats.celerity += AW.stats.celerity * (Spliter(1) / 100)
-						// Next
-						if (weapons.Count != 0) weapons[0].stats.celerity = (int)(weapons[0].stats.celerity + weapons[0].stats.celerity * (Helpers.ToDouble(Spliter[1]) / 100.0d));
-
-						break;
-					}
-
-				case "!Sum": {
-						if (first_application)
-							world.Ships.Add(new Ship(ref world, team, Spliter[1]) { location = new Point((int)(location.X + world.gameplay_random.Next(-10, 11)), (int)(location.Y + world.gameplay_random.Next(-10, 11))) });
-						world.Ships[world.Ships.Count - 1].direction = direction;
-						if (world.Ships[world.Ships.Count - 1].weapons.Count > 0 && (world.Ships[world.Ships.Count - 1].weapons[0].stats.special & (int)Weapon.SpecialBits.SelfExplode) != 0) {
-							if (team is null || target is null || target.team is null || !team.IsFriendWith(target.team)) world.Ships[world.Ships.Count - 1].target = target;
-							else world.Ships[world.Ships.Count - 1].target = null;
-
-							world.Ships[world.Ships.Count - 1].behavior = BehaviorMode.Folow;
-							world.Ships[world.Ships.Count - 1].agressivity = agressivity * 100d;
-							world.Ships[world.Ships.Count - 1].bot_ship = true;
-						} else {
-							world.Ships[world.Ships.Count - 1].behavior = BehaviorMode.Folow;
-							world.Ships[world.Ships.Count - 1].target = this;
-						}
-
-						break;
-					}
-
-				case "!Ascend": {
-						if (first_application && team.id == 0) {
-							MainForm.has_ascended = true;
-							MainForm.help = true;
-						}
-
-						break;
-					}
-
-				case "!Suicide": {
-						last_damager_team = team;
-						stats.repair = 0;
-						integrity = -2048;
-						break;
-					}
-
-				case "!Free": {
-						SetTeam(world.Teams[world.gameplay_random.Next(0, world.Teams.Count)]);
-						break;
-					}
-
-				case "!Cheats": {
-						MainForm.cheats_enabled = !MainForm.cheats_enabled;
-						break;
-					}
-
-				default: {
-						throw new Exception("Erreur : " + Chain + " (invalid effect)");
-						break;
-					}
+			default: {
+				throw new Exception("Erreur : " + Chain + " (invalid effect)");
+				break;
+			}
 			}
 		}
 
@@ -933,19 +1018,24 @@ namespace Flee {
 			const double max_distance = double.PositiveInfinity;
 			// maximum square distance
 			double closest_distance_sq = double.PositiveInfinity;
-			if (max_distance < Math.Sqrt(double.MaxValue)) closest_distance_sq = max_distance * max_distance;
+			if (max_distance < Math.Sqrt(double.MaxValue))
+				closest_distance_sq = max_distance * max_distance;
 			// mods are applied to square distance so they should be sqare too
 			enemies *= enemies;
 			neutrals *= neutrals;
 			allies *= allies;
 			// find the ship
 			Ship closest_ship = null;
-			foreach (Ship other_ship in world.Ships) if (!ReferenceEquals(this, other_ship)) {
+			foreach (Ship other_ship in world.Ships)
+				if (!ReferenceEquals(this, other_ship)) {
 					double distance_sq;
 					// relationship priority
-					if (other_ship.team is null || team is null) distance_sq = Helpers.DistanceSQ(ref location, ref other_ship.location) / neutrals;
-					else if (team.IsFriendWith(other_ship.team)) distance_sq = Helpers.DistanceSQ(ref location, ref other_ship.location) / allies;
-					else distance_sq = Helpers.DistanceSQ(ref location, ref other_ship.location) / enemies;
+					if (other_ship.team is null || team is null)
+						distance_sq = Helpers.DistanceSQ(ref location, ref other_ship.location) / neutrals;
+					else if (team.IsFriendWith(other_ship.team))
+						distance_sq = Helpers.DistanceSQ(ref location, ref other_ship.location) / allies;
+					else
+						distance_sq = Helpers.DistanceSQ(ref location, ref other_ship.location) / enemies;
 					// test if closer
 					if (distance_sq < closest_distance_sq) {
 						closest_ship = other_ship;

@@ -31,30 +31,30 @@ namespace Flee {
 
 		public void SetProperty(string name, string value) {
 			switch (name ?? "") {
-				case "sprite": {
-						sprite = value;
-						break;
-					}
+			case "sprite": {
+				sprite = value;
+				break;
+			}
 
-				case "coords": {
-						coords = Helpers.PointFromString(value);
-						break;
-					}
+			case "coords": {
+				coords = Helpers.PointFromString(value);
+				break;
+			}
 
-				case "cost": {
-						cost.LoadFromString(value);
-						break;
-					}
+			case "cost": {
+				cost.LoadFromString(value);
+				break;
+			}
 
-				case "ships": {
-						ships = Convert.ToInt32(value);
-						break;
-					}
+			case "ships": {
+				ships = Convert.ToInt32(value);
+				break;
+			}
 
-				case "requiere": {
-						ships = Convert.ToInt32(value);
-						break;
-					}
+			case "requiere": {
+				ships = Convert.ToInt32(value);
+				break;
+			}
 			}
 		}
 	}

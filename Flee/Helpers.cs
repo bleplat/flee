@@ -66,8 +66,10 @@ namespace Flee {
 		public static Bitmap GetSprite(string img_name, int x, int y, Color Scolor = default) {
 			Bitmap bmp = null;
 			string full_img_name;
-			if (Scolor == default) full_img_name = img_name + x + y;
-			else full_img_name = img_name + x + y + Scolor.ToString();
+			if (Scolor == default)
+				full_img_name = img_name + x + y;
+			else
+				full_img_name = img_name + x + y + Scolor.ToString();
 			// Find already loaded image
 			if (bitmaps.TryGetValue(full_img_name, out bmp))
 				return bmp;
@@ -99,16 +101,19 @@ namespace Flee {
 					SRed = SSC.R;
 					SGreen = SSC.G;
 					SBlue = SSC.B;
-					for (int i = 0, loopTo = bmp.Width - 1; i <= loopTo; i++) for (int j = 0, loopTo1 = bmp.Height - 1; j <= loopTo1; j++) {
+					for (int i = 0, loopTo = bmp.Width - 1; i <= loopTo; i++)
+						for (int j = 0, loopTo1 = bmp.Height - 1; j <= loopTo1; j++) {
 							red = Conversion.Int(bmp.GetPixel(i, j).R);
 							green = Conversion.Int(bmp.GetPixel(i, j).G);
 							blue = Conversion.Int(bmp.GetPixel(i, j).B);
-							if (red == green && green == blue) bmp.SetPixel(i, j, Color.FromArgb((int)(red * SRed / 255d), (int)(green * SGreen / 255d), (int)(blue * SBlue / 255d)));
+							if (red == green && green == blue)
+								bmp.SetPixel(i, j, Color.FromArgb((int)(red * SRed / 255d), (int)(green * SGreen / 255d), (int)(blue * SBlue / 255d)));
 						}
 				}
 			}
 
-			if (bmp is null) return null;
+			if (bmp is null)
+				return null;
 			// Final processing
 			bmp.MakeTransparent(Color.Black);
 			// Caching
@@ -194,8 +199,11 @@ namespace Flee {
 
 		public static int GetIndentation(string line) {
 			int count = 0;
-			foreach (char c in line) if (c == '\t' || c == ' ') count += 1;
-				else break;
+			foreach (char c in line)
+				if (c == '\t' || c == ' ')
+					count += 1;
+				else
+					break;
 
 			return count;
 		}
@@ -212,27 +220,30 @@ namespace Flee {
 		}
 
 		public static void LoadLists(List<ListClass> list_classes) {
-			foreach (ListClass a_class in list_classes) switch (a_class.type ?? "") {
-					case "gun": {
-							if (!GunStats.classes.ContainsKey(a_class.name)) GunStats.classes[a_class.name] = new GunStats(a_class.name);
+			foreach (ListClass a_class in list_classes)
+				switch (a_class.type ?? "") {
+				case "gun": {
+					if (!GunStats.classes.ContainsKey(a_class.name))
+						GunStats.classes[a_class.name] = new GunStats(a_class.name);
 
-							foreach (ListProperty prop in a_class.properties)
-								GunStats.classes[a_class.name].SetProperty(prop.name, prop.value);
-							break;
-						}
+					foreach (ListProperty prop in a_class.properties)
+						GunStats.classes[a_class.name].SetProperty(prop.name, prop.value);
+					break;
+				}
 
-					case "ship": {
-							if (!ShipStats.classes.ContainsKey(a_class.name)) ShipStats.classes[a_class.name] = new ShipStats(a_class.name);
+				case "ship": {
+					if (!ShipStats.classes.ContainsKey(a_class.name))
+						ShipStats.classes[a_class.name] = new ShipStats(a_class.name);
 
-							foreach (ListProperty prop in a_class.properties)
-								ShipStats.classes[a_class.name].SetProperty(prop.name, prop.value);
-							break;
-						}
+					foreach (ListProperty prop in a_class.properties)
+						ShipStats.classes[a_class.name].SetProperty(prop.name, prop.value);
+					break;
+				}
 
-					default: {
-							throw new Exception("Unknown class type: " + a_class.type);
-							break;
-						}
+				default: {
+					throw new Exception("Unknown class type: " + a_class.type);
+					break;
+				}
 				}
 		}
 
@@ -257,9 +268,13 @@ namespace Flee {
 						paragraph.Clear();
 					}
 
-				if (header.Length == 0) if (line.Length == 0 || line[0] == '#') continue;
-					else if (line[0] == ' ' || line[0] == '\t') throw new Exception("Malformed line: " + line);
-					else header = line;
+				if (header.Length == 0)
+					if (line.Length == 0 || line[0] == '#')
+						continue;
+					else if (line[0] == ' ' || line[0] == '\t')
+						throw new Exception("Malformed line: " + line);
+					else
+						header = line;
 			}
 
 			return list_classes;
@@ -278,41 +293,47 @@ namespace Flee {
 
 		public static string RandomStationName(Random rand) {
 			var station_names = new List<string>();
-			foreach (string ship_class_name in ShipStats.classes.Keys) if (ship_class_name.Contains("Station") && !ship_class_name.Contains("Player") && !(ship_class_name == "Station")) station_names.Add(ship_class_name);
+			foreach (string ship_class_name in ShipStats.classes.Keys)
+				if (ship_class_name.Contains("Station") && !ship_class_name.Contains("Player") && !(ship_class_name == "Station"))
+					station_names.Add(ship_class_name);
 
 			return station_names[rand.Next(0, station_names.Count)];
 		}
 
 		public static string RandomTurretName(Random rand) {
 			switch (rand.Next(0, 3)) {
-				case 0: {
-						return "Anti-Light_Turret";
-					}
+			case 0: {
+				return "Anti-Light_Turret";
+			}
 
-				case 1: {
-						return "Anti-Heavy_Turret";
-					}
+			case 1: {
+				return "Anti-Heavy_Turret";
+			}
 
-				case 2: {
-						return "Pointvortex_Turret";
-					}
+			case 2: {
+				return "Pointvortex_Turret";
+			}
 
-				default: {
-						return "";
-					}
+			default: {
+				return "";
+			}
 			}
 		}
 
 		public static List<string> GetSpawnUpgrades(Ship ship) {
 			var upgrades = new List<string>();
-			foreach (string craft in ship.stats.crafts) foreach (Upgrade a_up in Upgrade.upgrades) if ((a_up.name ?? "") == ("Build_" + craft ?? "") || (a_up.name ?? "") == ("Launch_" + craft ?? "")) upgrades.Add(a_up.name);
+			foreach (string craft in ship.stats.crafts)
+				foreach (Upgrade a_up in Upgrade.upgrades)
+					if ((a_up.name ?? "") == ("Build_" + craft ?? "") || (a_up.name ?? "") == ("Launch_" + craft ?? ""))
+						upgrades.Add(a_up.name);
 
 			return upgrades;
 		}
 
 		public static string GetRandomSpawnUpgrade(Random rand, Ship ship) {
 			var upgrades = GetSpawnUpgrades(ship);
-			if (upgrades.Count == 0) return null;
+			if (upgrades.Count == 0)
+				return null;
 
 			return upgrades[rand.Next(0, upgrades.Count)];
 		}

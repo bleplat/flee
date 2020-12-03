@@ -78,150 +78,158 @@ namespace Flee {
 		// Import/Export
 		public void SetProperty(string name, string value) {
 			switch (name ?? "") {
-				case "desc": {
-						desc = value;
-						break;
-					}
+			case "desc": {
+				desc = value;
+				break;
+			}
 
-				case "sprite": {
-						SetSprite(value);
-						break;
-					}
+			case "sprite": {
+				SetSprite(value);
+				break;
+			}
 
-				case "level": {
-						level = Convert.ToInt32(value);
-						break;
-					}
+			case "level": {
+				level = Convert.ToInt32(value);
+				break;
+			}
 
-				case "width": {
-						width = Convert.ToInt32(value);
-						break;
-					}
+			case "width": {
+				width = Convert.ToInt32(value);
+				break;
+			}
 
-				case "integrity": {
-						integrity = Convert.ToInt32(value);
-						break;
-					}
+			case "integrity": {
+				integrity = Convert.ToInt32(value);
+				break;
+			}
 
-				case "repair": {
-						repair = Convert.ToInt32(value);
-						break;
-					}
+			case "repair": {
+				repair = Convert.ToInt32(value);
+				break;
+			}
 
-				case "speed": {
-						speed = Helpers.ToDouble(value);
-						if (turn == 0d)
-							turn = speed;
-						break;
-					}
+			case "speed": {
+				speed = Helpers.ToDouble(value);
+				if (turn == 0d)
+					turn = speed;
+				break;
+			}
 
-				case "turn": {
-						turn = Helpers.ToDouble(value);
-						break;
-					}
+			case "turn": {
+				turn = Helpers.ToDouble(value);
+				break;
+			}
 
-				case "weapon": {
-						default_weapons.Add(value);
-						break;
-					}
+			case "weapon": {
+				default_weapons.Add(value);
+				break;
+			}
 
-				case "shield": {
-						shield = Convert.ToInt32(value);
-						if (shield_opacity == 0d)
-							shield_opacity = 25d;
-						break;
-					}
+			case "shield": {
+				shield = Convert.ToInt32(value);
+				if (shield_opacity == 0d)
+					shield_opacity = 25d;
+				break;
+			}
 
-				case "shield_regeneration": {
-						shield_regeneration = (int)Helpers.ToDouble(value);
-						break;
-					}
+			case "shield_regeneration": {
+				shield_regeneration = (int)Helpers.ToDouble(value);
+				break;
+			}
 
-				case "shield_opacity": {
-						shield_opacity = Helpers.ToDouble(value);
-						break;
-					}
+			case "shield_opacity": {
+				shield_opacity = Helpers.ToDouble(value);
+				break;
+			}
 
-				case "deflectors": {
-						deflectors = Convert.ToInt32(value);
-						break;
-					}
+			case "deflectors": {
+				deflectors = Convert.ToInt32(value);
+				break;
+			}
 
-				case "deflectors_cooldown": {
-						deflectors_cooldown = Convert.ToInt32(value);
-						break;
-					}
+			case "deflectors_cooldown": {
+				deflectors_cooldown = Convert.ToInt32(value);
+				break;
+			}
 
-				case "hot_deflector": {
-						hot_deflector = Helpers.ToDouble(value);
-						break;
-					}
+			case "hot_deflector": {
+				hot_deflector = Helpers.ToDouble(value);
+				break;
+			}
 
-				case "cold_deflector": {
-						cold_deflector = (Convert.ToInt32(value)) != 0;
-						break;
-					}
+			case "cold_deflector": {
+				cold_deflector = (Convert.ToInt32(value)) != 0;
+				break;
+			}
 
-				case "craft": {
-						crafts.Add(value);
-						break;
-					}
+			case "craft": {
+				crafts.Add(value);
+				break;
+			}
 
-				case "native_upgrade": {
-						native_upgrades.Add(value);
-						break;
-					}
+			case "native_upgrade": {
+				native_upgrades.Add(value);
+				break;
+			}
 
-				case "cost": {
-						cost = new MaterialSet(value);
-						if (complexity == 0)
-							complexity = (int)((width * 5) + (cost.Metal / 8) + (cost.Crystal * 15L) + (cost.Antimatter / 4d) + (cost.Fissile * 100L));
-						break;
-					}
+			case "cost": {
+				cost = new MaterialSet(value);
+				if (complexity == 0)
+					complexity = (int)((width * 5) + (cost.Metal / 8) + (cost.Crystal * 15L) + (cost.Antimatter / 4d) + (cost.Fissile * 100L));
+				break;
+			}
 
-				case "complexity": {
-						complexity = Convert.ToInt32(value);
-						break;
-					}
+			case "complexity": {
+				complexity = Convert.ToInt32(value);
+				break;
+			}
 
-				default: {
-						throw new Exception("'" + name + "' is not a valid ship property");
-						break;
-					}
+			default: {
+				throw new Exception("'" + name + "' is not a valid ship property");
+				break;
+			}
 			}
 		}
 
 		public override string ToString() {
 			string total = "ship " + name + Constants.vbLf;
-			if ((sprite ?? "") != (name ?? "")) total += Constants.vbTab + "sprite=" + sprite + Constants.vbLf;
+			if ((sprite ?? "") != (name ?? ""))
+				total += Constants.vbTab + "sprite=" + sprite + Constants.vbLf;
 
 			total += Constants.vbTab + "level=" + level.ToString() + Constants.vbLf;
-			if (width != Helpers.GetSprite(sprite, -1, -1, default).Width / 8d - 2d) total += Constants.vbTab + "width=" + width.ToString() + Constants.vbLf;
+			if (width != Helpers.GetSprite(sprite, -1, -1, default).Width / 8d - 2d)
+				total += Constants.vbTab + "width=" + width.ToString() + Constants.vbLf;
 
 			total += Constants.vbTab + "integrity=" + integrity.ToString() + Constants.vbLf;
-			if (speed != 0.0d) total += Constants.vbTab + "speed=" + Helpers.ToString(speed) + Constants.vbLf;
+			if (speed != 0.0d)
+				total += Constants.vbTab + "speed=" + Helpers.ToString(speed) + Constants.vbLf;
 
-			if (turn != speed) total += Constants.vbTab + "turn=" + Helpers.ToString(turn) + Constants.vbLf;
+			if (turn != speed)
+				total += Constants.vbTab + "turn=" + Helpers.ToString(turn) + Constants.vbLf;
 
 			foreach (string item in default_weapons)
 				total += Constants.vbTab + "weapon=" + item + Constants.vbLf;
 			// weapons
 			if (shield > 0) {
 				total += Constants.vbTab + "shield=" + shield.ToString() + Constants.vbLf;
-				if (shield_regeneration != 10) total += Constants.vbTab + "shield_regeneration=" + Helpers.ToString(shield_regeneration) + Constants.vbLf;
+				if (shield_regeneration != 10)
+					total += Constants.vbTab + "shield_regeneration=" + Helpers.ToString(shield_regeneration) + Constants.vbLf;
 
-				if (shield_opacity != 25d) total += Constants.vbTab + "shield_opacity=" + Helpers.ToString(shield_opacity) + Constants.vbLf;
+				if (shield_opacity != 25d)
+					total += Constants.vbTab + "shield_opacity=" + Helpers.ToString(shield_opacity) + Constants.vbLf;
 			}
 
 			if (deflectors > 0) {
 				total += Constants.vbTab + "deflectors=" + deflectors.ToString() + Constants.vbLf;
-				if (deflectors_cooldown != 64) total += Constants.vbTab + "deflectors_cooldown=" + deflectors_cooldown.ToString() + Constants.vbLf;
+				if (deflectors_cooldown != 64)
+					total += Constants.vbTab + "deflectors_cooldown=" + deflectors_cooldown.ToString() + Constants.vbLf;
 			}
 
 			if (hot_deflector != 0)
 				total += Constants.vbTab + "hot_deflector=" + Helpers.ToString(hot_deflector) + Constants.vbLf;
 
-			if (cold_deflector) total += Constants.vbTab + "cold_deflector=" + Convert.ToInt32(cold_deflector).ToString() + Constants.vbLf;
+			if (cold_deflector)
+				total += Constants.vbTab + "cold_deflector=" + Convert.ToInt32(cold_deflector).ToString() + Constants.vbLf;
 
 			foreach (string item in crafts)
 				total += Constants.vbTab + "craft=" + item + Constants.vbLf;

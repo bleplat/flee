@@ -7,7 +7,8 @@ namespace Flee {
 		public string value;
 
 		public ListProperty(string line) {
-			if (line[0] == '\t' || line[0] == ' ') throw new Exception("Malformed property: " + line);
+			if (line[0] == '\t' || line[0] == ' ')
+				throw new Exception("Malformed property: " + line);
 
 			var tuple = line.Split('=');
 			name = tuple[0];

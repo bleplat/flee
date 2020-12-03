@@ -36,17 +36,28 @@ namespace Flee {
 			last_id = id;
 
 			// affinity
-			if (affinity == 0) if (id == 0) this.affinity = (int)AffinityEnum.KIND; // player
-				else if (id == 1) this.affinity = (int)AffinityEnum.MEAN; // derelict
-				else if (id == 2) this.affinity = (int)AffinityEnum.ALOOF; // bosses/endgames
-				else if (id % 7 == 0) this.affinity = (int)AffinityEnum.KIND;
-				else this.affinity = (int)AffinityEnum.MEAN;
-			else this.affinity = affinity;
+			if (affinity == 0)
+				if (id == 0)
+					this.affinity = (int)AffinityEnum.KIND; // player
+				else if (id == 1)
+					this.affinity = (int)AffinityEnum.MEAN; // derelict
+				else if (id == 2)
+					this.affinity = (int)AffinityEnum.ALOOF; // bosses/endgames
+				else if (id % 7 == 0)
+					this.affinity = (int)AffinityEnum.KIND;
+				else
+					this.affinity = (int)AffinityEnum.MEAN;
+			else
+				this.affinity = affinity;
 
 			// max ships
-			if (id != 0) if (this.affinity == (int)AffinityEnum.KIND) ship_count_limit = 24;
-				else if (this.affinity == (int)AffinityEnum.MEAN) ship_count_limit = 32;
-				else ship_count_limit = 40;
+			if (id != 0)
+				if (this.affinity == (int)AffinityEnum.KIND)
+					ship_count_limit = 24;
+				else if (this.affinity == (int)AffinityEnum.MEAN)
+					ship_count_limit = 32;
+				else
+					ship_count_limit = 40;
 
 			// color
 			if (available_colors.Count == 0) {
@@ -74,12 +85,16 @@ namespace Flee {
 				available_colors.Add(Color.FromArgb(255, 48, 48)); // coral
 			}
 
-			if (this.affinity == (int)AffinityEnum.ALOOF) color = Color.FromArgb(255, 0, 0); // primary red
-			else if (id == 0) color = Color.FromArgb(0, 255, 0); // primary green
+			if (this.affinity == (int)AffinityEnum.ALOOF)
+				color = Color.FromArgb(255, 0, 0); // primary red
+			else if (id == 0)
+				color = Color.FromArgb(0, 255, 0); // primary green
 			else {
 				int i_color;
-				if ((this.affinity & (int)AffinityEnum.KIND) != 0) i_color = world.gameplay_random.Next(0, (int)(available_colors.Count / 4d));
-				else i_color = world.gameplay_random.Next((int)(available_colors.Count / 4d * 3d), available_colors.Count);
+				if ((this.affinity & (int)AffinityEnum.KIND) != 0)
+					i_color = world.gameplay_random.Next(0, (int)(available_colors.Count / 4d));
+				else
+					i_color = world.gameplay_random.Next((int)(available_colors.Count / 4d * 3d), available_colors.Count);
 
 				color = available_colors[i_color];
 				available_colors.RemoveAt(i_color);
@@ -87,13 +102,18 @@ namespace Flee {
 		}
 
 		public bool IsFriendWith(Team other) {
-			if (ReferenceEquals(this, other)) return true;
+			if (ReferenceEquals(this, other))
+				return true;
 
-			if (other is null) return false;
+			if (other is null)
+				return false;
 
-			if ((affinity & (int)AffinityEnum.KIND) != 0 && (other.affinity & (int)AffinityEnum.KIND) != 0) return true;
+			if ((affinity & (int)AffinityEnum.KIND) != 0 && (other.affinity & (int)AffinityEnum.KIND) != 0)
+				return true;
 
-			if ((affinity & (int)AffinityEnum.MEAN) != 0 && (other.affinity & (int)AffinityEnum.MEAN) != 0) if (id % 6 == other.id % 6) return true;
+			if ((affinity & (int)AffinityEnum.MEAN) != 0 && (other.affinity & (int)AffinityEnum.MEAN) != 0)
+				if (id % 6 == other.id % 6)
+					return true;
 
 			return false;
 		}

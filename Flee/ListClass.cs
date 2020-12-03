@@ -13,9 +13,11 @@ namespace Flee {
 			type = header_parts[0];
 			name = header_parts[1];
 			foreach (string line in lines) {
-				if (line.Length == 0 || line[0] == '#') continue;
+				if (line.Length == 0 || line[0] == '#')
+					continue;
 
-				if (!line.Contains("=")) throw new Exception("Invalid property: " + line);
+				if (!line.Contains("="))
+					throw new Exception("Invalid property: " + line);
 
 				properties.Add(new ListProperty(line));
 			}

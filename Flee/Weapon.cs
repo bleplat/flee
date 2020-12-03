@@ -26,55 +26,55 @@ namespace Flee {
 				if (element.Length == 0)
 					continue;
 				switch (element ?? "") {
-					case "Plasma": {
-							total = total | (int)SpecialBits.Plasma;
-							break;
-						}
+				case "Plasma": {
+					total = total | (int)SpecialBits.Plasma;
+					break;
+				}
 
-					case "Propeled": {
-							total = total | (int)SpecialBits.Propeled;
-							break;
-						}
+				case "Propeled": {
+					total = total | (int)SpecialBits.Propeled;
+					break;
+				}
 
-					case "Explode": {
-							total = total | (int)SpecialBits.Explode;
-							break;
-						}
+				case "Explode": {
+					total = total | (int)SpecialBits.Explode;
+					break;
+				}
 
-					case "BioDrops": {
-							total = total | (int)SpecialBits.BioDrops;
-							break;
-						}
+				case "BioDrops": {
+					total = total | (int)SpecialBits.BioDrops;
+					break;
+				}
 
-					case "SelfExplode": {
-							total = total | (int)SpecialBits.SelfExplode;
-							break;
-						}
+				case "SelfExplode": {
+					total = total | (int)SpecialBits.SelfExplode;
+					break;
+				}
 
-					case "SelfNuke": {
-							total = total | (int)SpecialBits.SelfNuke;
-							break;
-						}
+				case "SelfNuke": {
+					total = total | (int)SpecialBits.SelfNuke;
+					break;
+				}
 
-					case "SpreadOrigin": {
-							total = total | (int)SpecialBits.SpreadOrigin;
-							break;
-						}
+				case "SpreadOrigin": {
+					total = total | (int)SpecialBits.SpreadOrigin;
+					break;
+				}
 
-					case "Rail": {
-							total = total | (int)SpecialBits.Rail;
-							break;
-						}
+				case "Rail": {
+					total = total | (int)SpecialBits.Rail;
+					break;
+				}
 
-					case "Flak": {
-							total = total | (int)SpecialBits.Flak;
-							break;
-						}
+				case "Flak": {
+					total = total | (int)SpecialBits.Flak;
+					break;
+				}
 
-					default: {
-							throw new Exception("Special doesnt exists: " + element);
-							break;
-						}
+				default: {
+					throw new Exception("Special doesnt exists: " + element);
+					break;
+				}
 				}
 			}
 
@@ -139,7 +139,8 @@ namespace Flee {
 			if (Bar > 0) {
 				Bar = Bar - 1;
 				PointF spawn_point = PTN;
-				if ((base_stats.special & (int)SpecialBits.SpreadOrigin) != 0) spawn_point = new PointF(PTN.X + ship.world.gameplay_random.Next(-7, 8), PTN.Y + ship.world.gameplay_random.Next(-7, 8));
+				if ((base_stats.special & (int)SpecialBits.SpreadOrigin) != 0)
+					spawn_point = new PointF(PTN.X + ship.world.gameplay_random.Next(-7, 8), PTN.Y + ship.world.gameplay_random.Next(-7, 8));
 
 				if ((base_stats.special & (int)SpecialBits.Rail) != 0) {
 					int dispersion = 16;
@@ -154,7 +155,8 @@ namespace Flee {
 					for (double i = -(dispersion / 2d), loopTo2 = dispersion / 2d; i <= loopTo2; i++)
 						ship.world.Shoots.Add(new Shoot(ref ship.world) { Coo = spawn_point, Type = base_stats.sprite, Direction = (float)(QA + i * (360d / dispersion)), speed = stats.celerity, Life = (int)(stats.range / (double)stats.celerity), Power = (int)(stats.power / 4d / dispersion), Team = Launcher.team, special = base_stats.special });
 					ship.world.Shoots.Add(new Shoot(ref ship.world) { Coo = spawn_point, Type = base_stats.sprite, Direction = QA, speed = stats.celerity, Life = (int)(stats.range / (double)stats.celerity), Power = stats.power, Team = Launcher.team, special = base_stats.special });
-				} else ship.world.Shoots.Add(new Shoot(ref ship.world) { Coo = spawn_point, Type = base_stats.sprite, Direction = QA, speed = stats.celerity, Life = (int)(stats.range / (double)stats.celerity), Power = stats.power, Team = Launcher.team, special = base_stats.special });
+				} else
+					ship.world.Shoots.Add(new Shoot(ref ship.world) { Coo = spawn_point, Type = base_stats.sprite, Direction = QA, speed = stats.celerity, Life = (int)(stats.range / (double)stats.celerity), Power = stats.power, Team = Launcher.team, special = base_stats.special });
 			}
 		}
 
