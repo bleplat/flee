@@ -240,7 +240,7 @@ namespace Flee {
 							if (rel_dist < 0d) {
 								double z = -1 * rel_dist / (Aship.stats.width / 2d + Bship.stats.width / 2d) * 0.0125d;
 								var a_to_b = new PointF(Bship.location.X - Aship.location.X, Bship.location.Y - Aship.location.Y);
-								if (Bship.stats.speed != 0) {
+								if (Bship.stats.speed != 0 || Aship.stats.speed == 0) {
 									Bship.speed_vec = new PointF((float)(Bship.speed_vec.X + a_to_b.X * z), (float)(Bship.speed_vec.Y + a_to_b.Y * z));
 									Bship.location.X += 0.001f;
 								}

@@ -208,14 +208,15 @@ namespace Flee {
 				if (bot_ship == false)
 					integrity = 0;
 			// movement
-			if (stats.turn == 0d && stats.speed == 0d)
-				direction = (float)(direction + 25d / stats.width);
-			else {
+			if (stats.turn == 0d && stats.speed == 0d) {
+				direction = (float)(direction + 25.0f / stats.width);
+				speed_vec = new PointF((float)(speed_vec.X * 0.925), (float)(speed_vec.Y * 0.925));
+			} else {
 				var new_speed = Helpers.GetNewPoint(new Point(0, 0), direction, speed);
-				speed_vec = new PointF((float)(speed_vec.X * 0.925d + new_speed.X * 0.075d), (float)(speed_vec.Y * 0.925d + new_speed.Y * 0.075d));
-				location.X = location.X + speed_vec.X;
-				location.Y = location.Y + speed_vec.Y;
+				speed_vec = new PointF((float)(speed_vec.X * 0.925 + new_speed.X * 0.075), (float)(speed_vec.Y * 0.925 + new_speed.Y * 0.075));
 			}
+			location.X = location.X + speed_vec.X;
+			location.Y = location.Y + speed_vec.Y;
 			// ===' Armes '==='
 			if (cold_deflector_charge <= 0)
 				foreach (Weapon AWeapon in weapons)
