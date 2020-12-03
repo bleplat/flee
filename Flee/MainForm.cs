@@ -330,8 +330,8 @@ namespace Flee {
 				return;
 
 			MiniMDown = true;
-			See.X = (int)(((e.X / MiniBox.Width) * world.ArenaSize.Width) - DrawBMP.Width / 2d);
-			See.Y = (int)(((e.Y / MiniBox.Height) * world.ArenaSize.Height) - DrawBMP.Height / 2d);
+			See.X = (int)(((e.X / (float)MiniBox.Width) * world.ArenaSize.Width) - DrawBMP.Width / 2d);
+			See.Y = (int)(((e.Y / (float)MiniBox.Height) * world.ArenaSize.Height) - DrawBMP.Height / 2d);
 			CheckSee();
 		}
 
@@ -341,8 +341,8 @@ namespace Flee {
 
 		private void MiniBox_MouseMove(object sender, MouseEventArgs e) {
 			if (MiniMDown) {
-				See.X = (int)(((e.X / MiniBox.Width) * world.ArenaSize.Width) - DrawBMP.Width / 2d);
-				See.Y = (int)(((e.Y / MiniBox.Height) * world.ArenaSize.Height) - DrawBMP.Height / 2d);
+				See.X = (int)(((e.X / (float)MiniBox.Width) * world.ArenaSize.Width) - DrawBMP.Width / 2d);
+				See.Y = (int)(((e.Y / (float)MiniBox.Height) * world.ArenaSize.Height) - DrawBMP.Height / 2d);
 				CheckSee();
 			}
 		}
