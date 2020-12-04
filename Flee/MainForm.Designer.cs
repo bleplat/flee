@@ -145,9 +145,9 @@ namespace Flee {
 			this.checkBoxFPS.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.checkBoxFPS.Location = new System.Drawing.Point(10, 188);
 			this.checkBoxFPS.Name = "checkBoxFPS";
-			this.checkBoxFPS.Size = new System.Drawing.Size(206, 17);
+			this.checkBoxFPS.Size = new System.Drawing.Size(199, 17);
 			this.checkBoxFPS.TabIndex = 9;
-			this.checkBoxFPS.Text = "increase FPS (game will slightly faster)";
+			this.checkBoxFPS.Text = "increase FPS (will play slightly faster)";
 			this.checkBoxFPS.UseVisualStyleBackColor = true;
 			// 
 			// Label4

@@ -105,6 +105,11 @@ namespace Flee {
 				Ships.Add(new Ship(ref argworld2, team, ally_type) { location = ally_coords });
 				spawn_allies -= 1;
 			}
+			// spawn additional station
+			if (team.bot_team && team.affinity != (int)AffinityEnum.KIND && rand.Next(0, 3) == 0) {
+				var argworld1 = this;
+				Ships.Add(new Ship(ref argworld1, team, main_type) { location = new Point(main_coords.X + rand.Next(-512, 513), main_coords.Y + rand.Next(-512, 513)) });
+			}
 		}
 
 		private void InitTeams() {
