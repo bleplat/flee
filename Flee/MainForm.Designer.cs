@@ -32,6 +32,7 @@ namespace Flee {
 			this.MainPanel = new System.Windows.Forms.Panel();
 			this._MiniBox = new System.Windows.Forms.PictureBox();
 			this.MenuPanel = new System.Windows.Forms.Panel();
+			this.checkBoxFPS = new System.Windows.Forms.CheckBox();
 			this.Label4 = new System.Windows.Forms.Label();
 			this._RandomizeButton = new System.Windows.Forms.Button();
 			this.Label3 = new System.Windows.Forms.Label();
@@ -68,7 +69,7 @@ namespace Flee {
 			this.PictureBox1 = new System.Windows.Forms.PictureBox();
 			this._DrawBox = new System.Windows.Forms.PictureBox();
 			this._Ticker = new System.Windows.Forms.Timer(this.components);
-			this.checkBoxFPS = new System.Windows.Forms.CheckBox();
+			this.checkBoxEnableBackground = new System.Windows.Forms.CheckBox();
 			this.MainPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._MiniBox)).BeginInit();
 			this.MenuPanel.SuspendLayout();
@@ -122,6 +123,7 @@ namespace Flee {
 			// MenuPanel
 			// 
 			this.MenuPanel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.MenuPanel.Controls.Add(this.checkBoxEnableBackground);
 			this.MenuPanel.Controls.Add(this.checkBoxFPS);
 			this.MenuPanel.Controls.Add(this.Label4);
 			this.MenuPanel.Controls.Add(this._RandomizeButton);
@@ -134,6 +136,19 @@ namespace Flee {
 			this.MenuPanel.Name = "MenuPanel";
 			this.MenuPanel.Size = new System.Drawing.Size(312, 249);
 			this.MenuPanel.TabIndex = 5;
+			// 
+			// checkBoxFPS
+			// 
+			this.checkBoxFPS.AutoSize = true;
+			this.checkBoxFPS.Checked = true;
+			this.checkBoxFPS.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBoxFPS.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.checkBoxFPS.Location = new System.Drawing.Point(10, 188);
+			this.checkBoxFPS.Name = "checkBoxFPS";
+			this.checkBoxFPS.Size = new System.Drawing.Size(206, 17);
+			this.checkBoxFPS.TabIndex = 9;
+			this.checkBoxFPS.Text = "increase FPS (game will slightly faster)";
+			this.checkBoxFPS.UseVisualStyleBackColor = true;
 			// 
 			// Label4
 			// 
@@ -546,16 +561,18 @@ namespace Flee {
 			this._Ticker.Interval = 33;
 			this._Ticker.Tick += new System.EventHandler(this.Ticker_Tick);
 			// 
-			// checkBoxFPS
+			// checkBoxEnableBackground
 			// 
-			this.checkBoxFPS.AutoSize = true;
-			this.checkBoxFPS.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBoxFPS.Location = new System.Drawing.Point(10, 188);
-			this.checkBoxFPS.Name = "checkBoxFPS";
-			this.checkBoxFPS.Size = new System.Drawing.Size(206, 17);
-			this.checkBoxFPS.TabIndex = 9;
-			this.checkBoxFPS.Text = "increase FPS (game will slightly faster)";
-			this.checkBoxFPS.UseVisualStyleBackColor = true;
+			this.checkBoxEnableBackground.AutoSize = true;
+			this.checkBoxEnableBackground.Checked = true;
+			this.checkBoxEnableBackground.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBoxEnableBackground.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.checkBoxEnableBackground.Location = new System.Drawing.Point(222, 188);
+			this.checkBoxEnableBackground.Name = "checkBoxEnableBackground";
+			this.checkBoxEnableBackground.Size = new System.Drawing.Size(82, 17);
+			this.checkBoxEnableBackground.TabIndex = 9;
+			this.checkBoxEnableBackground.Text = "background";
+			this.checkBoxEnableBackground.UseVisualStyleBackColor = true;
 			// 
 			// MainForm
 			// 
@@ -811,5 +828,6 @@ namespace Flee {
 		internal PictureBox PriceAIcon;
 		internal Label Label4;
 		private CheckBox checkBoxFPS;
+		private CheckBox checkBoxEnableBackground;
 	}
 }

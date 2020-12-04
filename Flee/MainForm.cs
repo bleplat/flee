@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -141,11 +142,23 @@ namespace Flee {
 				}
 		}
 
+		TextureBrush background_brush = new TextureBrush(new Bitmap("sprites/background.png"), WrapMode.Tile);
 		public void DrawAll() {
-			if (world.NuclearEffect <= 0)
+			// Background
+			if (!checkBoxEnableBackground.Checked) { // disable background image 
 				G.Clear(Color.Black);
-			else {
-				G.Clear(Color.FromArgb(world.NuclearEffect, world.NuclearEffect, world.NuclearEffect));
+			} else {
+				background_brush.TranslateTransform(-See.X / 8, -See.Y / 8);
+				G.CompositingMode = CompositingMode.SourceCopy;
+				G.FillRectangle(background_brush, new RectangleF(new PointF(0, 0), DrawBMP.Size));
+				G.CompositingMode = CompositingMode.SourceOver;
+				background_brush.ResetTransform();
+			}
+
+			// Nuke effect
+			if (world.NuclearEffect > 0) {
+				SolidBrush nuclear_brush = new SolidBrush(Color.FromArgb(world.NuclearEffect, world.NuclearEffect, world.NuclearEffect));
+				G.FillRectangle(nuclear_brush, new RectangleF(new PointF(0, 0), DrawBMP.Size));
 				world.NuclearEffect -= 2;
 			}
 
