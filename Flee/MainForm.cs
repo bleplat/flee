@@ -197,7 +197,7 @@ namespace Flee {
 				else
 					col = AShoot.Team.color;
 
-				var img = new Bitmap(Helpers.GetSprite(AShoot.Type, AShoot.fram, 0, col)); // image
+				var img = Helpers.GetSprite(AShoot.Type, AShoot.fram, 0, col); // image
 				var center = new Point((int)(AShoot.location.X - See.X), (int)(AShoot.location.Y - See.Y)); // centre
 				var MonM = new Matrix();
 				MonM.RotateAt(-AShoot.direction + 180f, center); // rotation
@@ -209,7 +209,7 @@ namespace Flee {
 			// ===' Effets '==='
 			foreach (Effect AEffect in world.Effects)
 				if (AEffect.Coo.X > See.X && AEffect.Coo.X < See.X + DrawBox.Width && AEffect.Coo.Y > See.Y && AEffect.Coo.Y < See.Y + DrawBox.Height) {
-					var img = new Bitmap(Helpers.GetSprite(AEffect.Type, AEffect.fram, AEffect.sprite_y)); // image
+					var img = Helpers.GetSprite(AEffect.Type, AEffect.fram, AEffect.sprite_y); // image
 					var center = new Point((int)(AEffect.Coo.X - See.X), (int)(AEffect.Coo.Y - See.Y)); // centre
 					var MonM = new Matrix();
 					MonM.RotateAt(-AEffect.Direction + 180f, center); // rotation
