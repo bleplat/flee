@@ -176,14 +176,14 @@ namespace Flee {
 				// Main screen '
 				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + DrawBox.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + DrawBox.Height) {
 					var img = Helpers.GetSprite(AShip.stats.sprite, AShip.fram, 0, mini_color); // image
-					var center = new Point((int)(AShip.location.X - See.X), (int)(AShip.location.Y - See.Y)); // centre
+					PointF center = new PointF(AShip.location.X - See.X, AShip.location.Y - See.Y); // centre
 					int AddD = 0;
 					if (AShip.team is null && AShip.stats.turn == 0d)
 						AddD = world.ticks % 360;
 					var MonM = new Matrix();
 					MonM.RotateAt(-AShip.direction + 180f + AddD, center); // rotation
 					G.Transform = MonM; // affectation
-					G.DrawImage(img, new Point((int)(center.X - img.Size.Width / 2d), (int)(center.Y - img.Size.Width / 2d))); // dessin
+					G.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
 					G.ResetTransform(); // reset
 				}
 			}
@@ -198,11 +198,11 @@ namespace Flee {
 					col = AShoot.Team.color;
 
 				var img = Helpers.GetSprite(AShoot.Type, AShoot.fram, 0, col); // image
-				var center = new Point((int)(AShoot.location.X - See.X), (int)(AShoot.location.Y - See.Y)); // centre
+				PointF center = new PointF(AShoot.location.X - See.X, AShoot.location.Y - See.Y); // centre
 				var MonM = new Matrix();
 				MonM.RotateAt(-AShoot.direction + 180f, center); // rotation
 				G.Transform = MonM; // affectation
-				G.DrawImage(img, new Point((int)(center.X - img.Size.Width / 2d), (int)(center.Y - img.Size.Width / 2d))); // dessin
+				G.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
 				G.ResetTransform(); // reset
 									// End If
 			}
@@ -210,11 +210,11 @@ namespace Flee {
 			foreach (Effect AEffect in world.Effects)
 				if (AEffect.Coo.X > See.X && AEffect.Coo.X < See.X + DrawBox.Width && AEffect.Coo.Y > See.Y && AEffect.Coo.Y < See.Y + DrawBox.Height) {
 					var img = Helpers.GetSprite(AEffect.Type, AEffect.fram, AEffect.sprite_y); // image
-					var center = new Point((int)(AEffect.Coo.X - See.X), (int)(AEffect.Coo.Y - See.Y)); // centre
+					PointF center = new PointF(AEffect.Coo.X - See.X, AEffect.Coo.Y - See.Y); // centre
 					var MonM = new Matrix();
 					MonM.RotateAt(-AEffect.Direction + 180f, center); // rotation
 					G.Transform = MonM; // affectation
-					G.DrawImage(img, new Point((int)(center.X - img.Size.Width / 2d), (int)(center.Y - img.Size.Width / 2d))); // dessin
+					G.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
 					G.ResetTransform(); // reset
 				}
 			// ===' Séléction '==='
