@@ -95,20 +95,7 @@ namespace Flee {
 				bmp = bmp.Clone(new Rectangle(new Point(x * ItW + 1, y * ItW + 1), new Size(ItW - 2, ItW - 2)), System.Drawing.Imaging.PixelFormat.DontCare);
 				// Coloring
 				if (Scolor != default) {
-					var SSC = Scolor;
-					int SRed, SGreen, SBlue;
-					int red, green, blue;
-					SRed = SSC.R;
-					SGreen = SSC.G;
-					SBlue = SSC.B;
-					for (int i = 0, loopTo = bmp.Width - 1; i <= loopTo; i++)
-						for (int j = 0, loopTo1 = bmp.Height - 1; j <= loopTo1; j++) {
-							red = Conversion.Int(bmp.GetPixel(i, j).R);
-							green = Conversion.Int(bmp.GetPixel(i, j).G);
-							blue = Conversion.Int(bmp.GetPixel(i, j).B);
-							if (red == green && green == blue)
-								bmp.SetPixel(i, j, Color.FromArgb((int)(red * SRed / 255d), (int)(green * SGreen / 255d), (int)(blue * SBlue / 255d)));
-						}
+					ReColor(bmp, Scolor);
 				}
 			}
 
@@ -120,6 +107,22 @@ namespace Flee {
 			bitmaps.Add(full_img_name, bmp);
 			// Returning
 			return bmp;
+		}
+		public static void ReColor(Bitmap bmp, Color color) {
+			var SSC = color;
+			int SRed, SGreen, SBlue;
+			int red, green, blue;
+			SRed = SSC.R;
+			SGreen = SSC.G;
+			SBlue = SSC.B;
+			for (int i = 0, loopTo = bmp.Width - 1; i <= loopTo; i++)
+				for (int j = 0, loopTo1 = bmp.Height - 1; j <= loopTo1; j++) {
+					red = Conversion.Int(bmp.GetPixel(i, j).R);
+					green = Conversion.Int(bmp.GetPixel(i, j).G);
+					blue = Conversion.Int(bmp.GetPixel(i, j).B);
+					if (red == green && green == blue)
+						bmp.SetPixel(i, j, Color.FromArgb((int)(red * SRed / 255d), (int)(green * SGreen / 255d), (int)(blue * SBlue / 255d)));
+				}
 		}
 
 		public static Color getSColor(string Scolor) {
