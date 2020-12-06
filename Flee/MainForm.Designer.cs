@@ -567,7 +567,7 @@ namespace Flee {
 			this.UraniumTextBox.Name = "UraniumTextBox";
 			this.UraniumTextBox.Size = new System.Drawing.Size(64, 25);
 			this.UraniumTextBox.TabIndex = 3;
-			this.UraniumTextBox.Text = "fissible";
+			this.UraniumTextBox.Text = "fissile";
 			this.UraniumTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// CristalTextBox
