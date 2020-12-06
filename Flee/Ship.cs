@@ -40,6 +40,7 @@ namespace Flee {
 		public Team team = null;
 		public Color color = Color.White;
 		public ushort fram = 0;
+		public SpriteArray sprites = null;
 
 		// state
 		public int integrity = 20;
@@ -124,6 +125,8 @@ namespace Flee {
 					break;
 				}
 				}
+				// sprite
+				this.sprites = SpriteArray.GetSpriteArray(stats.sprite, this.color);
 				// 
 				ResetStats();
 			}
@@ -159,30 +162,6 @@ namespace Flee {
 					base_stats.default_weapons.Add(a_weapon.ToString());
 				if (!ShipStats.classes.ContainsKey(base_stats.name))
 					ShipStats.classes[base_stats.name] = base_stats.Clone();
-			}
-		}
-
-		public void SetType(string SType, Team STeam, bool IsNew = false) {
-			if (base_stats is null)
-				SetStats(SType);
-
-			SetTeam(STeam);
-			// Ship just created TODO: NOW: move to constructor
-			if (IsNew) {
-				Upgrading = null;
-				// state
-				integrity = stats.integrity;
-				shield = stats.shield;
-				if (STeam is null || STeam.id == 0)
-					bot_ship = false;
-				else
-					bot_ship = true;
-
-				if (STeam is object && behavior != BehaviorMode.Drift)
-					color = STeam.color;
-
-				if (team is object && upgrade_slots > 0)
-					upgrade_slots += team.upgrade_slots_bonus;
 			}
 		}
 
@@ -772,7 +751,7 @@ namespace Flee {
 			}
 
 			case "!Jump": {
-				world.Effects.Add(new Effect() { Type = "EFF_Jumped", Coo = location, Direction = 0f, speed = 0f });
+				world.Effects.Add(new Effect(-1, "EFF_Jumped", location, direction, speed_vec));
 				speed = Convert.ToInt32(Spliter[1]);
 				break;
 			}
@@ -783,13 +762,13 @@ namespace Flee {
 			}
 
 			case "!Teleport": {
-				world.Effects.Add(new Effect() { Type = "EFF_Teleported", Coo = location, Direction = 0f, speed = 0f });
+				world.Effects.Add(new Effect(-1, "EFF_Teleported", location, direction, speed_vec));
 				var tp_dst = TargetPTN;
 				if (target is object)
 					tp_dst = target.location;
 
 				location = new PointF(tp_dst.X + world.gameplay_random.Next(-512, 512), tp_dst.Y + world.gameplay_random.Next(-512, 512));
-				world.Effects.Add(new Effect() { Type = "EFF_Teleported", Coo = location, Direction = 0f, speed = 0f });
+				world.Effects.Add(new Effect(-1, "EFF_Teleported", location, direction, speed_vec));
 				break;
 			}
 

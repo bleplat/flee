@@ -277,25 +277,25 @@ namespace Flee {
 				foreach (Ship AShip in AShoot.sector.EnumerateNearbyShips()) {
 					if (!ReferenceEquals(AShoot.Team, AShip.team) && (AShoot.Team is null || !AShoot.Team.IsFriendWith(AShip.team)))
 						if (Helpers.Distance(AShoot.location.X, AShoot.location.Y, AShip.location.X, AShip.location.Y) < AShip.stats.width / 2d) {
-							AShoot.Life = 0;
+							AShoot.time_to_live = 0;
 							if (AShip.stats.hot_deflector > 0d && gameplay_random.Next(0, 100) < AShip.stats.hot_deflector)
-								Effects.Add(new Effect() { Type = "EFF_Deflected2", Coo = AShoot.location, Direction = AShoot.direction, speed = 0f });
+								Effects.Add(new Effect(-1, "EFF_Deflected2", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
 							else {
 								if (AShip.deflectors_loaded > 0)
-									Effects.Add(new Effect() { Type = "EFF_Deflected", Coo = AShoot.location, Direction = AShoot.direction, speed = 0f });
+									Effects.Add(new Effect(-1, "EFF_Deflected", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
 								else if (AShoot.Power < 16)
-									Effects.Add(new Effect() { Type = "EFF_Impact0", Coo = AShoot.location, Direction = AShoot.direction, speed = 0f });
+									Effects.Add(new Effect(-1, "EFF_Impact0", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
 								else if (AShoot.Power < 32)
-									Effects.Add(new Effect() { Type = "EFF_Impact1", Coo = AShoot.location, Direction = AShoot.direction, speed = 0f, sprite_y = (ushort)gameplay_random.Next(0, 4) });
+									Effects.Add(new Effect(-1, "EFF_Impact1", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
 								else if (AShoot.Power < 48)
-									Effects.Add(new Effect() { Type = "EFF_Impact2", Coo = AShoot.location, Direction = AShoot.direction, speed = 0f, sprite_y = (ushort)gameplay_random.Next(0, 4) });
+									Effects.Add(new Effect(-1, "EFF_Impact2", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
 								else
-									Effects.Add(new Effect() { Type = "EFF_Impact3", Coo = AShoot.location, Direction = AShoot.direction, speed = 0f, sprite_y = (ushort)gameplay_random.Next(0, 4) });
+									Effects.Add(new Effect(-1, "EFF_Impact3", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
 
 								AShip.TakeDamages(AShoot.Power, ref AShoot);
 								AShip.last_damager_team = AShoot.Team;
 								if (AShip.stats.cold_deflector && AShip.cold_deflector_charge < AShip.stats.integrity * 4)
-									Effects.Add(new Effect() { Type = "EFF_Deflected3", Coo = AShoot.location, Direction = AShoot.direction, speed = 0f });
+									Effects.Add(new Effect(-1, "EFF_Deflected3", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
 							}
 						}
 				}
@@ -307,13 +307,13 @@ namespace Flee {
 			if (Ships.Count > 0)
 				for (int i = Ships.Count - 1; i >= 0; i -= 1)
 					if (Ships[i].integrity <= 0) {
-						Effects.Add(new Effect() { Type = "EFF_Destroyed", Coo = Ships[i].location, Direction = 0f, Life = 8, speed = 0f });
+						Effects.Add(new Effect(-1, "EFF_Destroyed", Ships[i].location, Ships[i].direction, Ships[i].speed_vec, gameplay_random.Next()));
 						for (int c = 1, loopTo = (int)(Ships[i].stats.width / 8d); c <= loopTo; c++)
-							Effects.Add(new Effect() { Type = "EFF_Debris", Coo = Ships[i].location, Direction = gameplay_random.Next(0, 360), Life = gameplay_random.Next(80, 120), speed = gameplay_random.Next(3, 7) });
+							Effects.Add(new Effect(gameplay_random.Next(64, 192), "EFF_Debris", Ships[i].location, gameplay_random.Next(0, 360), gameplay_random.Next(2, 7), gameplay_random.Next()));
 						if (Ships[i].weapons.Count > 1 && (Ships[i].weapons[0].stats.special & (int)Weapon.SpecialBits.SelfNuke) != 0) {
 							NuclearEffect = 255;
 							for (int c = 1; c <= 256; c++)
-								Effects.Add(new Effect() { Type = "EFF_Destroyed", Coo = Ships[i].location, Direction = gameplay_random.Next(0, 360), Life = 8, speed = gameplay_random.Next(5, 256) });
+								Effects.Add(new Effect(gameplay_random.Next(64, 128), "EFF_Debris", Ships[i].location, gameplay_random.Next(0, 360), gameplay_random.Next(5, 256), gameplay_random.Next()));
 							int FriendlyFireCount = 0;
 							foreach (Ship a_ship in Ships) {
 								a_ship.shield = 0f;
@@ -354,12 +354,12 @@ namespace Flee {
 			// Shoots
 			if (Shoots.Count > 0)
 				for (int i = Shoots.Count - 1; i >= 0; i -= 1)
-					if (Shoots[i].Life <= 0)
+					if (Shoots[i].time_to_live <= 0)
 						this.Unspawn(Shoots[i]);
 			// Effects
 			if (Effects.Count > 0)
 				for (int i = Effects.Count - 1; i >= 0; i -= 1)
-					if (Effects[i].Life <= 0)
+					if (Effects[i].time_to_live <= 0)
 						Effects.RemoveAt(i);
 		}
 

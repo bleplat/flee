@@ -188,7 +188,8 @@ namespace Flee {
 				MiniG.FillRectangle(new SolidBrush(mini_color), new Rectangle((int)(AShip.location.X / world.ArenaSize.Width * MiniBMP.Width - W / 2d), (int)(AShip.location.Y / world.ArenaSize.Height * MiniBMP.Height - W / 2d), W, W));
 				// Main screen '
 				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + DrawBox.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + DrawBox.Height) {
-					var img = Helpers.GetSprite(AShip.stats.sprite, AShip.fram, 0, mini_color); // image
+					//var img = Helpers.GetSprite(AShip.stats.sprite, AShip.fram, 0, mini_color); // image
+					var img = AShip.sprites.GetSprite(AShip.fram, 0);
 					PointF center = new PointF(AShip.location.X - See.X, AShip.location.Y - See.Y); // centre
 					int AddD = 0;
 					if (AShip.team is null && AShip.stats.turn == 0d)
@@ -210,7 +211,8 @@ namespace Flee {
 				else
 					col = AShoot.Team.color;
 
-				var img = Helpers.GetSprite(AShoot.Type, AShoot.fram, 0, col); // image
+				//var img = Helpers.GetSprite(AShoot.type, AShoot.fram, 0, col); // image
+				var img = AShoot.sprites.GetSprite(AShoot.fram, AShoot.sprite_y);
 				PointF center = new PointF(AShoot.location.X - See.X, AShoot.location.Y - See.Y); // centre
 				var MonM = new Matrix();
 				MonM.RotateAt(-AShoot.direction + 180f, center); // rotation
@@ -221,11 +223,12 @@ namespace Flee {
 			}
 			// ===' Effets '==='
 			foreach (Effect AEffect in world.Effects)
-				if (AEffect.Coo.X > See.X && AEffect.Coo.X < See.X + DrawBox.Width && AEffect.Coo.Y > See.Y && AEffect.Coo.Y < See.Y + DrawBox.Height) {
-					var img = Helpers.GetSprite(AEffect.Type, AEffect.fram, AEffect.sprite_y); // image
-					PointF center = new PointF(AEffect.Coo.X - See.X, AEffect.Coo.Y - See.Y); // centre
+				if (AEffect.location.X > See.X && AEffect.location.X < See.X + DrawBox.Width && AEffect.location.Y > See.Y && AEffect.location.Y < See.Y + DrawBox.Height) {
+					//var img = Helpers.GetSprite(AEffect.type, AEffect.fram, AEffect.sprite_y); // image
+					var img = AEffect.sprites.GetSprite(AEffect.fram, AEffect.sprite_y);
+					PointF center = new PointF(AEffect.location.X - See.X, AEffect.location.Y - See.Y); // centre
 					var MonM = new Matrix();
-					MonM.RotateAt(-AEffect.Direction + 180f, center); // rotation
+					MonM.RotateAt(-AEffect.direction + 180f, center); // rotation
 					G.Transform = MonM; // affectation
 					G.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
 					G.ResetTransform(); // reset
@@ -521,7 +524,7 @@ namespace Flee {
 			if (target_ship is null)
 				foreach (Ship AShip in selected_ships)
 					if (AShip.TargetPTN == SelectPTN2) {
-						world.Effects.Add(new Effect() { Type = "EFF_Mine", Coo = SelectPTN2 });
+						world.Effects.Add(new Effect(-1, "EFF_Mine", SelectPTN2));
 						AShip.behavior = Ship.BehaviorMode.Mine;
 						AShip.TargetPTN = SelectPTN2;
 						AShip.target = null;
@@ -529,7 +532,7 @@ namespace Flee {
 							if (AShip.team is object && !ReferenceEquals(player_team, AShip.team))
 								AShip.team.bot_team = true;
 					} else {
-						world.Effects.Add(new Effect() { Type = "EFF_Goto", Coo = SelectPTN2 });
+						world.Effects.Add(new Effect(-1, "EFF_Goto", SelectPTN2));
 						AShip.behavior = Ship.BehaviorMode.GoToPoint;
 						AShip.TargetPTN = SelectPTN2;
 						AShip.target = null;
@@ -537,15 +540,15 @@ namespace Flee {
 			else
 				foreach (Ship AShip in selected_ships)
 					if (ReferenceEquals(AShip, target_ship)) {
-						world.Effects.Add(new Effect() { Type = "EFF_OrderDefend", Coo = SelectPTN2 });
+						world.Effects.Add(new Effect(-1, "EFF_OrderDefend", SelectPTN2));
 						AShip.AllowMining = false;
 					} else {
 						AShip.behavior = Ship.BehaviorMode.Folow;
 						AShip.target = target_ship;
 						if (AShip.team is object && AShip.team.IsFriendWith(target_ship.team))
-							world.Effects.Add(new Effect() { Type = "EFF_Assist", Coo = SelectPTN2, Direction = 180f });
+							world.Effects.Add(new Effect(-1, "EFF_Assist", SelectPTN2, 180));
 						else
-							world.Effects.Add(new Effect() { Type = "EFF_OrderTarget", Coo = SelectPTN2 });
+							world.Effects.Add(new Effect(-1, "EFF_OrderTarget", SelectPTN2));
 					}
 		}
 

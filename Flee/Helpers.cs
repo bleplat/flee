@@ -94,39 +94,38 @@ namespace Flee {
 				int ItW = (int)(bmp.Width / 8d);
 				bmp = bmp.Clone(new Rectangle(new Point(x * ItW + 1, y * ItW + 1), new Size(ItW - 2, ItW - 2)), System.Drawing.Imaging.PixelFormat.DontCare);
 				// Coloring
-				if (Scolor != default) {
-					ReColor(bmp, Scolor);
-				}
+				if (Scolor != default) 
+					Recolor(bmp, Scolor);
 			}
-
 			if (bmp is null)
 				return null;
-			// Final processing
 			bmp.MakeTransparent(Color.Black);
-			// Caching
 			bitmaps.Add(full_img_name, bmp);
-			// Returning
 			return bmp;
 		}
-		public static void ReColor(Bitmap bmp, Color color) {
-			var SSC = color;
-			int SRed, SGreen, SBlue;
-			int red, green, blue;
-			SRed = SSC.R;
-			SGreen = SSC.G;
-			SBlue = SSC.B;
+		public static void Recolor(Bitmap bmp, Color color) {
 			for (int i = 0, loopTo = bmp.Width - 1; i <= loopTo; i++)
 				for (int j = 0, loopTo1 = bmp.Height - 1; j <= loopTo1; j++) {
-					red = Conversion.Int(bmp.GetPixel(i, j).R);
-					green = Conversion.Int(bmp.GetPixel(i, j).G);
-					blue = Conversion.Int(bmp.GetPixel(i, j).B);
-					if (red == green && green == blue)
-						bmp.SetPixel(i, j, Color.FromArgb((int)(red * SRed / 255d), (int)(green * SGreen / 255d), (int)(blue * SBlue / 255d)));
+					Color pixel = bmp.GetPixel(i, j);
+					if (pixel.R == pixel.G && pixel.G == pixel.B)
+						bmp.SetPixel(i, j, Color.FromArgb(pixel.R * color.R / 256, pixel.G * color.G / 256, pixel.B * color.B / 256));
 				}
+			bmp.MakeTransparent(Color.Black);
 		}
-
-		public static Color getSColor(string Scolor) {
-			return Color.FromName(Scolor);
+		public static void Swapcolor(Bitmap bmp, Color color) {
+			Color c_0 = (color.R >= color.G && color.R >= color.B) ? Color.FromArgb(color.R, 0, 0) : ((color.G >= color.B) ? Color.FromArgb(0, color.G, 0) : Color.FromArgb(0, 0, color.B));
+			Color c_2 = (color.B <= color.R && color.B <= color.G) ? Color.FromArgb(0, 0, color.B) : ((color.G <= color.R) ? Color.FromArgb(0, color.G, 0) : Color.FromArgb(color.R, 0, 0));
+			Color c_1 = (c_0.R == 0 && c_2.R == 0) ? Color.FromArgb(color.R, 0, 0) : ((c_0.G == 0 && c_2.G == 0) ? Color.FromArgb(0, color.G, 0) : Color.FromArgb(0, 0, color.B));
+			for (int i = 0, loopTo = bmp.Width - 1; i <= loopTo; i++)
+				for (int j = 0, loopTo1 = bmp.Height - 1; j <= loopTo1; j++) {
+					Color pixel = bmp.GetPixel(i, j);
+					bmp.SetPixel(i, j, Color.FromArgb(
+						(pixel.R * c_0.R + pixel.G * c_1.R + pixel.B * c_2.R) / 256,
+						(pixel.R * c_0.G + pixel.G * c_1.G + pixel.B * c_2.G) / 256,
+						(pixel.R * c_0.B + pixel.G * c_1.B + pixel.B * c_2.B) / 256
+					));
+				}
+			bmp.MakeTransparent(Color.Black);
 		}
 
 		public static Rectangle GetRect(ref Point PT1, ref Point PT2) {
