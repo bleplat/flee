@@ -13,6 +13,9 @@ ship Station
 	craft=Harass
 	craft=Simpleship
 	craft=Nuke
+	craft=Anti-Light_Turret
+	craft=Anti-Heavy_Turret
+	craft=Pointvortex_Turret
 
 ship Station_Simples
 	sprite=Station
@@ -89,6 +92,7 @@ ship Station_Minimum_Warship
 #
 
 ship Anti-Light_Turret
+	desc=A turret efficient at shooting small and fast targets.
 	sprite=Anti-Light
 	level=2
 	width=40
@@ -100,6 +104,7 @@ ship Anti-Light_Turret
 	cost=550;2;0;0
 
 ship Anti-Heavy_Turret
+	desc=A turret efficient at shooting heavy and slow targets.
 	sprite=Anti-Heavy
 	level=2
 	width=25
@@ -110,6 +115,7 @@ ship Anti-Heavy_Turret
 	cost=550;2;0;0
 
 ship Pointvortex_Turret
+	desc=A powerful turret efficient at shooting everything.
 	sprite=Pointvortex
 	level=4
 	width=25
