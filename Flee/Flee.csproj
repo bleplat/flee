@@ -158,6 +158,7 @@
     <Compile Include="Ship.cs" />
     <Compile Include="ShipStats.cs" />
     <Compile Include="Shoot.cs" />
+    <Compile Include="SpriteArray.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="Upgrade.cs" />
     <Compile Include="Upgrade2.cs" />
@@ -206,7 +207,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cell.ICO" />
-    <Content Include="0-Slow.txt" />
+    <Content Include="0-TODO.txt" />
     <Content Include="Flee.ico" />
     <None Include="Resources\Fleet.bmp" />
     <None Include="Resources\DeadSkull.bmp" />

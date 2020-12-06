@@ -32,13 +32,19 @@ namespace Flee {
 			this.MainPanel = new System.Windows.Forms.Panel();
 			this._MiniBox = new System.Windows.Forms.PictureBox();
 			this.MenuPanel = new System.Windows.Forms.Panel();
+			this.button1 = new System.Windows.Forms.Button();
+			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.SeedTextBox = new System.Windows.Forms.TextBox();
+			this.checkBox1 = new System.Windows.Forms.CheckBox();
+			this.checkBoxEnableBackground = new System.Windows.Forms.CheckBox();
 			this.checkBoxFPS = new System.Windows.Forms.CheckBox();
 			this.Label4 = new System.Windows.Forms.Label();
-			this._RandomizeButton = new System.Windows.Forms.Button();
 			this.Label3 = new System.Windows.Forms.Label();
-			this.SeedTextBox = new System.Windows.Forms.TextBox();
+			this.label5 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
 			this.Label2 = new System.Windows.Forms.Label();
 			this._StartPlayingButton = new System.Windows.Forms.Button();
+			this._RandomizeButton = new System.Windows.Forms.Button();
 			this.UpgradeDetails = new System.Windows.Forms.Panel();
 			this.PriceA = new System.Windows.Forms.Label();
 			this.PriceU = new System.Windows.Forms.Label();
@@ -69,12 +75,6 @@ namespace Flee {
 			this.PictureBox1 = new System.Windows.Forms.PictureBox();
 			this._DrawBox = new System.Windows.Forms.PictureBox();
 			this._Ticker = new System.Windows.Forms.Timer(this.components);
-			this.checkBoxEnableBackground = new System.Windows.Forms.CheckBox();
-			this.checkBox1 = new System.Windows.Forms.CheckBox();
-			this.label6 = new System.Windows.Forms.Label();
-			this.label5 = new System.Windows.Forms.Label();
-			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.button1 = new System.Windows.Forms.Button();
 			this.MainPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._MiniBox)).BeginInit();
 			this.MenuPanel.SuspendLayout();
@@ -147,6 +147,76 @@ namespace Flee {
 			this.MenuPanel.Size = new System.Drawing.Size(385, 291);
 			this.MenuPanel.TabIndex = 5;
 			// 
+			// button1
+			// 
+			this.button1.Enabled = false;
+			this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.button1.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.button1.Location = new System.Drawing.Point(305, 212);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(77, 27);
+			this.button1.TabIndex = 10;
+			this.button1.Text = "JOIN";
+			this.button1.UseVisualStyleBackColor = true;
+			// 
+			// textBox1
+			// 
+			this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.textBox1.Enabled = false;
+			this.textBox1.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.textBox1.ForeColor = System.Drawing.Color.White;
+			this.textBox1.Location = new System.Drawing.Point(152, 212);
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(147, 27);
+			this.textBox1.TabIndex = 6;
+			this.textBox1.Text = "127.0.0.1";
+			this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
+			// SeedTextBox
+			// 
+			this.SeedTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.SeedTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			this.SeedTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.SeedTextBox.Font = new System.Drawing.Font("Corbel", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.SeedTextBox.ForeColor = System.Drawing.Color.White;
+			this.SeedTextBox.Location = new System.Drawing.Point(152, 58);
+			this.SeedTextBox.Name = "SeedTextBox";
+			this.SeedTextBox.Size = new System.Drawing.Size(230, 33);
+			this.SeedTextBox.TabIndex = 6;
+			this.SeedTextBox.Text = "876303952";
+			this.SeedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
+			// checkBox1
+			// 
+			this.checkBox1.AutoCheck = false;
+			this.checkBox1.AutoSize = true;
+			this.checkBox1.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.checkBox1.Location = new System.Drawing.Point(155, 183);
+			this.checkBox1.Name = "checkBox1";
+			this.checkBox1.Size = new System.Drawing.Size(79, 17);
+			this.checkBox1.TabIndex = 9;
+			this.checkBox1.Text = "open to lan";
+			this.checkBox1.UseVisualStyleBackColor = true;
+			// 
+			// checkBoxEnableBackground
+			// 
+			this.checkBoxEnableBackground.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.checkBoxEnableBackground.AutoSize = true;
+			this.checkBoxEnableBackground.Checked = true;
+			this.checkBoxEnableBackground.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBoxEnableBackground.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.checkBoxEnableBackground.Location = new System.Drawing.Point(155, 160);
+			this.checkBoxEnableBackground.Name = "checkBoxEnableBackground";
+			this.checkBoxEnableBackground.Size = new System.Drawing.Size(82, 17);
+			this.checkBoxEnableBackground.TabIndex = 9;
+			this.checkBoxEnableBackground.Text = "background";
+			this.checkBoxEnableBackground.UseVisualStyleBackColor = true;
+			// 
 			// checkBoxFPS
 			// 
 			this.checkBoxFPS.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -174,20 +244,6 @@ namespace Flee {
 			this.Label4.Text = "Some sprites are from MillionthVector.\r\nThe music is from PhilippWeigl.";
 			this.Label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
 			// 
-			// _RandomizeButton
-			// 
-			this._RandomizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this._RandomizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this._RandomizeButton.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this._RandomizeButton.Location = new System.Drawing.Point(157, 90);
-			this._RandomizeButton.Name = "_RandomizeButton";
-			this._RandomizeButton.Size = new System.Drawing.Size(221, 31);
-			this._RandomizeButton.TabIndex = 7;
-			this._RandomizeButton.Text = "Randomize Seed";
-			this._RandomizeButton.UseVisualStyleBackColor = true;
-			this._RandomizeButton.Click += new System.EventHandler(this.RandomizeButton_Click);
-			// 
 			// Label3
 			// 
 			this.Label3.AutoSize = true;
@@ -198,20 +254,25 @@ namespace Flee {
 			this.Label3.TabIndex = 6;
 			this.Label3.Text = "FLEE";
 			// 
-			// SeedTextBox
+			// label5
 			// 
-			this.SeedTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.SeedTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-			this.SeedTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.SeedTextBox.Font = new System.Drawing.Font("Corbel", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.SeedTextBox.ForeColor = System.Drawing.Color.White;
-			this.SeedTextBox.Location = new System.Drawing.Point(152, 58);
-			this.SeedTextBox.Name = "SeedTextBox";
-			this.SeedTextBox.Size = new System.Drawing.Size(230, 33);
-			this.SeedTextBox.TabIndex = 6;
-			this.SeedTextBox.Text = "876303952";
-			this.SeedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.label5.AutoSize = true;
+			this.label5.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label5.Location = new System.Drawing.Point(6, 212);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(106, 19);
+			this.label5.TabIndex = 1;
+			this.label5.Text = "MULTIPLAYER";
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label6.Location = new System.Drawing.Point(6, 137);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(75, 19);
+			this.label6.TabIndex = 1;
+			this.label6.Text = "OPTIONS";
 			// 
 			// Label2
 			// 
@@ -235,6 +296,20 @@ namespace Flee {
 			this._StartPlayingButton.Text = "Play";
 			this._StartPlayingButton.UseVisualStyleBackColor = true;
 			this._StartPlayingButton.Click += new System.EventHandler(this.BeginButton_Click);
+			// 
+			// _RandomizeButton
+			// 
+			this._RandomizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this._RandomizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this._RandomizeButton.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this._RandomizeButton.Location = new System.Drawing.Point(157, 90);
+			this._RandomizeButton.Name = "_RandomizeButton";
+			this._RandomizeButton.Size = new System.Drawing.Size(221, 31);
+			this._RandomizeButton.TabIndex = 7;
+			this._RandomizeButton.Text = "Randomize Seed";
+			this._RandomizeButton.UseVisualStyleBackColor = true;
+			this._RandomizeButton.Click += new System.EventHandler(this.RandomizeButton_Click);
 			// 
 			// UpgradeDetails
 			// 
@@ -477,22 +552,22 @@ namespace Flee {
 			// 
 			this.AntimatterTextBox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.AntimatterTextBox.ForeColor = System.Drawing.Color.Yellow;
-			this.AntimatterTextBox.Location = new System.Drawing.Point(108, 3);
+			this.AntimatterTextBox.Location = new System.Drawing.Point(100, 3);
 			this.AntimatterTextBox.Name = "AntimatterTextBox";
-			this.AntimatterTextBox.Size = new System.Drawing.Size(56, 25);
+			this.AntimatterTextBox.Size = new System.Drawing.Size(64, 25);
 			this.AntimatterTextBox.TabIndex = 3;
-			this.AntimatterTextBox.Text = "0";
+			this.AntimatterTextBox.Text = "starfuel";
 			this.AntimatterTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// UraniumTextBox
 			// 
 			this.UraniumTextBox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.UraniumTextBox.ForeColor = System.Drawing.Color.Lime;
-			this.UraniumTextBox.Location = new System.Drawing.Point(108, 34);
+			this.UraniumTextBox.Location = new System.Drawing.Point(100, 34);
 			this.UraniumTextBox.Name = "UraniumTextBox";
-			this.UraniumTextBox.Size = new System.Drawing.Size(56, 25);
+			this.UraniumTextBox.Size = new System.Drawing.Size(64, 25);
 			this.UraniumTextBox.TabIndex = 3;
-			this.UraniumTextBox.Text = "0";
+			this.UraniumTextBox.Text = "fissible";
 			this.UraniumTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// CristalTextBox
@@ -503,18 +578,18 @@ namespace Flee {
 			this.CristalTextBox.Name = "CristalTextBox";
 			this.CristalTextBox.Size = new System.Drawing.Size(56, 25);
 			this.CristalTextBox.TabIndex = 3;
-			this.CristalTextBox.Text = "0";
+			this.CristalTextBox.Text = "crystal";
 			this.CristalTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// MetalTextBox
 			// 
 			this.MetalTextBox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.MetalTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+			this.MetalTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
 			this.MetalTextBox.Location = new System.Drawing.Point(36, 3);
 			this.MetalTextBox.Name = "MetalTextBox";
 			this.MetalTextBox.Size = new System.Drawing.Size(71, 25);
 			this.MetalTextBox.TabIndex = 3;
-			this.MetalTextBox.Text = "0";
+			this.MetalTextBox.Text = "metal";
 			this.MetalTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// _PictureBox5
@@ -579,81 +654,6 @@ namespace Flee {
 			// 
 			this._Ticker.Interval = 33;
 			this._Ticker.Tick += new System.EventHandler(this.Ticker_Tick);
-			// 
-			// checkBoxEnableBackground
-			// 
-			this.checkBoxEnableBackground.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.checkBoxEnableBackground.AutoSize = true;
-			this.checkBoxEnableBackground.Checked = true;
-			this.checkBoxEnableBackground.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.checkBoxEnableBackground.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBoxEnableBackground.Location = new System.Drawing.Point(155, 160);
-			this.checkBoxEnableBackground.Name = "checkBoxEnableBackground";
-			this.checkBoxEnableBackground.Size = new System.Drawing.Size(82, 17);
-			this.checkBoxEnableBackground.TabIndex = 9;
-			this.checkBoxEnableBackground.Text = "background";
-			this.checkBoxEnableBackground.UseVisualStyleBackColor = true;
-			// 
-			// checkBox1
-			// 
-			this.checkBox1.AutoCheck = false;
-			this.checkBox1.AutoSize = true;
-			this.checkBox1.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBox1.Location = new System.Drawing.Point(155, 183);
-			this.checkBox1.Name = "checkBox1";
-			this.checkBox1.Size = new System.Drawing.Size(79, 17);
-			this.checkBox1.TabIndex = 9;
-			this.checkBox1.Text = "open to lan";
-			this.checkBox1.UseVisualStyleBackColor = true;
-			// 
-			// label6
-			// 
-			this.label6.AutoSize = true;
-			this.label6.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label6.Location = new System.Drawing.Point(6, 137);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(75, 19);
-			this.label6.TabIndex = 1;
-			this.label6.Text = "OPTIONS";
-			// 
-			// label5
-			// 
-			this.label5.AutoSize = true;
-			this.label5.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label5.Location = new System.Drawing.Point(6, 212);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(106, 19);
-			this.label5.TabIndex = 1;
-			this.label5.Text = "MULTIPLAYER";
-			// 
-			// textBox1
-			// 
-			this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.textBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-			this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.textBox1.Enabled = false;
-			this.textBox1.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.textBox1.ForeColor = System.Drawing.Color.White;
-			this.textBox1.Location = new System.Drawing.Point(152, 212);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(147, 27);
-			this.textBox1.TabIndex = 6;
-			this.textBox1.Text = "127.0.0.1";
-			this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			// 
-			// button1
-			// 
-			this.button1.Enabled = false;
-			this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.button1.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.button1.Location = new System.Drawing.Point(305, 212);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(77, 27);
-			this.button1.TabIndex = 10;
-			this.button1.Text = "JOIN";
-			this.button1.UseVisualStyleBackColor = true;
 			// 
 			// MainForm
 			// 
