@@ -120,6 +120,16 @@ ship Artillery
 	weapon=0;Standard-Artillery
 	cost=3000;4;0;0
 
+ship Capturer
+	desc=The heaviest and oldest ship humans have never made. Unfortunately, it is hardly upgradable.
+	width=60
+	level=2
+	integrity=510
+	speed=1.40
+	turn=0.50
+	weapon=45;Heavy-PlasmaBomber
+	cost=3500;8;0;0
+
 ship Dronner
 	level=8
 	integrity=135
@@ -259,6 +269,7 @@ ship MSL
 	complexity=500
 
 ship Nuke
+	desc=When something go wrong, it still can go worse.
 	level=0
 	integrity=72
 	repair=0

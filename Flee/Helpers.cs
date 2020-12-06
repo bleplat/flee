@@ -112,7 +112,7 @@ namespace Flee {
 				}
 			bmp.MakeTransparent(Color.Black);
 		}
-		public static void Swapcolor(Bitmap bmp, Color color) {
+		public static void SwapcolorOldConcept(Bitmap bmp, Color color) {
 			Color c_0 = (color.R >= color.G && color.R >= color.B) ? Color.FromArgb(color.R, 0, 0) : ((color.G >= color.B) ? Color.FromArgb(0, color.G, 0) : Color.FromArgb(0, 0, color.B));
 			Color c_2 = (color.B <= color.R && color.B <= color.G) ? Color.FromArgb(0, 0, color.B) : ((color.G <= color.R) ? Color.FromArgb(0, color.G, 0) : Color.FromArgb(color.R, 0, 0));
 			Color c_1 = (c_0.R == 0 && c_2.R == 0) ? Color.FromArgb(color.R, 0, 0) : ((c_0.G == 0 && c_2.G == 0) ? Color.FromArgb(0, color.G, 0) : Color.FromArgb(0, 0, color.B));
@@ -123,6 +123,19 @@ namespace Flee {
 						(pixel.R * c_0.R + pixel.G * c_1.R + pixel.B * c_2.R) / 256,
 						(pixel.R * c_0.G + pixel.G * c_1.G + pixel.B * c_2.G) / 256,
 						(pixel.R * c_0.B + pixel.G * c_1.B + pixel.B * c_2.B) / 256
+					));
+				}
+			bmp.MakeTransparent(Color.Black);
+		}
+		public static void Swapcolor(Bitmap bmp, Color color) {
+			Color color2 = Color.White;
+			for (int i = 0, loopTo = bmp.Width - 1; i <= loopTo; i++)
+				for (int j = 0, loopTo1 = bmp.Height - 1; j <= loopTo1; j++) {
+					Color pixel = bmp.GetPixel(i, j);
+					bmp.SetPixel(i, j, Color.FromArgb(
+						(pixel.R * color.R + pixel.G * 0) / 256,
+						(pixel.R * color.G + pixel.G * 0) / 256,
+						(pixel.R * color.B + pixel.G * 0) / 256
 					));
 				}
 			bmp.MakeTransparent(Color.Black);

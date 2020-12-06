@@ -190,7 +190,7 @@ namespace Flee {
 
 			// other spawns
 			upgrades.Add(new Upgrade() { name = "Launch_MSL", file = "MSL", frame_coords = new Point(0, 0), cost = new MaterialSet(400L, 0L, 0L, 50L), delay = 100UL, need = "?Type:Scout ?MS", effect = "!Sum:MSL", upgrade_slots_requiered = 0, desc = "Launch a missile." + Constants.vbNewLine + @"/!\ Requires a free ship slot!" });
-			upgrades.Add(new Upgrade() { name = "Build_Nuke", file = "Nuke", frame_coords = new Point(0, 0), cost = new MaterialSet(8000L, 32L, 8L, 2000L), delay = 250UL, need = "?Type:Ambassador", effect = "!Sum:Nuke", upgrade_slots_requiered = 0, desc = "When something go wrong, it still can go worse." + Constants.vbNewLine + @"/!\ Playing with the atom may lead to unexpected results." });
+			//upgrades.Add(new Upgrade() { name = "Build_Nuke", file = "Nuke", frame_coords = new Point(0, 0), cost = new MaterialSet(8000L, 32L, 8L, 2000L), delay = 250UL, need = "?Type:Ambassador", effect = "!Sum:Nuke", upgrade_slots_requiered = 0, desc = "" + Constants.vbNewLine + @"/!\ Playing with the atom may lead to unexpected results." });
 			upgrades.Add(new Upgrade() { name = "Build_Finalizer", file = "Finalizer", frame_coords = new Point(0, 0), cost = new MaterialSet(0L, 0L, 0L, 0L), delay = 600UL, need = "?Up:Ascend", effect = "!Sum:Finalizer", upgrade_slots_requiered = 0, desc = "Yet, not everybody made it through." + Constants.vbNewLine + "We will return for them." });
 		}
 
@@ -200,7 +200,7 @@ namespace Flee {
 				string launch_ship_upgrade_name = "Launch_" + ship_class.name;
 				if (UpgradeFromName(build_ship_upgrade_name) is null && UpgradeFromName(launch_ship_upgrade_name) is null) {
 					upgrades.Add(new Upgrade(build_ship_upgrade_name) { cost = ship_class.cost, delay = (ulong)(ship_class.complexity), need = "?MS", effect = "!Sum:" + ship_class.name, upgrade_slots_requiered = 0, desc = "Build a " + ship_class.name + "." });
-					if (ship_class.desc is null)
+					if (ship_class.desc is object)
 						upgrades[upgrades.Count - 1].desc = ship_class.desc;
 				}
 			}

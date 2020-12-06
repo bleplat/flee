@@ -368,7 +368,7 @@ namespace Flee {
 			// PriceM
 			// 
 			this.PriceM.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.PriceM.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+			this.PriceM.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
 			this.PriceM.Location = new System.Drawing.Point(346, 19);
 			this.PriceM.Name = "PriceM";
 			this.PriceM.Size = new System.Drawing.Size(40, 20);

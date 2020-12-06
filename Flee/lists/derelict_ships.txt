@@ -23,6 +23,14 @@ ship Meteoroid
 	turn=1.00
 	cost=0;2;0;0
 
+ship FissileMeteoroid
+	sprite=Meteoroid
+	level=0
+	integrity=4
+	speed=2.00
+	turn=1.00
+	cost=0;0;1;0
+	
 ship Comet
 	level=0
 	width=25

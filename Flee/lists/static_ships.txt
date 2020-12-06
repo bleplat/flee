@@ -12,6 +12,7 @@ ship Station
 	craft=Hunter
 	craft=Harass
 	craft=Simpleship
+	craft=Nuke
 
 ship Station_Simples
 	sprite=Station
@@ -23,6 +24,7 @@ ship Station_Simples
 	craft=Artillery
 	craft=Bomber
 	craft=Scout
+	craft=Capturer
 
 ship Station_Legendaries
 	level=100

@@ -60,7 +60,7 @@ namespace Flee {
 				throw new Exception("Image is too small to be a valid sprite grid!");
 			// grid color
 			Color grid_color = bmp.GetPixel(0, 0);
-			color_swap_mode = (grid_color == Color.Red);
+			color_swap_mode = (grid_color.R == 255 && grid_color.G == 0 && grid_color.B == 0);
 			// check white corners
 			if (bmp.GetPixel(0, 0) != grid_color || bmp.GetPixel(0, 1) != grid_color || bmp.GetPixel(1, 0) != grid_color)
 				throw new Exception("Incorrect sprite grid format (top left corner)!");
