@@ -43,7 +43,7 @@ namespace Flee {
 		public SpriteArray sprites = null;
 
 		// state
-		public int integrity = 20;
+		public float integrity = 20;
 		public int cold_deflector_charge = 0;
 		public int deflectors_loaded = 0;
 		public int deflector_loading = 0;
@@ -293,7 +293,7 @@ namespace Flee {
 				direction = (float)(direction + stats.turn);
 		}
 
-		public void TakeDamages(int Amount, [Optional, DefaultParameterValue(null)] ref Shoot From) {
+		public void TakeDamages(float Amount, [Optional, DefaultParameterValue(null)] ref Shoot From) {
 			if (deflectors_loaded > 0) {
 				deflectors_loaded -= 1;
 				return;
@@ -323,9 +323,9 @@ namespace Flee {
 					From.Team.resources.Antimatter = (long)(From.Team.resources.Antimatter + Amount / 8d);
 				else if (stats.sprite == "Asteroid")
 					if (integrity > Amount)
-						From.Team.resources.Metal += Amount;
+						From.Team.resources.Metal += (int)Amount;
 					else if (integrity > 0)
-						From.Team.resources.Metal += integrity;
+						From.Team.resources.Metal += (int)integrity;
 
 			if (Amount < 0)
 				return;

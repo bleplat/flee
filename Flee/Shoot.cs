@@ -12,10 +12,10 @@ namespace Flee {
 		public int sprite_y = 0;
 
 		// Secondaire
-		public int Power = 10;
+		public float Power = 10;
 		public int special = 0;
 
-		public Shoot(ref World world, ref Team team, int time_to_live, int power, int special, string type, PointF location, float direction, float speed, int sprite_y = 0) : base(ref world) {
+		public Shoot(ref World world, ref Team team, int time_to_live, float power, int special, string type, PointF location, float direction, float speed, int sprite_y = 0) : base(ref world) {
 			this.time_to_live = time_to_live;
 			this.Team = team;
 			this.Power = power;
@@ -28,7 +28,7 @@ namespace Flee {
 			// UpdateSector(); // useless in practice
 			this.sprites = SpriteArray.GetSpriteArray(this.type, (this.Team is object) ? this.Team.color : default);
 		}
-		public Shoot(ref World world, ref Team team, int time_to_live, int power, int special, string type, PointF location, float direction, PointF speed_vec, int sprite_y = 0) : base(ref world) {
+		public Shoot(ref World world, ref Team team, int time_to_live, float power, int special, string type, PointF location, float direction, PointF speed_vec, int sprite_y = 0) : base(ref world) {
 			this.time_to_live = time_to_live;
 			this.Team = team;
 			this.Power = power;
