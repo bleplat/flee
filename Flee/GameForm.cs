@@ -25,7 +25,7 @@ namespace Flee {
 		}
 		private Bitmap MiniBMP = new Bitmap(200, 200);
 		private Graphics MiniG;
-		private Bitmap PBMP = new Bitmap(200, 600);
+		private Bitmap PBMP = new Bitmap(200, 800);
 		private Graphics PG;
 		TextureBrush background_brush = new TextureBrush(new Bitmap("sprites/background.png"), WrapMode.Tile);
 

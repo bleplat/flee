@@ -74,6 +74,7 @@ namespace Flee {
 		}
 
 		public void Tick() {
+			UpdateStageDifficulty();
 			SpawnDerelictsObjects();
 			NPCUpgrades();
 			CheckAll();
@@ -84,6 +85,19 @@ namespace Flee {
 			foreach (Team team in Teams)
 				team.Tick();
 			ticks += 1;
+		}
+
+		public void UpdateStageDifficulty() {
+			if (HasAnyTeamAscended()) {
+				this.is_invaded_by_ascended = true;
+				this.is_invaded_by_bosses = true;
+			} else if (IsMeanStationLeft()) {
+				this.is_invaded_by_ascended = false;
+				this.is_invaded_by_bosses = true;
+			} else {
+				this.is_invaded_by_ascended = false;
+				this.is_invaded_by_bosses = false;
+			}
 		}
 
 		public void SPAWN_STATION_RANDOMLY(Random from_rand, string main_type, Team team, int spawn_allies) {
@@ -373,12 +387,26 @@ namespace Flee {
 			foreach (var aShip in Ships) {
 				if (aShip.team is null || aShip.team.id <= 1)
 					continue;
-
 				if (aShip.stats.name.Contains("Station") && !aShip.team.IsFriendWith(team))
 					return false;
 			}
-
 			return true;
+		}
+		public bool IsMeanStationLeft() {
+			foreach (var aShip in Ships) {
+				if (aShip.team is null || aShip.team.id <= 1 || aShip.team.bot_team == false)
+					continue;
+				if (aShip.stats.name.Contains("Station") && aShip.team.affinity != (int)AffinityEnum.KIND)
+					return false;
+			}
+			return true;
+		}
+		public bool HasAnyTeamAscended() {
+			foreach (Team team in Teams) {
+				if (team.has_ascended)
+					return (true);
+			}
+			return (false);
 		}
 
 		public void SpawnDerelictsObjects() {
