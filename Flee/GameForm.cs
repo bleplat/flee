@@ -26,6 +26,9 @@ namespace Flee {
 		private Bitmap MiniBMP = new Bitmap(200, 200);
 		private Graphics MiniG;
 		private bool MiniMDown = false;
+		private Bitmap PBMP = new Bitmap(200, 600);
+		private Graphics PG;
+		TextureBrush background_brush = new TextureBrush(new Bitmap("sprites/background.png"), WrapMode.Tile);
 
 		/* Construction */
 		public GameForm() {
@@ -105,64 +108,134 @@ namespace Flee {
 			if (game.play_state == PlayState.Timelapse)
 				CheckKeys(); // Expected to run more often when timelapsing;
 			CheckRightPanel();
-			drawUpgrades();
 			DrawAll();
 		}
 
+
+		/* Controls */
 		public void CheckKeys() {
 			foreach (string AKey in pressed_keys)
 				switch (AKey ?? "") {
 				case "Up": {
 					See.Y = See.Y - 50;
-					CheckSee();
+					ClampCameraLocationToArena();
 					break;
 				}
 
 				case "Down": {
 					See.Y = See.Y + 50;
-					CheckSee();
+					ClampCameraLocationToArena();
 					break;
 				}
 
 				case "Left": {
 					See.X = See.X - 50;
-					CheckSee();
+					ClampCameraLocationToArena();
 					break;
 				}
 
 				case "Right": {
 					See.X = See.X + 50;
-					CheckSee();
+					ClampCameraLocationToArena();
 					break;
 				}
 				}
 		}
 
-		TextureBrush background_brush = new TextureBrush(new Bitmap("sprites/background.png"), WrapMode.Tile);
-		public void DrawAll() {
-			// Background
-			if (!checkBoxEnableBackground.Checked) { // disable background image 
-				G.Clear(Color.Black);
-			} else {
-				background_brush.TranslateTransform(-See.X / 8, -See.Y / 8);
-				G.CompositingMode = CompositingMode.SourceCopy;
-				G.FillRectangle(background_brush, new RectangleF(new PointF(0, 0), DrawBMP.Size));
-				G.CompositingMode = CompositingMode.SourceOver;
-				background_brush.ResetTransform();
-			}
+		/* Drawing */
+		public void DrawUpgrades() {
+			if (SShipPanel.Visible == false || selected_ships.Count == 0)
+				return;
 
-			// Nuke effect
-			if (game.world.NuclearEffect > 0) {
-				SolidBrush nuclear_brush = new SolidBrush(Color.FromArgb(game.world.NuclearEffect, game.world.NuclearEffect, game.world.NuclearEffect));
-				G.FillRectangle(nuclear_brush, new RectangleF(new PointF(0, 0), DrawBMP.Size));
-				game.world.NuclearEffect -= 2;
-			}
+			PG.Clear(Color.Black);
+			int x = 0;
+			int y = 0;
+			bool udV = false;
+			foreach (Upgrade AUp in listed_upgrades) {
+				int ships_upgradable = Ship.CountShipsBuyableNowUpgrade(selected_ships, AUp);
+				int ships_installed = Ship.CountShipsHavingUpgrade(selected_ships, AUp);
+				int min_progress = Ship.MinUpgradeProgress(selected_ships, AUp);
+				if (x == UpX && y == UpY) {
+					PG.FillRectangle(Brushes.DimGray, x * 25, y * 25, 25, 25);
+					udV = true;
+					if (selected_ships.Count > 1)
+						UpName.Text = AUp.name + " (" + ships_upgradable.ToString() + ")";
+					else
+						UpName.Text = AUp.name;
 
+					UpDesc.Text = AUp.desc;
+					// prices
+					PriceC.Text = (AUp.cost.Crystal * Math.Max(1, ships_upgradable)).ToString();
+					PriceM.Text = (AUp.cost.Metal * Math.Max(1, ships_upgradable)).ToString();
+					PriceU.Text = (AUp.cost.Fissile * Math.Max(1, ships_upgradable)).ToString();
+					PriceA.Text = (AUp.cost.Antimatter * Math.Max(1, ships_upgradable)).ToString();
+					// invisible resources
+					PriceM.Visible = AUp.cost.Metal != 0L;
+					PriceMIcon.Visible = AUp.cost.Metal != 0L;
+					PriceC.Visible = AUp.cost.Crystal != 0L;
+					PriceCIcon.Visible = AUp.cost.Crystal != 0L;
+					PriceU.Visible = AUp.cost.Fissile != 0L;
+					PriceUIcon.Visible = AUp.cost.Fissile != 0L;
+					PriceA.Visible = AUp.cost.Antimatter != 0L;
+					PriceAIcon.Visible = AUp.cost.Antimatter != 0L;
+				}
+
+				bool localHasEnough() {
+					var argrequierement = AUp.cost.MultipliedBy(ships_upgradable);
+					var ret = selected_ships[0].team.resources.HasEnough(ref argrequierement);
+					return ret;
+				}
+
+				if (ships_installed == selected_ships.Count)                // already installed
+					PG.DrawRectangle(new Pen(Brushes.White, 2f), x * 25 + 1, y * 25 + 1, 24 - 1, 24 - 1);
+				else if (min_progress < int.MaxValue) {
+					// being installing
+					PG.DrawRectangle(new Pen(Brushes.Yellow, 2f), x * 25, y * 25, 24, 24);
+					int ph = (int)(min_progress / Math.Max(1m, AUp.delay) * 25m);
+					PG.FillRectangle(Brushes.White, x * 25, y * 25 + 25 - ph, 25, ph);
+				} else if (ships_upgradable == 0)               // no update slot remaining
+					if (ships_installed != 0)
+						PG.DrawRectangle(new Pen(Brushes.LightGray), x * 25, y * 25, 24, 24);
+					else
+						PG.DrawRectangle(Pens.DimGray, x * 25, y * 25, 24, 24);
+				else if (selected_ships[0].team is null || !localHasEnough())               // cannot afford all
+					if (AUp.upgrade_slots_requiered > 0)
+						if (selected_ships[0].team.resources.HasEnough(ref AUp.cost))                      // can afford at least one
+							PG.DrawRectangle(Pens.DarkOrange, x * 25, y * 25, 24, 24);
+						else                        // cannot even afford one
+							PG.DrawRectangle(Pens.DarkRed, x * 25, y * 25, 24, 24);
+					else if (selected_ships[0].team is object && selected_ships[0].team.resources.HasEnough(ref AUp.cost))                      // can afford at least one
+						PG.DrawRectangle(Pens.PaleGoldenrod, x * 25, y * 25, 24, 24);
+					else                        // cannot even afford one
+						PG.DrawRectangle(Pens.PaleVioletRed, x * 25, y * 25, 24, 24);
+				else if (AUp.upgrade_slots_requiered == 0)
+					PG.DrawRectangle(Pens.PaleGreen, x * 25, y * 25, 24, 24);
+				else
+					PG.DrawRectangle(Pens.DarkGreen, x * 25, y * 25, 24, 24);
+
+				PG.DrawImage(Helpers.GetSprite(AUp.file, AUp.frame_coords.X, AUp.frame_coords.Y), new Rectangle(new Point(x * 25, y * 25), new Size(25, 25)));
+
+				// item suivant
+				x = x + 1;
+				if (x >= 8) {
+					x = 0;
+					y = y + 1;
+				}
+			}
+			// infos
+			if (udV)
+				UpgradeDetails.Visible = true;
+			else
+				UpgradeDetails.Visible = false;
+
+			UpgradesBox.Image = PBMP;
+		}
+		public void DrawMinimap() {
+			// Transparent clear
 			MiniG.FillRectangle(new SolidBrush(Color.FromArgb(25, 0, 0, 0)), 0, 0, 200, 200);
-			// ===' Minimap '==='
+			// Visible area rectangle
 			MiniG.DrawRectangle(Pens.White, new Rectangle(new Point((int)(See.X / (double)game.world.ArenaSize.Width * MiniBMP.Width), (int)(See.Y / (double)game.world.ArenaSize.Height * MiniBMP.Height)), new Size((int)(DrawBMP.Width * MiniBMP.Width / (double)game.world.ArenaSize.Width), (int)(DrawBMP.Height * MiniBMP.Height / (double)game.world.ArenaSize.Height))));
-
-			// ===' Ships '==='
+			// Ships
 			foreach (Ship AShip in game.world.Ships) {
 				// Minimap '
 				int W = (int)(AShip.stats.width / 30d);
@@ -180,8 +253,30 @@ namespace Flee {
 						mini_color = Color.Cyan;
 					else
 						mini_color = Color.Red;
-
 				MiniG.FillRectangle(new SolidBrush(mini_color), new Rectangle((int)(AShip.location.X / game.world.ArenaSize.Width * MiniBMP.Width - W / 2d), (int)(AShip.location.Y / game.world.ArenaSize.Height * MiniBMP.Height - W / 2d), W, W));
+			}
+			// update
+			MiniBox.Image = MiniBMP;
+		}
+		public void DrawMain() {
+			// Background
+			if (!checkBoxEnableBackground.Checked) { // disable background image 
+				G.Clear(Color.Black);
+			} else {
+				background_brush.TranslateTransform(-See.X / 8, -See.Y / 8);
+				G.CompositingMode = CompositingMode.SourceCopy;
+				G.FillRectangle(background_brush, new RectangleF(new PointF(0, 0), DrawBMP.Size));
+				G.CompositingMode = CompositingMode.SourceOver;
+				background_brush.ResetTransform();
+			}
+			// Nuke effect
+			if (game.world.NuclearEffect > 0) {
+				SolidBrush nuclear_brush = new SolidBrush(Color.FromArgb(game.world.NuclearEffect, game.world.NuclearEffect, game.world.NuclearEffect));
+				G.FillRectangle(nuclear_brush, new RectangleF(new PointF(0, 0), DrawBMP.Size));
+				game.world.NuclearEffect -= 2;
+			}
+			// ships
+			foreach (Ship AShip in game.world.Ships) {
 				// Main screen '
 				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + DrawBox.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + DrawBox.Height) {
 					//var img = Helpers.GetSprite(AShip.stats.sprite, AShip.fram, 0, mini_color); // image
@@ -197,8 +292,7 @@ namespace Flee {
 					G.ResetTransform(); // reset
 				}
 			}
-
-			// ===' Shoots '==='
+			// shoots
 			foreach (Shoot AShoot in game.world.Shoots) {
 				// If AShoot.Coo.X > See.X AndAlso AShoot.Coo.X < See.X + DrawBox.Width AndAlso AShoot.Coo.Y > See.Y AndAlso AShoot.Coo.Y < See.Y + DrawBox.Height Then
 				Color col;
@@ -217,8 +311,8 @@ namespace Flee {
 				G.ResetTransform(); // reset
 									// End If
 			}
-			// ===' Effets '==='
-			foreach (Effect AEffect in game.world.Effects)
+			// effects
+			foreach (Effect AEffect in game.world.Effects) {
 				if (AEffect.location.X > See.X && AEffect.location.X < See.X + DrawBox.Width && AEffect.location.Y > See.Y && AEffect.location.Y < See.Y + DrawBox.Height) {
 					//var img = Helpers.GetSprite(AEffect.type, AEffect.fram, AEffect.sprite_y); // image
 					var img = AEffect.sprites.GetSprite(AEffect.fram, AEffect.sprite_y);
@@ -229,14 +323,16 @@ namespace Flee {
 					G.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
 					G.ResetTransform(); // reset
 				}
-			// ===' Séléction '==='
+			}
+			// Select rectangle
 			if (SelectStarted) {
 				var NR = Helpers.GetRect(ref SelectPTN1, ref SelectPTN2);
 				NR.X = NR.X - See.X;
 				NR.Y = NR.Y - See.Y;
 				G.DrawRectangle(Pens.White, NR);
 			}
-			// ===' Ships Special '==='
+			// ship specials
+
 			foreach (Ship AShip in game.world.Ships)
 				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + DrawBox.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + DrawBox.Height)
 					if (AShip.team is object && AShip.behavior != Ship.BehaviorMode.Drift && AShip.stats.sprite != "MSL") {
@@ -294,13 +390,12 @@ namespace Flee {
 									G.DrawString(AShip.deflectors_loaded + "/" + AShip.stats.deflectors + " <- " + AShip.deflector_loading, Font, new SolidBrush(Color.Gray), new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 7d + 7d - See.Y)));
 						}
 					}
-			// ===' Infos '==='
+			// text infos
 			G.DrawString("Ships : " + game.world.CountTeamShips(game.player_team) + " / " + game.player_team.ship_count_limit + " Max.", new Font("Consolas", 10f), Brushes.Lime, new Point(0, 0));
 			if (game.play_state == PlayState.Paused)
 				G.DrawString("PAUSE", new Font("Consolas", 16f), Brushes.White, new Point(0, DrawBMP.Height - 32));
 			else if (game.play_state == PlayState.Timelapse)
 				G.DrawString("TIMELAPSE", new Font("Consolas", 16f), Brushes.White, new Point(0, DrawBMP.Height - 32));
-			// ===' Help '==='
 			if (help) {
 				string help_str = "";
 				if (!game.player_team.has_ascended) {
@@ -325,12 +420,15 @@ namespace Flee {
 					help_str += Constants.vbNewLine;
 					help_str += "You won." + Constants.vbNewLine;
 				}
-
 				G.DrawString(help_str, new Font("Consolas", 10f), Brushes.Cyan, new Point(0, DrawBMP.Height - 256));
 			}
-
-			MiniBox.Image = MiniBMP;
+			// update
 			DrawBox.Image = DrawBMP;
+		}
+		public void DrawAll() {
+			DrawUpgrades();
+			DrawMain();
+			DrawMinimap();
 		}
 
 
@@ -346,7 +444,7 @@ namespace Flee {
 			MiniMDown = true;
 			See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBMP.Width / 2d);
 			See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBMP.Height / 2d);
-			CheckSee();
+			ClampCameraLocationToArena();
 		}
 
 		private void MiniBox_MouseUp(object sender, MouseEventArgs e) {
@@ -357,20 +455,17 @@ namespace Flee {
 			if (MiniMDown) {
 				See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBMP.Width / 2d);
 				See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBMP.Height / 2d);
-				CheckSee();
+				ClampCameraLocationToArena();
 			}
 		}
 
-		public void CheckSee() {
+		public void ClampCameraLocationToArena() {
 			if (See.X < 0)
 				See.X = 0;
-
 			if (See.Y < 0)
 				See.Y = 0;
-
 			if (See.X > game.world.ArenaSize.Width - DrawBMP.Width)
 				See.X = game.world.ArenaSize.Width - DrawBMP.Width;
-
 			if (See.Y > game.world.ArenaSize.Height - DrawBMP.Height)
 				See.Y = game.world.ArenaSize.Height - DrawBMP.Height;
 		}
@@ -627,96 +722,6 @@ namespace Flee {
 			UpgradeDetails.Top = UpgradesBox.Location.Y + e.Y;
 		}
 
-		private Bitmap PBMP = new Bitmap(200, 600);
-		private Graphics PG;
-
-		public void drawUpgrades() {
-			if (SShipPanel.Visible == false || selected_ships.Count == 0)
-				return;
-
-			PG.Clear(Color.Black);
-			int x = 0;
-			int y = 0;
-			bool udV = false;
-			foreach (Upgrade AUp in listed_upgrades) {
-				int ships_upgradable = Ship.CountShipsBuyableNowUpgrade(selected_ships, AUp);
-				int ships_installed = Ship.CountShipsHavingUpgrade(selected_ships, AUp);
-				int min_progress = Ship.MinUpgradeProgress(selected_ships, AUp);
-				if (x == UpX && y == UpY) {
-					PG.FillRectangle(Brushes.DimGray, x * 25, y * 25, 25, 25);
-					udV = true;
-					if (selected_ships.Count > 1)
-						UpName.Text = AUp.name + " (" + ships_upgradable.ToString() + ")";
-					else
-						UpName.Text = AUp.name;
-
-					UpDesc.Text = AUp.desc;
-					// prices
-					PriceC.Text = (AUp.cost.Crystal * Math.Max(1, ships_upgradable)).ToString();
-					PriceM.Text = (AUp.cost.Metal * Math.Max(1, ships_upgradable)).ToString();
-					PriceU.Text = (AUp.cost.Fissile * Math.Max(1, ships_upgradable)).ToString();
-					PriceA.Text = (AUp.cost.Antimatter * Math.Max(1, ships_upgradable)).ToString();
-					// invisible resources
-					PriceM.Visible = AUp.cost.Metal != 0L;
-					PriceMIcon.Visible = AUp.cost.Metal != 0L;
-					PriceC.Visible = AUp.cost.Crystal != 0L;
-					PriceCIcon.Visible = AUp.cost.Crystal != 0L;
-					PriceU.Visible = AUp.cost.Fissile != 0L;
-					PriceUIcon.Visible = AUp.cost.Fissile != 0L;
-					PriceA.Visible = AUp.cost.Antimatter != 0L;
-					PriceAIcon.Visible = AUp.cost.Antimatter != 0L;
-				}
-
-				bool localHasEnough() {
-					var argrequierement = AUp.cost.MultipliedBy(ships_upgradable);
-					var ret = selected_ships[0].team.resources.HasEnough(ref argrequierement);
-					return ret;
-				}
-
-				if (ships_installed == selected_ships.Count)                // already installed
-					PG.DrawRectangle(new Pen(Brushes.White, 2f), x * 25 + 1, y * 25 + 1, 24 - 1, 24 - 1);
-				else if (min_progress < int.MaxValue) {
-					// being installing
-					PG.DrawRectangle(new Pen(Brushes.Yellow, 2f), x * 25, y * 25, 24, 24);
-					int ph = (int)(min_progress / Math.Max(1m, AUp.delay) * 25m);
-					PG.FillRectangle(Brushes.White, x * 25, y * 25 + 25 - ph, 25, ph);
-				} else if (ships_upgradable == 0)               // no update slot remaining
-					if (ships_installed != 0)
-						PG.DrawRectangle(new Pen(Brushes.LightGray), x * 25, y * 25, 24, 24);
-					else
-						PG.DrawRectangle(Pens.DimGray, x * 25, y * 25, 24, 24);
-				else if (selected_ships[0].team is null || !localHasEnough())               // cannot afford all
-					if (AUp.upgrade_slots_requiered > 0)
-						if (selected_ships[0].team.resources.HasEnough(ref AUp.cost))                      // can afford at least one
-							PG.DrawRectangle(Pens.DarkOrange, x * 25, y * 25, 24, 24);
-						else                        // cannot even afford one
-							PG.DrawRectangle(Pens.DarkRed, x * 25, y * 25, 24, 24);
-					else if (selected_ships[0].team is object && selected_ships[0].team.resources.HasEnough(ref AUp.cost))                      // can afford at least one
-						PG.DrawRectangle(Pens.PaleGoldenrod, x * 25, y * 25, 24, 24);
-					else                        // cannot even afford one
-						PG.DrawRectangle(Pens.PaleVioletRed, x * 25, y * 25, 24, 24);
-				else if (AUp.upgrade_slots_requiered == 0)
-					PG.DrawRectangle(Pens.PaleGreen, x * 25, y * 25, 24, 24);
-				else
-					PG.DrawRectangle(Pens.DarkGreen, x * 25, y * 25, 24, 24);
-
-				PG.DrawImage(Helpers.GetSprite(AUp.file, AUp.frame_coords.X, AUp.frame_coords.Y), new Rectangle(new Point(x * 25, y * 25), new Size(25, 25)));
-
-				// item suivant
-				x = x + 1;
-				if (x >= 8) {
-					x = 0;
-					y = y + 1;
-				}
-			}
-			// infos
-			if (udV)
-				UpgradeDetails.Visible = true;
-			else
-				UpgradeDetails.Visible = false;
-
-			UpgradesBox.Image = PBMP;
-		}
 
 		private void UpgradesBox_Click(object sender, EventArgs e) {
 			if (MenuPanel.Visible)
