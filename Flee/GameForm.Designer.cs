@@ -115,7 +115,7 @@ namespace Flee {
 			// 
 			this._MiniBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this._MiniBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this._MiniBox.Location = new System.Drawing.Point(599, 399);
+			this._MiniBox.Location = new System.Drawing.Point(598, 398);
 			this._MiniBox.Name = "_MiniBox";
 			this._MiniBox.Size = new System.Drawing.Size(202, 202);
 			this._MiniBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -127,7 +127,7 @@ namespace Flee {
 			// 
 			// MenuPanel
 			// 
-			this.MenuPanel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.MenuPanel.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.MenuPanel.Controls.Add(this.button1);
 			this.MenuPanel.Controls.Add(this.textBox1);
 			this.MenuPanel.Controls.Add(this.SeedTextBox);
@@ -142,7 +142,7 @@ namespace Flee {
 			this.MenuPanel.Controls.Add(this._StartPlayingButton);
 			this.MenuPanel.Controls.Add(this._RandomizeButton);
 			this.MenuPanel.Font = new System.Drawing.Font("Corbel", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.MenuPanel.Location = new System.Drawing.Point(108, 133);
+			this.MenuPanel.Location = new System.Drawing.Point(207, 141);
 			this.MenuPanel.Name = "MenuPanel";
 			this.MenuPanel.Size = new System.Drawing.Size(385, 291);
 			this.MenuPanel.TabIndex = 5;
@@ -313,7 +313,6 @@ namespace Flee {
 			// 
 			// UpgradeDetails
 			// 
-			this.UpgradeDetails.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.UpgradeDetails.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.UpgradeDetails.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.UpgradeDetails.Controls.Add(this.PriceA);
@@ -326,7 +325,7 @@ namespace Flee {
 			this.UpgradeDetails.Controls.Add(this.PriceAIcon);
 			this.UpgradeDetails.Controls.Add(this.PriceUIcon);
 			this.UpgradeDetails.Controls.Add(this.PriceMIcon);
-			this.UpgradeDetails.Location = new System.Drawing.Point(188, 12);
+			this.UpgradeDetails.Location = new System.Drawing.Point(152, 12);
 			this.UpgradeDetails.Name = "UpgradeDetails";
 			this.UpgradeDetails.Size = new System.Drawing.Size(412, 94);
 			this.UpgradeDetails.TabIndex = 4;
@@ -440,7 +439,7 @@ namespace Flee {
 			// SShipPanel
 			// 
 			this.SShipPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.SShipPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.SShipPanel.Controls.Add(this.AllowMiningBox);
 			this.SShipPanel.Controls.Add(this.SShipUpsMax);
@@ -448,9 +447,9 @@ namespace Flee {
 			this.SShipPanel.Controls.Add(this.SShipImageBox);
 			this.SShipPanel.Controls.Add(this.Label1);
 			this.SShipPanel.Controls.Add(this.SShipTypeBox);
-			this.SShipPanel.Location = new System.Drawing.Point(600, 67);
+			this.SShipPanel.Location = new System.Drawing.Point(0, 32);
 			this.SShipPanel.Name = "SShipPanel";
-			this.SShipPanel.Size = new System.Drawing.Size(200, 332);
+			this.SShipPanel.Size = new System.Drawing.Size(152, 538);
 			this.SShipPanel.TabIndex = 3;
 			// 
 			// AllowMiningBox
@@ -479,9 +478,9 @@ namespace Flee {
 			this._UpgradesBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this._UpgradesBox.Location = new System.Drawing.Point(0, 55);
+			this._UpgradesBox.Location = new System.Drawing.Point(0, 61);
 			this._UpgradesBox.Name = "_UpgradesBox";
-			this._UpgradesBox.Size = new System.Drawing.Size(200, 272);
+			this._UpgradesBox.Size = new System.Drawing.Size(150, 475);
 			this._UpgradesBox.TabIndex = 2;
 			this._UpgradesBox.TabStop = false;
 			this._UpgradesBox.Click += new System.EventHandler(this.UpgradesBox_Click);
@@ -635,11 +634,11 @@ namespace Flee {
 			// 
 			// _DrawBox
 			// 
-			this._DrawBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
 			this._DrawBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this._DrawBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._DrawBox.Location = new System.Drawing.Point(0, 0);
 			this._DrawBox.Name = "_DrawBox";
-			this._DrawBox.Size = new System.Drawing.Size(600, 600);
+			this._DrawBox.Size = new System.Drawing.Size(800, 600);
 			this._DrawBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this._DrawBox.TabIndex = 0;
 			this._DrawBox.TabStop = false;

@@ -92,7 +92,7 @@ namespace Flee {
 			// close menu
 			SetMenuVisible(false);
 			// Place camera on player
-			See = new Point((int)(game.world.Ships[0].location.X - 200f), (int)(game.world.Ships[0].location.Y - 200f));
+			See = new Point((int)(game.world.Ships[0].location.X - this.Width / 2), (int)(game.world.Ships[0].location.Y - this.Height / 2));
 			// finaly enable timer
 			Ticker.Enabled = true; // TODO: have ticker enabled since the begining
 		}
@@ -131,9 +131,9 @@ namespace Flee {
 
 		/* Drawing */
 		public void DrawUpgrades() {
+			int upgrade_columns = UpgradesBox.Width / 25;
 			if (SShipPanel.Visible == false || selected_ships.Count == 0)
 				return;
-
 			PG.Clear(Color.Black);
 			int x = 0;
 			int y = 0;
@@ -204,7 +204,7 @@ namespace Flee {
 
 				// item suivant
 				x = x + 1;
-				if (x >= 8) {
+				if (x >= upgrade_columns) {
 					x = 0;
 					y = y + 1;
 				}
@@ -245,12 +245,19 @@ namespace Flee {
 			// update
 			MiniBox.Image = MiniBMP;
 		}
+		Size background_size = default;
+		Size GetBackgroundSize() {
+			if (background_size == default) {
+				background_size = new Size(background_brush.Image.Width, background_brush.Image.Height);
+			}
+			return (background_size);
+		}
 		public void DrawMain() {
 			// Background
 			if (!checkBoxEnableBackground.Checked) { // disable background image 
 				G.Clear(Color.Black);
 			} else {
-				background_brush.TranslateTransform(-See.X / 8, -See.Y / 8);
+				background_brush.TranslateTransform(-See.X / (game.world.ArenaSize.Width / (GetBackgroundSize().Width - this.Width)), -See.Y / (game.world.ArenaSize.Height / (GetBackgroundSize().Height - this.Height)));
 				G.CompositingMode = CompositingMode.SourceCopy;
 				G.FillRectangle(background_brush, new RectangleF(new PointF(0, 0), DrawBMP.Size));
 				G.CompositingMode = CompositingMode.SourceOver;
@@ -600,10 +607,10 @@ namespace Flee {
 
 		/* Resize */
 		private void MainForm_Resize(object sender, EventArgs e) {
-			DrawBox.Width = DrawBox.Height;
-			PanelRes.Left = DrawBox.Width + DrawBox.Left;
-			SShipPanel.Left = DrawBox.Width + DrawBox.Left;
-			MiniBox.Left = DrawBox.Width + DrawBox.Left;
+			//DrawBox.Width = DrawBox.Height;
+			//PanelRes.Left = DrawBox.Width + DrawBox.Left;
+			//SShipPanel.Left = DrawBox.Width + DrawBox.Left;
+			//MiniBox.Left = DrawBox.Width + DrawBox.Left;
 		}
 		private void DrawBox_SizeChanged(object sender, EventArgs e) {
 			if (DrawBox.Size.Width > 0 && DrawBox.Size.Height > 0) {

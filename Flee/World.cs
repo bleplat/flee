@@ -7,7 +7,7 @@ namespace Flee {
 	public class World {
 
 		// Definition
-		public Size ArenaSize = new Size(20000, 20000);
+		public Size ArenaSize = new Size(30000, 30000);
 		public int Seed;
 
 		// Randoms
