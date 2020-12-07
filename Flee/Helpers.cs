@@ -107,7 +107,7 @@ namespace Flee {
 			for (int i = 0, loopTo = bmp.Width - 1; i <= loopTo; i++)
 				for (int j = 0, loopTo1 = bmp.Height - 1; j <= loopTo1; j++) {
 					Color pixel = bmp.GetPixel(i, j);
-					if (pixel.R == pixel.G && pixel.G == pixel.B)
+					if (pixel.R == pixel.G && pixel.G == pixel.B && pixel.R != 0)
 						bmp.SetPixel(i, j, Color.FromArgb(pixel.R * color.R / 256, pixel.G * color.G / 256, pixel.B * color.B / 256));
 				}
 			bmp.MakeTransparent(Color.Black);

@@ -35,6 +35,14 @@ gun Longrange-ParticleGun
 	celerity=18
 	power=1
 	loadtime=12
+	
+gun Heavy-ParticleGun
+	desc=A less efficient but longer ranged version of the ParticleGun.
+	sprite=PRJ_LuvniShoot
+	range=200
+	celerity=18
+	power=2
+	loadtime=20
 
 #
 # Basic
@@ -71,7 +79,7 @@ gun Standard-Artillery
 
 gun Intercepting-Artillery
 	desc=A weaker but longer ranged artillery.
-	sprite=PRJ_C
+	sprite=PRJ_Deins
 	range=420
 	celerity=16
 	power=35
@@ -150,7 +158,7 @@ gun MachineGun
 
 gun Beam-4
 	desc=A powerful beam weapon.
-	sprite=PRJ_G
+	sprite=PRJ_PurpleCharge
 	range=250
 	celerity=14
 	power=16
@@ -196,7 +204,7 @@ gun Nuke-On-Contact
 
 gun RailGun
 	desc=Deadly weapon used by some bosses.
-	sprite=PRJ_F
+	sprite=PRJ_OrangeCharge
 	range=360
 	celerity=16
 	power=32
@@ -205,7 +213,7 @@ gun RailGun
 
 gun Bio-Gun
 	desc=Deadly weapon used by bugs bosses.
-	sprite=PRJ_R
+	sprite=PRJ_GreenCharge
 	range=310
 	celerity=24
 	power=16
@@ -214,7 +222,7 @@ gun Bio-Gun
 
 gun Heavy-Bio-Gun
 	desc=Deadly weapon used by bugs bosses.
-	sprite=PRJ_R
+	sprite=PRJ_GreenCharge
 	range=200
 	celerity=12
 	power=24

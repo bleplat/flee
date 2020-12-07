@@ -5,8 +5,8 @@ ship Colonizer
 	speed=2.80
 	turn=1.80
 	weapon=0;Basic-Cannon
-	weapon=-135;Basic-ParticleGun
-	weapon=135;Basic-ParticleGun
+	weapon=-135;Heavy-ParticleGun
+	weapon=135;Heavy-ParticleGun
 	cost=166;1;0;0
 	craft=Anti-Light_Turret
 	craft=Anti-Heavy_Turret
@@ -18,8 +18,8 @@ ship MiniColonizer
 	speed=2.80
 	turn=1.80
 	weapon=0;Standard-Artillery
-	weapon=-135;Basic-ParticleGun
-	weapon=135;Basic-ParticleGun
+	weapon=-135;Heavy-ParticleGun
+	weapon=135;Heavy-ParticleGun
 	shield=200
 	shield_opacity=75.00
 	cost=166;1;0;0
@@ -51,7 +51,7 @@ ship Ambassador
 	turn=1.80
 	weapon=45;Basic-Cannon
 	weapon=-45;Basic-Cannon
-	weapon=180;Basic-ParticleGun
+	weapon=180;Heavy-ParticleGun
 	cost=166;1;0;0
 	craft=Nuke
 
