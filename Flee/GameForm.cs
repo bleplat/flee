@@ -51,12 +51,18 @@ namespace Flee {
 			G = Graphics.FromImage(DrawBMP);
 			G.CompositingQuality = CompositingQuality.HighSpeed;
 			G.InterpolationMode = InterpolationMode.Bilinear;
-			Width = Width + 1;
+			UpdateRenderSize();
+			MiniG.CompositingQuality = CompositingQuality.HighSpeed;
+			MiniG.SmoothingMode = SmoothingMode.HighSpeed;
+			MiniG.InterpolationMode = InterpolationMode.Default;
+			PG.CompositingQuality = CompositingQuality.HighSpeed;
+			PG.SmoothingMode = SmoothingMode.HighSpeed;
+			PG.InterpolationMode = InterpolationMode.Default;
 			// Play the music if it's available
 			try {
 				My.MyProject.Computer.Audio.Play("sounds/PhilippWeigl-SubdivisionOfTheMasses.wav", AudioPlayMode.BackgroundLoop);
 			} catch (Exception ex) {
-				Text = "Flee - Music was not found AndAlso therefore not loaded!";
+				Text = "Flee - Music was not found so therefore not loaded!";
 			}
 			// Load lists
 			Upgrade.LoadRegUpgrades();
@@ -65,6 +71,17 @@ namespace Flee {
 		}
 
 		/* Begin Game */
+		void SetUISettingsFromMenu() {
+			if (checkBoxBetterGraphics.Checked) {
+				G.CompositingQuality = CompositingQuality.HighSpeed;
+				G.InterpolationMode = InterpolationMode.Bilinear;
+				G.SmoothingMode = SmoothingMode.HighSpeed;
+			} else {
+				G.CompositingQuality = CompositingQuality.HighSpeed;
+				G.InterpolationMode = InterpolationMode.NearestNeighbor;
+				G.SmoothingMode = SmoothingMode.HighSpeed;
+			}
+		}
 		void SetGameSettingsFromMenu() {
 			// Seed
 			try {
@@ -85,8 +102,10 @@ namespace Flee {
 			MenuPanel.Visible = visible;
 		}
 		private void BeginButton_Click(object sender, EventArgs e) {
+			SetUISettingsFromMenu();
 			SetGameSettingsFromMenu();
 			game.StartSingleplayer();
+			// 
 			// Window Title
 			this.Text = "Flee - Seed: " + SeedTextBox.Text;
 			// close menu
@@ -625,10 +644,13 @@ namespace Flee {
 			//SShipPanel.Left = DrawBox.Width + DrawBox.Left;
 			//MiniBox.Left = DrawBox.Width + DrawBox.Left;
 		}
-		private void DrawBox_SizeChanged(object sender, EventArgs e) {
-			if (DrawBox.Size.Width > 0 && DrawBox.Size.Height > 0) {
+		void UpdateRenderSize() {
 				DrawBMP = new Bitmap(DrawBox.Size.Width, DrawBox.Size.Height);
 				G = Graphics.FromImage(DrawBMP);
+		}
+		private void DrawBox_SizeChanged(object sender, EventArgs e) {
+			if (DrawBox.Size.Width > 0 && DrawBox.Size.Height > 0) {
+				UpdateRenderSize();
 			}
 		}
 

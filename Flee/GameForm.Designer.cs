@@ -41,7 +41,6 @@ namespace Flee {
 			this.Label4 = new System.Windows.Forms.Label();
 			this.Label3 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
-			this.label6 = new System.Windows.Forms.Label();
 			this.Label2 = new System.Windows.Forms.Label();
 			this._StartPlayingButton = new System.Windows.Forms.Button();
 			this._RandomizeButton = new System.Windows.Forms.Button();
@@ -75,6 +74,8 @@ namespace Flee {
 			this.PictureBoxAvailableMetal = new System.Windows.Forms.PictureBox();
 			this._DrawBox = new System.Windows.Forms.PictureBox();
 			this._Ticker = new System.Windows.Forms.Timer(this.components);
+			this.label7 = new System.Windows.Forms.Label();
+			this.checkBoxBetterGraphics = new System.Windows.Forms.CheckBox();
 			this.MainPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._MiniBox)).BeginInit();
 			this.MenuPanel.SuspendLayout();
@@ -118,7 +119,6 @@ namespace Flee {
 			this._MiniBox.Location = new System.Drawing.Point(598, 398);
 			this._MiniBox.Name = "_MiniBox";
 			this._MiniBox.Size = new System.Drawing.Size(202, 202);
-			this._MiniBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this._MiniBox.TabIndex = 1;
 			this._MiniBox.TabStop = false;
 			this._MiniBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MiniBox_MouseDown);
@@ -132,19 +132,20 @@ namespace Flee {
 			this.MenuPanel.Controls.Add(this.textBox1);
 			this.MenuPanel.Controls.Add(this.SeedTextBox);
 			this.MenuPanel.Controls.Add(this.checkBoxLAN);
+			this.MenuPanel.Controls.Add(this.checkBoxBetterGraphics);
 			this.MenuPanel.Controls.Add(this.checkBoxEnableBackground);
 			this.MenuPanel.Controls.Add(this.checkBoxFPS);
 			this.MenuPanel.Controls.Add(this.Label4);
 			this.MenuPanel.Controls.Add(this.Label3);
 			this.MenuPanel.Controls.Add(this.label5);
-			this.MenuPanel.Controls.Add(this.label6);
+			this.MenuPanel.Controls.Add(this.label7);
 			this.MenuPanel.Controls.Add(this.Label2);
 			this.MenuPanel.Controls.Add(this._StartPlayingButton);
 			this.MenuPanel.Controls.Add(this._RandomizeButton);
 			this.MenuPanel.Font = new System.Drawing.Font("Corbel", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.MenuPanel.Location = new System.Drawing.Point(207, 141);
+			this.MenuPanel.Location = new System.Drawing.Point(207, 112);
 			this.MenuPanel.Name = "MenuPanel";
-			this.MenuPanel.Size = new System.Drawing.Size(385, 291);
+			this.MenuPanel.Size = new System.Drawing.Size(385, 353);
 			this.MenuPanel.TabIndex = 5;
 			// 
 			// button1
@@ -152,7 +153,7 @@ namespace Flee {
 			this.button1.Enabled = false;
 			this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.button1.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.button1.Location = new System.Drawing.Point(305, 212);
+			this.button1.Location = new System.Drawing.Point(305, 148);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(77, 27);
 			this.button1.TabIndex = 10;
@@ -168,7 +169,7 @@ namespace Flee {
 			this.textBox1.Enabled = false;
 			this.textBox1.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.textBox1.ForeColor = System.Drawing.Color.White;
-			this.textBox1.Location = new System.Drawing.Point(152, 212);
+			this.textBox1.Location = new System.Drawing.Point(152, 148);
 			this.textBox1.Name = "textBox1";
 			this.textBox1.Size = new System.Drawing.Size(147, 27);
 			this.textBox1.TabIndex = 6;
@@ -183,7 +184,7 @@ namespace Flee {
 			this.SeedTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.SeedTextBox.Font = new System.Drawing.Font("Corbel", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.SeedTextBox.ForeColor = System.Drawing.Color.White;
-			this.SeedTextBox.Location = new System.Drawing.Point(152, 58);
+			this.SeedTextBox.Location = new System.Drawing.Point(152, 209);
 			this.SeedTextBox.Name = "SeedTextBox";
 			this.SeedTextBox.Size = new System.Drawing.Size(230, 33);
 			this.SeedTextBox.TabIndex = 6;
@@ -195,7 +196,7 @@ namespace Flee {
 			this.checkBoxLAN.AutoCheck = false;
 			this.checkBoxLAN.AutoSize = true;
 			this.checkBoxLAN.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBoxLAN.Location = new System.Drawing.Point(155, 183);
+			this.checkBoxLAN.Location = new System.Drawing.Point(152, 278);
 			this.checkBoxLAN.Name = "checkBoxLAN";
 			this.checkBoxLAN.Size = new System.Drawing.Size(79, 17);
 			this.checkBoxLAN.TabIndex = 9;
@@ -210,7 +211,7 @@ namespace Flee {
 			this.checkBoxEnableBackground.Checked = true;
 			this.checkBoxEnableBackground.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.checkBoxEnableBackground.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBoxEnableBackground.Location = new System.Drawing.Point(155, 160);
+			this.checkBoxEnableBackground.Location = new System.Drawing.Point(149, 83);
 			this.checkBoxEnableBackground.Name = "checkBoxEnableBackground";
 			this.checkBoxEnableBackground.Size = new System.Drawing.Size(82, 17);
 			this.checkBoxEnableBackground.TabIndex = 9;
@@ -225,7 +226,7 @@ namespace Flee {
 			this.checkBoxFPS.Checked = true;
 			this.checkBoxFPS.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.checkBoxFPS.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBoxFPS.Location = new System.Drawing.Point(155, 137);
+			this.checkBoxFPS.Location = new System.Drawing.Point(149, 64);
 			this.checkBoxFPS.Name = "checkBoxFPS";
 			this.checkBoxFPS.Size = new System.Drawing.Size(199, 17);
 			this.checkBoxFPS.TabIndex = 9;
@@ -258,38 +259,28 @@ namespace Flee {
 			// 
 			this.label5.AutoSize = true;
 			this.label5.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label5.Location = new System.Drawing.Point(6, 212);
+			this.label5.Location = new System.Drawing.Point(6, 150);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(106, 19);
+			this.label5.Size = new System.Drawing.Size(42, 19);
 			this.label5.TabIndex = 1;
-			this.label5.Text = "MULTIPLAYER";
-			// 
-			// label6
-			// 
-			this.label6.AutoSize = true;
-			this.label6.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label6.Location = new System.Drawing.Point(6, 137);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(75, 19);
-			this.label6.TabIndex = 1;
-			this.label6.Text = "OPTIONS";
+			this.label5.Text = "JOIN";
 			// 
 			// Label2
 			// 
 			this.Label2.AutoSize = true;
 			this.Label2.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.Label2.Location = new System.Drawing.Point(6, 58);
+			this.Label2.Location = new System.Drawing.Point(6, 209);
 			this.Label2.Name = "Label2";
-			this.Label2.Size = new System.Drawing.Size(47, 19);
+			this.Label2.Size = new System.Drawing.Size(50, 19);
 			this.Label2.TabIndex = 1;
-			this.Label2.Text = "SEED";
+			this.Label2.Text = "HOST";
 			// 
 			// _StartPlayingButton
 			// 
 			this._StartPlayingButton.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this._StartPlayingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this._StartPlayingButton.Font = new System.Drawing.Font("Corbel", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this._StartPlayingButton.Location = new System.Drawing.Point(0, 253);
+			this._StartPlayingButton.Location = new System.Drawing.Point(0, 315);
 			this._StartPlayingButton.Name = "_StartPlayingButton";
 			this._StartPlayingButton.Size = new System.Drawing.Size(385, 38);
 			this._StartPlayingButton.TabIndex = 0;
@@ -303,7 +294,7 @@ namespace Flee {
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._RandomizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this._RandomizeButton.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this._RandomizeButton.Location = new System.Drawing.Point(157, 90);
+			this._RandomizeButton.Location = new System.Drawing.Point(157, 241);
 			this._RandomizeButton.Name = "_RandomizeButton";
 			this._RandomizeButton.Size = new System.Drawing.Size(221, 31);
 			this._RandomizeButton.TabIndex = 7;
@@ -639,7 +630,6 @@ namespace Flee {
 			this._DrawBox.Location = new System.Drawing.Point(0, 0);
 			this._DrawBox.Name = "_DrawBox";
 			this._DrawBox.Size = new System.Drawing.Size(800, 600);
-			this._DrawBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this._DrawBox.TabIndex = 0;
 			this._DrawBox.TabStop = false;
 			this._DrawBox.SizeChanged += new System.EventHandler(this.DrawBox_SizeChanged);
@@ -651,6 +641,31 @@ namespace Flee {
 			// 
 			this._Ticker.Interval = 33;
 			this._Ticker.Tick += new System.EventHandler(this.Ticker_Tick);
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label7.Location = new System.Drawing.Point(6, 64);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(81, 19);
+			this.label7.TabIndex = 1;
+			this.label7.Text = "GRAPHICS";
+			// 
+			// checkBoxBetterGraphics
+			// 
+			this.checkBoxBetterGraphics.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.checkBoxBetterGraphics.AutoSize = true;
+			this.checkBoxBetterGraphics.Checked = true;
+			this.checkBoxBetterGraphics.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBoxBetterGraphics.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.checkBoxBetterGraphics.Location = new System.Drawing.Point(149, 102);
+			this.checkBoxBetterGraphics.Name = "checkBoxBetterGraphics";
+			this.checkBoxBetterGraphics.Size = new System.Drawing.Size(96, 17);
+			this.checkBoxBetterGraphics.TabIndex = 9;
+			this.checkBoxBetterGraphics.Text = "better graphics";
+			this.checkBoxBetterGraphics.UseVisualStyleBackColor = true;
 			// 
 			// GameForm
 			// 
@@ -908,9 +923,10 @@ namespace Flee {
 		private CheckBox checkBoxFPS;
 		private CheckBox checkBoxEnableBackground;
 		private CheckBox checkBoxLAN;
-		internal Label label6;
 		private Button button1;
 		internal TextBox textBox1;
 		internal Label label5;
+		private CheckBox checkBoxBetterGraphics;
+		internal Label label7;
 	}
 }

@@ -557,7 +557,7 @@ namespace Flee {
 		}
 		// return true if the upgrade is available
 		public bool CanUpgrade(Upgrade upgrade) {
-			if (team.cheats_enabled)
+			if (team is object && team.cheats_enabled)
 				return true;
 			if (Upgrading is object)
 				return false;
@@ -571,7 +571,7 @@ namespace Flee {
 		}
 		// return true if the upgrade have its conditions met
 		public bool IsUpgradeCompatible(Upgrade upgrade) {
-			if (team.cheats_enabled)
+			if (team is object && team.cheats_enabled)
 				return true;
 			if (ReferenceEquals(upgrade, Upgrading))
 				return true;
