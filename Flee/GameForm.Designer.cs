@@ -69,10 +69,10 @@ namespace Flee {
 			this.UraniumTextBox = new System.Windows.Forms.Label();
 			this.CristalTextBox = new System.Windows.Forms.Label();
 			this.MetalTextBox = new System.Windows.Forms.Label();
-			this._PictureBox5 = new System.Windows.Forms.PictureBox();
-			this._PictureBox6 = new System.Windows.Forms.PictureBox();
-			this._PictureBox2 = new System.Windows.Forms.PictureBox();
-			this.PictureBox1 = new System.Windows.Forms.PictureBox();
+			this.PictureBoxAvailableFissile = new System.Windows.Forms.PictureBox();
+			this.PictureBoxAvailableStarfuel = new System.Windows.Forms.PictureBox();
+			this.PictureBoxAvailableCrystal = new System.Windows.Forms.PictureBox();
+			this.PictureBoxAvailableMetal = new System.Windows.Forms.PictureBox();
 			this._DrawBox = new System.Windows.Forms.PictureBox();
 			this._Ticker = new System.Windows.Forms.Timer(this.components);
 			this.MainPanel.SuspendLayout();
@@ -88,10 +88,10 @@ namespace Flee {
 			((System.ComponentModel.ISupportInitialize)(this._UpgradesBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.SShipImageBox)).BeginInit();
 			this.PanelRes.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this._PictureBox5)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this._PictureBox6)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this._PictureBox2)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBox1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableFissile)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableStarfuel)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableCrystal)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableMetal)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this._DrawBox)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -527,10 +527,10 @@ namespace Flee {
 			this.PanelRes.Controls.Add(this.UraniumTextBox);
 			this.PanelRes.Controls.Add(this.CristalTextBox);
 			this.PanelRes.Controls.Add(this.MetalTextBox);
-			this.PanelRes.Controls.Add(this._PictureBox5);
-			this.PanelRes.Controls.Add(this._PictureBox6);
-			this.PanelRes.Controls.Add(this._PictureBox2);
-			this.PanelRes.Controls.Add(this.PictureBox1);
+			this.PanelRes.Controls.Add(this.PictureBoxAvailableFissile);
+			this.PanelRes.Controls.Add(this.PictureBoxAvailableStarfuel);
+			this.PanelRes.Controls.Add(this.PictureBoxAvailableCrystal);
+			this.PanelRes.Controls.Add(this.PictureBoxAvailableMetal);
 			this.PanelRes.Location = new System.Drawing.Point(600, 0);
 			this.PanelRes.Name = "PanelRes";
 			this.PanelRes.Size = new System.Drawing.Size(200, 68);
@@ -592,46 +592,46 @@ namespace Flee {
 			this.MetalTextBox.Text = "metal";
 			this.MetalTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// _PictureBox5
+			// PictureBoxAvailableFissile
 			// 
-			this._PictureBox5.Image = global::Flee.My.Resources.Resources.Fissile;
-			this._PictureBox5.Location = new System.Drawing.Point(170, 34);
-			this._PictureBox5.Name = "_PictureBox5";
-			this._PictureBox5.Size = new System.Drawing.Size(25, 25);
-			this._PictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this._PictureBox5.TabIndex = 0;
-			this._PictureBox5.TabStop = false;
+			this.PictureBoxAvailableFissile.Image = global::Flee.My.Resources.Resources.Fissile;
+			this.PictureBoxAvailableFissile.Location = new System.Drawing.Point(170, 34);
+			this.PictureBoxAvailableFissile.Name = "PictureBoxAvailableFissile";
+			this.PictureBoxAvailableFissile.Size = new System.Drawing.Size(25, 25);
+			this.PictureBoxAvailableFissile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PictureBoxAvailableFissile.TabIndex = 0;
+			this.PictureBoxAvailableFissile.TabStop = false;
 			// 
-			// _PictureBox6
+			// PictureBoxAvailableStarfuel
 			// 
-			this._PictureBox6.Image = global::Flee.My.Resources.Resources.Antimatter;
-			this._PictureBox6.Location = new System.Drawing.Point(170, 3);
-			this._PictureBox6.Name = "_PictureBox6";
-			this._PictureBox6.Size = new System.Drawing.Size(25, 25);
-			this._PictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this._PictureBox6.TabIndex = 0;
-			this._PictureBox6.TabStop = false;
-			this._PictureBox6.Click += new System.EventHandler(this.PictureBox2_Click);
+			this.PictureBoxAvailableStarfuel.Image = global::Flee.My.Resources.Resources.Antimatter;
+			this.PictureBoxAvailableStarfuel.Location = new System.Drawing.Point(170, 3);
+			this.PictureBoxAvailableStarfuel.Name = "PictureBoxAvailableStarfuel";
+			this.PictureBoxAvailableStarfuel.Size = new System.Drawing.Size(25, 25);
+			this.PictureBoxAvailableStarfuel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PictureBoxAvailableStarfuel.TabIndex = 0;
+			this.PictureBoxAvailableStarfuel.TabStop = false;
+			this.PictureBoxAvailableStarfuel.Click += new System.EventHandler(this.PictureBoxAvailableStarfuel_Click);
 			// 
-			// _PictureBox2
+			// PictureBoxAvailableCrystal
 			// 
-			this._PictureBox2.Image = global::Flee.My.Resources.Resources.Crystal;
-			this._PictureBox2.Location = new System.Drawing.Point(5, 34);
-			this._PictureBox2.Name = "_PictureBox2";
-			this._PictureBox2.Size = new System.Drawing.Size(25, 25);
-			this._PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this._PictureBox2.TabIndex = 0;
-			this._PictureBox2.TabStop = false;
+			this.PictureBoxAvailableCrystal.Image = global::Flee.My.Resources.Resources.Crystal;
+			this.PictureBoxAvailableCrystal.Location = new System.Drawing.Point(5, 34);
+			this.PictureBoxAvailableCrystal.Name = "PictureBoxAvailableCrystal";
+			this.PictureBoxAvailableCrystal.Size = new System.Drawing.Size(25, 25);
+			this.PictureBoxAvailableCrystal.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PictureBoxAvailableCrystal.TabIndex = 0;
+			this.PictureBoxAvailableCrystal.TabStop = false;
 			// 
-			// PictureBox1
+			// PictureBoxAvailableMetal
 			// 
-			this.PictureBox1.Image = global::Flee.My.Resources.Resources.Metal;
-			this.PictureBox1.Location = new System.Drawing.Point(5, 3);
-			this.PictureBox1.Name = "PictureBox1";
-			this.PictureBox1.Size = new System.Drawing.Size(25, 25);
-			this.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PictureBox1.TabIndex = 0;
-			this.PictureBox1.TabStop = false;
+			this.PictureBoxAvailableMetal.Image = global::Flee.My.Resources.Resources.Metal;
+			this.PictureBoxAvailableMetal.Location = new System.Drawing.Point(5, 3);
+			this.PictureBoxAvailableMetal.Name = "PictureBoxAvailableMetal";
+			this.PictureBoxAvailableMetal.Size = new System.Drawing.Size(25, 25);
+			this.PictureBoxAvailableMetal.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PictureBoxAvailableMetal.TabIndex = 0;
+			this.PictureBoxAvailableMetal.TabStop = false;
 			// 
 			// _DrawBox
 			// 
@@ -653,7 +653,7 @@ namespace Flee {
 			this._Ticker.Interval = 33;
 			this._Ticker.Tick += new System.EventHandler(this.Ticker_Tick);
 			// 
-			// MainForm
+			// GameForm
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.BackColor = System.Drawing.Color.Black;
@@ -665,7 +665,7 @@ namespace Flee {
 			this.ForeColor = System.Drawing.Color.White;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.KeyPreview = true;
-			this.Name = "MainForm";
+			this.Name = "GameForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Flee";
 			this.Load += new System.EventHandler(this.MainForm_Load);
@@ -688,10 +688,10 @@ namespace Flee {
 			((System.ComponentModel.ISupportInitialize)(this.SShipImageBox)).EndInit();
 			this.PanelRes.ResumeLayout(false);
 			this.PanelRes.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this._PictureBox5)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this._PictureBox6)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this._PictureBox2)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBox1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableFissile)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableStarfuel)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableCrystal)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableMetal)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this._DrawBox)).EndInit();
 			this.ResumeLayout(false);
 
@@ -768,26 +768,26 @@ namespace Flee {
 		}
 
 		internal Panel PanelRes;
-		internal PictureBox PictureBox1;
+		internal PictureBox PictureBoxAvailableMetal;
 		internal Label MetalTextBox;
 		internal Panel SShipPanel;
 		internal PictureBox SShipImageBox;
 		internal Label SShipTypeBox;
 		internal Label CristalTextBox;
-		private PictureBox _PictureBox2;
+		private PictureBox PictureBoxAvailableCrystal;
 
 		internal PictureBox PictureBox2 {
 			[MethodImpl(MethodImplOptions.Synchronized)]
 			get {
-				return _PictureBox2;
+				return PictureBoxAvailableCrystal;
 			}
 
 			[MethodImpl(MethodImplOptions.Synchronized)]
 			set {
-				if (_PictureBox2 != null) _PictureBox2.Click -= PictureBox2_Click;
+				if (PictureBoxAvailableCrystal != null) PictureBoxAvailableCrystal.Click -= PictureBoxAvailableStarfuel_Click;
 
-				_PictureBox2 = value;
-				if (_PictureBox2 != null) _PictureBox2.Click += PictureBox2_Click;
+				PictureBoxAvailableCrystal = value;
+				if (PictureBoxAvailableCrystal != null) PictureBoxAvailableCrystal.Click += PictureBoxAvailableStarfuel_Click;
 			}
 		}
 
@@ -827,20 +827,20 @@ namespace Flee {
 		internal PictureBox PriceMIcon;
 		internal PictureBox AllowMiningBox;
 		internal Label UraniumTextBox;
-		private PictureBox _PictureBox5;
+		private PictureBox PictureBoxAvailableFissile;
 
 		internal PictureBox PictureBox5 {
 			[MethodImpl(MethodImplOptions.Synchronized)]
 			get {
-				return _PictureBox5;
+				return PictureBoxAvailableFissile;
 			}
 
 			[MethodImpl(MethodImplOptions.Synchronized)]
 			set {
-				if (_PictureBox5 != null) _PictureBox5.Click -= PictureBox2_Click;
+				if (PictureBoxAvailableFissile != null) PictureBoxAvailableFissile.Click -= PictureBoxAvailableStarfuel_Click;
 
-				_PictureBox5 = value;
-				if (_PictureBox5 != null) _PictureBox5.Click += PictureBox2_Click;
+				PictureBoxAvailableFissile = value;
+				if (PictureBoxAvailableFissile != null) PictureBoxAvailableFissile.Click += PictureBoxAvailableStarfuel_Click;
 			}
 		}
 
@@ -886,20 +886,20 @@ namespace Flee {
 		}
 
 		internal Label AntimatterTextBox;
-		private PictureBox _PictureBox6;
+		private PictureBox PictureBoxAvailableStarfuel;
 
 		internal PictureBox PictureBox6 {
 			[MethodImpl(MethodImplOptions.Synchronized)]
 			get {
-				return _PictureBox6;
+				return PictureBoxAvailableStarfuel;
 			}
 
 			[MethodImpl(MethodImplOptions.Synchronized)]
 			set {
-				if (_PictureBox6 != null) _PictureBox6.Click -= PictureBox2_Click;
+				if (PictureBoxAvailableStarfuel != null) PictureBoxAvailableStarfuel.Click -= PictureBoxAvailableStarfuel_Click;
 
-				_PictureBox6 = value;
-				if (_PictureBox6 != null) _PictureBox6.Click += PictureBox2_Click;
+				PictureBoxAvailableStarfuel = value;
+				if (PictureBoxAvailableStarfuel != null) PictureBoxAvailableStarfuel.Click += PictureBoxAvailableStarfuel_Click;
 			}
 		}
 

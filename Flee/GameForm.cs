@@ -39,9 +39,6 @@ namespace Flee {
 			_RandomizeButton.Name = "RandomizeButton";
 			_StartPlayingButton.Name = "StartPlayingButton";
 			_UpgradesBox.Name = "UpgradesBox";
-			_PictureBox5.Name = "PictureBox5";
-			_PictureBox6.Name = "PictureBox6";
-			_PictureBox2.Name = "PictureBox2";
 			_DrawBox.Name = "DrawBox";
 		}
 		private void MainForm_Load(object sender, EventArgs e) {
@@ -590,8 +587,8 @@ namespace Flee {
 					}
 		}
 
-
-		private void PictureBox2_Click(object sender, EventArgs e) {
+		/* Cheat Resources */
+		private void PictureBoxAvailableStarfuel_Click(object sender, EventArgs e) {
 			if (game.player_team.cheats_enabled) {
 				var team = game.player_team;
 				if (selected_ships.Count > 0 && selected_ships[0].team is object)
@@ -601,29 +598,33 @@ namespace Flee {
 			}
 		}
 
+		/* Resize */
 		private void MainForm_Resize(object sender, EventArgs e) {
 			DrawBox.Width = DrawBox.Height;
 			PanelRes.Left = DrawBox.Width + DrawBox.Left;
 			SShipPanel.Left = DrawBox.Width + DrawBox.Left;
 			MiniBox.Left = DrawBox.Width + DrawBox.Left;
 		}
+		private void DrawBox_SizeChanged(object sender, EventArgs e) {
+			if (DrawBox.Size.Width > 0 && DrawBox.Size.Height > 0) {
+				DrawBMP = new Bitmap(DrawBox.Size.Width, DrawBox.Size.Height);
+				G = Graphics.FromImage(DrawBMP);
+			}
+		}
 
+		/* Menu */
 		private void RandomizeButton_Click(object sender, EventArgs e) {
 			SeedTextBox.Text = new Random().Next().ToString();
 		}
 
-
-
-		// Selection and right panel
-		public List<Upgrade> listed_upgrades = new List<Upgrade>();
+		/* Selection Panel */
 		public List<Ship> selected_ships = new List<Ship>();
-
+		public List<Upgrade> listed_upgrades = new List<Upgrade>();
 		public void CheckRightPanel() {
 			update_displayed_materials();
 			verify_selected_ships_existence();
 			update_selected_ships_details();
 		}
-
 		public void update_displayed_materials() {
 			var selected_team = game.player_team;
 			if (selected_ships.Count > 0 && selected_ships[0].team is object)
@@ -634,13 +635,11 @@ namespace Flee {
 			UraniumTextBox.Text = selected_team.resources.Fissile.ToString();
 			AntimatterTextBox.Text = selected_team.resources.Antimatter.ToString();
 		}
-
 		public void verify_selected_ships_existence() {
 			for (int index = selected_ships.Count - 1; index >= 0; index -= 1)
 				if (!game.world.Ships.Contains(selected_ships[index]))
 					selected_ships.RemoveAt(index);
 		}
-
 		public void update_selected_ships_details() {
 			// panel visibility
 			if (selected_ships.Count == 0) {
@@ -665,21 +664,16 @@ namespace Flee {
 			// upgrade list
 			listed_upgrades = (List<Upgrade>)Ship.ListedUpgrades(selected_ships);
 		}
-
 		private int UpX = -1;
 		private int UpY = -1;
-
 		private void UpgradesBox_MouseMove(object sender, MouseEventArgs e) {
 			UpX = e.X / 25;
 			UpY = e.Y / 25;
 			UpgradeDetails.Top = UpgradesBox.Location.Y + e.Y;
 		}
-
-
 		private void UpgradesBox_Click(object sender, EventArgs e) {
 			if (MenuPanel.Visible)
 				return;
-
 			int x = 0;
 			int y = 0;
 			foreach (Upgrade AUp in listed_upgrades) {
@@ -691,7 +685,7 @@ namespace Flee {
 									ship.team.resources.Deplete(ref AUp.cost);
 								ship.Upgrading = AUp;
 							}
-				// item suivant
+				// next item
 				x = x + 1;
 				if (x >= 8) {
 					x = 0;
@@ -699,18 +693,10 @@ namespace Flee {
 				}
 			}
 		}
-
 		private void UpgradesBox_MouseLeave(object sender, EventArgs e) {
 			UpgradeDetails.Visible = false;
 			UpX = -1;
 			UpY = -1;
-		}
-
-		private void DrawBox_SizeChanged(object sender, EventArgs e) {
-			if (DrawBox.Size.Width > 0 && DrawBox.Size.Height > 0) {
-				DrawBMP = new Bitmap(DrawBox.Size.Width, DrawBox.Size.Height);
-				G = Graphics.FromImage(DrawBMP);
-			}
 		}
 	}
 }
