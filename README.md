@@ -3,9 +3,9 @@ A game I made a while ago when I was learning vb.NET
 Run on MS Windows only.
 
 ## Progress
-I am working on other projects and **I have no intention to improve it substantially**.
-
-I will finish it, make the project cleaner, an translate it to C#.
+I recently translated the project to C#.
+I am cleaning the code and preparing to add multiplayer.
+~~I have no intention to improve it substantially~~ Ok, a little bit...
 
 ## Features
 This is a simple 2D spaceship strategy game.
