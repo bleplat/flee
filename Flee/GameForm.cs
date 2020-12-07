@@ -104,42 +104,33 @@ namespace Flee {
 		/* Loop */
 		private void Ticker_Tick(object sender, EventArgs e) {
 			game.Tick();
-			CheckKeys();
+			CheckPressedKeys();
 			if (game.play_state == PlayState.Timelapse)
-				CheckKeys(); // Expected to run more often when timelapsing;
+				CheckPressedKeys(); // Expected to run more often when timelapsing;
 			CheckRightPanel();
 			DrawAll();
 		}
 
-
-		/* Controls */
-		public void CheckKeys() {
-			foreach (string AKey in pressed_keys)
-				switch (AKey ?? "") {
-				case "Up": {
+		/* Key Controls */
+		public void CheckPressedKeys() {
+			foreach (string key in pressed_keys) {
+				if (key == "Up") {
 					See.Y = See.Y - 50;
 					ClampCameraLocationToArena();
-					break;
 				}
-
-				case "Down": {
+				if (key == "Down") {
 					See.Y = See.Y + 50;
 					ClampCameraLocationToArena();
-					break;
 				}
-
-				case "Left": {
+				if (key == "Left") {
 					See.X = See.X - 50;
 					ClampCameraLocationToArena();
-					break;
 				}
-
-				case "Right": {
+				if (key == "Right") {
 					See.X = See.X + 50;
 					ClampCameraLocationToArena();
-					break;
 				}
-				}
+			}
 		}
 
 		/* Drawing */
