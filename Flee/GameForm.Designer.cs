@@ -502,7 +502,7 @@ namespace Flee {
 			this.Label1.AutoSize = true;
 			this.Label1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Label1.ForeColor = System.Drawing.Color.White;
-			this.Label1.Location = new System.Drawing.Point(97, 37);
+			this.Label1.Location = new System.Drawing.Point(83, 44);
 			this.Label1.Name = "Label1";
 			this.Label1.Size = new System.Drawing.Size(63, 15);
 			this.Label1.TabIndex = 0;
