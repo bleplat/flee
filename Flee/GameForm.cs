@@ -27,7 +27,15 @@ namespace Flee {
 		private Graphics MiniG;
 		private Bitmap PBMP = new Bitmap(200, 800);
 		private Graphics PG;
-		TextureBrush background_brush = new TextureBrush(new Bitmap("sprites/background.png"), WrapMode.Tile);
+		TextureBrush _background_brush = null;
+		TextureBrush GetBackgroundBrush() {
+			if (_background_brush == null) {
+				Bitmap background_bmp = new Bitmap("sprites/background.png");
+				background_bmp = new Bitmap(background_bmp).Clone(new Rectangle(0, 0, background_bmp.Width, background_bmp.Height), Helpers.ScreenPixelFormat());
+				_background_brush = new TextureBrush(background_bmp, WrapMode.Tile);
+			}
+			return (_background_brush);
+		}
 
 		/* Construction */
 		public GameForm() {
@@ -238,7 +246,7 @@ namespace Flee {
 		}
 		public void DrawMinimap() {
 			// Transparent clear
-			MiniG.FillRectangle(new SolidBrush(Color.FromArgb(25, 0, 0, 0)), 0, 0, 200, 200);
+			MiniG.FillRectangle(new SolidBrush(Color.FromArgb(24, 0, 0, 0)), 0, 0, 200, 200);
 			// Visible area rectangle
 			MiniG.DrawRectangle(Pens.White, new Rectangle(new Point((int)(See.X / (double)game.world.ArenaSize.Width * MiniBMP.Width), (int)(See.Y / (double)game.world.ArenaSize.Height * MiniBMP.Height)), new Size((int)(DrawBMP.Width * MiniBMP.Width / (double)game.world.ArenaSize.Width), (int)(DrawBMP.Height * MiniBMP.Height / (double)game.world.ArenaSize.Height))));
 			// Engagements
@@ -280,7 +288,7 @@ namespace Flee {
 		Size background_size = default;
 		Size GetBackgroundSize() {
 			if (background_size == default) {
-				background_size = new Size(background_brush.Image.Width, background_brush.Image.Height);
+				background_size = new Size(GetBackgroundBrush().Image.Width, GetBackgroundBrush().Image.Height);
 			}
 			return (background_size);
 		}
@@ -289,11 +297,11 @@ namespace Flee {
 			if (!checkBoxEnableBackground.Checked) { // disable background image 
 				G.Clear(Color.Black);
 			} else {
-				background_brush.TranslateTransform(-See.X / (game.world.ArenaSize.Width / (GetBackgroundSize().Width - this.Width)), -See.Y / (game.world.ArenaSize.Height / (GetBackgroundSize().Height - this.Height)));
+				GetBackgroundBrush().TranslateTransform(-See.X / (game.world.ArenaSize.Width / (GetBackgroundSize().Width - this.Width)), -See.Y / (game.world.ArenaSize.Height / (GetBackgroundSize().Height - this.Height)));
 				G.CompositingMode = CompositingMode.SourceCopy;
-				G.FillRectangle(background_brush, new RectangleF(new PointF(0, 0), DrawBMP.Size));
+				G.FillRectangle(GetBackgroundBrush(), new RectangleF(new PointF(0, 0), DrawBMP.Size));
 				G.CompositingMode = CompositingMode.SourceOver;
-				background_brush.ResetTransform();
+				GetBackgroundBrush().ResetTransform();
 			}
 			// Nuke effect
 			if (game.world.NuclearEffect > 0) {

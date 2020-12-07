@@ -41,11 +41,16 @@ namespace Flee {
 			LoadSprites(bmp);
 		}
 		static Bitmap FromSpritesFolder(string file) {
+			Bitmap bmp;
 			try {
-				return (new Bitmap("./sprites/" + file + ".png"));
+				bmp = new Bitmap("./sprites/" + file + ".png");
 			} catch {
-				return (new Bitmap("./sprites/" + file + ".bmp"));
+				bmp = new Bitmap("./sprites/" + file + ".bmp");
 			}
+			if (bmp.PixelFormat != Helpers.ScreenPixelFormat()) {
+				bmp = new Bitmap(bmp).Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), Helpers.ScreenPixelFormat());
+			}
+			return (bmp);
 		}
 
 		// Edition

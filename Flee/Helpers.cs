@@ -61,6 +61,16 @@ namespace Flee {
 			return Math.Abs(Modulo(a2 - a1 + 180d, 360d) - 180d);
 		}
 
+		public static System.Drawing.Imaging.PixelFormat _screen_pixel_format = System.Drawing.Imaging.PixelFormat.Undefined;
+		public static System.Drawing.Imaging.PixelFormat ScreenPixelFormat() {
+			if (_screen_pixel_format == System.Drawing.Imaging.PixelFormat.Undefined) {
+				Graphics g = Graphics.FromHwnd(IntPtr.Zero);
+				Bitmap bitmap = new Bitmap(4, 4, g);
+				_screen_pixel_format = bitmap.PixelFormat;
+			}
+			return (_screen_pixel_format);
+		}
+
 		private static Dictionary<string, Bitmap> bitmaps = new Dictionary<string, Bitmap>();
 
 		public static Bitmap GetSprite(string img_name, int x, int y, Color Scolor = default) {
