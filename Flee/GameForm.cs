@@ -8,11 +8,31 @@ using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
 namespace Flee {
-	public partial class MainForm {
-		public MainForm() {
+	public partial class GameForm {
+		
+		/* Game */
+		Game game;
+
+		/* Drawing */
+		public static bool target_identification = false;
+		public static bool help = true;
+		private Point See = new Point(4700, 4700);
+		private Bitmap DrawBMP = new Bitmap(600, 600);
+		private Graphics G;
+		public void InitDrawing() {
 			MiniG = Graphics.FromImage(MiniBMP);
 			PG = Graphics.FromImage(PBMP);
+		}
+		private Bitmap MiniBMP = new Bitmap(200, 200);
+		private Graphics MiniG;
+		private bool MiniMDown = false;
+
+		/* Construction */
+		public GameForm() {
 			InitializeComponent();
+			game = new Game(this);
+			InitDrawing();
+			// VS authored shit:
 			_MiniBox.Name = "MiniBox";
 			_RandomizeButton.Name = "RandomizeButton";
 			_StartPlayingButton.Name = "StartPlayingButton";
@@ -22,32 +42,6 @@ namespace Flee {
 			_PictureBox2.Name = "PictureBox2";
 			_DrawBox.Name = "DrawBox";
 		}
-
-		public enum PlayState {
-			Paused,
-			Playing,
-			Timelapse
-		}
-
-		public static bool cheats_enabled = false;
-		public const ulong MAIN_BASE = ulong.MaxValue;
-		private Point See = new Point(4700, 4700);
-
-		// ===' Stats '==='
-		public static PlayState play_state = PlayState.Playing;
-		public static bool timelapsev2 = false;
-		public static bool target_identification = false;
-		public static bool help = true;
-		public static bool has_ascended = false;
-
-		// ===' Salutations ! '==='
-		private Bitmap DrawBMP = new Bitmap(600, 600);
-		private Graphics G;
-
-		// world
-		private World world = null;
-		public Team player_team = null;
-
 		private void MainForm_Load(object sender, EventArgs e) {
 			// Commandline
 			if (My.MyProject.Application.CommandLineArgs.Count > 1)
@@ -71,50 +65,52 @@ namespace Flee {
 			Upgrade.LoadBuildUpgrades();
 		}
 
-		private void BeginButton_Click(object sender, EventArgs e) {
-			// get the seed, checking that it's correct
-			int Seed;
+		/* Begin Game */
+		void SetGameSettingsFromMenu() {
+			// Seed
 			try {
-				Seed = Convert.ToInt32(SeedTextBox.Text);
+				game.seed = Convert.ToInt32(SeedTextBox.Text);
 			} catch (Exception ex) {
+				MessageBox.Show(ex.Message, ex.GetType().ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
-
-			Text = "Flee - Seed: " + SeedTextBox.Text;
+			// Timer
+			game.tick_duration_ms = checkBoxFPS.Checked ? 25 : 33;
+			Ticker.Interval = game.tick_duration_ms;
+			// multiplayer
+			game.is_multiplayer = checkBoxLAN.Checked;
+			game.is_host = true;
+		}
+		void SetMenuVisible(bool visible) {
+			StartPlayingButton.Enabled = visible;
+			MenuPanel.Visible = visible;
+		}
+		private void BeginButton_Click(object sender, EventArgs e) {
+			SetGameSettingsFromMenu();
+			game.StartSingleplayer();
+			// Window Title
+			this.Text = "Flee - Seed: " + SeedTextBox.Text;
 			// close menu
-			StartPlayingButton.Enabled = false;
-			MenuPanel.Visible = false;
-			// create the world
-			world = new World(Seed);
-			player_team = world.Teams[0];
+			SetMenuVisible(false);
 			// Place camera on player
-			See = new Point((int)(world.Ships[0].location.X - 200f), (int)(world.Ships[0].location.Y - 200f));
+			See = new Point((int)(game.world.Ships[0].location.X - 200f), (int)(game.world.Ships[0].location.Y - 200f));
 			// finaly enable timer
-			Ticker.Enabled = true;
-
-			//
-			if (checkBoxFPS.Checked) {
-				Ticker.Interval = 25;
-			}
+			Ticker.Enabled = true; // TODO: have ticker enabled since the begining
 		}
 
-
-		// ===' Boucle '==='
+		/* Loop */
 		private void Ticker_Tick(object sender, EventArgs e) {
-			var start_time = DateTime.Now;
-			if (play_state != PlayState.Paused)
-				for (int i = 1, loopTo = (int)(((play_state == PlayState.Timelapse) ? 8 : 1) * (timelapsev2 ? 16 : 1)); i <= loopTo; i++)
-					world.Tick();
-			for (int i = 1, loopTo = (int)(((play_state == PlayState.Timelapse) ? 2 : 1) * (timelapsev2 ? 3 : 1)); i <= loopTo; i++)
-				KeysCheck();
+			game.Tick();
+			CheckKeys();
+			if (game.play_state == PlayState.Timelapse)
+				CheckKeys(); // Expected to run more often when timelapsing;
 			CheckRightPanel();
 			drawUpgrades();
 			DrawAll();
-			// debugstr += vbNewLine + "DrawAll: " + (DateTime.Now - start_time).ToString() : start_time = DateTime.Now
 		}
 
-		public void KeysCheck() {
-			foreach (string AKey in KeyList)
+		public void CheckKeys() {
+			foreach (string AKey in pressed_keys)
 				switch (AKey ?? "") {
 				case "Up": {
 					See.Y = See.Y - 50;
@@ -156,18 +152,18 @@ namespace Flee {
 			}
 
 			// Nuke effect
-			if (world.NuclearEffect > 0) {
-				SolidBrush nuclear_brush = new SolidBrush(Color.FromArgb(world.NuclearEffect, world.NuclearEffect, world.NuclearEffect));
+			if (game.world.NuclearEffect > 0) {
+				SolidBrush nuclear_brush = new SolidBrush(Color.FromArgb(game.world.NuclearEffect, game.world.NuclearEffect, game.world.NuclearEffect));
 				G.FillRectangle(nuclear_brush, new RectangleF(new PointF(0, 0), DrawBMP.Size));
-				world.NuclearEffect -= 2;
+				game.world.NuclearEffect -= 2;
 			}
 
 			MiniG.FillRectangle(new SolidBrush(Color.FromArgb(25, 0, 0, 0)), 0, 0, 200, 200);
 			// ===' Minimap '==='
-			MiniG.DrawRectangle(Pens.White, new Rectangle(new Point((int)(See.X / (double)world.ArenaSize.Width * MiniBMP.Width), (int)(See.Y / (double)world.ArenaSize.Height * MiniBMP.Height)), new Size((int)(DrawBMP.Width * MiniBMP.Width / (double)world.ArenaSize.Width), (int)(DrawBMP.Height * MiniBMP.Height / (double)world.ArenaSize.Height))));
+			MiniG.DrawRectangle(Pens.White, new Rectangle(new Point((int)(See.X / (double)game.world.ArenaSize.Width * MiniBMP.Width), (int)(See.Y / (double)game.world.ArenaSize.Height * MiniBMP.Height)), new Size((int)(DrawBMP.Width * MiniBMP.Width / (double)game.world.ArenaSize.Width), (int)(DrawBMP.Height * MiniBMP.Height / (double)game.world.ArenaSize.Height))));
 
 			// ===' Ships '==='
-			foreach (Ship AShip in world.Ships) {
+			foreach (Ship AShip in game.world.Ships) {
 				// Minimap '
 				int W = (int)(AShip.stats.width / 30d);
 				if (W < 2)
@@ -178,14 +174,14 @@ namespace Flee {
 				if (target_identification)
 					if (AShip.team is null || AShip.stats.sprite == "Comet")
 						mini_color = AShip.color;
-					else if (ReferenceEquals(AShip.team, player_team))
+					else if (ReferenceEquals(AShip.team, game.player_team))
 						mini_color = Color.Lime;
-					else if (AShip.team.IsFriendWith(player_team))
+					else if (AShip.team.IsFriendWith(game.player_team))
 						mini_color = Color.Cyan;
 					else
 						mini_color = Color.Red;
 
-				MiniG.FillRectangle(new SolidBrush(mini_color), new Rectangle((int)(AShip.location.X / world.ArenaSize.Width * MiniBMP.Width - W / 2d), (int)(AShip.location.Y / world.ArenaSize.Height * MiniBMP.Height - W / 2d), W, W));
+				MiniG.FillRectangle(new SolidBrush(mini_color), new Rectangle((int)(AShip.location.X / game.world.ArenaSize.Width * MiniBMP.Width - W / 2d), (int)(AShip.location.Y / game.world.ArenaSize.Height * MiniBMP.Height - W / 2d), W, W));
 				// Main screen '
 				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + DrawBox.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + DrawBox.Height) {
 					//var img = Helpers.GetSprite(AShip.stats.sprite, AShip.fram, 0, mini_color); // image
@@ -193,7 +189,7 @@ namespace Flee {
 					PointF center = new PointF(AShip.location.X - See.X, AShip.location.Y - See.Y); // centre
 					int AddD = 0;
 					if (AShip.team is null && AShip.stats.turn == 0d)
-						AddD = world.ticks % 360;
+						AddD = game.world.ticks % 360;
 					var MonM = new Matrix();
 					MonM.RotateAt(-AShip.direction + 180f + AddD, center); // rotation
 					G.Transform = MonM; // affectation
@@ -203,7 +199,7 @@ namespace Flee {
 			}
 
 			// ===' Shoots '==='
-			foreach (Shoot AShoot in world.Shoots) {
+			foreach (Shoot AShoot in game.world.Shoots) {
 				// If AShoot.Coo.X > See.X AndAlso AShoot.Coo.X < See.X + DrawBox.Width AndAlso AShoot.Coo.Y > See.Y AndAlso AShoot.Coo.Y < See.Y + DrawBox.Height Then
 				Color col;
 				if (AShoot.Team is null)
@@ -222,7 +218,7 @@ namespace Flee {
 									// End If
 			}
 			// ===' Effets '==='
-			foreach (Effect AEffect in world.Effects)
+			foreach (Effect AEffect in game.world.Effects)
 				if (AEffect.location.X > See.X && AEffect.location.X < See.X + DrawBox.Width && AEffect.location.Y > See.Y && AEffect.location.Y < See.Y + DrawBox.Height) {
 					//var img = Helpers.GetSprite(AEffect.type, AEffect.fram, AEffect.sprite_y); // image
 					var img = AEffect.sprites.GetSprite(AEffect.fram, AEffect.sprite_y);
@@ -241,7 +237,7 @@ namespace Flee {
 				G.DrawRectangle(Pens.White, NR);
 			}
 			// ===' Ships Special '==='
-			foreach (Ship AShip in world.Ships)
+			foreach (Ship AShip in game.world.Ships)
 				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + DrawBox.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + DrawBox.Height)
 					if (AShip.team is object && AShip.behavior != Ship.BehaviorMode.Drift && AShip.stats.sprite != "MSL") {
 						// Selection '
@@ -249,7 +245,7 @@ namespace Flee {
 						if (false && target_identification)
 							if (AShip.team.id == 0)
 								G.DrawRectangle(Pens.Lime, drawrect);
-							else if (AShip.team.IsFriendWith(player_team))
+							else if (AShip.team.IsFriendWith(game.player_team))
 								G.DrawRectangle(Pens.Blue, drawrect);
 							else
 								G.DrawRectangle(Pens.Red, drawrect);
@@ -299,15 +295,15 @@ namespace Flee {
 						}
 					}
 			// ===' Infos '==='
-			G.DrawString("Ships : " + world.CountTeamShips(player_team) + " / " + player_team.ship_count_limit + " Max.", new Font("Consolas", 10f), Brushes.Lime, new Point(0, 0));
-			if (play_state == PlayState.Paused)
+			G.DrawString("Ships : " + game.world.CountTeamShips(game.player_team) + " / " + game.player_team.ship_count_limit + " Max.", new Font("Consolas", 10f), Brushes.Lime, new Point(0, 0));
+			if (game.play_state == PlayState.Paused)
 				G.DrawString("PAUSE", new Font("Consolas", 16f), Brushes.White, new Point(0, DrawBMP.Height - 32));
-			else if (play_state == PlayState.Timelapse)
+			else if (game.play_state == PlayState.Timelapse)
 				G.DrawString("TIMELAPSE", new Font("Consolas", 16f), Brushes.White, new Point(0, DrawBMP.Height - 32));
 			// ===' Help '==='
 			if (help) {
 				string help_str = "";
-				if (!has_ascended) {
+				if (!game.player_team.has_ascended) {
 					help_str += "The galaxy went into chaos. Find a way to escape." + Constants.vbNewLine;
 					help_str += Constants.vbNewLine;
 					help_str += "Use the arrows, or click the minimap to move the camera." + Constants.vbNewLine;
@@ -342,17 +338,14 @@ namespace Flee {
 
 
 		// ===' Mini-Map '==='
-		private Bitmap MiniBMP = new Bitmap(200, 200);
-		private Graphics MiniG;
-		private bool MiniMDown = false;
 
 		private void MiniBox_MouseDown(object sender, MouseEventArgs e) {
 			if (MenuPanel.Visible)
 				return;
 
 			MiniMDown = true;
-			See.X = (int)(((e.X / (float)MiniBox.Width) * world.ArenaSize.Width) - DrawBMP.Width / 2d);
-			See.Y = (int)(((e.Y / (float)MiniBox.Height) * world.ArenaSize.Height) - DrawBMP.Height / 2d);
+			See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBMP.Width / 2d);
+			See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBMP.Height / 2d);
 			CheckSee();
 		}
 
@@ -362,8 +355,8 @@ namespace Flee {
 
 		private void MiniBox_MouseMove(object sender, MouseEventArgs e) {
 			if (MiniMDown) {
-				See.X = (int)(((e.X / (float)MiniBox.Width) * world.ArenaSize.Width) - DrawBMP.Width / 2d);
-				See.Y = (int)(((e.Y / (float)MiniBox.Height) * world.ArenaSize.Height) - DrawBMP.Height / 2d);
+				See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBMP.Width / 2d);
+				See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBMP.Height / 2d);
 				CheckSee();
 			}
 		}
@@ -375,57 +368,55 @@ namespace Flee {
 			if (See.Y < 0)
 				See.Y = 0;
 
-			if (See.X > world.ArenaSize.Width - DrawBMP.Width)
-				See.X = world.ArenaSize.Width - DrawBMP.Width;
+			if (See.X > game.world.ArenaSize.Width - DrawBMP.Width)
+				See.X = game.world.ArenaSize.Width - DrawBMP.Width;
 
-			if (See.Y > world.ArenaSize.Height - DrawBMP.Height)
-				See.Y = world.ArenaSize.Height - DrawBMP.Height;
+			if (See.Y > game.world.ArenaSize.Height - DrawBMP.Height)
+				See.Y = game.world.ArenaSize.Height - DrawBMP.Height;
 		}
 
 
-		// ===' Touches '==='
-		public List<string> KeyList = new List<string>();
+		/* Controls */
+		public List<string> pressed_keys = new List<string>();
 
 		private void MainForm_KeyDown(object sender, KeyEventArgs e) {
+			// Interface switches
 			if (e.KeyData == Keys.I)
 				target_identification = !target_identification;
-
 			if (e.KeyData == Keys.H)
 				help = !help;
-
-			if (e.KeyData == Keys.Space)
-				if (play_state != PlayState.Paused)
-					play_state = PlayState.Paused;
-				else
-					play_state = PlayState.Playing;
-
-			if (e.KeyData == Keys.M)
-				if (play_state != PlayState.Timelapse)
-					play_state = PlayState.Timelapse;
-				else
-					play_state = PlayState.Playing;
-
-			if (e.KeyData == Keys.P)
-				timelapsev2 = !timelapsev2;
-
+			// Pause and timelapse
+			if (game.is_host) {
+				if (e.KeyData == Keys.Space)
+					if (game.play_state != PlayState.Paused)
+						game.play_state = PlayState.Paused;
+					else
+						game.play_state = PlayState.Playing;
+			}
+			if (!game.is_multiplayer) {
+				if (e.KeyData == Keys.M)
+					if (game.play_state != PlayState.Timelapse)
+						game.play_state = PlayState.Timelapse;
+					else
+						game.play_state = PlayState.Playing;
+			}
+			// Cheats
 			if (e.KeyData == Keys.F12)
-				cheats_enabled = !cheats_enabled;
-
+				game.player_team.cheats_enabled = !game.player_team.cheats_enabled;
+			// Debug
 			if (e.KeyData == Keys.F7) {
 				string total = ShipStats.DumpClasses();
 				Clipboard.SetText(total);
 			}
-
 			if (e.KeyData == Keys.F8)
-				foreach (Ship a_ship in world.Ships)
+				foreach (Ship a_ship in game.world.Ships)
 					a_ship.agressivity = 1000.0d;
-
-			if (!KeyList.Contains(e.KeyData.ToString()))
-				KeyList.Add(e.KeyData.ToString());
+			if (!pressed_keys.Contains(e.KeyData.ToString()))
+				pressed_keys.Add(e.KeyData.ToString());
 		}
 
 		private void MainForm_KeyUp(object sender, KeyEventArgs e) {
-			KeyList.Remove(e.KeyData.ToString());
+			pressed_keys.Remove(e.KeyData.ToString());
 		}
 
 
@@ -485,8 +476,8 @@ namespace Flee {
 			if (!ModifierKeys.HasFlag(Keys.Control))
 				selected_ships.Clear();
 
-			foreach (Ship aship in world.Ships)
-				if (ReferenceEquals(aship.team, player_team) || cheats_enabled)
+			foreach (Ship aship in game.world.Ships)
+				if (ReferenceEquals(aship.team, game.player_team) || game.player_team.cheats_enabled)
 					if (aship.location.X + aship.stats.width / 2d > SS.X)
 						if (aship.location.X - aship.stats.width / 2d < SS.X + SS.Width)
 							if (aship.location.Y + aship.stats.width / 2d > SS.Y)
@@ -494,7 +485,7 @@ namespace Flee {
 									if (!selected_ships.Contains(aship)) {
 										selected_ships.Add(aship);
 										if (aship.team is object)
-											player_team = aship.team;
+											game.player_team = aship.team;
 
 										if (SelectPTN1 == SelectPTN2)
 											return;
@@ -514,7 +505,7 @@ namespace Flee {
 						ship.team.bot_team = false;
 			}
 			// ===' Recherche '==='
-			foreach (Ship AShip in world.Ships)
+			foreach (Ship AShip in game.world.Ships)
 				if (AShip.location.X + AShip.stats.width / 2d > SelectPTN2.X)
 					if (AShip.location.X - AShip.stats.width / 2d < SelectPTN2.X)
 						if (AShip.location.Y + AShip.stats.width / 2d > SelectPTN2.Y)
@@ -524,15 +515,15 @@ namespace Flee {
 			if (target_ship is null)
 				foreach (Ship AShip in selected_ships)
 					if (AShip.TargetPTN == SelectPTN2) {
-						world.Effects.Add(new Effect(-1, "EFF_Mine", SelectPTN2));
+						game.world.Effects.Add(new Effect(-1, "EFF_Mine", SelectPTN2));
 						AShip.behavior = Ship.BehaviorMode.Mine;
 						AShip.TargetPTN = SelectPTN2;
 						AShip.target = null;
 						if (AShip.stats.name.Contains("Station"))
-							if (AShip.team is object && !ReferenceEquals(player_team, AShip.team))
+							if (AShip.team is object && !ReferenceEquals(game.player_team, AShip.team))
 								AShip.team.bot_team = true;
 					} else {
-						world.Effects.Add(new Effect(-1, "EFF_Goto", SelectPTN2));
+						game.world.Effects.Add(new Effect(-1, "EFF_Goto", SelectPTN2));
 						AShip.behavior = Ship.BehaviorMode.GoToPoint;
 						AShip.TargetPTN = SelectPTN2;
 						AShip.target = null;
@@ -540,21 +531,21 @@ namespace Flee {
 			else
 				foreach (Ship AShip in selected_ships)
 					if (ReferenceEquals(AShip, target_ship)) {
-						world.Effects.Add(new Effect(-1, "EFF_OrderDefend", SelectPTN2));
+						game.world.Effects.Add(new Effect(-1, "EFF_OrderDefend", SelectPTN2));
 						AShip.AllowMining = false;
 					} else {
 						AShip.behavior = Ship.BehaviorMode.Folow;
 						AShip.target = target_ship;
 						if (AShip.team is object && AShip.team.IsFriendWith(target_ship.team))
-							world.Effects.Add(new Effect(-1, "EFF_Assist", SelectPTN2, 180));
+							game.world.Effects.Add(new Effect(-1, "EFF_Assist", SelectPTN2, 180));
 						else
-							world.Effects.Add(new Effect(-1, "EFF_OrderTarget", SelectPTN2));
+							game.world.Effects.Add(new Effect(-1, "EFF_OrderTarget", SelectPTN2));
 					}
 		}
 
 		private void PictureBox2_Click(object sender, EventArgs e) {
-			if (cheats_enabled) {
-				var team = player_team;
+			if (game.player_team.cheats_enabled) {
+				var team = game.player_team;
 				if (selected_ships.Count > 0 && selected_ships[0].team is object)
 					team = selected_ships[0].team;
 
@@ -586,7 +577,7 @@ namespace Flee {
 		}
 
 		public void update_displayed_materials() {
-			var selected_team = player_team;
+			var selected_team = game.player_team;
 			if (selected_ships.Count > 0 && selected_ships[0].team is object)
 				selected_team = selected_ships[0].team;
 
@@ -598,7 +589,7 @@ namespace Flee {
 
 		public void verify_selected_ships_existence() {
 			for (int index = selected_ships.Count - 1; index >= 0; index -= 1)
-				if (!world.Ships.Contains(selected_ships[index]))
+				if (!game.world.Ships.Contains(selected_ships[index]))
 					selected_ships.RemoveAt(index);
 		}
 
@@ -736,8 +727,8 @@ namespace Flee {
 			foreach (Upgrade AUp in listed_upgrades) {
 				if (x == UpX && y == UpY)
 					foreach (Ship ship in selected_ships)
-						if (ship.CanUpgrade(AUp) && ReferenceEquals(ship.team, player_team) || cheats_enabled)
-							if (ship.team is null || ship.team.resources.HasEnough(ref AUp.cost) || cheats_enabled) {
+						if (ship.CanUpgrade(AUp) && ReferenceEquals(ship.team, game.player_team) || game.player_team.cheats_enabled)
+							if (ship.team is null || ship.team.resources.HasEnough(ref AUp.cost) || game.player_team.cheats_enabled) {
 								if (ship.team is object)
 									ship.team.resources.Deplete(ref AUp.cost);
 								ship.Upgrading = AUp;

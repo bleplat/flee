@@ -23,6 +23,8 @@ namespace Flee {
 		public ushort ship_count_limit = 12;
 		public ushort upgrade_slots_bonus = 0;
 		public int ship_count_approximation = 0;
+		public bool cheats_enabled = false;
+		public bool has_ascended = false;
 
 		// IA
 		public bool bot_team = true;

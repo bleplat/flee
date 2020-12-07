@@ -6,9 +6,9 @@ namespace Flee.My {
 	internal static partial class MyProject {
 		internal partial class MyForms {
 			[EditorBrowsable(EditorBrowsableState.Never)]
-			public MainForm m_MainForm;
+			public GameForm m_MainForm;
 
-			public MainForm MainForm {
+			public GameForm MainForm {
 				[DebuggerHidden]
 				get {
 					m_MainForm = Create__Instance__(m_MainForm);

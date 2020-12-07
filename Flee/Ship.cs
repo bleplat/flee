@@ -246,7 +246,7 @@ namespace Flee {
 			if (Upgrading is object)
 				if (UpProgress < (decimal)Upgrading.delay) {
 					UpProgress = UpProgress + 1;
-					if (MainForm.cheats_enabled)
+					if (team.cheats_enabled)
 						UpProgress = UpProgress + 99;
 				} else {
 					if (Upgrading.name.Contains("Pointvortex"))
@@ -557,7 +557,7 @@ namespace Flee {
 		}
 		// return true if the upgrade is available
 		public bool CanUpgrade(Upgrade upgrade) {
-			if (MainForm.cheats_enabled)
+			if (team.cheats_enabled)
 				return true;
 			if (Upgrading is object)
 				return false;
@@ -571,7 +571,7 @@ namespace Flee {
 		}
 		// return true if the upgrade have its conditions met
 		public bool IsUpgradeCompatible(Upgrade upgrade) {
-			if (MainForm.cheats_enabled)
+			if (team.cheats_enabled)
 				return true;
 			if (ReferenceEquals(upgrade, Upgrading))
 				return true;
@@ -944,8 +944,8 @@ namespace Flee {
 
 			case "!Ascend": {
 				if (first_application && team.id == 0) {
-					MainForm.has_ascended = true;
-					MainForm.help = true;
+					team.has_ascended = true;
+					GameForm.help = true;
 				}
 
 				break;
@@ -964,7 +964,7 @@ namespace Flee {
 			}
 
 			case "!Cheats": {
-				MainForm.cheats_enabled = !MainForm.cheats_enabled;
+				team.cheats_enabled = !team.cheats_enabled;
 				break;
 			}
 

@@ -59,6 +59,8 @@ namespace Flee {
 		public int ticks = 0;
 		public int NuclearEffect = 0;
 		public Team boss_team = null;
+		public bool is_invaded_by_bosses = false;
+		public bool is_invaded_by_ascended = false;
 
 		public World(int Seed) {
 			InitSectors();
@@ -442,7 +444,7 @@ namespace Flee {
 					Count = 1;
 				}
 
-				if (HasTeamWon(Teams[0]))
+				if (is_invaded_by_bosses)
 					if (rand.Next(0, 2) == 0) {
 						var possibles = new List<string>() { "Loneboss", "Civil_A", "Legend_I", "Legend_L", "Legend_K", "Colonizer" };
 						if (Teams[0].affinity == (int)AffinityEnum.ALOOF) {
@@ -450,7 +452,7 @@ namespace Flee {
 							possibles.Add("Ambassador");
 						}
 
-						if (MainForm.has_ascended) {
+						if (is_invaded_by_ascended) {
 							possibles.Add("Ori");
 							possibles.Add("Ori");
 							possibles.Add("Ori");

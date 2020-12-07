@@ -7,7 +7,7 @@ using Microsoft.VisualBasic.CompilerServices;
 
 namespace Flee {
 	[DesignerGenerated()]
-	public partial class MainForm : Form {
+	public partial class GameForm : Form {
 
 		// Form remplace la méthode Dispose pour nettoyer la liste des composants.
 		[DebuggerNonUserCode()]
@@ -28,14 +28,14 @@ namespace Flee {
 		[DebuggerStepThrough()]
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
 			this.MainPanel = new System.Windows.Forms.Panel();
 			this._MiniBox = new System.Windows.Forms.PictureBox();
 			this.MenuPanel = new System.Windows.Forms.Panel();
 			this.button1 = new System.Windows.Forms.Button();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.SeedTextBox = new System.Windows.Forms.TextBox();
-			this.checkBox1 = new System.Windows.Forms.CheckBox();
+			this.checkBoxLAN = new System.Windows.Forms.CheckBox();
 			this.checkBoxEnableBackground = new System.Windows.Forms.CheckBox();
 			this.checkBoxFPS = new System.Windows.Forms.CheckBox();
 			this.Label4 = new System.Windows.Forms.Label();
@@ -131,7 +131,7 @@ namespace Flee {
 			this.MenuPanel.Controls.Add(this.button1);
 			this.MenuPanel.Controls.Add(this.textBox1);
 			this.MenuPanel.Controls.Add(this.SeedTextBox);
-			this.MenuPanel.Controls.Add(this.checkBox1);
+			this.MenuPanel.Controls.Add(this.checkBoxLAN);
 			this.MenuPanel.Controls.Add(this.checkBoxEnableBackground);
 			this.MenuPanel.Controls.Add(this.checkBoxFPS);
 			this.MenuPanel.Controls.Add(this.Label4);
@@ -190,17 +190,17 @@ namespace Flee {
 			this.SeedTextBox.Text = "876303952";
 			this.SeedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
-			// checkBox1
+			// checkBoxLAN
 			// 
-			this.checkBox1.AutoCheck = false;
-			this.checkBox1.AutoSize = true;
-			this.checkBox1.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBox1.Location = new System.Drawing.Point(155, 183);
-			this.checkBox1.Name = "checkBox1";
-			this.checkBox1.Size = new System.Drawing.Size(79, 17);
-			this.checkBox1.TabIndex = 9;
-			this.checkBox1.Text = "open to lan";
-			this.checkBox1.UseVisualStyleBackColor = true;
+			this.checkBoxLAN.AutoCheck = false;
+			this.checkBoxLAN.AutoSize = true;
+			this.checkBoxLAN.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.checkBoxLAN.Location = new System.Drawing.Point(155, 183);
+			this.checkBoxLAN.Name = "checkBoxLAN";
+			this.checkBoxLAN.Size = new System.Drawing.Size(79, 17);
+			this.checkBoxLAN.TabIndex = 9;
+			this.checkBoxLAN.Text = "open to lan";
+			this.checkBoxLAN.UseVisualStyleBackColor = true;
 			// 
 			// checkBoxEnableBackground
 			// 
@@ -601,7 +601,6 @@ namespace Flee {
 			this._PictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this._PictureBox5.TabIndex = 0;
 			this._PictureBox5.TabStop = false;
-			this._PictureBox5.Click += new System.EventHandler(this.PictureBox2_Click);
 			// 
 			// _PictureBox6
 			// 
@@ -623,7 +622,6 @@ namespace Flee {
 			this._PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this._PictureBox2.TabIndex = 0;
 			this._PictureBox2.TabStop = false;
-			this._PictureBox2.Click += new System.EventHandler(this.PictureBox2_Click);
 			// 
 			// PictureBox1
 			// 
@@ -910,7 +908,7 @@ namespace Flee {
 		internal Label Label4;
 		private CheckBox checkBoxFPS;
 		private CheckBox checkBoxEnableBackground;
-		private CheckBox checkBox1;
+		private CheckBox checkBoxLAN;
 		internal Label label6;
 		private Button button1;
 		internal TextBox textBox1;
