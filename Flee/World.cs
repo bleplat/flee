@@ -81,6 +81,8 @@ namespace Flee {
 			AutoColide();
 			AntiSuperposition();
 			AutoUnspawn();
+			foreach (Team team in Teams)
+				team.Tick();
 			ticks += 1;
 		}
 
@@ -279,6 +281,8 @@ namespace Flee {
 				foreach (Ship AShip in AShoot.sector.EnumerateNearbyShips()) {
 					if (!ReferenceEquals(AShoot.Team, AShip.team) && (AShoot.Team is null || !AShoot.Team.IsFriendWith(AShip.team)))
 						if (Helpers.Distance(AShoot.location.X, AShoot.location.Y, AShip.location.X, AShip.location.Y) < AShip.stats.width / 2d) {
+							if (AShip.team is object)
+								AShip.team.NotifyEngagement(AShip.location);
 							AShoot.time_to_live = 0;
 							if (AShip.stats.hot_deflector > 0d && gameplay_random.Next(0, 100) < AShip.stats.hot_deflector)
 								Effects.Add(new Effect(-1, "EFF_Deflected2", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));

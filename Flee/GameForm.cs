@@ -222,6 +222,19 @@ namespace Flee {
 			MiniG.FillRectangle(new SolidBrush(Color.FromArgb(25, 0, 0, 0)), 0, 0, 200, 200);
 			// Visible area rectangle
 			MiniG.DrawRectangle(Pens.White, new Rectangle(new Point((int)(See.X / (double)game.world.ArenaSize.Width * MiniBMP.Width), (int)(See.Y / (double)game.world.ArenaSize.Height * MiniBMP.Height)), new Size((int)(DrawBMP.Width * MiniBMP.Width / (double)game.world.ArenaSize.Width), (int)(DrawBMP.Height * MiniBMP.Height / (double)game.world.ArenaSize.Height))));
+			// Engagements
+			if (game.player_team is object) {
+				foreach (Engagement engagement in game.player_team.engagements) {
+					Point center_mm = new Point((int)(engagement.location.X * MiniBMP.Width/ game.world.ArenaSize.Width ), (int)(engagement.location.Y * MiniBMP.Height/ game.world.ArenaSize.Height ));
+					int warn_dist = engagement.timeout / 3;
+					Matrix m = new Matrix();
+					m.RotateAt((float)engagement.timeout * 0.33f, center_mm);
+					MiniG.Transform = m;
+					MiniG.DrawLine(new Pen(Color.FromArgb(engagement.timeout, 255, 0, 0), 1), new Point(center_mm.X - warn_dist, center_mm.Y), new Point(center_mm.X + warn_dist, center_mm.Y));
+					MiniG.DrawLine(new Pen(Color.FromArgb(engagement.timeout, 255, 0, 0), 1), new Point(center_mm.X, center_mm.Y - warn_dist), new Point(center_mm.X, center_mm.Y + warn_dist));
+					MiniG.ResetTransform();
+				}
+			}
 			// Ships
 			foreach (Ship AShip in game.world.Ships) {
 				// Minimap '
@@ -679,6 +692,7 @@ namespace Flee {
 			UpgradeDetails.Top = UpgradesBox.Location.Y + e.Y;
 		}
 		private void UpgradesBox_Click(object sender, EventArgs e) {
+			int upgrade_columns = UpgradesBox.Width / 25;
 			if (MenuPanel.Visible)
 				return;
 			int x = 0;
@@ -694,7 +708,7 @@ namespace Flee {
 							}
 				// next item
 				x = x + 1;
-				if (x >= 8) {
+				if (x >= upgrade_columns) {
 					x = 0;
 					y = y + 1;
 				}

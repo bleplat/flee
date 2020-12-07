@@ -2,10 +2,16 @@
 using System.Drawing;
 
 namespace Flee {
+
 	public enum AffinityEnum {
 		KIND = 2, // Not hostile to other KIND teams
 		MEAN = 4, // Hostile to KIND, but not always so other MEAN
 		ALOOF = 8 // Alway hostile to other teams
+	}
+
+	public class Engagement {
+		public Point location;
+		public int timeout;
 	}
 
 	public class Team {
@@ -25,6 +31,27 @@ namespace Flee {
 		public int ship_count_approximation = 0;
 		public bool cheats_enabled = false;
 		public bool has_ascended = false;
+
+		// Engagements
+		public List<Engagement> engagements = new List<Engagement>();
+		public void NotifyEngagement(PointF coords) {
+			Point rounded_coords = new Point((int)coords.X & unchecked((int)0xFFFFFE00), (int)coords.Y & unchecked((int)0xFFFFFE00));
+			foreach (Engagement engagement in engagements) {
+				if (engagement.location == rounded_coords) {
+					return;
+				}
+			}
+			engagements.Add(new Engagement() {location = rounded_coords, timeout = 254});
+		}
+
+		// Tick
+		public void Tick() {
+			for (int i_engagement = engagements.Count - 1; i_engagement >= 0; i_engagement--) {
+				engagements[i_engagement].timeout -= 2;
+				if (engagements[i_engagement].timeout < 0)
+					engagements.RemoveAt(i_engagement);
+			}
+		}
 
 		// IA
 		public bool bot_team = true;
