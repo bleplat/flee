@@ -25,7 +25,6 @@ namespace Flee {
 		}
 		private Bitmap MiniBMP = new Bitmap(200, 200);
 		private Graphics MiniG;
-		private bool MiniMDown = false;
 		private Bitmap PBMP = new Bitmap(200, 600);
 		private Graphics PG;
 		TextureBrush background_brush = new TextureBrush(new Bitmap("sprites/background.png"), WrapMode.Tile);
@@ -317,7 +316,7 @@ namespace Flee {
 			}
 			// Select rectangle
 			if (SelectStarted) {
-				var NR = Helpers.GetRect(ref SelectPTN1, ref SelectPTN2);
+				var NR = Helpers.GetRect(ref down_mouse_location, ref last_mouse_location);
 				NR.X = NR.X - See.X;
 				NR.Y = NR.Y - See.Y;
 				G.DrawRectangle(Pens.White, NR);
@@ -422,34 +421,7 @@ namespace Flee {
 			DrawMinimap();
 		}
 
-
-
-
-
-		// ===' Mini-Map '==='
-
-		private void MiniBox_MouseDown(object sender, MouseEventArgs e) {
-			if (MenuPanel.Visible)
-				return;
-
-			MiniMDown = true;
-			See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBMP.Width / 2d);
-			See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBMP.Height / 2d);
-			ClampCameraLocationToArena();
-		}
-
-		private void MiniBox_MouseUp(object sender, MouseEventArgs e) {
-			MiniMDown = false;
-		}
-
-		private void MiniBox_MouseMove(object sender, MouseEventArgs e) {
-			if (MiniMDown) {
-				See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBMP.Width / 2d);
-				See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBMP.Height / 2d);
-				ClampCameraLocationToArena();
-			}
-		}
-
+		/* Camera */
 		public void ClampCameraLocationToArena() {
 			if (See.X < 0)
 				See.X = 0;
@@ -461,10 +433,29 @@ namespace Flee {
 				See.Y = game.world.ArenaSize.Height - DrawBMP.Height;
 		}
 
+		/* Minimap Controls */
+		private bool MiniMDown = false;
+		private void MiniBox_MouseDown(object sender, MouseEventArgs e) {
+			if (MenuPanel.Visible)
+				return;
+			MiniMDown = true;
+			See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBMP.Width / 2d);
+			See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBMP.Height / 2d);
+			ClampCameraLocationToArena();
+		}
+		private void MiniBox_MouseUp(object sender, MouseEventArgs e) {
+			MiniMDown = false;
+		}
+		private void MiniBox_MouseMove(object sender, MouseEventArgs e) {
+			if (MiniMDown) {
+				See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBMP.Width / 2d);
+				See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBMP.Height / 2d);
+				ClampCameraLocationToArena();
+			}
+		}
 
-		/* Controls */
+		/* Key Controls */
 		public List<string> pressed_keys = new List<string>();
-
 		private void MainForm_KeyDown(object sender, KeyEventArgs e) {
 			// Interface switches
 			if (e.KeyData == Keys.I)
@@ -500,69 +491,41 @@ namespace Flee {
 			if (!pressed_keys.Contains(e.KeyData.ToString()))
 				pressed_keys.Add(e.KeyData.ToString());
 		}
-
 		private void MainForm_KeyUp(object sender, KeyEventArgs e) {
 			pressed_keys.Remove(e.KeyData.ToString());
 		}
 
-
-		// ===' Clics '==='
-		private void DrawBox_MouseDown(object sender, MouseEventArgs e) {
-			SelectPTN2 = new Point((int)(e.X * DrawBMP.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBMP.Height / (double)DrawBox.Height + See.Y));
-			switch (e.Button) {
-			case MouseButtons.Left: {
-				SelectStarted = true;
-				SelectPTN1 = new Point((int)(e.X * DrawBMP.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBMP.Height / (double)DrawBox.Height + See.Y));
-				break;
-			}
-
-			case MouseButtons.Middle: {
-				break;
-			}
-
-			case MouseButtons.Right: {
-				break;
-			}
-			}
-		}
-
-		private void DrawBox_MouseMove(object sender, MouseEventArgs e) {
-			SelectPTN2 = new Point((int)(e.X * DrawBMP.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBMP.Height / (double)DrawBox.Height + See.Y));
-		}
-
-		private void DrawBox_MouseUp(object sender, MouseEventArgs e) {
-			switch (e.Button) {
-			case MouseButtons.Left: {
-				SelectStarted = false;
-				SelectPTN2 = new Point((int)(e.X * DrawBMP.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBMP.Height / (double)DrawBox.Height + See.Y));
-				SelectInSquare();
-				break;
-			}
-
-			case MouseButtons.Middle: {
-				break;
-			}
-
-			case MouseButtons.Right: {
-				SelectOrder();
-				break;
-			}
-			}
-		}
-
-		private Point SelectPTN1 = new Point(0, 0);
-		private Point SelectPTN2 = new Point(0, 0);
+		/* Mouse Controls */
+		private Point down_mouse_location = new Point(0, 0);
+		private Point last_mouse_location = new Point(0, 0);
 		private bool SelectStarted = false;
-
+		private void DrawBox_MouseDown(object sender, MouseEventArgs e) {
+			last_mouse_location = new Point((int)(e.X * DrawBMP.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBMP.Height / (double)DrawBox.Height + See.Y));
+			if (e.Button == MouseButtons.Left) {
+				SelectStarted = true;
+				down_mouse_location = new Point((int)(e.X * DrawBMP.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBMP.Height / (double)DrawBox.Height + See.Y));
+			}
+		}
+		private void DrawBox_MouseMove(object sender, MouseEventArgs e) {
+			last_mouse_location = new Point((int)(e.X * DrawBMP.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBMP.Height / (double)DrawBox.Height + See.Y));
+		}
+		private void DrawBox_MouseUp(object sender, MouseEventArgs e) {
+			if (e.Button == MouseButtons.Left) {
+				SelectStarted = false;
+				last_mouse_location = new Point((int)(e.X * DrawBMP.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBMP.Height / (double)DrawBox.Height + See.Y));
+				SelectInSquare();
+			}
+			if (e.Button == MouseButtons.Right) {
+				SelectOrder();
+			}
+		}
 		public void SelectInSquare() {
-			var SS = Helpers.GetRect(ref SelectPTN1, ref SelectPTN2);
+			var SS = Helpers.GetRect(ref down_mouse_location, ref last_mouse_location);
 			if (MenuPanel.Visible)
 				return;
-
 			if (!ModifierKeys.HasFlag(Keys.Control))
 				selected_ships.Clear();
-
-			foreach (Ship aship in game.world.Ships)
+			foreach (Ship aship in game.world.Ships) {
 				if (ReferenceEquals(aship.team, game.player_team) || game.player_team.cheats_enabled)
 					if (aship.location.X + aship.stats.width / 2d > SS.X)
 						if (aship.location.X - aship.stats.width / 2d < SS.X + SS.Width)
@@ -572,16 +535,14 @@ namespace Flee {
 										selected_ships.Add(aship);
 										if (aship.team is object)
 											game.player_team = aship.team;
-
-										if (SelectPTN1 == SelectPTN2)
+										if (down_mouse_location == last_mouse_location)
 											return;
 									}
+			}
 		}
-
 		public void SelectOrder() {
 			if (selected_ships.Count == 0)
 				return;
-
 			Ship target_ship = null;
 			// disable bots
 			foreach (Ship ship in selected_ships) {
@@ -592,42 +553,43 @@ namespace Flee {
 			}
 			// ===' Recherche '==='
 			foreach (Ship AShip in game.world.Ships)
-				if (AShip.location.X + AShip.stats.width / 2d > SelectPTN2.X)
-					if (AShip.location.X - AShip.stats.width / 2d < SelectPTN2.X)
-						if (AShip.location.Y + AShip.stats.width / 2d > SelectPTN2.Y)
-							if (AShip.location.Y - AShip.stats.width / 2d < SelectPTN2.Y)
+				if (AShip.location.X + AShip.stats.width / 2d > last_mouse_location.X)
+					if (AShip.location.X - AShip.stats.width / 2d < last_mouse_location.X)
+						if (AShip.location.Y + AShip.stats.width / 2d > last_mouse_location.Y)
+							if (AShip.location.Y - AShip.stats.width / 2d < last_mouse_location.Y)
 								target_ship = AShip;
 			// ===' Validation '==='
 			if (target_ship is null)
 				foreach (Ship AShip in selected_ships)
-					if (AShip.TargetPTN == SelectPTN2) {
-						game.world.Effects.Add(new Effect(-1, "EFF_Mine", SelectPTN2));
+					if (AShip.TargetPTN == last_mouse_location) {
+						game.world.Effects.Add(new Effect(-1, "EFF_Mine", last_mouse_location));
 						AShip.behavior = Ship.BehaviorMode.Mine;
-						AShip.TargetPTN = SelectPTN2;
+						AShip.TargetPTN = last_mouse_location;
 						AShip.target = null;
 						if (AShip.stats.name.Contains("Station"))
 							if (AShip.team is object && !ReferenceEquals(game.player_team, AShip.team))
 								AShip.team.bot_team = true;
 					} else {
-						game.world.Effects.Add(new Effect(-1, "EFF_Goto", SelectPTN2));
+						game.world.Effects.Add(new Effect(-1, "EFF_Goto", last_mouse_location));
 						AShip.behavior = Ship.BehaviorMode.GoToPoint;
-						AShip.TargetPTN = SelectPTN2;
+						AShip.TargetPTN = last_mouse_location;
 						AShip.target = null;
 					}
 			else
 				foreach (Ship AShip in selected_ships)
 					if (ReferenceEquals(AShip, target_ship)) {
-						game.world.Effects.Add(new Effect(-1, "EFF_OrderDefend", SelectPTN2));
+						game.world.Effects.Add(new Effect(-1, "EFF_OrderDefend", last_mouse_location));
 						AShip.AllowMining = false;
 					} else {
 						AShip.behavior = Ship.BehaviorMode.Folow;
 						AShip.target = target_ship;
 						if (AShip.team is object && AShip.team.IsFriendWith(target_ship.team))
-							game.world.Effects.Add(new Effect(-1, "EFF_Assist", SelectPTN2, 180));
+							game.world.Effects.Add(new Effect(-1, "EFF_Assist", last_mouse_location, 180));
 						else
-							game.world.Effects.Add(new Effect(-1, "EFF_OrderTarget", SelectPTN2));
+							game.world.Effects.Add(new Effect(-1, "EFF_OrderTarget", last_mouse_location));
 					}
 		}
+
 
 		private void PictureBox2_Click(object sender, EventArgs e) {
 			if (game.player_team.cheats_enabled) {
