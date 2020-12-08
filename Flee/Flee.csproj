@@ -210,6 +210,7 @@
     <Content Include="Cell.ICO" />
     <Content Include="0-TODO.txt" />
     <Content Include="Flee.ico" />
+    <None Include="sprites\Slots.png" />
     <None Include="Resources\Fleet.bmp" />
     <None Include="Resources\DeadSkull.bmp" />
     <None Include="Resources\Antimatter.bmp" />

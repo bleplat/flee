@@ -183,6 +183,7 @@ namespace Flee {
 					PriceM.Text = (AUp.cost.Metal * Math.Max(1, ships_upgradable)).ToString();
 					PriceU.Text = (AUp.cost.Fissile * Math.Max(1, ships_upgradable)).ToString();
 					PriceA.Text = (AUp.cost.Antimatter * Math.Max(1, ships_upgradable)).ToString();
+					PriceSlots.Text = (AUp.upgrade_slots_requiered).ToString();
 					// invisible resources
 					PriceM.Visible = AUp.cost.Metal != 0L;
 					PriceMIcon.Visible = AUp.cost.Metal != 0L;
@@ -192,6 +193,8 @@ namespace Flee {
 					PriceUIcon.Visible = AUp.cost.Fissile != 0L;
 					PriceA.Visible = AUp.cost.Antimatter != 0L;
 					PriceAIcon.Visible = AUp.cost.Antimatter != 0L;
+					PriceSlots.Visible = AUp.upgrade_slots_requiered != 0L;
+					PriceSlotsIcon.Visible = AUp.upgrade_slots_requiered != 0L;
 				}
 
 				bool localHasEnough() {

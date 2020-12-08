@@ -30,17 +30,18 @@ namespace Flee {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
 			this.MainPanel = new System.Windows.Forms.Panel();
-			this._MiniBox = new System.Windows.Forms.PictureBox();
 			this.MenuPanel = new System.Windows.Forms.Panel();
 			this.button1 = new System.Windows.Forms.Button();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.SeedTextBox = new System.Windows.Forms.TextBox();
 			this.checkBoxLAN = new System.Windows.Forms.CheckBox();
+			this.checkBoxBetterGraphics = new System.Windows.Forms.CheckBox();
 			this.checkBoxEnableBackground = new System.Windows.Forms.CheckBox();
 			this.checkBoxFPS = new System.Windows.Forms.CheckBox();
 			this.Label4 = new System.Windows.Forms.Label();
 			this.Label3 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
 			this.Label2 = new System.Windows.Forms.Label();
 			this._StartPlayingButton = new System.Windows.Forms.Button();
 			this._RandomizeButton = new System.Windows.Forms.Button();
@@ -51,15 +52,8 @@ namespace Flee {
 			this.PriceM = new System.Windows.Forms.Label();
 			this.UpDesc = new System.Windows.Forms.Label();
 			this.UpName = new System.Windows.Forms.Label();
-			this.PriceCIcon = new System.Windows.Forms.PictureBox();
-			this.PriceAIcon = new System.Windows.Forms.PictureBox();
-			this.PriceUIcon = new System.Windows.Forms.PictureBox();
-			this.PriceMIcon = new System.Windows.Forms.PictureBox();
 			this.SShipPanel = new System.Windows.Forms.Panel();
-			this.AllowMiningBox = new System.Windows.Forms.PictureBox();
 			this.SShipUpsMax = new System.Windows.Forms.Label();
-			this._UpgradesBox = new System.Windows.Forms.PictureBox();
-			this.SShipImageBox = new System.Windows.Forms.PictureBox();
 			this.Label1 = new System.Windows.Forms.Label();
 			this.SShipTypeBox = new System.Windows.Forms.Label();
 			this.PanelRes = new System.Windows.Forms.Panel();
@@ -68,27 +62,36 @@ namespace Flee {
 			this.UraniumTextBox = new System.Windows.Forms.Label();
 			this.CristalTextBox = new System.Windows.Forms.Label();
 			this.MetalTextBox = new System.Windows.Forms.Label();
+			this._Ticker = new System.Windows.Forms.Timer(this.components);
+			this.PriceSlots = new System.Windows.Forms.Label();
+			this._MiniBox = new System.Windows.Forms.PictureBox();
+			this.PriceCIcon = new System.Windows.Forms.PictureBox();
+			this.PriceAIcon = new System.Windows.Forms.PictureBox();
+			this.PriceSlotsIcon = new System.Windows.Forms.PictureBox();
+			this.PriceUIcon = new System.Windows.Forms.PictureBox();
+			this.PriceMIcon = new System.Windows.Forms.PictureBox();
+			this.AllowMiningBox = new System.Windows.Forms.PictureBox();
+			this._UpgradesBox = new System.Windows.Forms.PictureBox();
+			this.SShipImageBox = new System.Windows.Forms.PictureBox();
 			this.PictureBoxAvailableFissile = new System.Windows.Forms.PictureBox();
 			this.PictureBoxAvailableStarfuel = new System.Windows.Forms.PictureBox();
 			this.PictureBoxAvailableCrystal = new System.Windows.Forms.PictureBox();
 			this.PictureBoxAvailableMetal = new System.Windows.Forms.PictureBox();
 			this._DrawBox = new System.Windows.Forms.PictureBox();
-			this._Ticker = new System.Windows.Forms.Timer(this.components);
-			this.label7 = new System.Windows.Forms.Label();
-			this.checkBoxBetterGraphics = new System.Windows.Forms.CheckBox();
 			this.MainPanel.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this._MiniBox)).BeginInit();
 			this.MenuPanel.SuspendLayout();
 			this.UpgradeDetails.SuspendLayout();
+			this.SShipPanel.SuspendLayout();
+			this.PanelRes.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this._MiniBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PriceCIcon)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PriceAIcon)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.PriceSlotsIcon)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PriceUIcon)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PriceMIcon)).BeginInit();
-			this.SShipPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.AllowMiningBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this._UpgradesBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.SShipImageBox)).BeginInit();
-			this.PanelRes.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableFissile)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableStarfuel)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableCrystal)).BeginInit();
@@ -111,19 +114,6 @@ namespace Flee {
 			this.MainPanel.Name = "MainPanel";
 			this.MainPanel.Size = new System.Drawing.Size(800, 600);
 			this.MainPanel.TabIndex = 0;
-			// 
-			// _MiniBox
-			// 
-			this._MiniBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this._MiniBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this._MiniBox.Location = new System.Drawing.Point(598, 398);
-			this._MiniBox.Name = "_MiniBox";
-			this._MiniBox.Size = new System.Drawing.Size(202, 202);
-			this._MiniBox.TabIndex = 1;
-			this._MiniBox.TabStop = false;
-			this._MiniBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MiniBox_MouseDown);
-			this._MiniBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MiniBox_MouseMove);
-			this._MiniBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MiniBox_MouseUp);
 			// 
 			// MenuPanel
 			// 
@@ -203,6 +193,21 @@ namespace Flee {
 			this.checkBoxLAN.Text = "open to lan";
 			this.checkBoxLAN.UseVisualStyleBackColor = true;
 			// 
+			// checkBoxBetterGraphics
+			// 
+			this.checkBoxBetterGraphics.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.checkBoxBetterGraphics.AutoSize = true;
+			this.checkBoxBetterGraphics.Checked = true;
+			this.checkBoxBetterGraphics.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBoxBetterGraphics.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.checkBoxBetterGraphics.Location = new System.Drawing.Point(149, 102);
+			this.checkBoxBetterGraphics.Name = "checkBoxBetterGraphics";
+			this.checkBoxBetterGraphics.Size = new System.Drawing.Size(96, 17);
+			this.checkBoxBetterGraphics.TabIndex = 9;
+			this.checkBoxBetterGraphics.Text = "better graphics";
+			this.checkBoxBetterGraphics.UseVisualStyleBackColor = true;
+			// 
 			// checkBoxEnableBackground
 			// 
 			this.checkBoxEnableBackground.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -265,6 +270,16 @@ namespace Flee {
 			this.label5.TabIndex = 1;
 			this.label5.Text = "JOIN";
 			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label7.Location = new System.Drawing.Point(6, 64);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(81, 19);
+			this.label7.TabIndex = 1;
+			this.label7.Text = "GRAPHICS";
+			// 
 			// Label2
 			// 
 			this.Label2.AutoSize = true;
@@ -307,6 +322,7 @@ namespace Flee {
 			this.UpgradeDetails.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.UpgradeDetails.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.UpgradeDetails.Controls.Add(this.PriceA);
+			this.UpgradeDetails.Controls.Add(this.PriceSlots);
 			this.UpgradeDetails.Controls.Add(this.PriceU);
 			this.UpgradeDetails.Controls.Add(this.PriceC);
 			this.UpgradeDetails.Controls.Add(this.PriceM);
@@ -314,6 +330,7 @@ namespace Flee {
 			this.UpgradeDetails.Controls.Add(this.UpName);
 			this.UpgradeDetails.Controls.Add(this.PriceCIcon);
 			this.UpgradeDetails.Controls.Add(this.PriceAIcon);
+			this.UpgradeDetails.Controls.Add(this.PriceSlotsIcon);
 			this.UpgradeDetails.Controls.Add(this.PriceUIcon);
 			this.UpgradeDetails.Controls.Add(this.PriceMIcon);
 			this.UpgradeDetails.Location = new System.Drawing.Point(152, 12);
@@ -387,46 +404,6 @@ namespace Flee {
 			this.UpName.TabIndex = 0;
 			this.UpName.Text = "Upgrade name.";
 			// 
-			// PriceCIcon
-			// 
-			this.PriceCIcon.Image = global::Flee.My.Resources.Resources.Crystal;
-			this.PriceCIcon.Location = new System.Drawing.Point(325, 19);
-			this.PriceCIcon.Name = "PriceCIcon";
-			this.PriceCIcon.Size = new System.Drawing.Size(20, 20);
-			this.PriceCIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PriceCIcon.TabIndex = 0;
-			this.PriceCIcon.TabStop = false;
-			// 
-			// PriceAIcon
-			// 
-			this.PriceAIcon.Image = global::Flee.My.Resources.Resources.Antimatter;
-			this.PriceAIcon.Location = new System.Drawing.Point(277, 19);
-			this.PriceAIcon.Name = "PriceAIcon";
-			this.PriceAIcon.Size = new System.Drawing.Size(20, 20);
-			this.PriceAIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PriceAIcon.TabIndex = 0;
-			this.PriceAIcon.TabStop = false;
-			// 
-			// PriceUIcon
-			// 
-			this.PriceUIcon.Image = global::Flee.My.Resources.Resources.Fissile;
-			this.PriceUIcon.Location = new System.Drawing.Point(215, 19);
-			this.PriceUIcon.Name = "PriceUIcon";
-			this.PriceUIcon.Size = new System.Drawing.Size(20, 20);
-			this.PriceUIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PriceUIcon.TabIndex = 0;
-			this.PriceUIcon.TabStop = false;
-			// 
-			// PriceMIcon
-			// 
-			this.PriceMIcon.Image = global::Flee.My.Resources.Resources.Metal;
-			this.PriceMIcon.Location = new System.Drawing.Point(387, 19);
-			this.PriceMIcon.Name = "PriceMIcon";
-			this.PriceMIcon.Size = new System.Drawing.Size(20, 20);
-			this.PriceMIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.PriceMIcon.TabIndex = 0;
-			this.PriceMIcon.TabStop = false;
-			// 
 			// SShipPanel
 			// 
 			this.SShipPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -443,16 +420,6 @@ namespace Flee {
 			this.SShipPanel.Size = new System.Drawing.Size(152, 538);
 			this.SShipPanel.TabIndex = 3;
 			// 
-			// AllowMiningBox
-			// 
-			this.AllowMiningBox.Image = global::Flee.My.Resources.Resources.DeadSkull;
-			this.AllowMiningBox.Location = new System.Drawing.Point(55, 39);
-			this.AllowMiningBox.Name = "AllowMiningBox";
-			this.AllowMiningBox.Size = new System.Drawing.Size(16, 16);
-			this.AllowMiningBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.AllowMiningBox.TabIndex = 4;
-			this.AllowMiningBox.TabStop = false;
-			// 
 			// SShipUpsMax
 			// 
 			this.SShipUpsMax.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -463,30 +430,6 @@ namespace Flee {
 			this.SShipUpsMax.TabIndex = 3;
 			this.SShipUpsMax.Text = "00 / XX";
 			this.SShipUpsMax.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// _UpgradesBox
-			// 
-			this._UpgradesBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this._UpgradesBox.Location = new System.Drawing.Point(0, 61);
-			this._UpgradesBox.Name = "_UpgradesBox";
-			this._UpgradesBox.Size = new System.Drawing.Size(150, 475);
-			this._UpgradesBox.TabIndex = 2;
-			this._UpgradesBox.TabStop = false;
-			this._UpgradesBox.Click += new System.EventHandler(this.UpgradesBox_Click);
-			this._UpgradesBox.MouseLeave += new System.EventHandler(this.UpgradesBox_MouseLeave);
-			this._UpgradesBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.UpgradesBox_MouseMove);
-			// 
-			// SShipImageBox
-			// 
-			this.SShipImageBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.SShipImageBox.Location = new System.Drawing.Point(2, 2);
-			this.SShipImageBox.Name = "SShipImageBox";
-			this.SShipImageBox.Size = new System.Drawing.Size(50, 50);
-			this.SShipImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.SShipImageBox.TabIndex = 1;
-			this.SShipImageBox.TabStop = false;
 			// 
 			// Label1
 			// 
@@ -582,6 +525,119 @@ namespace Flee {
 			this.MetalTextBox.Text = "metal";
 			this.MetalTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
+			// _Ticker
+			// 
+			this._Ticker.Interval = 33;
+			this._Ticker.Tick += new System.EventHandler(this.Ticker_Tick);
+			// 
+			// PriceSlots
+			// 
+			this.PriceSlots.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.PriceSlots.ForeColor = System.Drawing.Color.Gray;
+			this.PriceSlots.Location = new System.Drawing.Point(26, 19);
+			this.PriceSlots.Name = "PriceSlots";
+			this.PriceSlots.Size = new System.Drawing.Size(25, 20);
+			this.PriceSlots.TabIndex = 1;
+			this.PriceSlots.Text = "1";
+			this.PriceSlots.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// _MiniBox
+			// 
+			this._MiniBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this._MiniBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this._MiniBox.Location = new System.Drawing.Point(598, 398);
+			this._MiniBox.Name = "_MiniBox";
+			this._MiniBox.Size = new System.Drawing.Size(202, 202);
+			this._MiniBox.TabIndex = 1;
+			this._MiniBox.TabStop = false;
+			this._MiniBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MiniBox_MouseDown);
+			this._MiniBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MiniBox_MouseMove);
+			this._MiniBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MiniBox_MouseUp);
+			// 
+			// PriceCIcon
+			// 
+			this.PriceCIcon.Image = global::Flee.My.Resources.Resources.Crystal;
+			this.PriceCIcon.Location = new System.Drawing.Point(325, 19);
+			this.PriceCIcon.Name = "PriceCIcon";
+			this.PriceCIcon.Size = new System.Drawing.Size(20, 20);
+			this.PriceCIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PriceCIcon.TabIndex = 0;
+			this.PriceCIcon.TabStop = false;
+			// 
+			// PriceAIcon
+			// 
+			this.PriceAIcon.Image = global::Flee.My.Resources.Resources.Antimatter;
+			this.PriceAIcon.Location = new System.Drawing.Point(277, 19);
+			this.PriceAIcon.Name = "PriceAIcon";
+			this.PriceAIcon.Size = new System.Drawing.Size(20, 20);
+			this.PriceAIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PriceAIcon.TabIndex = 0;
+			this.PriceAIcon.TabStop = false;
+			// 
+			// PriceSlotsIcon
+			// 
+			this.PriceSlotsIcon.Image = global::Flee.My.Resources.Resources.Slots;
+			this.PriceSlotsIcon.Location = new System.Drawing.Point(5, 19);
+			this.PriceSlotsIcon.Name = "PriceSlotsIcon";
+			this.PriceSlotsIcon.Size = new System.Drawing.Size(20, 20);
+			this.PriceSlotsIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PriceSlotsIcon.TabIndex = 0;
+			this.PriceSlotsIcon.TabStop = false;
+			// 
+			// PriceUIcon
+			// 
+			this.PriceUIcon.Image = global::Flee.My.Resources.Resources.Fissile;
+			this.PriceUIcon.Location = new System.Drawing.Point(215, 19);
+			this.PriceUIcon.Name = "PriceUIcon";
+			this.PriceUIcon.Size = new System.Drawing.Size(20, 20);
+			this.PriceUIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PriceUIcon.TabIndex = 0;
+			this.PriceUIcon.TabStop = false;
+			// 
+			// PriceMIcon
+			// 
+			this.PriceMIcon.Image = global::Flee.My.Resources.Resources.Metal;
+			this.PriceMIcon.Location = new System.Drawing.Point(387, 19);
+			this.PriceMIcon.Name = "PriceMIcon";
+			this.PriceMIcon.Size = new System.Drawing.Size(20, 20);
+			this.PriceMIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.PriceMIcon.TabIndex = 0;
+			this.PriceMIcon.TabStop = false;
+			// 
+			// AllowMiningBox
+			// 
+			this.AllowMiningBox.Image = global::Flee.My.Resources.Resources.DeadSkull;
+			this.AllowMiningBox.Location = new System.Drawing.Point(55, 39);
+			this.AllowMiningBox.Name = "AllowMiningBox";
+			this.AllowMiningBox.Size = new System.Drawing.Size(16, 16);
+			this.AllowMiningBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.AllowMiningBox.TabIndex = 4;
+			this.AllowMiningBox.TabStop = false;
+			// 
+			// _UpgradesBox
+			// 
+			this._UpgradesBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this._UpgradesBox.Location = new System.Drawing.Point(0, 61);
+			this._UpgradesBox.Name = "_UpgradesBox";
+			this._UpgradesBox.Size = new System.Drawing.Size(150, 475);
+			this._UpgradesBox.TabIndex = 2;
+			this._UpgradesBox.TabStop = false;
+			this._UpgradesBox.Click += new System.EventHandler(this.UpgradesBox_Click);
+			this._UpgradesBox.MouseLeave += new System.EventHandler(this.UpgradesBox_MouseLeave);
+			this._UpgradesBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.UpgradesBox_MouseMove);
+			// 
+			// SShipImageBox
+			// 
+			this.SShipImageBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.SShipImageBox.Location = new System.Drawing.Point(2, 2);
+			this.SShipImageBox.Name = "SShipImageBox";
+			this.SShipImageBox.Size = new System.Drawing.Size(50, 50);
+			this.SShipImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.SShipImageBox.TabIndex = 1;
+			this.SShipImageBox.TabStop = false;
+			// 
 			// PictureBoxAvailableFissile
 			// 
 			this.PictureBoxAvailableFissile.Image = global::Flee.My.Resources.Resources.Fissile;
@@ -637,36 +693,6 @@ namespace Flee {
 			this._DrawBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawBox_MouseMove);
 			this._DrawBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawBox_MouseUp);
 			// 
-			// _Ticker
-			// 
-			this._Ticker.Interval = 33;
-			this._Ticker.Tick += new System.EventHandler(this.Ticker_Tick);
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label7.Location = new System.Drawing.Point(6, 64);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(81, 19);
-			this.label7.TabIndex = 1;
-			this.label7.Text = "GRAPHICS";
-			// 
-			// checkBoxBetterGraphics
-			// 
-			this.checkBoxBetterGraphics.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.checkBoxBetterGraphics.AutoSize = true;
-			this.checkBoxBetterGraphics.Checked = true;
-			this.checkBoxBetterGraphics.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.checkBoxBetterGraphics.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBoxBetterGraphics.Location = new System.Drawing.Point(149, 102);
-			this.checkBoxBetterGraphics.Name = "checkBoxBetterGraphics";
-			this.checkBoxBetterGraphics.Size = new System.Drawing.Size(96, 17);
-			this.checkBoxBetterGraphics.TabIndex = 9;
-			this.checkBoxBetterGraphics.Text = "better graphics";
-			this.checkBoxBetterGraphics.UseVisualStyleBackColor = true;
-			// 
 			// GameForm
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -687,21 +713,22 @@ namespace Flee {
 			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
 			this.Resize += new System.EventHandler(this.MainForm_Resize);
 			this.MainPanel.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this._MiniBox)).EndInit();
 			this.MenuPanel.ResumeLayout(false);
 			this.MenuPanel.PerformLayout();
 			this.UpgradeDetails.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.PriceCIcon)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.PriceAIcon)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.PriceUIcon)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.PriceMIcon)).EndInit();
 			this.SShipPanel.ResumeLayout(false);
 			this.SShipPanel.PerformLayout();
+			this.PanelRes.ResumeLayout(false);
+			this.PanelRes.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this._MiniBox)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.PriceCIcon)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.PriceAIcon)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.PriceSlotsIcon)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.PriceUIcon)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.PriceMIcon)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.AllowMiningBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this._UpgradesBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.SShipImageBox)).EndInit();
-			this.PanelRes.ResumeLayout(false);
-			this.PanelRes.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableFissile)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableStarfuel)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableCrystal)).EndInit();
@@ -928,5 +955,7 @@ namespace Flee {
 		internal Label label5;
 		private CheckBox checkBoxBetterGraphics;
 		internal Label label7;
+		internal Label PriceSlots;
+		internal PictureBox PriceSlotsIcon;
 	}
 }
