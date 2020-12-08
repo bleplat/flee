@@ -31,6 +31,7 @@ namespace Flee {
 		public int ship_count_approximation = 0;
 		public bool cheats_enabled = false;
 		public bool has_ascended = false;
+		public float damage_multiplicator = 1.0f;
 
 		// Engagements
 		public List<Engagement> engagements = new List<Engagement>();

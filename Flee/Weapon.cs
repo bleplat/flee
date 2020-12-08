@@ -138,8 +138,11 @@ namespace Flee {
 		public void Fire(float QA, Point PTN, Ship Launcher) {
 			if (Bar > 0) {
 				Bar = Bar - 1;
-				PointF spawn_point = PTN;
+				PointF spawn_point = PTN; // TODO: simplify
 				int time_to_live = (int)(stats.range / (double)stats.celerity);
+				float power = this.stats.power;
+				if (this.ship.team is object)
+					power *= this.ship.team.damage_multiplicator;
 				if ((base_stats.special & (int)SpecialBits.SpreadOrigin) != 0)
 					spawn_point = new PointF(PTN.X + ship.world.gameplay_random.Next(-7, 8), PTN.Y + ship.world.gameplay_random.Next(-7, 8));
 				if ((base_stats.special & (int)SpecialBits.Rail) != 0) {
