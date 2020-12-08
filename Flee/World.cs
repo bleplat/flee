@@ -10,6 +10,9 @@ namespace Flee {
 		public Size ArenaSize = new Size(30000, 30000);
 		public int Seed;
 
+		// Caracteristics
+		public Point background_offset = new Point(0, 0);
+
 		// Randoms
 		public Random generation_random = null;
 		public Random gameplay_random = null;
@@ -71,6 +74,8 @@ namespace Flee {
 			InitPlayer();
 			InitDerelicts();
 			InitBots();
+			background_offset.X = generation_random.Next(0, 4096);
+			background_offset.Y = generation_random.Next(0, 4096);
 		}
 
 		public void Tick() {

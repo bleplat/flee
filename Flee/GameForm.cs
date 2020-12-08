@@ -300,7 +300,7 @@ namespace Flee {
 			if (!checkBoxEnableBackground.Checked) { // disable background image 
 				G.Clear(Color.Black);
 			} else {
-				GetBackgroundBrush().TranslateTransform(-See.X / (game.world.ArenaSize.Width / (GetBackgroundSize().Width - this.Width)), -See.Y / (game.world.ArenaSize.Height / (GetBackgroundSize().Height - this.Height)));
+				GetBackgroundBrush().TranslateTransform(-See.X / (game.world.ArenaSize.Width / (GetBackgroundSize().Width - this.Width)) + game.world.background_offset.X, -See.Y / (game.world.ArenaSize.Height / (GetBackgroundSize().Height - this.Height)) + game.world.background_offset.Y);
 				G.CompositingMode = CompositingMode.SourceCopy;
 				G.FillRectangle(GetBackgroundBrush(), new RectangleF(new PointF(0, 0), DrawBMP.Size));
 				G.CompositingMode = CompositingMode.SourceOver;
