@@ -4,7 +4,44 @@ using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
 namespace Flee {
+
+	/**
+	 * @brief Special flags representing ships specificities.
+	 */
+
+	/**
+	 * @brief Represent a Ship base stats.
+	 */
 	public class ShipStats {
+
+		/* role */
+		public enum ShipRole {
+			Shipyard = 0x1, // Capable of summoning others. It keeps the team status as alive.
+			Defense = 0x2, // Summoned with Shipyards.
+			Starter = 0x4, // May be summoned with a Shipyard in a player team.
+			Playable = 0x10, // May be summoned in a player team.
+			NPC = 0x20, // May be summoned in an NPC team.
+			Boss = 0x30, // May be summoned as a Boss.
+			Derelict = 0x40 // May be summoned as a derelict object.
+		}
+		static int ShipRoles(string roles_str) {
+			int total = 0;
+			foreach (string role_str in roles_str.Split('|')) {
+				total |= (int)Enum.Parse(typeof(ShipRole), role_str, true);
+			}
+			return (total);
+		}
+		static string ShipRoles(int roles) {
+			string total = "";
+			foreach (ShipRole role in Enum.GetValues(typeof(ShipStats))) {
+				if ((roles & (int)role) != 0) {
+					if (total.Length > 0)
+						total += '|';
+					total += role.ToString();
+				}
+			}
+			return (total);
+		}
 
 		// shared
 		public static Dictionary<string, ShipStats> classes = new Dictionary<string, ShipStats>();
@@ -19,9 +56,15 @@ namespace Flee {
 			return total;
 		}
 
+		// spawning rules
+		public double spawning_frequency = 0.0;
+		public int spawning_amount_min = 1;
+		public int spawning_amount_max = 2;
+
 		// identity
 		public string name = "Default";
 		public string desc = null;
+		public int role = 0; // ShipRole flags
 
 		// visual
 		public string sprite = "Plasma";
@@ -85,108 +128,93 @@ namespace Flee {
 				desc = value;
 				break;
 			}
-
 			case "sprite": {
 				SetSprite(value);
 				break;
 			}
-
 			case "level": {
 				level = Convert.ToInt32(value);
 				break;
 			}
-
 			case "width": {
 				width = Convert.ToInt32(value);
 				break;
 			}
-
 			case "integrity": {
 				integrity = Convert.ToInt32(value);
 				break;
 			}
-
 			case "repair": {
 				repair = Convert.ToInt32(value);
 				break;
 			}
-
 			case "speed": {
 				speed = Helpers.ToDouble(value);
 				if (turn == 0d)
 					turn = speed;
 				break;
 			}
-
 			case "turn": {
 				turn = Helpers.ToDouble(value);
 				break;
 			}
-
 			case "weapon": {
 				default_weapons.Add(value);
 				break;
 			}
-
 			case "shield": {
 				shield = Convert.ToInt32(value);
 				if (shield_opacity == 0d)
 					shield_opacity = 25d;
 				break;
 			}
-
 			case "shield_regeneration": {
 				shield_regeneration = (int)Helpers.ToDouble(value);
 				break;
 			}
-
 			case "shield_opacity": {
 				shield_opacity = Helpers.ToDouble(value);
 				break;
 			}
-
 			case "deflectors": {
 				deflectors = Convert.ToInt32(value);
 				break;
 			}
-
 			case "deflectors_cooldown": {
 				deflectors_cooldown = Convert.ToInt32(value);
 				break;
 			}
-
 			case "hot_deflector": {
 				hot_deflector = Helpers.ToDouble(value);
 				break;
 			}
-
 			case "cold_deflector": {
 				cold_deflector = (Convert.ToInt32(value)) != 0;
 				break;
 			}
-
 			case "craft": {
 				crafts.Add(value);
 				break;
 			}
-
 			case "native_upgrade": {
 				native_upgrades.Add(value);
 				break;
 			}
-
 			case "cost": {
 				cost = new MaterialSet(value);
 				if (complexity == 0)
 					complexity = (int)((width * 5) + (cost.Metal / 8) + (cost.Crystal * 15L) + (cost.Antimatter / 4d) + (cost.Fissile * 100L));
 				break;
 			}
-
 			case "complexity": {
 				complexity = Convert.ToInt32(value);
 				break;
 			}
-
+			// spawning
+			case "role": role = ShipRoles(value); break;
+			case "spawning_frequency": spawning_frequency = Helpers.ToDouble(value); break;
+			case "spawning_amount_min": spawning_amount_min = Convert.ToInt32(value); break;
+			case "spawning_amount_max": spawning_amount_max = Convert.ToInt32(value); break;
 			default: {
 				throw new Exception("'" + name + "' is not a valid ship property");
 				break;
@@ -240,6 +268,15 @@ namespace Flee {
 				total += Constants.vbTab + "native_upgrade=" + item + Constants.vbLf;
 			total += Constants.vbTab + "cost=" + cost.ToString() + Constants.vbLf;
 			total += Constants.vbTab + "complexity=" + complexity.ToString() + Constants.vbLf;
+			// spawning
+			if (role != 0)
+				total += "role=" + ShipRoles(role) + "\n";
+			if (spawning_frequency != 0.0f)
+				total += "\tspawning_frequency=" + Helpers.ToString(spawning_frequency) + "\n";
+			if (spawning_amount_min != 1)
+				total += "\tspawning_amount_min=" + spawning_amount_min.ToString() + "\n";
+			if (spawning_amount_max != 2)
+				total += "\tspawning_amount_max=" + spawning_amount_max.ToString() + "\n";
 			return total;
 		}
 
