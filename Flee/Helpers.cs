@@ -11,14 +11,8 @@ namespace Flee {
 		public static readonly ulong INVALID_UID = (ulong)(ulong.MaxValue - 1m);
 		private static ulong last_uid = 0UL;
 
-		public static ulong GetNextUniqueID() {
-			last_uid = (ulong)(last_uid + 1m);
-			return last_uid;
-		}
-
+		/* Math */
 		public static double GetQA(int x1, int y1, int x2, int y2) {
-			// Dim calc As Double = ((y2 - y1) / (x2 - x1))
-			// Dim QA As Double = Math.Atan(calc) * 360
 			double QA = Math.Atan2(x1 - x2, y1 - y2);
 			QA = QA * (180d / Math.PI);
 			QA = QA - 180d;
@@ -28,23 +22,18 @@ namespace Flee {
 				QA = QA - 360d;
 			return QA;
 		}
-
 		public static double Distance(ref PointF p1, ref PointF p2) {
 			return Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
 		}
-
 		public static double Distance(float x1, float y1, float x2, float y2) {
 			return Math.Sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 		}
-
 		public static double DistanceSQ(ref PointF p1, ref PointF p2) {
 			return (p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y);
 		}
-
 		public static double DistanceSQ(float x1, float y1, float x2, float y2) {
 			return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 		}
-
 		public static PointF GetNewPoint(PointF AncPoint, float Dir, float speed) {
 			float Tox = (float)(Math.Sin(2d * Math.PI * Dir / 360d) * speed + AncPoint.X);
 			float Toy = (float)(Math.Cos(2d * Math.PI * Dir / 360d) * speed + AncPoint.Y);
@@ -52,17 +41,63 @@ namespace Flee {
 			AncPoint.Y = Toy;
 			return AncPoint;
 		}
-
 		public static double Modulo(double a, double n) {
 			return (a % n + n) % n;
 		}
-
 		public static double GetAngleDiff(double a1, double a2) {
 			return Math.Abs(Modulo(a2 - a1 + 180d, 360d) - 180d);
 		}
+		public static double NormalizeAngleUnsigned(double angle) {
+			while (angle < 0d)
+				angle += 360d;
+			while (angle >= 360d)
+				angle -= 360d;
+			return angle;
+		}
+		public static int GetAngle(double x1, double y1, double x2, double y2) {
+			if (x1 == x2 && y1 == y2)
+				return -1;
+			double QA = Math.Atan2(x2 - x1, y2 - y1) * 180.0d / Math.PI;
+			QA = NormalizeAngleUnsigned(QA);
+			return (int)QA;
+		}
+		public static Rectangle MakeRectangle(ref Point PT1, ref Point PT2) {
+			var NR = new Rectangle();
+			if (PT1.X < PT2.X) {
+				NR.X = PT1.X;
+				NR.Width = PT2.X - PT1.X;
+			} else {
+				NR.X = PT2.X;
+				NR.Width = PT1.X - PT2.X;
+			}
+			if (PT1.Y < PT2.Y) {
+				NR.Y = PT1.Y;
+				NR.Height = PT2.Y - PT1.Y;
+			} else {
+				NR.Y = PT2.Y;
+				NR.Height = PT1.Y - PT2.Y;
+			}
+			return NR;
+		}
 
+		/* Resource Loading */
+		public static bool _enable_mods_folder = false;
+		public static Bitmap LoadProjectSprite(string file) {
+			Bitmap bmp;
+			try {
+				bmp = new Bitmap("./sprites/" + file + ".png");
+			} catch {
+				bmp = new Bitmap("./sprites/" + file + ".bmp");
+			}
+			if (bmp.PixelFormat != Helpers.GetScreenPixelFormat()) {
+				bmp = new Bitmap(bmp).Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), Helpers.GetScreenPixelFormat());
+			}
+			return (bmp);
+		}
+
+		/* Graphics */
 		public static System.Drawing.Imaging.PixelFormat _screen_pixel_format = System.Drawing.Imaging.PixelFormat.Undefined;
-		public static System.Drawing.Imaging.PixelFormat ScreenPixelFormat() {
+		public static System.Drawing.Imaging.PixelFormat GetScreenPixelFormat() {
 			if (_screen_pixel_format == System.Drawing.Imaging.PixelFormat.Undefined) {
 				Graphics g = Graphics.FromHwnd(IntPtr.Zero);
 				Bitmap bitmap = new Bitmap(4, 4, g);
@@ -70,48 +105,10 @@ namespace Flee {
 			}
 			return (_screen_pixel_format);
 		}
-
 		private static Dictionary<string, Bitmap> bitmaps = new Dictionary<string, Bitmap>();
-
 		public static Bitmap GetSprite(string img_name, int x, int y, Color Scolor = default) {
-			Bitmap bmp = null;
-			string full_img_name;
-			if (Scolor == default)
-				full_img_name = img_name + x + y;
-			else
-				full_img_name = img_name + x + y + Scolor.ToString();
-			// Find already loaded image
-			if (bitmaps.TryGetValue(full_img_name, out bmp))
-				return bmp;
-			// Image is not in cache, get from file
-			// Non sprited image
-			if (x == -1 && y == -1)             // Base image requested
-				try {
-					string file_name = "./sprites/" + img_name + ".bmp";
-					bmp = new Bitmap(Image.FromFile(file_name)); // My.Resources.ResourceManager.GetObject(img_name, My.Resources.Culture)
-				} catch (Exception ex1) {
-					try {
-						string file_name = "./sprites/" + img_name + ".png";
-						bmp = new Bitmap(Image.FromFile(file_name)); // My.Resources.ResourceManager.GetObject(img_name, My.Resources.Culture)
-					} catch (Exception ex2) {
-						return null;
-					}
-				}
-			else {
-				// Get base image
-				bmp = GetSprite(img_name, -1, -1, default);
-				// New colored image from non-colored image
-				int ItW = (int)(bmp.Width / 8d);
-				bmp = bmp.Clone(new Rectangle(new Point(x * ItW + 1, y * ItW + 1), new Size(ItW - 2, ItW - 2)), System.Drawing.Imaging.PixelFormat.DontCare);
-				// Coloring
-				if (Scolor != default) 
-					Recolor(bmp, Scolor);
-			}
-			if (bmp is null)
-				return null;
-			bmp.MakeTransparent(Color.Black);
-			bitmaps.Add(full_img_name, bmp);
-			return bmp;
+			SpriteArray sa = SpriteArray.GetSpriteArray(img_name, Scolor);
+			return (sa.GetSprite(x, y));
 		}
 		public static void Recolor(Bitmap bmp, Color color) {
 			for (int i = 0, loopTo = bmp.Width - 1; i <= loopTo; i++)
@@ -150,28 +147,6 @@ namespace Flee {
 				}
 			bmp.MakeTransparent(Color.Black);
 		}
-
-		public static Rectangle GetRect(ref Point PT1, ref Point PT2) {
-			var NR = new Rectangle();
-			if (PT1.X < PT2.X) {
-				NR.X = PT1.X;
-				NR.Width = PT2.X - PT1.X;
-			} else {
-				NR.X = PT2.X;
-				NR.Width = PT1.X - PT2.X;
-			}
-
-			if (PT1.Y < PT2.Y) {
-				NR.Y = PT1.Y;
-				NR.Height = PT2.Y - PT1.Y;
-			} else {
-				NR.Y = PT2.Y;
-				NR.Height = PT1.Y - PT2.Y;
-			}
-
-			return NR;
-		}
-
 		public static Color ImproveColor(Color color) {
 			int R = color.R;
 			int G = color.G;
@@ -181,47 +156,44 @@ namespace Flee {
 				G += 48;
 				B += 48;
 			}
-
 			if (G <= R && G <= B) {
 				R += 48;
 				G -= 48;
 				B += 48;
 			}
-
 			if (B <= R && B <= G) {
 				R += 48;
 				G += 48;
 				B -= 48;
 			}
-
 			R = Math.Min(255, Math.Max(0, R));
 			G = Math.Min(255, Math.Max(0, G));
 			B = Math.Min(255, Math.Max(0, B));
 			return Color.FromArgb(R, G, B);
 		}
 
-		public static double NormalizeAngleUnsigned(double angle) {
-			while (angle < 0d)
-				angle += 360d;
-			while (angle >= 360d)
-				angle -= 360d;
-			return angle;
+		/* Conversions */
+		static readonly NumberFormatInfo to_double_format = new NumberFormatInfo() { NegativeSign = "-", NumberDecimalSeparator = "." };
+		public static double ToDouble(string s) {
+			return double.Parse(s.Replace(",", "."), to_double_format);
+		}
+		static readonly CultureInfo to_double_culture = CultureInfo.CreateSpecificCulture("en-US");
+		public static string ToString(double d) {
+			return d.ToString("0.00", to_double_culture);
 		}
 
-		public static int GetAngle(double x1, double y1, double x2, double y2) {
-			if (x1 == x2 && y1 == y2)
-				return -1;
-			double QA = Math.Atan2(x2 - x1, y2 - y1) * 180.0d / Math.PI;
-			QA = NormalizeAngleUnsigned(QA);
-			return (int)QA;
+		/* Misc */
+		public static ulong GetNextUniqueID() {
+			last_uid = (ulong)(last_uid + 1m);
+			return last_uid;
 		}
 
+		/* Flee Lists Loading */
 		public static Point PointFromString(string input) {
 			var components = new string[3];
 			components = input.Split(';');
 			return new Point(Convert.ToInt32(components[0]), Convert.ToInt32(components[1]));
 		}
-
 		public static int GetIndentation(string line) {
 			int count = 0;
 			foreach (char c in line)
@@ -232,7 +204,6 @@ namespace Flee {
 
 			return count;
 		}
-
 		public static void LoadLists() {
 			var list_classes = new List<ListClass>();
 			list_classes.AddRange(GetListsFromFile("./lists/weapons.txt"));
@@ -243,7 +214,6 @@ namespace Flee {
 			list_classes.AddRange(GetListsFromFile("./lists/boss_ships.txt"));
 			LoadLists(list_classes);
 		}
-
 		public static void LoadLists(List<ListClass> list_classes) {
 			foreach (ListClass a_class in list_classes)
 				switch (a_class.type ?? "") {
@@ -271,11 +241,9 @@ namespace Flee {
 				}
 				}
 		}
-
 		public static List<ListClass> GetListsFromFile(string filename) {
 			return GetListsFromRaw(File.ReadAllText(filename).Replace(Constants.vbCr + Constants.vbLf, Constants.vbLf));
 		}
-
 		public static List<ListClass> GetListsFromRaw(string data) {
 			// use as LoadList(File.ReadAllText("./lists/weapons.txt").Replace(vbCr & vbLf, vbLf))
 			data += Constants.vbLf;
@@ -301,50 +269,25 @@ namespace Flee {
 					else
 						header = line;
 			}
-
 			return list_classes;
 		}
 
-		// locale indpendent double conversions
-		static readonly NumberFormatInfo to_double_format = new NumberFormatInfo() { NegativeSign = "-", NumberDecimalSeparator = "." };
-		public static double ToDouble(string s) {
-			return double.Parse(s.Replace(",", "."), to_double_format);
-		}
-
-		static readonly CultureInfo to_double_culture = CultureInfo.CreateSpecificCulture("en-US");
-		public static string ToString(double d) {
-			return d.ToString("0.00", to_double_culture);
-		}
-
+		/* Flee specific */
 		public static string RandomStationName(Random rand) {
 			var station_names = new List<string>();
 			foreach (string ship_class_name in ShipStats.classes.Keys)
 				if (ship_class_name.Contains("Station") && !ship_class_name.Contains("Player") && !(ship_class_name == "Station"))
 					station_names.Add(ship_class_name);
-
 			return station_names[rand.Next(0, station_names.Count)];
 		}
-
 		public static string RandomTurretName(Random rand) {
-			switch (rand.Next(0, 3)) {
-			case 0: {
-				return "Anti-Light_Turret";
+			List<string> turrets = new List<string>();
+			foreach (ShipStats ship in ShipStats.classes.Values) {
+				if (ship.name.EndsWith("_Turret"))
+				turrets.Add(ship.name);
 			}
-
-			case 1: {
-				return "Anti-Heavy_Turret";
-			}
-
-			case 2: {
-				return "Pointvortex_Turret";
-			}
-
-			default: {
-				return "";
-			}
-			}
+			return (turrets[rand.Next(0, turrets.Count)]);
 		}
-
 		public static List<string> GetSpawnUpgrades(Ship ship) {
 			var upgrades = new List<string>();
 			foreach (string craft in ship.stats.crafts)
@@ -354,7 +297,6 @@ namespace Flee {
 
 			return upgrades;
 		}
-
 		public static string GetRandomSpawnUpgrade(Random rand, Ship ship) {
 			var upgrades = GetSpawnUpgrades(ship);
 			if (upgrades.Count == 0)
@@ -362,5 +304,6 @@ namespace Flee {
 
 			return upgrades[rand.Next(0, upgrades.Count)];
 		}
+
 	}
 }

@@ -57,14 +57,17 @@ namespace Flee {
 		// constructor
 		public ShipStats(string name) {
 			this.name = name;
-			SetSprite(name);
+			try {
+				SetSprite(name);
+			} catch (Exception) {
+			}
 		}
 
 		public void SetSprite(string sprite) {
 			this.sprite = sprite;
-			var try_bmp = Helpers.GetSprite(this.sprite, -1, -1, default);
+			var try_bmp =  SpriteArray.GetSpriteArray(this.sprite).GetSprite(0, 0);
 			if (try_bmp is object) {
-				width = (int)(try_bmp.Width / 8d - 2d);
+				width = try_bmp.Width;
 				level = (int)Math.Sqrt(width);
 				integrity = (int)(width * width / 12d);
 				if (width >= 25)

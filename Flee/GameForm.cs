@@ -31,7 +31,7 @@ namespace Flee {
 		TextureBrush GetBackgroundBrush() {
 			if (_background_brush == null) {
 				Bitmap background_bmp = new Bitmap("sprites/background.png");
-				background_bmp = new Bitmap(background_bmp).Clone(new Rectangle(0, 0, background_bmp.Width, background_bmp.Height), Helpers.ScreenPixelFormat());
+				background_bmp = new Bitmap(background_bmp).Clone(new Rectangle(0, 0, background_bmp.Width, background_bmp.Height), Helpers.GetScreenPixelFormat());
 				_background_brush = new TextureBrush(background_bmp, WrapMode.Tile);
 			}
 			return (_background_brush);
@@ -363,7 +363,7 @@ namespace Flee {
 			}
 			// Select rectangle
 			if (SelectStarted) {
-				var NR = Helpers.GetRect(ref down_mouse_location, ref last_mouse_location);
+				var NR = Helpers.MakeRectangle(ref down_mouse_location, ref last_mouse_location);
 				NR.X = NR.X - See.X;
 				NR.Y = NR.Y - See.Y;
 				G.DrawRectangle(Pens.White, NR);
@@ -567,7 +567,7 @@ namespace Flee {
 			}
 		}
 		public void SelectInSquare() {
-			var SS = Helpers.GetRect(ref down_mouse_location, ref last_mouse_location);
+			var SS = Helpers.MakeRectangle(ref down_mouse_location, ref last_mouse_location);
 			if (MenuPanel.Visible)
 				return;
 			if (!ModifierKeys.HasFlag(Keys.Control))
