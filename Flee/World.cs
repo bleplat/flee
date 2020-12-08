@@ -92,11 +92,36 @@ namespace Flee {
 			ticks += 1;
 		}
 
+		public bool HaveAnyAffinityWon() {
+			bool neutral_alive = false;
+			bool friendly_alive = false;
+			bool dissident_alive = false;
+			bool hostile_alive = false;
+			foreach (Ship ship in Ships) {
+				if (ship.team is object && ship.stats.name.EndsWith("_Station")) {
+					if (ship.team.affinity == AffinityEnum.Neutral)
+						neutral_alive = true;
+					if (ship.team.affinity == AffinityEnum.Friendly)
+						friendly_alive = true;
+					if (ship.team.affinity == AffinityEnum.Dissident)
+						dissident_alive = true;
+					if (ship.team.affinity == AffinityEnum.Hostile)
+						hostile_alive = true;
+				}
+			}
+			if (!dissident_alive && !hostile_alive) // Friendly won
+				return (true);
+			if (!friendly_alive && !hostile_alive) // Dissident won
+				return (true);
+			if (!dissident_alive && !friendly_alive && !neutral_alive) // Hostile won
+				return (true);
+			return (false);
+		}
 		public void UpdateStageDifficulty() {
 			if (HasAnyTeamAscended()) {
 				this.is_invaded_by_ascended = true;
 				this.is_invaded_by_bosses = true;
-			} else if (IsMeanStationLeft()) {
+			} else if (HaveAnyAffinityWon()) {
 				this.is_invaded_by_ascended = false;
 				this.is_invaded_by_bosses = true;
 			} else {
@@ -129,7 +154,7 @@ namespace Flee {
 				spawn_allies -= 1;
 			}
 			// spawn additional station
-			if (team.bot_team && team.affinity != (int)AffinityEnum.KIND && rand.Next(0, 2) == 0) {
+			if (team.bot_team && team.affinity != AffinityEnum.Friendly && rand.Next(0, 2) == 0) {
 				var argworld1 = this;
 				Ships.Add(new Ship(ref argworld1, team, main_type) { location = new Point(main_coords.X + rand.Next(-512, 513), main_coords.Y + rand.Next(-512, 513)) });
 			}
@@ -138,18 +163,24 @@ namespace Flee {
 		private void InitTeams() {
 			var rand = new Random(generation_random.Next());
 			// player team
-			Teams.Add(new Team(this, (int)AffinityEnum.KIND));
+			Teams.Add(new Team(this, AffinityEnum.Friendly));
+			Teams[Teams.Count - 1].InitTeam(generation_random);
 			// boss team
-			Teams.Add(new Team(this, (int)AffinityEnum.ALOOF));
+			Teams.Add(new Team(this, AffinityEnum.Hostile));
+			Teams[Teams.Count - 1].InitTeam(generation_random);
 			boss_team = Teams[Teams.Count - 1];
 			// 1 allied NPC team
-			Teams.Add(new Team(this, (int)AffinityEnum.KIND));
+			Teams.Add(new Team(this, AffinityEnum.Friendly));
+			Teams[Teams.Count - 1].InitTeam(generation_random);
 			// enemy NPC team
-			Teams.Add(new Team(this, (int)AffinityEnum.MEAN));
+			Teams.Add(new Team(this, AffinityEnum.Hostile));
+			Teams[Teams.Count - 1].InitTeam(generation_random);
 			// random teams
 			int npc_team_count = rand.Next(3, 6);
-			for (int i = 0, loopTo = npc_team_count - 1; i <= loopTo; i++)
-				Teams.Add(new Team(this, default));
+			for (int i = 0, loopTo = npc_team_count - 1; i <= loopTo; i++) {
+				Teams.Add(new Team(this, AffinityEnum.Dissident)); // TODO: this gonna be hard
+				Teams[Teams.Count - 1].InitTeam(generation_random);
+			}
 		}
 
 		private void InitPlayer() {
@@ -232,7 +263,7 @@ namespace Flee {
 		public void InitBots() {
 			var rand = new Random(generation_random.Next());
 			foreach (Team team in Teams)
-				if (!(team.affinity == (int)AffinityEnum.ALOOF) && team.bot_team)
+				if (!(team.affinity == AffinityEnum.Hostile) && team.bot_team)
 					SPAWN_STATION_RANDOMLY(rand, null, team, rand.Next(6, 12));
 		}
 
@@ -359,15 +390,12 @@ namespace Flee {
 									Shoot argFrom6 = null;
 									a_ship.TakeDamages(10000, ref argFrom6);
 								}
-
-								if (a_ship.team is object && a_ship.team.affinity == (int)AffinityEnum.KIND && a_ship.integrity <= 0 && a_ship.team.id != Ships[i].team.id)
+								
+								if (a_ship.team is object && a_ship.team.affinity == Ships[i].team.affinity && a_ship.integrity <= 0 && ReferenceEquals(a_ship.team, Ships[i].team))
 									FriendlyFireCount += 1;
 
-								if (FriendlyFireCount >= 4) {
-									Ships[i].team.affinity = (int)AffinityEnum.ALOOF;
-									if (Ships[i].team.id == 0)
-										My.MyProject.Forms.MainForm.WarCriminalLabel.Visible = true;
-								}
+								if (FriendlyFireCount >= 4) 
+									Ships[i].team.affinity = AffinityEnum.Hostile;
 							}
 						}
 
@@ -390,18 +418,9 @@ namespace Flee {
 
 		public bool HasTeamWon(Team team) {
 			foreach (var aShip in Ships) {
-				if (aShip.team is null || aShip.team.id <= 1)
+				if (aShip.team is null || (aShip.team.affinity == AffinityEnum.Neutral))
 					continue;
 				if (aShip.stats.name.Contains("Station") && !aShip.team.IsFriendWith(team))
-					return false;
-			}
-			return true;
-		}
-		public bool IsMeanStationLeft() {
-			foreach (var aShip in Ships) {
-				if (aShip.team is null || aShip.team.id <= 1 || aShip.team.bot_team == false)
-					continue;
-				if (aShip.stats.name.Contains("Station") && aShip.team.affinity != (int)AffinityEnum.KIND)
 					return false;
 			}
 			return true;
@@ -484,7 +503,7 @@ namespace Flee {
 				if (is_invaded_by_bosses)
 					if (rand.Next(0, 2) == 0) {
 						var possibles = new List<string>() { "Loneboss", "Civil_A", "Legend_I", "Legend_L", "Legend_K", "Colonizer" };
-						if (Teams[0].affinity == (int)AffinityEnum.ALOOF) {
+						if (Teams[0].affinity == AffinityEnum.Hostile) {
 							possibles.Add("Nuke");
 							possibles.Add("Ambassador");
 						}
@@ -533,7 +552,7 @@ namespace Flee {
 									a_ship.Upgrading = PossibleUps[rand.Next(0, PossibleUps.Count)];
 							} else {
 								// boss bases must suicide to not use the max ship counter
-								if (a_ship.team.affinity == (int)AffinityEnum.ALOOF && a_ship.stats.turn == 0.0d)
+								if (a_ship.team.affinity == AffinityEnum.Hostile && a_ship.stats.turn == 0.0d)
 									Upgrade.ForceUpgradeToShip(a_ship, "Suicide");
 								// ships equiped with cold deflectors jumps when unable to fire
 								if (a_ship.cold_deflector_charge > 24)

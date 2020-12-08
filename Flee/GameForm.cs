@@ -14,19 +14,13 @@ namespace Flee {
 		Game game;
 
 		/* Drawing */
+		bool ready = false;
 		public static bool target_identification = false;
 		public static bool help = true;
 		private Point See = new Point(4700, 4700);
-		private Bitmap DrawBMP = new Bitmap(600, 600);
-		private Graphics G;
 		public void InitDrawing() {
-			MiniG = Graphics.FromImage(MiniBMP);
-			PG = Graphics.FromImage(PBMP);
+			// nothing
 		}
-		private Bitmap MiniBMP = new Bitmap(200, 200);
-		private Graphics MiniG;
-		private Bitmap PBMP = new Bitmap(200, 800);
-		private Graphics PG;
 		TextureBrush _background_brush = null;
 		TextureBrush GetBackgroundBrush() {
 			if (_background_brush == null) {
@@ -55,40 +49,24 @@ namespace Flee {
 				SeedTextBox.Text = My.MyProject.Application.CommandLineArgs[1];
 			else
 				SeedTextBox.Text = new Random().Next().ToString();
-			// Graphics settings
-			G = Graphics.FromImage(DrawBMP);
-			G.CompositingQuality = CompositingQuality.HighSpeed;
-			G.InterpolationMode = InterpolationMode.Bilinear;
-			UpdateRenderSize();
-			MiniG.CompositingQuality = CompositingQuality.HighSpeed;
-			MiniG.SmoothingMode = SmoothingMode.HighSpeed;
-			MiniG.InterpolationMode = InterpolationMode.Default;
-			PG.CompositingQuality = CompositingQuality.HighSpeed;
-			PG.SmoothingMode = SmoothingMode.HighSpeed;
-			PG.InterpolationMode = InterpolationMode.Default;
 			// Play the music if it's available
 			try {
 				My.MyProject.Computer.Audio.Play("sounds/PhilippWeigl-SubdivisionOfTheMasses.wav", AudioPlayMode.BackgroundLoop);
 			} catch (Exception ex) {
-				Text = "Flee - Music was not found so therefore not loaded!";
+				Text = "Flee - Music not found!";
 			}
 			// Load lists
 			Upgrade.LoadRegUpgrades();
 			Helpers.LoadLists();
 			Upgrade.LoadBuildUpgrades();
+			// 
+			ready = true;
+			this.Invalidate();
 		}
 
 		/* Begin Game */
 		void SetUISettingsFromMenu() {
-			if (checkBoxBetterGraphics.Checked) {
-				G.CompositingQuality = CompositingQuality.HighSpeed;
-				G.InterpolationMode = InterpolationMode.Bilinear;
-				G.SmoothingMode = SmoothingMode.HighSpeed;
-			} else {
-				G.CompositingQuality = CompositingQuality.HighSpeed;
-				G.InterpolationMode = InterpolationMode.NearestNeighbor;
-				G.SmoothingMode = SmoothingMode.HighSpeed;
-			}
+			// No longer relevant
 		}
 		void SetGameSettingsFromMenu() {
 			// Seed
@@ -113,7 +91,6 @@ namespace Flee {
 			SetUISettingsFromMenu();
 			SetGameSettingsFromMenu();
 			game.StartSingleplayer();
-			// 
 			// Window Title
 			this.Text = "Flee - Seed: " + SeedTextBox.Text;
 			// close menu
@@ -157,44 +134,50 @@ namespace Flee {
 		}
 
 		/* Drawing */
-		public void DrawUpgrades() {
-			int upgrade_columns = UpgradesBox.Width / 25;
+		public void UpdateUpgradeInfo(Upgrade up, int buy_amount) {
+			// title
+			if (selected_ships.Count > 1)
+				UpName.Text = up.name + " (" + buy_amount.ToString() + ")";
+			else
+				UpName.Text = up.name;
+
+			UpDesc.Text = up.desc;
+
+			// prices
+			PriceC.Text = (up.cost.Crystal * buy_amount).ToString();
+			PriceM.Text = (up.cost.Metal * buy_amount).ToString();
+			PriceU.Text = (up.cost.Fissile * buy_amount).ToString();
+			PriceA.Text = (up.cost.Antimatter * buy_amount).ToString();
+			PriceSlots.Text = (up.upgrade_slots_requiered).ToString();
+
+			// resources visibility
+			PriceM.Visible = up.cost.Metal != 0L;
+			PriceMIcon.Visible = up.cost.Metal != 0L;
+			PriceC.Visible = up.cost.Crystal != 0L;
+			PriceCIcon.Visible = up.cost.Crystal != 0L;
+			PriceU.Visible = up.cost.Fissile != 0L;
+			PriceUIcon.Visible = up.cost.Fissile != 0L;
+			PriceA.Visible = up.cost.Antimatter != 0L;
+			PriceAIcon.Visible = up.cost.Antimatter != 0L;
+			PriceSlots.Visible = up.upgrade_slots_requiered != 0L;
+			PriceSlotsIcon.Visible = up.upgrade_slots_requiered != 0L;
+		}
+		public void DrawUpgrades(Graphics g) {
+			bool udV = false;
+			int upgrade_columns = UpgradesBox.Width / 25; //  (int)g.VisibleClipBounds.Width / 25;
 			if (SShipPanel.Visible == false || selected_ships.Count == 0)
 				return;
-			PG.Clear(Color.Black);
+			g.Clear(Color.Black);
 			int x = 0;
 			int y = 0;
-			bool udV = false;
 			foreach (Upgrade AUp in listed_upgrades) {
 				int ships_upgradable = Ship.CountShipsBuyableNowUpgrade(selected_ships, AUp);
 				int ships_installed = Ship.CountShipsHavingUpgrade(selected_ships, AUp);
 				int min_progress = Ship.MinUpgradeProgress(selected_ships, AUp);
 				if (x == UpX && y == UpY) {
-					PG.FillRectangle(Brushes.DimGray, x * 25, y * 25, 25, 25);
+					g.FillRectangle(Brushes.DimGray, x * 25, y * 25, 25, 25);
+					UpdateUpgradeInfo(AUp, Math.Max(1, ships_upgradable));
 					udV = true;
-					if (selected_ships.Count > 1)
-						UpName.Text = AUp.name + " (" + ships_upgradable.ToString() + ")";
-					else
-						UpName.Text = AUp.name;
-
-					UpDesc.Text = AUp.desc;
-					// prices
-					PriceC.Text = (AUp.cost.Crystal * Math.Max(1, ships_upgradable)).ToString();
-					PriceM.Text = (AUp.cost.Metal * Math.Max(1, ships_upgradable)).ToString();
-					PriceU.Text = (AUp.cost.Fissile * Math.Max(1, ships_upgradable)).ToString();
-					PriceA.Text = (AUp.cost.Antimatter * Math.Max(1, ships_upgradable)).ToString();
-					PriceSlots.Text = (AUp.upgrade_slots_requiered).ToString();
-					// invisible resources
-					PriceM.Visible = AUp.cost.Metal != 0L;
-					PriceMIcon.Visible = AUp.cost.Metal != 0L;
-					PriceC.Visible = AUp.cost.Crystal != 0L;
-					PriceCIcon.Visible = AUp.cost.Crystal != 0L;
-					PriceU.Visible = AUp.cost.Fissile != 0L;
-					PriceUIcon.Visible = AUp.cost.Fissile != 0L;
-					PriceA.Visible = AUp.cost.Antimatter != 0L;
-					PriceAIcon.Visible = AUp.cost.Antimatter != 0L;
-					PriceSlots.Visible = AUp.upgrade_slots_requiered != 0L;
-					PriceSlotsIcon.Visible = AUp.upgrade_slots_requiered != 0L;
 				}
 
 				bool localHasEnough() {
@@ -204,33 +187,33 @@ namespace Flee {
 				}
 
 				if (ships_installed == selected_ships.Count)                // already installed
-					PG.DrawRectangle(new Pen(Brushes.White, 2f), x * 25 + 1, y * 25 + 1, 24 - 1, 24 - 1);
+					g.DrawRectangle(new Pen(Brushes.White, 2f), x * 25 + 1, y * 25 + 1, 24 - 1, 24 - 1);
 				else if (min_progress < int.MaxValue) {
 					// being installing
-					PG.DrawRectangle(new Pen(Brushes.Yellow, 2f), x * 25, y * 25, 24, 24);
+					g.DrawRectangle(new Pen(Brushes.Yellow, 2f), x * 25, y * 25, 24, 24);
 					int ph = (int)(min_progress / Math.Max(1m, AUp.delay) * 25m);
-					PG.FillRectangle(Brushes.White, x * 25, y * 25 + 25 - ph, 25, ph);
+					g.FillRectangle(Brushes.White, x * 25, y * 25 + 25 - ph, 25, ph);
 				} else if (ships_upgradable == 0)               // no update slot remaining
 					if (ships_installed != 0)
-						PG.DrawRectangle(new Pen(Brushes.LightGray), x * 25, y * 25, 24, 24);
+						g.DrawRectangle(new Pen(Brushes.LightGray), x * 25, y * 25, 24, 24);
 					else
-						PG.DrawRectangle(Pens.DimGray, x * 25, y * 25, 24, 24);
+						g.DrawRectangle(Pens.DimGray, x * 25, y * 25, 24, 24);
 				else if (selected_ships[0].team is null || !localHasEnough())               // cannot afford all
 					if (AUp.upgrade_slots_requiered > 0)
 						if (selected_ships[0].team.resources.HasEnough(ref AUp.cost))                      // can afford at least one
-							PG.DrawRectangle(Pens.DarkOrange, x * 25, y * 25, 24, 24);
+							g.DrawRectangle(Pens.DarkOrange, x * 25, y * 25, 24, 24);
 						else                        // cannot even afford one
-							PG.DrawRectangle(Pens.DarkRed, x * 25, y * 25, 24, 24);
+							g.DrawRectangle(Pens.DarkRed, x * 25, y * 25, 24, 24);
 					else if (selected_ships[0].team is object && selected_ships[0].team.resources.HasEnough(ref AUp.cost))                      // can afford at least one
-						PG.DrawRectangle(Pens.PaleGoldenrod, x * 25, y * 25, 24, 24);
+						g.DrawRectangle(Pens.PaleGoldenrod, x * 25, y * 25, 24, 24);
 					else                        // cannot even afford one
-						PG.DrawRectangle(Pens.PaleVioletRed, x * 25, y * 25, 24, 24);
+						g.DrawRectangle(Pens.PaleVioletRed, x * 25, y * 25, 24, 24);
 				else if (AUp.upgrade_slots_requiered == 0)
-					PG.DrawRectangle(Pens.PaleGreen, x * 25, y * 25, 24, 24);
+					g.DrawRectangle(Pens.PaleGreen, x * 25, y * 25, 24, 24);
 				else
-					PG.DrawRectangle(Pens.DarkGreen, x * 25, y * 25, 24, 24);
+					g.DrawRectangle(Pens.DarkGreen, x * 25, y * 25, 24, 24);
 
-				PG.DrawImage(Helpers.GetSprite(AUp.file, AUp.frame_coords.X, AUp.frame_coords.Y), new Rectangle(new Point(x * 25, y * 25), new Size(25, 25)));
+				g.DrawImage(Helpers.GetSprite(AUp.file, AUp.frame_coords.X, AUp.frame_coords.Y), new Rectangle(new Point(x * 25, y * 25), new Size(25, 25)));
 
 				// item suivant
 				x = x + 1;
@@ -239,30 +222,34 @@ namespace Flee {
 					y = y + 1;
 				}
 			}
-			// infos
+			// upgrade details visibility
 			if (udV)
 				UpgradeDetails.Visible = true;
 			else
 				UpgradeDetails.Visible = false;
-
-			UpgradesBox.Image = PBMP;
 		}
-		public void DrawMinimap() {
+		private void _UpgradesBox_Paint(object sender, PaintEventArgs e) {
+			if (ready && game is object && game.world is object)
+				DrawUpgrades(e.Graphics);
+			else
+				base.OnPaint(e);
+		}
+		public void DrawMinimap(Graphics g) {
 			// Transparent clear
-			MiniG.FillRectangle(new SolidBrush(Color.FromArgb(24, 0, 0, 0)), 0, 0, 200, 200);
+			g.FillRectangle(new SolidBrush(Color.FromArgb(24, 0, 0, 0)), 0, 0, 200, 200);
 			// Visible area rectangle
-			MiniG.DrawRectangle(Pens.White, new Rectangle(new Point((int)(See.X / (double)game.world.ArenaSize.Width * MiniBMP.Width), (int)(See.Y / (double)game.world.ArenaSize.Height * MiniBMP.Height)), new Size((int)(DrawBMP.Width * MiniBMP.Width / (double)game.world.ArenaSize.Width), (int)(DrawBMP.Height * MiniBMP.Height / (double)game.world.ArenaSize.Height))));
+			g.DrawRectangle(Pens.White, new Rectangle(new Point((int)(See.X / (double)game.world.ArenaSize.Width * g.VisibleClipBounds.Width), (int)(See.Y / (double)game.world.ArenaSize.Height * g.VisibleClipBounds.Height)), new Size((int)(this.Width * g.VisibleClipBounds.Width / (double)game.world.ArenaSize.Width), (int)(this.Height * g.VisibleClipBounds.Height / (double)game.world.ArenaSize.Height))));
 			// Engagements
 			if (game.player_team is object) {
 				foreach (Engagement engagement in game.player_team.engagements) {
-					Point center_mm = new Point((int)(engagement.location.X * MiniBMP.Width/ game.world.ArenaSize.Width ), (int)(engagement.location.Y * MiniBMP.Height/ game.world.ArenaSize.Height ));
+					Point center_mm = new Point((int)(engagement.location.X * g.VisibleClipBounds.Width / game.world.ArenaSize.Width), (int)(engagement.location.Y * g.VisibleClipBounds.Height / game.world.ArenaSize.Height));
 					int warn_dist = engagement.timeout / 3;
 					Matrix m = new Matrix();
 					m.RotateAt((float)engagement.timeout * 0.33f, center_mm);
-					MiniG.Transform = m;
-					MiniG.DrawLine(new Pen(Color.FromArgb(engagement.timeout, 255, 0, 0), 1), new Point(center_mm.X - warn_dist, center_mm.Y), new Point(center_mm.X + warn_dist, center_mm.Y));
-					MiniG.DrawLine(new Pen(Color.FromArgb(engagement.timeout, 255, 0, 0), 1), new Point(center_mm.X, center_mm.Y - warn_dist), new Point(center_mm.X, center_mm.Y + warn_dist));
-					MiniG.ResetTransform();
+					g.Transform = m;
+					g.DrawLine(new Pen(Color.FromArgb(engagement.timeout, 255, 0, 0), 1), new Point(center_mm.X - warn_dist, center_mm.Y), new Point(center_mm.X + warn_dist, center_mm.Y));
+					g.DrawLine(new Pen(Color.FromArgb(engagement.timeout, 255, 0, 0), 1), new Point(center_mm.X, center_mm.Y - warn_dist), new Point(center_mm.X, center_mm.Y + warn_dist));
+					g.ResetTransform();
 				}
 			}
 			// Ships
@@ -283,10 +270,14 @@ namespace Flee {
 						mini_color = Color.Cyan;
 					else
 						mini_color = Color.Red;
-				MiniG.FillRectangle(new SolidBrush(mini_color), new Rectangle((int)(AShip.location.X / game.world.ArenaSize.Width * MiniBMP.Width - W / 2d), (int)(AShip.location.Y / game.world.ArenaSize.Height * MiniBMP.Height - W / 2d), W, W));
+				g.FillRectangle(new SolidBrush(mini_color), new Rectangle((int)(AShip.location.X / game.world.ArenaSize.Width * g.VisibleClipBounds.Width - W / 2d), (int)(AShip.location.Y / game.world.ArenaSize.Height * g.VisibleClipBounds.Height - W / 2d), W, W));
 			}
-			// update
-			MiniBox.Image = MiniBMP;
+		}
+		private void _MiniBox_Paint(object sender, PaintEventArgs e) {
+			if (ready && game is object && game.world is object)
+				DrawMinimap(e.Graphics);
+			else
+				base.OnPaint(e);
 		}
 		Size background_size = default;
 		Size GetBackgroundSize() {
@@ -295,27 +286,27 @@ namespace Flee {
 			}
 			return (background_size);
 		}
-		public void DrawMain() {
+		public void DrawMain(Graphics g) {
 			// Background
 			if (!checkBoxEnableBackground.Checked) { // disable background image 
-				G.Clear(Color.Black);
+				g.Clear(Color.Black);
 			} else {
-				GetBackgroundBrush().TranslateTransform(-See.X / (game.world.ArenaSize.Width / (GetBackgroundSize().Width - this.Width)) + game.world.background_offset.X, -See.Y / (game.world.ArenaSize.Height / (GetBackgroundSize().Height - this.Height)) + game.world.background_offset.Y);
-				G.CompositingMode = CompositingMode.SourceCopy;
-				G.FillRectangle(GetBackgroundBrush(), new RectangleF(new PointF(0, 0), DrawBMP.Size));
-				G.CompositingMode = CompositingMode.SourceOver;
+				GetBackgroundBrush().TranslateTransform(-See.X / (game.world.ArenaSize.Width / (GetBackgroundSize().Width - (int)g.VisibleClipBounds.Width)) + game.world.background_offset.X, -See.Y / (game.world.ArenaSize.Height / (GetBackgroundSize().Height - (int)g.VisibleClipBounds.Height)) + game.world.background_offset.Y);
+				g.CompositingMode = CompositingMode.SourceCopy;
+				g.FillRectangle(GetBackgroundBrush(), g.VisibleClipBounds);
+				g.CompositingMode = CompositingMode.SourceOver;
 				GetBackgroundBrush().ResetTransform();
 			}
 			// Nuke effect
 			if (game.world.NuclearEffect > 0) {
 				SolidBrush nuclear_brush = new SolidBrush(Color.FromArgb(game.world.NuclearEffect, game.world.NuclearEffect, game.world.NuclearEffect));
-				G.FillRectangle(nuclear_brush, new RectangleF(new PointF(0, 0), DrawBMP.Size));
+				g.FillRectangle(nuclear_brush, g.VisibleClipBounds);
 				game.world.NuclearEffect -= 2;
 			}
 			// ships
 			foreach (Ship AShip in game.world.Ships) {
 				// Main screen '
-				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + DrawBox.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + DrawBox.Height) {
+				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + g.VisibleClipBounds.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + g.VisibleClipBounds.Height) {
 					//var img = Helpers.GetSprite(AShip.stats.sprite, AShip.fram, 0, mini_color); // image
 					var img = AShip.sprites.GetSprite(AShip.fram, 0);
 					PointF center = new PointF(AShip.location.X - See.X, AShip.location.Y - See.Y); // centre
@@ -324,13 +315,14 @@ namespace Flee {
 						AddD = game.world.ticks % 360;
 					var MonM = new Matrix();
 					MonM.RotateAt(-AShip.direction + 180f + AddD, center); // rotation
-					G.Transform = MonM; // affectation
-					G.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
-					G.ResetTransform(); // reset
+					g.Transform = MonM; // affectation
+					g.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
+					g.ResetTransform(); // reset
 				}
 			}
 			// shoots
 			foreach (Shoot AShoot in game.world.Shoots) {
+				// TODO: check bounds
 				// If AShoot.Coo.X > See.X AndAlso AShoot.Coo.X < See.X + DrawBox.Width AndAlso AShoot.Coo.Y > See.Y AndAlso AShoot.Coo.Y < See.Y + DrawBox.Height Then
 				Color col;
 				if (AShoot.Team is null)
@@ -343,22 +335,22 @@ namespace Flee {
 				PointF center = new PointF(AShoot.location.X - See.X, AShoot.location.Y - See.Y); // centre
 				var MonM = new Matrix();
 				MonM.RotateAt(-AShoot.direction + 180f, center); // rotation
-				G.Transform = MonM; // affectation
-				G.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
-				G.ResetTransform(); // reset
+				g.Transform = MonM; // affectation
+				g.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
+				g.ResetTransform(); // reset
 									// End If
 			}
 			// effects
 			foreach (Effect AEffect in game.world.Effects) {
-				if (AEffect.location.X > See.X && AEffect.location.X < See.X + DrawBox.Width && AEffect.location.Y > See.Y && AEffect.location.Y < See.Y + DrawBox.Height) {
+				if (AEffect.location.X > See.X && AEffect.location.X < See.X + g.VisibleClipBounds.Width && AEffect.location.Y > See.Y && AEffect.location.Y < See.Y + g.VisibleClipBounds.Height) {
 					//var img = Helpers.GetSprite(AEffect.type, AEffect.fram, AEffect.sprite_y); // image
 					var img = AEffect.sprites.GetSprite(AEffect.fram, AEffect.sprite_y);
 					PointF center = new PointF(AEffect.location.X - See.X, AEffect.location.Y - See.Y); // centre
 					var MonM = new Matrix();
 					MonM.RotateAt(-AEffect.direction + 180f, center); // rotation
-					G.Transform = MonM; // affectation
-					G.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
-					G.ResetTransform(); // reset
+					g.Transform = MonM; // affectation
+					g.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
+					g.ResetTransform(); // reset
 				}
 			}
 			// Select rectangle
@@ -366,39 +358,37 @@ namespace Flee {
 				var NR = Helpers.MakeRectangle(ref down_mouse_location, ref last_mouse_location);
 				NR.X = NR.X - See.X;
 				NR.Y = NR.Y - See.Y;
-				G.DrawRectangle(Pens.White, NR);
+				g.DrawRectangle(Pens.White, NR);
 			}
 			// ship specials
 
 			foreach (Ship AShip in game.world.Ships)
-				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + DrawBox.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + DrawBox.Height)
+				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + g.VisibleClipBounds.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + g.VisibleClipBounds.Height)
 					if (AShip.team is object && AShip.behavior != Ship.BehaviorMode.Drift && AShip.stats.sprite != "MSL") {
-						// Selection '
+						// selection rectangle
 						var drawrect = new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y - AShip.stats.width / 2d - See.Y)), new Size(AShip.stats.width, AShip.stats.width)); // zone de dessin
-						if (false && target_identification)
-							if (AShip.team.id == 0)
-								G.DrawRectangle(Pens.Lime, drawrect);
-							else if (AShip.team.IsFriendWith(game.player_team))
-								G.DrawRectangle(Pens.Blue, drawrect);
+						// draw rectangle arround allies or enemies																																																 // Target Identification mode
+						if (false && target_identification) {
+							if (ReferenceEquals(AShip.team, game.player_team))
+								g.DrawRectangle(Pens.Lime, drawrect);
+							else if (AShip.team.affinity == AffinityEnum.Friendly)
+								g.DrawRectangle(Pens.LightGreen, drawrect);
+							else if (AShip.team.affinity == AffinityEnum.Dissident)
+								g.DrawRectangle(Pens.OrangeRed, drawrect);
+							else if (AShip.team.affinity == AffinityEnum.Dissident)
+								g.DrawRectangle(Pens.Red, drawrect);
 							else
-								G.DrawRectangle(Pens.Red, drawrect);
-
+								g.DrawRectangle(Pens.LightYellow, drawrect);
+						}
+						// draw selection rectangle
 						if (selected_ships.Contains(AShip))
-							G.DrawRectangle(new Pen(AShip.team.color), drawrect);
+							g.DrawRectangle(new Pen(AShip.team.color), drawrect);
 						// shields
 						if (AShip.stats.shield >= 1) {
 							var shields_ptns = new PointF[16];
 							var shields_colors = new Color[16];
 							for (int i = 0, loopTo = shields_ptns.Length - 1; i <= loopTo; i++) {
-								shields_ptns[i] = Helpers.GetNewPoint(new PointF((float)(drawrect.X + drawrect.Width / 2d), (float)(drawrect.Y + drawrect.Height / 2d)), (float)(i * 360 / 16d + AShip.direction), (float)(drawrect.Width / 2d + drawrect.Width / 4d + 16d)); // border location
-																																																																			  // Dim c_charge = AShip.shield * 255 / AShip.stats.shield
-																																																																			  // Dim c_nocharge = 255 - c_charge
-																																																																			  // Dim c_speed = (AShip.stats.shield_regeneration - 10) * 255 / 30
-																																																																			  // Dim c_op = AShip.stats.shield_opacity * 255 / 100
-																																																																			  // Dim c_max = AShip.stats.shield
-																																																																			  // Dim c_i = AShip.ShieldPoints(i)
-																																																																			  // Dim c_p = Math.Max(1, AShip.ShieldPoints(i))
-																																																																			  // shields_colors(i) = Color.FromArgb(c_i, Math.Min(255, Math.Max(0, (c_op * c_i + c_nocharge * (255 - c_i)) / c_p)), Math.Min(255, Math.Max(0, (c_charge * c_i + c_max * (255 - c_i)) / c_p)), Math.Min(255, Math.Max(0, (c_speed * c_i + c_charge * (255 - c_i)) / c_p)))
+								shields_ptns[i] = Helpers.GetNewPoint(new PointF((float)(drawrect.X + drawrect.Width / 2d), (float)(drawrect.Y + drawrect.Height / 2d)), (float)(i * 360 / 16d + AShip.direction), (float)(drawrect.Width / 2d + drawrect.Width / 4d + 16d)); 
 
 								double f_alpha = AShip.ShieldPoints[i] / 256.0d;
 								double f_red_0 = 1.0d - AShip.shield / AShip.stats.shield / 2.0d;
@@ -413,26 +403,26 @@ namespace Flee {
 							var shieldsbrush = new PathGradientBrush(shields_ptns);
 							shieldsbrush.SurroundColors = shields_colors;
 							shieldsbrush.CenterColor = Color.FromArgb(0, 0, 0, 0);
-							G.FillEllipse(shieldsbrush, new Rectangle(new Point((int)(drawrect.X - drawrect.Width / 16d - 4d), (int)(drawrect.Y - drawrect.Height / 16d - 4d)), new Size((int)(drawrect.Width + drawrect.Width / 8d + 8d), (int)(drawrect.Height + drawrect.Height / 8d + 8d))));
+							g.FillEllipse(shieldsbrush, new Rectangle(new Point((int)(drawrect.X - drawrect.Width / 16d - 4d), (int)(drawrect.Y - drawrect.Height / 16d - 4d)), new Size((int)(drawrect.Width + drawrect.Width / 8d + 8d), (int)(drawrect.Height + drawrect.Height / 8d + 8d))));
 						}
 						// life   'New Pen(getSColor(AShip.Color))
 						if (AShip.stats.integrity > 20) {
-							G.DrawRectangle(Pens.DimGray, new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 5d - See.Y)), new Size(AShip.stats.width, 1)));
-							G.DrawRectangle(new Pen(AShip.team.color), new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 5d - See.Y)), new Size((int)(AShip.integrity / (double)AShip.stats.integrity * AShip.stats.width), 1)));
-							G.DrawString((int)AShip.integrity + "/" + AShip.stats.integrity, Font, new SolidBrush(AShip.team.color), new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 7d - See.Y)));
+							g.DrawRectangle(Pens.DimGray, new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 5d - See.Y)), new Size(AShip.stats.width, 1)));
+							g.DrawRectangle(new Pen(AShip.team.color), new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 5d - See.Y)), new Size((int)(AShip.integrity / (double)AShip.stats.integrity * AShip.stats.width), 1)));
+							g.DrawString((int)AShip.integrity + "/" + AShip.stats.integrity, Font, new SolidBrush(AShip.team.color), new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 7d - See.Y)));
 							if (AShip.stats.deflectors > 0)
 								if (AShip.deflectors_loaded == AShip.stats.deflectors)
-									G.DrawString(AShip.deflectors_loaded + "/" + AShip.stats.deflectors, Font, new SolidBrush(Color.Gray), new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 7d + 7d - See.Y)));
+									g.DrawString(AShip.deflectors_loaded + "/" + AShip.stats.deflectors, Font, new SolidBrush(Color.Gray), new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 7d + 7d - See.Y)));
 								else
-									G.DrawString(AShip.deflectors_loaded + "/" + AShip.stats.deflectors + " <- " + AShip.deflector_loading, Font, new SolidBrush(Color.Gray), new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 7d + 7d - See.Y)));
+									g.DrawString(AShip.deflectors_loaded + "/" + AShip.stats.deflectors + " <- " + AShip.deflector_loading, Font, new SolidBrush(Color.Gray), new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 7d + 7d - See.Y)));
 						}
 					}
 			// text infos
-			G.DrawString("Ships : " + game.world.CountTeamShips(game.player_team) + " / " + game.player_team.ship_count_limit + " Max.", new Font("Consolas", 10f), Brushes.Lime, new Point(0, 0));
+			g.DrawString("Ships : " + game.world.CountTeamShips(game.player_team) + " / " + game.player_team.ship_count_limit + " Max.", new Font("Consolas", 10f), Brushes.Lime, new Point(0, 0));
 			if (game.play_state == PlayState.Paused)
-				G.DrawString("PAUSE", new Font("Consolas", 16f), Brushes.White, new Point(0, DrawBMP.Height - 32));
+				g.DrawString("PAUSE", new Font("Consolas", 16f), Brushes.White, new Point(0, (int)g.VisibleClipBounds.Height - 32));
 			else if (game.play_state == PlayState.Timelapse)
-				G.DrawString("TIMELAPSE", new Font("Consolas", 16f), Brushes.White, new Point(0, DrawBMP.Height - 32));
+				g.DrawString("TIMELAPSE", new Font("Consolas", 16f), Brushes.White, new Point(0, (int)g.VisibleClipBounds.Height - 32));
 			if (help) {
 				string help_str = "";
 				if (!game.player_team.has_ascended) {
@@ -457,15 +447,20 @@ namespace Flee {
 					help_str += Constants.vbNewLine;
 					help_str += "You won." + Constants.vbNewLine;
 				}
-				G.DrawString(help_str, new Font("Consolas", 10f), Brushes.Cyan, new Point(0, DrawBMP.Height - 256));
+				g.DrawString(help_str, new Font("Consolas", 10f), Brushes.Cyan, new Point(175, (int)g.VisibleClipBounds.Height - 256));
 			}
-			// update
-			DrawBox.Image = DrawBMP;
+		}
+		private void _DrawBox_Paint(object sender, PaintEventArgs e) {
+			if (ready && game is object && game.world is object)
+				DrawMain(e.Graphics);
+			else
+				base.OnPaint(e);
 		}
 		public void DrawAll() {
-			DrawUpgrades();
-			DrawMain();
-			DrawMinimap();
+			WarCriminalLabel.Visible = (game.player_team.affinity == AffinityEnum.Hostile);
+			UpgradesBox.Invalidate();
+			DrawBox.Invalidate();
+			MiniBox.Invalidate();
 		}
 
 		/* Camera */
@@ -474,10 +469,10 @@ namespace Flee {
 				See.X = 0;
 			if (See.Y < 0)
 				See.Y = 0;
-			if (See.X > game.world.ArenaSize.Width - DrawBMP.Width)
-				See.X = game.world.ArenaSize.Width - DrawBMP.Width;
-			if (See.Y > game.world.ArenaSize.Height - DrawBMP.Height)
-				See.Y = game.world.ArenaSize.Height - DrawBMP.Height;
+			if (See.X > game.world.ArenaSize.Width - DrawBox.Width)
+				See.X = game.world.ArenaSize.Width - DrawBox.Width;
+			if (See.Y > game.world.ArenaSize.Height - DrawBox.Height)
+				See.Y = game.world.ArenaSize.Height - DrawBox.Height;
 		}
 
 		/* Minimap Controls */
@@ -486,8 +481,8 @@ namespace Flee {
 			if (MenuPanel.Visible)
 				return;
 			MiniMDown = true;
-			See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBMP.Width / 2d);
-			See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBMP.Height / 2d);
+			See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBox.Width / 2d);
+			See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBox.Height / 2d);
 			ClampCameraLocationToArena();
 		}
 		private void MiniBox_MouseUp(object sender, MouseEventArgs e) {
@@ -495,8 +490,8 @@ namespace Flee {
 		}
 		private void MiniBox_MouseMove(object sender, MouseEventArgs e) {
 			if (MiniMDown) {
-				See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBMP.Width / 2d);
-				See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBMP.Height / 2d);
+				See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBox.Width / 2d);
+				See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBox.Height / 2d);
 				ClampCameraLocationToArena();
 			}
 		}
@@ -547,19 +542,19 @@ namespace Flee {
 		private Point last_mouse_location = new Point(0, 0);
 		private bool SelectStarted = false;
 		private void DrawBox_MouseDown(object sender, MouseEventArgs e) {
-			last_mouse_location = new Point((int)(e.X * DrawBMP.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBMP.Height / (double)DrawBox.Height + See.Y));
+			last_mouse_location = new Point((int)(e.X * DrawBox.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBox.Height / (double)DrawBox.Height + See.Y));
 			if (e.Button == MouseButtons.Left) {
 				SelectStarted = true;
-				down_mouse_location = new Point((int)(e.X * DrawBMP.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBMP.Height / (double)DrawBox.Height + See.Y));
+				down_mouse_location = new Point((int)(e.X * DrawBox.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBox.Height / (double)DrawBox.Height + See.Y));
 			}
 		}
 		private void DrawBox_MouseMove(object sender, MouseEventArgs e) {
-			last_mouse_location = new Point((int)(e.X * DrawBMP.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBMP.Height / (double)DrawBox.Height + See.Y));
+			last_mouse_location = new Point((int)(e.X * DrawBox.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBox.Height / (double)DrawBox.Height + See.Y));
 		}
 		private void DrawBox_MouseUp(object sender, MouseEventArgs e) {
 			if (e.Button == MouseButtons.Left) {
 				SelectStarted = false;
-				last_mouse_location = new Point((int)(e.X * DrawBMP.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBMP.Height / (double)DrawBox.Height + See.Y));
+				last_mouse_location = new Point((int)(e.X * DrawBox.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBox.Height / (double)DrawBox.Height + See.Y));
 				SelectInSquare();
 			}
 			if (e.Button == MouseButtons.Right) {
@@ -645,23 +640,6 @@ namespace Flee {
 					team = selected_ships[0].team;
 
 				team.resources = new MaterialSet(999999L, 999L, 9999L, 999999L);
-			}
-		}
-
-		/* Resize */
-		private void MainForm_Resize(object sender, EventArgs e) {
-			//DrawBox.Width = DrawBox.Height;
-			//PanelRes.Left = DrawBox.Width + DrawBox.Left;
-			//SShipPanel.Left = DrawBox.Width + DrawBox.Left;
-			//MiniBox.Left = DrawBox.Width + DrawBox.Left;
-		}
-		void UpdateRenderSize() {
-				DrawBMP = new Bitmap(DrawBox.Size.Width, DrawBox.Size.Height);
-				G = Graphics.FromImage(DrawBMP);
-		}
-		private void DrawBox_SizeChanged(object sender, EventArgs e) {
-			if (DrawBox.Size.Width > 0 && DrawBox.Size.Height > 0) {
-				UpdateRenderSize();
 			}
 		}
 
@@ -752,5 +730,6 @@ namespace Flee {
 			UpX = -1;
 			UpY = -1;
 		}
+
 	}
 }

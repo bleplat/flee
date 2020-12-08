@@ -171,16 +171,13 @@ namespace Flee {
 			if (fram > 7)
 				fram = 0;
 			// ===' Bordures '==='
-			if (team is object && team.id == 0) {
+			if (team is object && !team.bot_team) {
 				if (location.X < 0f)
 					location.X = 0f;
-
 				if (location.Y < 0f)
 					location.Y = 0f;
-
 				if (location.X > world.ArenaSize.Width)
 					location.X = world.ArenaSize.Width;
-
 				if (location.Y > world.ArenaSize.Height)
 					location.Y = world.ArenaSize.Height;
 			} else if (location.X < -100 || location.Y < -100 || location.X > world.ArenaSize.Width + 100 || location.Y > world.ArenaSize.Height + 100)
@@ -943,7 +940,7 @@ namespace Flee {
 			}
 
 			case "!Ascend": {
-				if (first_application && team.id == 0) {
+				if (first_application) {
 					team.has_ascended = true;
 					GameForm.help = true;
 				}

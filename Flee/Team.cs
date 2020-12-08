@@ -1,12 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Flee {
 
+	/**
+	 * @brief Represent the default behavior of a team.
+	 */
 	public enum AffinityEnum {
-		KIND = 2, // Not hostile to other KIND teams
-		MEAN = 4, // Hostile to KIND, but not always so other MEAN
-		ALOOF = 8 // Alway hostile to other teams
+		Wilderness = 1, // Relationships are not relevant
+		Neutral = 2, // Friendly to Frienly and Dissident teams, but not Hostile
+		Friendly = 4, // Friendly to other Friendly teams
+		Dissident = 8, // Hostile to other teams
+		Hostile = 16 // Hostile to other teams
 	}
 
 	public class Engagement {
@@ -16,13 +22,15 @@ namespace Flee {
 
 	public class Team {
 		public World world;
-		private static int last_id = -1;
-		private static List<Color> available_colors = new List<Color>();
 
-		// stats
-		public int id;
-		public int affinity;
-		public Color color;
+
+		/* Identity */
+		public AffinityEnum affinity;
+
+		/* Generation */
+		public Color color = default;
+		public int station_type_index = 0;
+		public int vocabulary_type_index = 0;
 
 		// state
 		public MaterialSet resources = new MaterialSet();
@@ -58,94 +66,84 @@ namespace Flee {
 		public bool bot_team = true;
 		public int upgrade_limit = 32;
 
-		public Team(World world, int affinity) {
+		/**
+		 * Create a Team.
+		 */
+		public Team(World world, AffinityEnum affinity) {
 			this.world = world;
-
-			// id
-			id = last_id + 1;
-			last_id = id;
-
-			// affinity
+			this.affinity = affinity;
 			if (affinity == 0)
-				if (id == 0)
-					this.affinity = (int)AffinityEnum.KIND; // player
-				else if (id == 1)
-					this.affinity = (int)AffinityEnum.MEAN; // derelict
-				else if (id == 2)
-					this.affinity = (int)AffinityEnum.ALOOF; // bosses/endgames
-				else if (id % 7 == 0)
-					this.affinity = (int)AffinityEnum.KIND;
-				else
-					this.affinity = (int)AffinityEnum.MEAN;
+				throw new Exception("not permited");
+			if (affinity == AffinityEnum.Friendly)
+				ship_count_limit = 24;
+			else if (affinity == AffinityEnum.Dissident)
+				ship_count_limit = 32;
+			else if (affinity == AffinityEnum.Hostile)
+				ship_count_limit = 40;
+
+		}
+		public void InitTeam(Random rand) {
+			InitTeamColor(new Random(rand.Next()));
+			InitTeamGenerationIndices(new Random(rand.Next()));
+		}
+		private static List<Color> friendly_colors = new List<Color>();
+		private static List<Color> hostile_colors = new List<Color>();
+		public void InitTeamColor(Random rand) {
+			// re-fill available colors
+			if (friendly_colors.Count == 0 || hostile_colors.Count == 0) {
+				// friendlies colors
+				friendly_colors.Add(Color.FromArgb(0, 160, 0)); // dark green (confused with player)
+				friendly_colors.Add(Color.FromArgb(0, 192, 96)); // blueish green (confused with player)
+				friendly_colors.Add(Color.FromArgb(0, 80, 255)); // deep blue (perfect)
+				friendly_colors.Add(Color.FromArgb(0, 128, 128)); // dark cyan (perfect)
+				friendly_colors.Add(Color.FromArgb(128, 128, 255)); // pale blue (a bit light)
+				friendly_colors.Add(Color.FromArgb(64, 128, 64)); // desaturated green (looks neutral)
+				friendly_colors.Add(Color.FromArgb(128, 255, 128)); // pale green (a bit bright)
+				friendly_colors.Add(Color.FromArgb(173, 136, 26)); // olive (looks yellow)
+				friendly_colors.Add(Color.FromArgb(64, 64, 255)); // a bit light blue
+				// hostiles colors
+				friendly_colors.Add(Color.FromArgb(173, 76, 38)); // brown (too redish, looks hostile)
+				friendly_colors.Add(Color.FromArgb(128, 0, 255)); // dark purple (too pinkish)
+				hostile_colors.Add(Color.FromArgb(255, 0, 0)); // red
+				hostile_colors.Add(Color.FromArgb(192, 0, 0)); // dark red
+				hostile_colors.Add(Color.FromArgb(173, 34, 69)); // crismon (pinkish 5th)
+				hostile_colors.Add(Color.FromArgb(255, 128, 255)); // pink (pinkish 4th)
+				hostile_colors.Add(Color.FromArgb(255, 128, 0)); // orange (orangish 2nd)
+				hostile_colors.Add(Color.FromArgb(255, 0, 192)); // red purple (pinkish 3rd, confusing)
+				hostile_colors.Add(Color.FromArgb(255, 0, 128)); // red pink (pinkish 2nd)
+				hostile_colors.Add(Color.FromArgb(255, 64, 0)); // orange-red (orangish 1st)
+				hostile_colors.Add(Color.FromArgb(255, 0, 255)); // primary magenta (pinkish 1st)
+				hostile_colors.Add(Color.FromArgb(255, 255, 0)); // primary yellow
+				hostile_colors.Add(Color.FromArgb(255, 48, 48)); // coral
+			}
+			// choose a color
+			if (this.affinity == AffinityEnum.Friendly)
+				color = friendly_colors[rand.Next(0, friendly_colors.Count)];
 			else
-				this.affinity = affinity;
-
-			// max ships
-			if (id != 0)
-				if (this.affinity == (int)AffinityEnum.KIND)
-					ship_count_limit = 24;
-				else if (this.affinity == (int)AffinityEnum.MEAN)
-					ship_count_limit = 32;
-				else
-					ship_count_limit = 40;
-
-			// color
-			if (available_colors.Count == 0) {
-				// allies colors
-				// available_colors.Add(Color.FromArgb(0, 160, 0)) ' dark green (confused with player)
-				// available_colors.Add(Color.FromArgb(0, 192, 96)) ' blueish green (confused with player)
-				available_colors.Add(Color.FromArgb(0, 80, 255)); // deep blue (perfect)
-				available_colors.Add(Color.FromArgb(0, 128, 128)); // dark cyan (perfect)
-				available_colors.Add(Color.FromArgb(128, 128, 255)); // pale blue (a bit light)
-				available_colors.Add(Color.FromArgb(64, 128, 64)); // desaturated green (looks neutral)
-				available_colors.Add(Color.FromArgb(128, 255, 128)); // pale green (a bit bright)
-				available_colors.Add(Color.FromArgb(173, 136, 26)); // olive (looks yellow)
-				available_colors.Add(Color.FromArgb(173, 76, 38)); // brown (too redish, looks hostile)
-				available_colors.Add(Color.FromArgb(128, 0, 255)); // dark purple (too pinkish)
-																   // available_colors.Add(Color.FromArgb(128, 128, 128)) ' (confused with neutrals)
-																   // enemies colors
-				available_colors.Add(Color.FromArgb(173, 34, 69)); // crismon (pinkish 5th)
-				available_colors.Add(Color.FromArgb(255, 128, 255)); // pink (pinkish 4th)
-				available_colors.Add(Color.FromArgb(255, 128, 0)); // orange (orangish 2nd)
-																   // available_colors.Add(Color.FromArgb(255, 0, 192)) ' red purple (pinkish 3rd, confusing)
-				available_colors.Add(Color.FromArgb(255, 0, 128)); // red pink (pinkish 2nd)
-				available_colors.Add(Color.FromArgb(255, 64, 0)); // orange-red (orangish 1st)
-				available_colors.Add(Color.FromArgb(255, 0, 255)); // primary magenta (pinkish 1st)
-				available_colors.Add(Color.FromArgb(255, 255, 0)); // primary yellow
-				available_colors.Add(Color.FromArgb(255, 48, 48)); // coral
-			}
-
-			if (this.affinity == (int)AffinityEnum.ALOOF)
-				color = Color.FromArgb(255, 0, 0); // primary red
-			else if (id == 0)
-				color = Color.FromArgb(0, 255, 0); // primary green
-			else {
-				int i_color;
-				if ((this.affinity & (int)AffinityEnum.KIND) != 0)
-					i_color = world.gameplay_random.Next(0, (int)(available_colors.Count / 4d));
-				else
-					i_color = world.gameplay_random.Next((int)(available_colors.Count / 4d * 3d), available_colors.Count);
-
-				color = available_colors[i_color];
-				available_colors.RemoveAt(i_color);
-			}
+				color = hostile_colors[rand.Next(0, hostile_colors.Count)];
+		}
+		public void InitTeamGenerationIndices(Random rand) {
+			this.station_type_index = rand.Next(0, Int32.MaxValue);
+			this.vocabulary_type_index = rand.Next(0, Int32.MaxValue);
 		}
 
-		public bool IsFriendWith(Team other) {
+			/**
+			 *  Get the relationship with another team. 
+			 */
+			public bool IsFriendWith(Team other) {
 			if (ReferenceEquals(this, other))
-				return true;
-
+				return (true);
 			if (other is null)
-				return false;
-
-			if ((affinity & (int)AffinityEnum.KIND) != 0 && (other.affinity & (int)AffinityEnum.KIND) != 0)
-				return true;
-
-			if ((affinity & (int)AffinityEnum.MEAN) != 0 && (other.affinity & (int)AffinityEnum.MEAN) != 0)
-				if (id % 6 == other.id % 6)
-					return true;
-
-			return false;
+				return (false);
+			if (this.affinity == AffinityEnum.Hostile || other.affinity == AffinityEnum.Hostile)
+				return (false);
+			if (this.affinity == AffinityEnum.Neutral || other.affinity == AffinityEnum.Neutral)
+				return (true);
+			if (this.affinity == AffinityEnum.Friendly && other.affinity == AffinityEnum.Friendly) 
+				return (true);
+			if (this.affinity == AffinityEnum.Dissident && other.affinity == AffinityEnum.Dissident)
+				return (true);
+			return (false);
 		}
 	}
 }
