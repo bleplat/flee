@@ -687,7 +687,7 @@ namespace Flee {
 			// ship details
 			if (selected_ships.Count == 1) {
 				SShipImageBox.Image = Helpers.GetSprite(selected_ships[0].stats.sprite, 0, 0, selected_ships[0].color);
-				SShipTypeBox.Text = selected_ships[0].stats.name;
+				SShipTypeBox.Text = selected_ships[0].stats.name.Replace("_", " ");
 				SShipUpsMax.Text = selected_ships[0].Ups.Count + " / " + selected_ships[0].upgrade_slots;
 				AllowMiningBox.Visible = !selected_ships[0].AllowMining;
 			} else {
