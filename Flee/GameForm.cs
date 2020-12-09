@@ -24,7 +24,7 @@ namespace Flee {
 		TextureBrush _background_brush = null;
 		TextureBrush GetBackgroundBrush() {
 			if (_background_brush == null) {
-				Bitmap background_bmp = new Bitmap("sprites/background.png");
+				Bitmap background_bmp = new Bitmap("data/sprites/background.png");
 				background_bmp = new Bitmap(background_bmp).Clone(new Rectangle(0, 0, background_bmp.Width, background_bmp.Height), Helpers.GetScreenPixelFormat());
 				_background_brush = new TextureBrush(background_bmp, WrapMode.Tile);
 			}
@@ -56,9 +56,7 @@ namespace Flee {
 				Text = "Flee - Music not found!";
 			}
 			// Load lists
-			Upgrade.LoadRegUpgrades();
-			Helpers.LoadLists();
-			Upgrade.LoadBuildUpgrades();
+			Loader.Load();
 			// 
 			ready = true;
 			this.Invalidate();
@@ -593,7 +591,7 @@ namespace Flee {
 			// disable bots
 			foreach (Ship ship in selected_ships) {
 				ship.bot_ship = false;
-				if (ship.stats.name.Contains("Station"))
+				if ((ship.stats.role & (int)ShipRole.Shipyard) != 0)
 					if (ship.team is object)
 						ship.team.bot_team = false;
 			}
@@ -612,7 +610,7 @@ namespace Flee {
 						AShip.behavior = Ship.BehaviorMode.Mine;
 						AShip.TargetPTN = last_mouse_location;
 						AShip.target = null;
-						if (AShip.stats.name.Contains("Station"))
+						if ((AShip.stats.role & (int)ShipRole.Shipyard) != 0)
 							if (AShip.team is object && !ReferenceEquals(game.player_team, AShip.team))
 								AShip.team.bot_team = true;
 					} else {

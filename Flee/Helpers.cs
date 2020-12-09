@@ -80,21 +80,6 @@ namespace Flee {
 			return NR;
 		}
 
-		/* Resource Loading */
-		public static bool _enable_mods_folder = false;
-		public static Bitmap LoadProjectSprite(string file) {
-			Bitmap bmp;
-			try {
-				bmp = new Bitmap("./sprites/" + file + ".png");
-			} catch {
-				bmp = new Bitmap("./sprites/" + file + ".bmp");
-			}
-			if (bmp.PixelFormat != Helpers.GetScreenPixelFormat()) {
-				bmp = new Bitmap(bmp).Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), Helpers.GetScreenPixelFormat());
-			}
-			return (bmp);
-		}
-
 		/* Graphics */
 		public static System.Drawing.Imaging.PixelFormat _screen_pixel_format = System.Drawing.Imaging.PixelFormat.Undefined;
 		public static System.Drawing.Imaging.PixelFormat GetScreenPixelFormat() {
@@ -194,116 +179,8 @@ namespace Flee {
 			components = input.Split(';');
 			return new Point(Convert.ToInt32(components[0]), Convert.ToInt32(components[1]));
 		}
-		public static int GetIndentation(string line) {
-			int count = 0;
-			foreach (char c in line)
-				if (c == '\t' || c == ' ')
-					count += 1;
-				else
-					break;
-
-			return count;
-		}
-		public static void LoadLists() {
-			var list_classes = new List<ListClass>();
-			list_classes.AddRange(GetListsFromFile("./lists/weapons.txt"));
-			list_classes.AddRange(GetListsFromFile("./lists/derelict_ships.txt"));
-			list_classes.AddRange(GetListsFromFile("./lists/static_ships.txt"));
-			list_classes.AddRange(GetListsFromFile("./lists/human_ships.txt"));
-			list_classes.AddRange(GetListsFromFile("./lists/alien_ships.txt"));
-			list_classes.AddRange(GetListsFromFile("./lists/boss_ships.txt"));
-			LoadLists(list_classes);
-		}
-		public static void LoadLists(List<ListClass> list_classes) {
-			foreach (ListClass a_class in list_classes)
-				switch (a_class.type ?? "") {
-				case "gun": {
-					if (!GunStats.classes.ContainsKey(a_class.name))
-						GunStats.classes[a_class.name] = new GunStats(a_class.name);
-
-					foreach (ListProperty prop in a_class.properties)
-						GunStats.classes[a_class.name].SetProperty(prop.name, prop.value);
-					break;
-				}
-
-				case "ship": {
-					if (!ShipStats.classes.ContainsKey(a_class.name))
-						ShipStats.classes[a_class.name] = new ShipStats(a_class.name);
-
-					foreach (ListProperty prop in a_class.properties)
-						ShipStats.classes[a_class.name].SetProperty(prop.name, prop.value);
-					break;
-				}
-
-				default: {
-					throw new Exception("Unknown class type: " + a_class.type);
-					break;
-				}
-				}
-		}
-		public static List<ListClass> GetListsFromFile(string filename) {
-			return GetListsFromRaw(File.ReadAllText(filename).Replace(Constants.vbCr + Constants.vbLf, Constants.vbLf));
-		}
-		public static List<ListClass> GetListsFromRaw(string data) {
-			// use as LoadList(File.ReadAllText("./lists/weapons.txt").Replace(vbCr & vbLf, vbLf))
-			data += Constants.vbLf;
-			var list_classes = new List<ListClass>();
-			var lines = data.Split('\n');
-			string header = "";
-			var paragraph = new List<string>();
-			foreach (string line in lines) { // reading lines one by one
-				if (header.Length > 0)
-					if (line.Length > 0 && (line[0] == '\t' || line[0] == ' '))
-						paragraph.Add(line.Substring(1, line.Length - 1));
-					else {
-						list_classes.Add(new ListClass(header, paragraph));
-						header = "";
-						paragraph.Clear();
-					}
-
-				if (header.Length == 0)
-					if (line.Length == 0 || line[0] == '#')
-						continue;
-					else if (line[0] == ' ' || line[0] == '\t')
-						throw new Exception("Malformed line: " + line);
-					else
-						header = line;
-			}
-			return list_classes;
-		}
 
 		/* Flee specific */
-		public static string RandomStationName(Random rand) {
-			var station_names = new List<string>();
-			foreach (string ship_class_name in ShipStats.classes.Keys)
-				if (ship_class_name.Contains("Station") && !ship_class_name.Contains("Player") && !(ship_class_name == "Station"))
-					station_names.Add(ship_class_name);
-			return station_names[rand.Next(0, station_names.Count)];
-		}
-		public static string RandomTurretName(Random rand) {
-			List<string> turrets = new List<string>();
-			foreach (ShipStats ship in ShipStats.classes.Values) {
-				if (ship.name.EndsWith("_Turret"))
-				turrets.Add(ship.name);
-			}
-			return (turrets[rand.Next(0, turrets.Count)]);
-		}
-		public static List<string> GetSpawnUpgrades(Ship ship) {
-			var upgrades = new List<string>();
-			foreach (string craft in ship.stats.crafts)
-				foreach (Upgrade a_up in Upgrade.upgrades)
-					if ((a_up.name ?? "") == ("Build_" + craft ?? "") || (a_up.name ?? "") == ("Launch_" + craft ?? ""))
-						upgrades.Add(a_up.name);
-
-			return upgrades;
-		}
-		public static string GetRandomSpawnUpgrade(Random rand, Ship ship) {
-			var upgrades = GetSpawnUpgrades(ship);
-			if (upgrades.Count == 0)
-				return null;
-
-			return upgrades[rand.Next(0, upgrades.Count)];
-		}
 
 	}
 }

@@ -124,27 +124,15 @@ namespace Flee {
 			// Stars
 			for (int i = 0, loopTo = rand.Next(1, 3); i <= loopTo; i++) {
 				string T = "Star";
-				var argworld = this;
-				ships.Add(new Ship(ref argworld, null, T) { location = new Point(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Width)), direction = rand.Next(0, 360) });
+				ships.Add(new Ship(this, null, T) { location = new Point(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Width)), direction = rand.Next(0, 360) });
 			}
-			// Asteroids
-			for (int i = 1; i <= 25; i++) {
-				string T = "Asteroid";
+			// Derelicts
+			for (int i = 1; i <= 30; i++) {
+				ShipStats derelict_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Derelict);
 				var location = new PointF(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Height));
 				double direction = rand.Next(0, 360);
-				for (int j = 0, loopTo1 = rand.Next(0, 4); j <= loopTo1; j++) {
-					var argworld1 = this;
-					ships.Add(new Ship(ref argworld1, null, T) { location = new PointF(location.X + rand.Next(-4, 5), location.Y + rand.Next(-4, 5)), direction = (float)direction });
-				}
-			}
-			// Meteoroids
-			for (int i = 1; i <= 6; i++) {
-				string T = "Meteoroid";
-				var location = new PointF(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Height));
-				double direction = rand.Next(0, 360);
-				for (int j = 0, loopTo2 = rand.Next(4, 12); j <= loopTo2; j++) {
-					var argworld2 = this;
-					ships.Add(new Ship(ref argworld2, null, T) { location = new PointF(location.X + rand.Next(-4, 5), location.Y + rand.Next(-4, 5)), direction = (float)direction });
+				for (int j = 0, loopTo1 = rand.Next(derelict_type.spawning_amount_min, derelict_type.spawning_amount_max); j < loopTo1; j++) {
+					ships.Add(new Ship(this, null, derelict_type.name) { location = new PointF(location.X + rand.Next(-4, 5), location.Y + rand.Next(-4, 5)), direction = (float)direction });
 				}
 			}
 		}
@@ -153,32 +141,31 @@ namespace Flee {
 				if (team.bot_team && !ReferenceEquals(team, wilderness_team) && !ReferenceEquals(team, boss_team))
 					SpawnStations(new Random(rand.Next()), null, team, rand.Next(6, 12));
 		}
-		public void SpawnStations(Random rand, string main_type, Team team, int spawn_allies) {
+		public Point SpawnStations(Random rand, ShipStats main_type, Team team, int spawn_allies) {
 			// spawn main station
 			if (main_type is null)
-				main_type = Helpers.RandomStationName(rand);
+				main_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Shipyard | (int)ShipRole.NPC);
 			var main_coords = new Point(rand.Next(1000, ArenaSize.Width - 1000), rand.Next(1000, ArenaSize.Height - 1000));
-			for (int index = 1, loopTo = (Math.Max(1, Math.Min(8, 2000 / ShipStats.classes[main_type].complexity))); index <= loopTo; index++)
-				if (index == 1) {
-					var argworld = this;
-					ships.Add(new Ship(ref argworld, team, main_type) { location = main_coords });
+			for (int index = 0, loopTo = (rand.Next(main_type.spawning_amount_min, main_type.spawning_amount_max)); index < loopTo; index++)
+				if (index == 0) {
+					ships.Add(new Ship(this, team, main_type.name) { location = main_coords });
 				} else {
-					var argworld1 = this;
-					ships.Add(new Ship(ref argworld1, team, main_type) { location = new Point(main_coords.X + rand.Next(-512, 513), main_coords.Y + rand.Next(-512, 513)) });
+					ships.Add(new Ship(this, team, main_type.name) { location = new Point(main_coords.X + rand.Next(-512, 513), main_coords.Y + rand.Next(-512, 513)) });
 				}
+			// spawn additional station
+			if (rand.Next(0, 2) == 0) {
+				if (team.bot_team && team.affinity != AffinityEnum.Friendly && team.affinity != AffinityEnum.Neutral) {
+					ships.Add(new Ship(this, team, main_type.name) { location = new Point(main_coords.X + rand.Next(-512, 513), main_coords.Y + rand.Next(-512, 513)) });
+				}
+			}
 			// spawn turrets
 			while (spawn_allies > 0) {
-				string ally_type = Helpers.RandomTurretName(rand);
+				string ally_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Defense).name;
 				var ally_coords = new Point(main_coords.X + rand.Next(-512, 513), main_coords.Y + rand.Next(-512, 513));
-				var argworld2 = this;
-				ships.Add(new Ship(ref argworld2, team, ally_type) { location = ally_coords });
+				ships.Add(new Ship(this, team, ally_type) { location = ally_coords });
 				spawn_allies -= 1;
 			}
-			// spawn additional station
-			if (team.bot_team && team.affinity != AffinityEnum.Friendly && rand.Next(0, 2) == 0) {
-				var argworld1 = this;
-				ships.Add(new Ship(ref argworld1, team, main_type) { location = new Point(main_coords.X + rand.Next(-512, 513), main_coords.Y + rand.Next(-512, 513)) });
-			}
+			return (main_coords);
 		}
 		public Team CreateAndSpawnPlayer(AffinityEnum affinity) {
 			Random rand = new Random(gameplay_random.Next());
@@ -188,41 +175,16 @@ namespace Flee {
 			teams.Add(player_team);
 			// Add Fleet
 			int power = 100;
-			PointF origin;
-			// Player Ships
-			if (Seed.ToString().Contains("777")) {
-				origin = new Point(rand.Next(1000, ArenaSize.Width - 1000), rand.Next(1000, ArenaSize.Height - 1000));
-				var argworld = this;
-				ships.Add(new Ship(ref argworld, player_team, "DeinsCruiser") { location = new Point((int)origin.X, (int)(origin.Y - 1f)) });
-				ships[ships.Count - 1].direction = (float)Helpers.GetQA((int)ships[ships.Count - 1].location.X, (int)ships[ships.Count - 1].location.Y, (int)origin.X, (int)origin.Y);
-				power -= 25;
-			} else if (rand.Next(0, 100) < 85) {
-				SpawnStations(rand, "Station", player_team, 3);
-				origin = ships[ships.Count - 1].location;
-				power -= 25;
-			} else
-				origin = new Point(rand.Next(1000, ArenaSize.Width - 1000), rand.Next(1000, ArenaSize.Height - 1000));
-			if (rand.Next(0, 100) < 75) {
-				var argworld1 = this;
-				ships.Add(new Ship(ref argworld1, player_team, "Colonizer") { location = new Point((int)origin.X, (int)(origin.Y - 1f)) });
-				ships[ships.Count - 1].direction = (float)Helpers.GetQA((int)ships[ships.Count - 1].location.X, (int)ships[ships.Count - 1].location.Y, (int)origin.X, (int)origin.Y);
-				ships[ships.Count - 1].upgrade_slots += rand.Next(4, 10);
-				power -= 15;
-			}
-			if (rand.Next(0, 100) < 75) {
-				var argworld2 = this;
-				ships.Add(new Ship(ref argworld2, player_team, "Ambassador") { location = new Point((int)(origin.X + 1f), (int)origin.Y) });
-				ships[ships.Count - 1].direction = (float)Helpers.GetQA((int)ships[ships.Count - 1].location.X, (int)ships[ships.Count - 1].location.Y, (int)origin.X, (int)origin.Y);
-				ships[ships.Count - 1].upgrade_slots += rand.Next(4, 10);
-				power -= 25;
-			}
-			while (power > 0) {
-				var types = new[] { "MiniColonizer", "MiniColonizer", "Artillery", "Bomber", "Scout", "Simpleship", "Pusher", "Hunter" };
-				var argworld3 = this;
-				ships.Add(new Ship(ref argworld3, player_team, types[rand.Next(0, types.Length)]) { location = new Point((int)(origin.X - 1f), (int)origin.Y) });
-				ships[ships.Count - 1].direction = (float)Helpers.GetQA((int)ships[ships.Count - 1].location.X, (int)ships[ships.Count - 1].location.Y, (int)origin.X, (int)origin.Y);
+			// Player Station
+			ShipStats station_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Shipyard | (int)ShipRole.Playable);
+			PointF origin = SpawnStations(new Random(rand.Next()), station_type, player_team, 3);
+			// new Point(rand.Next(1000, ArenaSize.Width - 1000), rand.Next(1000, ArenaSize.Height - 1000));
+			// Player Starters
+			for (int i = 0; i < rand.Next(4, 6); i++) {
+				string starter_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Starter | (int)ShipRole.Playable).name;
+				ships.Add(new Ship(this, player_team, starter_type) { location = new Point((int)(origin.X + (i % 3 - 1)), (int)origin.Y + (i / 2 % 3 - 1)) });
+				ships[ships.Count - 1].direction = (float)Helpers.GetQA((int)origin.X, (int)origin.Y, (int)origin.X, (int)origin.Y);
 				ships[ships.Count - 1].upgrade_slots += rand.Next(6, 12);
-				power -= 15;
 			}
 			return (teams[teams.Count - 1]);
 		}
@@ -360,7 +322,7 @@ namespace Flee {
 			foreach (var aShip in ships) {
 				if (aShip.team is null || (aShip.team.affinity == AffinityEnum.Neutral))
 					continue;
-				if (aShip.stats.name.Contains("Station") && !aShip.team.IsFriendWith(team))
+				if ((aShip.stats.role & (int)ShipRole.Shipyard) != 0 && !aShip.team.IsFriendWith(team))
 					return false;
 			}
 			return true;
@@ -379,90 +341,44 @@ namespace Flee {
 				// Spawn Location
 				var Spawn = new Point();
 				switch (rand.Next(0, 4)) {
-				case 0: { // haut
+				case 0: {
 					Spawn = new Point(rand.Next(50, ArenaSize.Width - 50), 0);
 					break;
-				}
+				} // top
 
-				case 1: { // bas
+				case 1: { 
 					Spawn = new Point(rand.Next(50, ArenaSize.Width - 50), ArenaSize.Height);
-					break;
+					break; // bottom
 				}
 
-				case 2: { // gauche
+				case 2: { 
 					Spawn = new Point(0, rand.Next(50, ArenaSize.Height - 50));
-					break;
+					break;// left
 				}
 
-				case 3: { // droite
+				case 3: {
 					Spawn = new Point(ArenaSize.Width, rand.Next(50, ArenaSize.Height - 50));
-					break;
+					break; // right
 				}
 				}
 				// Spawn Direction
 				float dir = 0f;
 				dir = (float)(Helpers.GetQA(Spawn.X, Spawn.Y, (int)(ArenaSize.Width / 2d), (int)(ArenaSize.Height / 2d)) + rand.Next(-75, 75));
-				// Type AndAlso count
-				string Type = "Asteroid";
-				Team Team = null;
-				var AltTeam = boss_team;
-				if (rand.Next(0, 3) == 0)
-					AltTeam = teams[rand.Next(2, teams.Count)];
-				int Count = rand.Next(1, 5);
-				if (rand.Next(0, 4) == 0) {
-					Type = "Meteoroid";
-					Count = rand.Next(6, 12);
-				} else if (rand.Next(0, 5) == 0) {
-					Type = "Comet";
-					Count = 1;
-				} else if (rand.Next(0, 30) == 0) {
-					Type = "Cargo";
-					Count = 1;
-				} else if (rand.Next(0, 90) == 0) {
-					Type = "Civil_A";
-					Team = AltTeam;
-					Count = 1;
-				} else if (rand.Next(0, 150) == 0) {
-					Type = "Purger_Dronner";
-					Team = AltTeam;
-					Count = 1;
-				} else if (rand.Next(0, 175) == 0) {
-					Type = "Loneboss";
-					Team = AltTeam;
-					Count = 1;
-				} else if (rand.Next(0, 350) == 0) {
-					Type = "Converter";
-					Team = AltTeam;
-					Count = 1;
-				} else if (rand.Next(0, 1250) == 0) {
-					Type = "Bugs";
-					Team = AltTeam;
-					Count = 1;
+				// Type and Team
+				ShipStats Type;
+				Team Team = wilderness_team;
+				if (is_invaded_by_bosses && rand.Next(0, 5) > 0)
+					Type = Loader.RandomShipFromRole(rand, (int)ShipRole.Derelict);
+				else if (!is_invaded_by_bosses && rand.Next(0, 33) > 0)
+					Type = Loader.RandomShipFromRole(rand, (int)ShipRole.Derelict);
+				else {
+					Type = Loader.RandomShipFromRole(rand, (int)ShipRole.Boss);
+					if (rand.Next(0, 3) == 0)
+						Team = teams[rand.Next(2, teams.Count)];
 				}
 
-				if (is_invaded_by_bosses)
-					if (rand.Next(0, 2) == 0) {
-						var possibles = new List<string>() { "Loneboss", "Civil_A", "Legend_I", "Legend_L", "Legend_K", "Colonizer" };
-						if (teams[0].affinity == AffinityEnum.Hostile) {
-							possibles.Add("Nuke");
-							possibles.Add("Ambassador");
-						}
-
-						if (is_invaded_by_ascended) {
-							possibles.Add("Ori");
-							possibles.Add("Ori");
-							possibles.Add("Ori");
-							possibles.Add("Ori");
-						}
-
-						Type = possibles[rand.Next(0, possibles.Count)];
-						Team = boss_team;
-						Count = 1;
-					}
-
-				for (int j = 1, loopTo = Count; j <= loopTo; j++) {
-					var argworld = this;
-					ships.Add(new Ship(ref argworld, Team, Type) { location = new Point(Spawn.X + rand.Next(-4, 5), Spawn.Y + rand.Next(-4, 5)), direction = dir });
+				for (int j = 0, loopTo = rand.Next(Type.spawning_amount_min, Type.spawning_amount_max); j < loopTo; j++) {
+					ships.Add(new Ship(this, Team, Type.name) { location = new Point(Spawn.X + rand.Next(-4, 5), Spawn.Y + rand.Next(-4, 5)), direction = dir });
 				}
 			}
 		}
@@ -482,7 +398,7 @@ namespace Flee {
 						string wished_upgrade = null;
 						if (rand.Next(0, 16) < 8)                         // building ships
 							if (a_ship.stats.crafts.Count > 0) {
-								wished_upgrade = Helpers.GetRandomSpawnUpgrade(rand, a_ship);
+								wished_upgrade = Loader.GetRandomSpawnUpgrade(rand, a_ship);
 								if (wished_upgrade is object)
 									Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade);
 							} else if (rand.Next(0, 2) == 0) {
@@ -537,7 +453,7 @@ namespace Flee {
 			bool dissident_alive = false;
 			bool hostile_alive = false;
 			foreach (Ship ship in ships) {
-				if (ship.team is object && ship.stats.name.Contains("Station")) {
+				if (ship.team is object && (ship.stats.role & (int)ShipRole.Shipyard) != 0) {
 					if (ship.team.affinity == AffinityEnum.Neutral)
 						neutral_alive = true;
 					if (ship.team.affinity == AffinityEnum.Friendly)
@@ -572,7 +488,7 @@ namespace Flee {
 			int count = 0;
 			foreach (Ship aship in ships)
 				if (ReferenceEquals(aship.team, team)) {
-					if (aship.stats.speed != 0.0d || !aship.stats.name.Contains("Station"))
+					if (aship.stats.speed != 0.0d || (aship.stats.role & (int)ShipRole.Shipyard) == 0)
 						count = count + 1;
 
 					if (aship.Upgrading is object && aship.Upgrading.effect.StartsWith("!Sum"))

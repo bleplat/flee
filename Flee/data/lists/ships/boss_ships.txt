@@ -1,4 +1,6 @@
 ship Loneboss
+	role=Boss
+	spawning_frequency=1.0
 	level=4
 	integrity=520
 	speed=3.20
@@ -12,6 +14,8 @@ ship Loneboss
 	craft=MSL
 
 ship Bugs
+	role=Boss
+	spawning_frequency=0.01
 	level=0
 	width=200
 	integrity=2400
@@ -26,6 +30,8 @@ ship Bugs
 	native_upgrade=Jump_Engine
 
 ship Converter
+	role=Boss
+	spawning_frequency=0.1
 	level=2
 	width=55
 	integrity=360
@@ -74,6 +80,8 @@ ship Converter_B
 	cost=400;4;0;0
 
 ship Purger_Dronner
+	role=Boss
+	spawning_frequency=0.5
 	level=4
 	integrity=355
 	speed=2.80
@@ -127,6 +135,8 @@ ship Purger_Drone_3
 	cost=200;8;0;0
 
 ship Civil_A
+	role=Boss
+	spawning_frequency=2.0
 	level=0
 	width=60
 	integrity=320

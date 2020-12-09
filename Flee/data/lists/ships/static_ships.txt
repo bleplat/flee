@@ -4,6 +4,7 @@
 
 ship Station
 	sprite=Station
+	role=Shipyard|Playable
 	level=100
 	width=100
 	integrity=2000
@@ -19,6 +20,7 @@ ship Station
 
 ship Station_Simples
 	sprite=Station
+	role=Shipyard|NPC
 	level=100
 	width=100
 	integrity=2500
@@ -31,6 +33,7 @@ ship Station_Simples
 
 ship Station_Legendaries
 	level=100
+	role=Shipyard|NPC
 	width=100
 	integrity=2500
 	cost=5000;32;4;0
@@ -42,6 +45,7 @@ ship Station_Legendaries
 
 ship Station_Drones
 	level=100
+	role=Shipyard|NPC
 	width=100
 	integrity=2500
 	cost=5000;32;4;0
@@ -51,6 +55,7 @@ ship Station_Drones
 	
 ship Station_Kastous
 	level=100
+	role=Shipyard|NPC
 	width=100
 	integrity=2500
 	cost=5000;32;4;0
@@ -58,6 +63,7 @@ ship Station_Kastous
 
 ship Station_Stranges
 	level=100
+	role=Shipyard|NPC
 	width=100
 	integrity=2500
 	cost=5000;32;4;0
@@ -68,6 +74,7 @@ ship Station_Stranges
 
 ship Station_Crushers
 	level=100
+	role=Shipyard|NPC
 	width=100
 	turn=0.01
 	integrity=2500
@@ -76,6 +83,8 @@ ship Station_Crushers
 	craft=Crusher
 
 ship Station_Minimum_Warship
+	role=Shipyard|NPC
+	spawning_amount=8
 	level=4
 	complexity=250
 	width=68 
@@ -92,6 +101,7 @@ ship Station_Minimum_Warship
 #
 
 ship Anti-Light_Turret
+	role=Defense|NPC|Playable
 	desc=A turret efficient at shooting small and fast targets.
 	sprite=Anti-Light
 	level=2
@@ -104,6 +114,7 @@ ship Anti-Light_Turret
 	cost=550;2;0;0
 
 ship Anti-Heavy_Turret
+	role=Defense|NPC|Playable
 	desc=A turret efficient at shooting heavy and slow targets.
 	sprite=Anti-Heavy
 	level=2
@@ -115,6 +126,7 @@ ship Anti-Heavy_Turret
 	cost=550;2;0;0
 
 ship Pointvortex_Turret
+	role=Defense|NPC|Playable
 	desc=A powerful turret efficient at shooting everything.
 	sprite=Pointvortex
 	level=4

@@ -52,20 +52,20 @@ namespace Flee {
 		public Team last_damager_team = null;
 
 		// creation
-		public Ship(ref World world) : base(ref world) {
+		public Ship(World world) : base(ref world) {
 			ResetShieldPoint();
 			TargetPTN = new PointF(location.X, location.Y);
 			UpdateSector();
 		}
 
-		public Ship(ref World world, string ship_class) : base(ref world) {
+		public Ship(World world, string ship_class) : base(ref world) {
 			SetStats(ship_class);
 			ResetShieldPoint();
 			TargetPTN = new PointF(location.X, location.Y);
 			UpdateSector();
 		}
 
-		public Ship(ref World world, Team team, string ship_class) : base(ref world) {
+		public Ship(World world, Team team, string ship_class) : base(ref world) {
 			SetTeam(team);
 			SetStats(ship_class);
 			ResetShieldPoint();
@@ -246,16 +246,8 @@ namespace Flee {
 					if (team.cheats_enabled)
 						UpProgress = UpProgress + 99;
 				} else {
-					if (Upgrading.name.Contains("Pointvortex"))
-						Console.WriteLine();
-
 					if (Upgrading.upgrade_slots_requiered > 0)
 						Ups.Add(Upgrading);
-					// Appliquation debugage 'TODO: NOW: test without this
-					// Dim spliter() As String = Upgrading.Effect.Split(" ")
-					// For Each aspli As String In spliter
-					// Me.ApplyUpgradeEffect(aspli, True)
-					// Next
 					// actualisation vaisseau
 					ApplyUpgradeFirstTime(ref Upgrading);
 					ResetStats();
@@ -632,13 +624,13 @@ namespace Flee {
 			}
 
 			case "?Base": {
-				if (stats.name.Contains("Station"))
+				if ((stats.role & (int)ShipRole.Shipyard) != 0)
 					return true;
 				break;
 			}
 
 			case "?NotStation": {
-				if (!stats.name.Contains("Station"))
+				if ((stats.role & (int)ShipRole.Shipyard) == 0)
 					return true;
 				break;
 			}
@@ -920,7 +912,7 @@ namespace Flee {
 
 			case "!Sum": {
 				if (first_application)
-					world.ships.Add(new Ship(ref world, team, Spliter[1]) { location = new Point((int)(location.X + world.gameplay_random.Next(-10, 11)), (int)(location.Y + world.gameplay_random.Next(-10, 11))) });
+					world.ships.Add(new Ship(this.world, team, Spliter[1]) { location = new Point((int)(location.X + world.gameplay_random.Next(-10, 11)), (int)(location.Y + world.gameplay_random.Next(-10, 11))) });
 				world.ships[world.ships.Count - 1].direction = direction;
 				if (world.ships[world.ships.Count - 1].weapons.Count > 0 && (world.ships[world.ships.Count - 1].weapons[0].stats.special & (int)Weapon.SpecialBits.SelfExplode) != 0) {
 					if (team is null || target is null || target.team is null || !team.IsFriendWith(target.team))

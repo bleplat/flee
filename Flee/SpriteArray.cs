@@ -32,7 +32,7 @@ namespace Flee {
 			this.ColorSprites(color);
 		}
 		public void Load(string file) {
-			Bitmap bmp = Helpers.LoadProjectSprite(file);
+			Bitmap bmp = Loader.LoadProjectSprite(file);
 			this.Load(bmp);
 		}
 		public void Load(Bitmap bmp) {
@@ -115,6 +115,9 @@ namespace Flee {
 
 		// Common loading and cache
 		private static Dictionary<string, SpriteArray> sprite_arrays = new Dictionary<string, SpriteArray>();
+		public static void ClearSpriteArrays() {
+			sprite_arrays.Clear();
+		}
 		private static string SpriteArrayName(string name, Color color = default) {
 			return (name + ":" + color.ToString());
 		}

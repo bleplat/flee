@@ -1,4 +1,5 @@
 ship Colonizer
+	role=Starter|Playable
 	level=9
 	width=55
 	integrity=185
@@ -13,6 +14,8 @@ ship Colonizer
 	craft=Pointvortex_Turret
 
 ship MiniColonizer
+	role=Starter|Playable
+	spawning_frequency=2
 	width=55
 	integrity=150
 	speed=2.80
@@ -30,10 +33,10 @@ ship DeinsCruiser
 	integrity=370
 	speed=3.00
 	turn=1.20
-	weapon=-45;DeinsGun2
-	weapon=45;DeinsGun2
-	weapon=-90;DeinsGun3
-	weapon=90;DeinsGun3
+	weapon=-45;DeinsGun1
+	weapon=45;DeinsGun1
+	weapon=-90;DeinsGun2
+	weapon=90;DeinsGun2
 	weapon=-135;DeinsGun1
 	weapon=135;DeinsGun1
 	shield=256
@@ -44,6 +47,7 @@ ship DeinsCruiser
 	native_upgrade=Jump_Engine_II
 
 ship Ambassador
+	role=Starter|Playable
 	level=9
 	width=50
 	integrity=175
@@ -76,6 +80,7 @@ ship Harass
 	cost=800;1;0;0
 
 ship Cargo
+	role=Starter|Playable
 	desc=Weak ship but comes with a builtin jump engine.
 	level=4
 	integrity=70

@@ -80,6 +80,8 @@ namespace Flee {
 				this.ship_count_limit = 24;
 			else if (affinity == AffinityEnum.Dissident)
 				this.ship_count_limit = 32;
+			else if (affinity == AffinityEnum.Neutral)
+				this.ship_count_limit = 32;
 			else if (affinity == AffinityEnum.Hostile)
 				this.ship_count_limit = 40;
 			else if (affinity == AffinityEnum.Wilderness)

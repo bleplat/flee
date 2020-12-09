@@ -204,7 +204,7 @@ gun Nuke-On-Contact
 
 gun RailGun
 	desc=Deadly weapon used by some bosses.
-	sprite=PRJ_OrangeCharge
+	sprite=PRJ_RedCharge
 	range=360
 	celerity=16
 	power=32
@@ -254,16 +254,9 @@ gun DeinsGun1
 	loadtime=55
 	salvo=1
 gun DeinsGun2
-	sprite=PRJ_BlueCharge
-	range=300
-	celerity=18
-	power=40
-	loadtime=50
-	salvo=1
-gun DeinsGun3
 	sprite=PRJ_GreenCharge
 	range=280
 	celerity=18
-	power=35
-	loadtime=45
-	salvo=1
+	power=25
+	loadtime=35
+	salvo=2

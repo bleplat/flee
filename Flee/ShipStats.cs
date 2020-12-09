@@ -6,8 +6,17 @@ using Microsoft.VisualBasic.CompilerServices;
 namespace Flee {
 
 	/**
-	 * @brief Special flags representing ships specificities.
+	 * @brief Special flags representing ships gameplay role.
 	 */
+	public enum ShipRole {
+		Shipyard = 0x1, // Capable of summoning others. It keeps the team status as alive.
+		Defense = 0x2, // Summoned with Shipyards.
+		Starter = 0x4, // May be summoned with a Shipyard in a player team.
+		Playable = 0x10, // May be summoned in a player team.
+		NPC = 0x20, // May be summoned in an NPC team.
+		Boss = 0x30, // May be summoned as a Boss.
+		Derelict = 0x40 // May be summoned as a derelict object.
+	}
 
 	/**
 	 * @brief Represent a Ship base stats.
@@ -15,15 +24,6 @@ namespace Flee {
 	public class ShipStats {
 
 		/* role */
-		public enum ShipRole {
-			Shipyard = 0x1, // Capable of summoning others. It keeps the team status as alive.
-			Defense = 0x2, // Summoned with Shipyards.
-			Starter = 0x4, // May be summoned with a Shipyard in a player team.
-			Playable = 0x10, // May be summoned in a player team.
-			NPC = 0x20, // May be summoned in an NPC team.
-			Boss = 0x30, // May be summoned as a Boss.
-			Derelict = 0x40 // May be summoned as a derelict object.
-		}
 		static int ShipRoles(string roles_str) {
 			int total = 0;
 			foreach (string role_str in roles_str.Split('|')) {
@@ -45,7 +45,6 @@ namespace Flee {
 
 		// shared
 		public static Dictionary<string, ShipStats> classes = new Dictionary<string, ShipStats>();
-
 		public static string DumpClasses() {
 			string total = "";
 			foreach (ShipStats stats in classes.Values) {
@@ -57,7 +56,7 @@ namespace Flee {
 		}
 
 		// spawning rules
-		public double spawning_frequency = 0.0;
+		public double spawning_frequency = 1.0;
 		public int spawning_amount_min = 1;
 		public int spawning_amount_max = 2;
 
@@ -215,6 +214,11 @@ namespace Flee {
 			case "spawning_frequency": spawning_frequency = Helpers.ToDouble(value); break;
 			case "spawning_amount_min": spawning_amount_min = Convert.ToInt32(value); break;
 			case "spawning_amount_max": spawning_amount_max = Convert.ToInt32(value); break;
+			case "spawning_amount": {
+				spawning_amount_min = Convert.ToInt32(value);
+				spawning_amount_max = spawning_amount_min + 1;
+				break;
+			}
 			default: {
 				throw new Exception("'" + name + "' is not a valid ship property");
 				break;
@@ -271,7 +275,7 @@ namespace Flee {
 			// spawning
 			if (role != 0)
 				total += "role=" + ShipRoles(role) + "\n";
-			if (spawning_frequency != 0.0f)
+			if (spawning_frequency != 1.0f)
 				total += "\tspawning_frequency=" + Helpers.ToString(spawning_frequency) + "\n";
 			if (spawning_amount_min != 1)
 				total += "\tspawning_amount_min=" + spawning_amount_min.ToString() + "\n";
