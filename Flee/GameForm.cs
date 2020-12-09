@@ -96,7 +96,7 @@ namespace Flee {
 			// close menu
 			SetMenuVisible(false);
 			// Place camera on player
-			See = new Point((int)(game.world.Ships[0].location.X - this.Width / 2), (int)(game.world.Ships[0].location.Y - this.Height / 2));
+			See = new Point((int)(game.world.ships[game.world.ships.Count - 1].location.X - this.Width / 2), (int)(game.world.ships[game.world.ships.Count - 1].location.Y - this.Height / 2));
 			// finaly enable timer
 			Ticker.Enabled = true; // TODO: have ticker enabled since the begining
 		}
@@ -253,7 +253,7 @@ namespace Flee {
 				}
 			}
 			// Ships
-			foreach (Ship AShip in game.world.Ships) {
+			foreach (Ship AShip in game.world.ships) {
 				// Minimap '
 				int W = (int)(AShip.stats.width / 30d);
 				if (W < 2)
@@ -264,12 +264,16 @@ namespace Flee {
 				if (target_identification)
 					if (AShip.team is null || AShip.stats.sprite == "Comet")
 						mini_color = AShip.color;
+					else if (AShip.team.affinity == AffinityEnum.Hostile)
+						mini_color = Color.Red;
 					else if (ReferenceEquals(AShip.team, game.player_team))
 						mini_color = Color.Lime;
+					else if (AShip.team.affinity == AffinityEnum.Wilderness || AShip.team.affinity == AffinityEnum.Neutral)
+						mini_color = Color.White;
 					else if (AShip.team.IsFriendWith(game.player_team))
 						mini_color = Color.Cyan;
 					else
-						mini_color = Color.Red;
+						mini_color = Color.OrangeRed;
 				g.FillRectangle(new SolidBrush(mini_color), new Rectangle((int)(AShip.location.X / game.world.ArenaSize.Width * g.VisibleClipBounds.Width - W / 2d), (int)(AShip.location.Y / game.world.ArenaSize.Height * g.VisibleClipBounds.Height - W / 2d), W, W));
 			}
 		}
@@ -298,13 +302,13 @@ namespace Flee {
 				GetBackgroundBrush().ResetTransform();
 			}
 			// Nuke effect
-			if (game.world.NuclearEffect > 0) {
-				SolidBrush nuclear_brush = new SolidBrush(Color.FromArgb(game.world.NuclearEffect, game.world.NuclearEffect, game.world.NuclearEffect));
+			if (game.world.nuke_effect > 0) {
+				SolidBrush nuclear_brush = new SolidBrush(Color.FromArgb(game.world.nuke_effect, game.world.nuke_effect, game.world.nuke_effect));
 				g.FillRectangle(nuclear_brush, g.VisibleClipBounds);
-				game.world.NuclearEffect -= 2;
+				game.world.nuke_effect -= 2;
 			}
 			// ships
-			foreach (Ship AShip in game.world.Ships) {
+			foreach (Ship AShip in game.world.ships) {
 				// Main screen '
 				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + g.VisibleClipBounds.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + g.VisibleClipBounds.Height) {
 					//var img = Helpers.GetSprite(AShip.stats.sprite, AShip.fram, 0, mini_color); // image
@@ -312,7 +316,7 @@ namespace Flee {
 					PointF center = new PointF(AShip.location.X - See.X, AShip.location.Y - See.Y); // centre
 					int AddD = 0;
 					if (AShip.team is null && AShip.stats.turn == 0d)
-						AddD = game.world.ticks % 360;
+						AddD = (int)(game.world.ticks % 360);
 					var MonM = new Matrix();
 					MonM.RotateAt(-AShip.direction + 180f + AddD, center); // rotation
 					g.Transform = MonM; // affectation
@@ -321,7 +325,7 @@ namespace Flee {
 				}
 			}
 			// shoots
-			foreach (Shoot AShoot in game.world.Shoots) {
+			foreach (Shoot AShoot in game.world.shoots) {
 				// TODO: check bounds
 				// If AShoot.Coo.X > See.X AndAlso AShoot.Coo.X < See.X + DrawBox.Width AndAlso AShoot.Coo.Y > See.Y AndAlso AShoot.Coo.Y < See.Y + DrawBox.Height Then
 				Color col;
@@ -341,7 +345,7 @@ namespace Flee {
 									// End If
 			}
 			// effects
-			foreach (Effect AEffect in game.world.Effects) {
+			foreach (Effect AEffect in game.world.effects) {
 				if (AEffect.location.X > See.X && AEffect.location.X < See.X + g.VisibleClipBounds.Width && AEffect.location.Y > See.Y && AEffect.location.Y < See.Y + g.VisibleClipBounds.Height) {
 					//var img = Helpers.GetSprite(AEffect.type, AEffect.fram, AEffect.sprite_y); // image
 					var img = AEffect.sprites.GetSprite(AEffect.fram, AEffect.sprite_y);
@@ -362,7 +366,7 @@ namespace Flee {
 			}
 			// ship specials
 
-			foreach (Ship AShip in game.world.Ships)
+			foreach (Ship AShip in game.world.ships)
 				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + g.VisibleClipBounds.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + g.VisibleClipBounds.Height)
 					if (AShip.team is object && AShip.behavior != Ship.BehaviorMode.Drift && AShip.stats.sprite != "MSL") {
 						// selection rectangle
@@ -528,7 +532,7 @@ namespace Flee {
 				Clipboard.SetText(total);
 			}
 			if (e.KeyData == Keys.F8)
-				foreach (Ship a_ship in game.world.Ships)
+				foreach (Ship a_ship in game.world.ships)
 					a_ship.agressivity = 1000.0d;
 			if (!pressed_keys.Contains(e.KeyData.ToString()))
 				pressed_keys.Add(e.KeyData.ToString());
@@ -567,7 +571,7 @@ namespace Flee {
 				return;
 			if (!ModifierKeys.HasFlag(Keys.Control))
 				selected_ships.Clear();
-			foreach (Ship aship in game.world.Ships) {
+			foreach (Ship aship in game.world.ships) {
 				if (ReferenceEquals(aship.team, game.player_team) || game.player_team.cheats_enabled)
 					if (aship.location.X + aship.stats.width / 2d > SS.X)
 						if (aship.location.X - aship.stats.width / 2d < SS.X + SS.Width)
@@ -594,7 +598,7 @@ namespace Flee {
 						ship.team.bot_team = false;
 			}
 			// ===' Recherche '==='
-			foreach (Ship AShip in game.world.Ships)
+			foreach (Ship AShip in game.world.ships)
 				if (AShip.location.X + AShip.stats.width / 2d > last_mouse_location.X)
 					if (AShip.location.X - AShip.stats.width / 2d < last_mouse_location.X)
 						if (AShip.location.Y + AShip.stats.width / 2d > last_mouse_location.Y)
@@ -604,7 +608,7 @@ namespace Flee {
 			if (target_ship is null)
 				foreach (Ship AShip in selected_ships)
 					if (AShip.TargetPTN == last_mouse_location) {
-						game.world.Effects.Add(new Effect(-1, "EFF_Mine", last_mouse_location));
+						game.world.effects.Add(new Effect(-1, "EFF_Mine", last_mouse_location));
 						AShip.behavior = Ship.BehaviorMode.Mine;
 						AShip.TargetPTN = last_mouse_location;
 						AShip.target = null;
@@ -612,7 +616,7 @@ namespace Flee {
 							if (AShip.team is object && !ReferenceEquals(game.player_team, AShip.team))
 								AShip.team.bot_team = true;
 					} else {
-						game.world.Effects.Add(new Effect(-1, "EFF_Goto", last_mouse_location));
+						game.world.effects.Add(new Effect(-1, "EFF_Goto", last_mouse_location));
 						AShip.behavior = Ship.BehaviorMode.GoToPoint;
 						AShip.TargetPTN = last_mouse_location;
 						AShip.target = null;
@@ -620,15 +624,15 @@ namespace Flee {
 			else
 				foreach (Ship AShip in selected_ships)
 					if (ReferenceEquals(AShip, target_ship)) {
-						game.world.Effects.Add(new Effect(-1, "EFF_OrderDefend", last_mouse_location));
+						game.world.effects.Add(new Effect(-1, "EFF_OrderDefend", last_mouse_location));
 						AShip.AllowMining = false;
 					} else {
 						AShip.behavior = Ship.BehaviorMode.Folow;
 						AShip.target = target_ship;
 						if (AShip.team is object && AShip.team.IsFriendWith(target_ship.team))
-							game.world.Effects.Add(new Effect(-1, "EFF_Assist", last_mouse_location, 180));
+							game.world.effects.Add(new Effect(-1, "EFF_Assist", last_mouse_location, 180));
 						else
-							game.world.Effects.Add(new Effect(-1, "EFF_OrderTarget", last_mouse_location));
+							game.world.effects.Add(new Effect(-1, "EFF_OrderTarget", last_mouse_location));
 					}
 		}
 
@@ -668,7 +672,7 @@ namespace Flee {
 		}
 		public void verify_selected_ships_existence() {
 			for (int index = selected_ships.Count - 1; index >= 0; index -= 1)
-				if (!game.world.Ships.Contains(selected_ships[index]))
+				if (!game.world.ships.Contains(selected_ships[index]))
 					selected_ships.RemoveAt(index);
 		}
 		public void update_selected_ships_details() {

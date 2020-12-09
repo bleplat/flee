@@ -38,7 +38,7 @@ namespace Flee {
 			this.is_host = true;
 			// create the world
 			world = new World(seed);
-			player_team = world.Teams[0];
+			player_team = world.CreateAndSpawnPlayer(AffinityEnum.Friendly);
 			// set playing
 			play_state = PlayState.Playing;
 		}

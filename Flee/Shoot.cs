@@ -49,12 +49,12 @@ namespace Flee {
 			location.Y = location.Y + speed_vec.Y;
 			time_to_live = time_to_live - 1;
 			if ((special & (int)Weapon.SpecialBits.Plasma) != 0)
-				world.Effects.Add(new Effect(-1, "Plasma", location, world.gameplay_random.Next(0, 360), 1));
+				world.effects.Add(new Effect(-1, "Plasma", location, world.gameplay_random.Next(0, 360), 1));
 			if ((special & (int)Weapon.SpecialBits.Propeled) != 0)
-				world.Shoots.Add(new Shoot(ref world, ref Team, 5, 1, 0, "PRJ_A", location, world.gameplay_random.Next(0, 360), 2)); // TODO: make effect
+				world.shoots.Add(new Shoot(ref world, ref Team, 5, 1, 0, "PRJ_A", location, world.gameplay_random.Next(0, 360), 2)); // TODO: make effect
 			if ((special & (int)Weapon.SpecialBits.BioDrops) != 0) {
-				world.Shoots.Add(new Shoot(ref world, ref Team, 8, 2, 0, "PRJ_B", location, direction + world.gameplay_random.Next(-90, 90), world.gameplay_random.Next(4, 8))); // TODO: make effect
-				world.Shoots.Add(new Shoot(ref world, ref Team, 8, Power / 2, 0, "PRJ_B", location, world.gameplay_random.Next(0, 360), world.gameplay_random.Next(6, 10))); // TODO: make effect
+				world.shoots.Add(new Shoot(ref world, ref Team, 8, 2, 0, "PRJ_B", location, direction + world.gameplay_random.Next(-90, 90), world.gameplay_random.Next(4, 8))); // TODO: make effect
+				world.shoots.Add(new Shoot(ref world, ref Team, 8, Power / 2, 0, "PRJ_B", location, world.gameplay_random.Next(0, 360), world.gameplay_random.Next(6, 10))); // TODO: make effect
 			}
 		}
 

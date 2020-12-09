@@ -23,25 +23,26 @@ namespace Flee {
 	public class Team {
 		public World world;
 
-
 		/* Identity */
 		public AffinityEnum affinity;
+		public bool bot_team = true;
 
 		/* Generation */
 		public Color color = default;
 		public int station_type_index = 0;
 		public int vocabulary_type_index = 0;
 
-		// state
+		/* State */
 		public MaterialSet resources = new MaterialSet();
-		public ushort ship_count_limit = 12;
-		public ushort upgrade_slots_bonus = 0;
+		public int ship_count_limit = 12;
 		public int ship_count_approximation = 0;
+		public int upgrade_slots_bonus = 0;
+		public int upgrade_limit = 32;
 		public bool cheats_enabled = false;
 		public bool has_ascended = false;
 		public float damage_multiplicator = 1.0f;
 
-		// Engagements
+		/* Engagements */
 		public List<Engagement> engagements = new List<Engagement>();
 		public void NotifyEngagement(PointF coords) {
 			Point rounded_coords = new Point((int)coords.X & unchecked((int)0xFFFFFE00), (int)coords.Y & unchecked((int)0xFFFFFE00));
@@ -53,7 +54,7 @@ namespace Flee {
 			engagements.Add(new Engagement() {location = rounded_coords, timeout = 254});
 		}
 
-		// Tick
+		/* Per Tick */
 		public void Tick() {
 			for (int i_engagement = engagements.Count - 1; i_engagement >= 0; i_engagement--) {
 				engagements[i_engagement].timeout -= 2;
@@ -62,25 +63,41 @@ namespace Flee {
 			}
 		}
 
-		// IA
-		public bool bot_team = true;
-		public int upgrade_limit = 32;
-
-		/**
-		 * Create a Team.
-		 */
-		public Team(World world, AffinityEnum affinity) {
+		/* Construction */
+		public Team(World world) {
 			this.world = world;
+		}
+		public Team(World world, AffinityEnum affinity, Random rand) {
+			this.world = world;
+			SetAffinityAndShipLimit(affinity);
+			InitTeam(rand);
+		}
+		public void SetAffinityAndShipLimit(AffinityEnum affinity) {
 			this.affinity = affinity;
 			if (affinity == 0)
-				throw new Exception("not permited");
+				throw new Exception("0 affinity not permited");
 			if (affinity == AffinityEnum.Friendly)
-				ship_count_limit = 24;
+				this.ship_count_limit = 24;
 			else if (affinity == AffinityEnum.Dissident)
-				ship_count_limit = 32;
+				this.ship_count_limit = 32;
 			else if (affinity == AffinityEnum.Hostile)
-				ship_count_limit = 40;
-
+				this.ship_count_limit = 40;
+			else if (affinity == AffinityEnum.Wilderness)
+				this.ship_count_limit = Int32.MaxValue;
+		}
+		public void InitWildernessTeam() {
+			SetAffinityAndShipLimit(AffinityEnum.Wilderness);
+			this.color = Color.DimGray;
+		}
+		public void InitBossTeam() {
+			SetAffinityAndShipLimit(AffinityEnum.Hostile);
+			this.color = Color.Red;
+		}
+		public void InitPlayerTeam(AffinityEnum affinity = AffinityEnum.Friendly) {
+			SetAffinityAndShipLimit(affinity);
+			this.ship_count_limit = 12;
+			this.color = Color.Lime;
+			this.bot_team = false;
 		}
 		public void InitTeam(Random rand) {
 			InitTeamColor(new Random(rand.Next()));
@@ -104,7 +121,6 @@ namespace Flee {
 				// hostiles colors
 				friendly_colors.Add(Color.FromArgb(173, 76, 38)); // brown (too redish, looks hostile)
 				friendly_colors.Add(Color.FromArgb(128, 0, 255)); // dark purple (too pinkish)
-				hostile_colors.Add(Color.FromArgb(255, 0, 0)); // red
 				hostile_colors.Add(Color.FromArgb(192, 0, 0)); // dark red
 				hostile_colors.Add(Color.FromArgb(173, 34, 69)); // crismon (pinkish 5th)
 				hostile_colors.Add(Color.FromArgb(255, 128, 255)); // pink (pinkish 4th)

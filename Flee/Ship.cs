@@ -748,7 +748,7 @@ namespace Flee {
 			}
 
 			case "!Jump": {
-				world.Effects.Add(new Effect(-1, "EFF_Jumped", location, direction, speed_vec));
+				world.effects.Add(new Effect(-1, "EFF_Jumped", location, direction, speed_vec));
 				speed = Convert.ToInt32(Spliter[1]);
 				break;
 			}
@@ -759,13 +759,13 @@ namespace Flee {
 			}
 
 			case "!Teleport": {
-				world.Effects.Add(new Effect(-1, "EFF_Teleported", location, direction, speed_vec));
+				world.effects.Add(new Effect(-1, "EFF_Teleported", location, direction, speed_vec));
 				var tp_dst = TargetPTN;
 				if (target is object)
 					tp_dst = target.location;
 
 				location = new PointF(tp_dst.X + world.gameplay_random.Next(-512, 512), tp_dst.Y + world.gameplay_random.Next(-512, 512));
-				world.Effects.Add(new Effect(-1, "EFF_Teleported", location, direction, speed_vec));
+				world.effects.Add(new Effect(-1, "EFF_Teleported", location, direction, speed_vec));
 				break;
 			}
 
@@ -920,20 +920,20 @@ namespace Flee {
 
 			case "!Sum": {
 				if (first_application)
-					world.Ships.Add(new Ship(ref world, team, Spliter[1]) { location = new Point((int)(location.X + world.gameplay_random.Next(-10, 11)), (int)(location.Y + world.gameplay_random.Next(-10, 11))) });
-				world.Ships[world.Ships.Count - 1].direction = direction;
-				if (world.Ships[world.Ships.Count - 1].weapons.Count > 0 && (world.Ships[world.Ships.Count - 1].weapons[0].stats.special & (int)Weapon.SpecialBits.SelfExplode) != 0) {
+					world.ships.Add(new Ship(ref world, team, Spliter[1]) { location = new Point((int)(location.X + world.gameplay_random.Next(-10, 11)), (int)(location.Y + world.gameplay_random.Next(-10, 11))) });
+				world.ships[world.ships.Count - 1].direction = direction;
+				if (world.ships[world.ships.Count - 1].weapons.Count > 0 && (world.ships[world.ships.Count - 1].weapons[0].stats.special & (int)Weapon.SpecialBits.SelfExplode) != 0) {
 					if (team is null || target is null || target.team is null || !team.IsFriendWith(target.team))
-						world.Ships[world.Ships.Count - 1].target = target;
+						world.ships[world.ships.Count - 1].target = target;
 					else
-						world.Ships[world.Ships.Count - 1].target = null;
+						world.ships[world.ships.Count - 1].target = null;
 
-					world.Ships[world.Ships.Count - 1].behavior = BehaviorMode.Folow;
-					world.Ships[world.Ships.Count - 1].agressivity = agressivity * 100d;
-					world.Ships[world.Ships.Count - 1].bot_ship = true;
+					world.ships[world.ships.Count - 1].behavior = BehaviorMode.Folow;
+					world.ships[world.ships.Count - 1].agressivity = agressivity * 100d;
+					world.ships[world.ships.Count - 1].bot_ship = true;
 				} else {
-					world.Ships[world.Ships.Count - 1].behavior = BehaviorMode.Folow;
-					world.Ships[world.Ships.Count - 1].target = this;
+					world.ships[world.ships.Count - 1].behavior = BehaviorMode.Folow;
+					world.ships[world.ships.Count - 1].target = this;
 				}
 
 				break;
@@ -956,7 +956,7 @@ namespace Flee {
 			}
 
 			case "!Free": {
-				SetTeam(world.Teams[world.gameplay_random.Next(0, world.Teams.Count)]);
+				SetTeam(world.teams[world.gameplay_random.Next(0, world.teams.Count)]);
 				break;
 			}
 
@@ -997,7 +997,7 @@ namespace Flee {
 			allies *= allies;
 			// find the ship
 			Ship closest_ship = null;
-			foreach (Ship other_ship in world.Ships)
+			foreach (Ship other_ship in world.ships)
 				if (!ReferenceEquals(this, other_ship)) {
 					double distance_sq;
 					// relationship priority
