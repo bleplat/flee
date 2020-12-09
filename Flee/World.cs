@@ -537,7 +537,7 @@ namespace Flee {
 			bool dissident_alive = false;
 			bool hostile_alive = false;
 			foreach (Ship ship in ships) {
-				if (ship.team is object && ship.stats.name.EndsWith("_Station")) {
+				if (ship.team is object && ship.stats.name.Contains("Station")) {
 					if (ship.team.affinity == AffinityEnum.Neutral)
 						neutral_alive = true;
 					if (ship.team.affinity == AffinityEnum.Friendly)
