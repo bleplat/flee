@@ -8,99 +8,28 @@ namespace Flee {
 
 		// Special effect flag
 		public enum SpecialBits {
-			Plasma = 1,
-			Propeled = 2,
 			Explode = 4,
-			BioDrops = 8,
 			SelfExplode = 16,
 			SelfNuke = 32,
 			SpreadOrigin = 64,
 			Rail = 128,
-			Flak = 256
+			Flak = 256,
+			Summon = 512
 		}
 
 		public static int SpecialFromString(string input) {
 			int total = 0;
-			var elements = input.Split(';');
-			foreach (string element in elements) {
-				if (element.Length == 0)
-					continue;
-				switch (element ?? "") {
-				case "Plasma": {
-					total = total | (int)SpecialBits.Plasma;
-					break;
-				}
-
-				case "Propeled": {
-					total = total | (int)SpecialBits.Propeled;
-					break;
-				}
-
-				case "Explode": {
-					total = total | (int)SpecialBits.Explode;
-					break;
-				}
-
-				case "BioDrops": {
-					total = total | (int)SpecialBits.BioDrops;
-					break;
-				}
-
-				case "SelfExplode": {
-					total = total | (int)SpecialBits.SelfExplode;
-					break;
-				}
-
-				case "SelfNuke": {
-					total = total | (int)SpecialBits.SelfNuke;
-					break;
-				}
-
-				case "SpreadOrigin": {
-					total = total | (int)SpecialBits.SpreadOrigin;
-					break;
-				}
-
-				case "Rail": {
-					total = total | (int)SpecialBits.Rail;
-					break;
-				}
-
-				case "Flak": {
-					total = total | (int)SpecialBits.Flak;
-					break;
-				}
-
-				default: {
-					throw new Exception("Special doesnt exists: " + element);
-					break;
-				}
-				}
+			foreach (string item in input.Split(';')) { // TODO: NOW: replace with '|'
+				if (item != "")
+					total += (int)(SpecialBits)Enum.Parse(typeof(SpecialBits), item);
 			}
-
 			return total;
 		}
-
 		public static string SpecialToString() {
 			string total = "";
-			if ((Convert.ToInt64(total) & (long)SpecialBits.Plasma) != 0L)
-				total += "Plasma;";
-			if ((Convert.ToInt64(total) & (long)SpecialBits.Propeled) != 0L)
-				total += "Propeled;";
-			if ((Convert.ToInt64(total) & (long)SpecialBits.Explode) != 0L)
-				total += "Explode;";
-			if ((Convert.ToInt64(total) & (long)SpecialBits.BioDrops) != 0L)
-				total += "BioDrops;";
-			if ((Convert.ToInt64(total) & (long)SpecialBits.SelfExplode) != 0L)
-				total += "SelfExplode;";
-			if ((Convert.ToInt64(total) & (long)SpecialBits.SelfNuke) != 0L)
-				total += "SelfNuke;";
-			if ((Convert.ToInt64(total) & (long)SpecialBits.SpreadOrigin) != 0L)
-				total += "SpreadOrigin;";
-			if ((Convert.ToInt64(total) & (long)SpecialBits.Rail) != 0L)
-				total += "Rail;";
-			if ((Convert.ToInt64(total) & (long)SpecialBits.Flak) != 0L)
-				total += "Flak;";
+			foreach (SpecialBits special in Enum.GetValues(typeof(SpecialBits))) {
+				total += special.ToString() + ";";
+			}
 			return total;
 		}
 
@@ -141,25 +70,24 @@ namespace Flee {
 				PointF spawn_point = PTN; // TODO: simplify
 				int time_to_live = (int)(stats.range / (double)stats.celerity);
 				float power = this.stats.power;
-				if (this.ship.team is object)
-					power *= this.ship.team.damage_multiplicator;
+				power *= this.ship.team.damage_multiplicator;
 				if ((base_stats.special & (int)SpecialBits.SpreadOrigin) != 0)
 					spawn_point = new PointF(PTN.X + ship.world.gameplay_random.Next(-7, 8), PTN.Y + ship.world.gameplay_random.Next(-7, 8));
 				if ((base_stats.special & (int)SpecialBits.Rail) != 0) {
 					int dispersion = 8;
 					for (int i = 0, loopTo = dispersion; i <= loopTo; i++)
-						ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power / dispersion, base_stats.special, base_stats.sprite, spawn_point, QA, (float)(stats.celerity + i / 2d)));
+						ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power / dispersion, base_stats.special, base_stats.sprite, spawn_point, QA, (float)(stats.celerity + i / 2d), -1, base_stats.emissive_mode, base_stats.emissive_sprite));
 				} else if ((base_stats.special & (int)SpecialBits.Flak) != 0) {
 					int dispersion = 8;
 					for (double i = -(dispersion / 2d), loopTo1 = dispersion / 2d; i <= loopTo1; i++)
-						ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power / dispersion, base_stats.special, base_stats.sprite, spawn_point, (float)(QA + i * (360d / dispersion / 16d)), (float)(stats.celerity + (i + dispersion) % 4d / 2.0d)));
+						ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power / dispersion, base_stats.special, base_stats.sprite, spawn_point, (float)(QA + i * (360d / dispersion / 16d)), (float)(stats.celerity + (i + dispersion) % 4d / 2.0d), -1, base_stats.emissive_mode, base_stats.emissive_sprite));
 				} else if ((base_stats.special & (int)SpecialBits.SelfExplode) != 0 || (base_stats.special & (int)SpecialBits.SelfNuke) != 0) {
 					int dispersion = 16;
 					for (double i = -(dispersion / 2d), loopTo2 = dispersion / 2d; i <= loopTo2; i++)
-						ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power / 4 / dispersion, base_stats.special, base_stats.sprite, spawn_point, (float)(QA + i * (360d / dispersion)), stats.celerity));
-					ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power, base_stats.special, base_stats.sprite, spawn_point, QA, stats.celerity));
+						ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power / 4 / dispersion, base_stats.special, base_stats.sprite, spawn_point, (float)(QA + i * (360d / dispersion)), stats.celerity, -1, base_stats.emissive_mode, base_stats.emissive_sprite));
+					ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power, base_stats.special, base_stats.sprite, spawn_point, QA, stats.celerity, -1, base_stats.emissive_mode, base_stats.emissive_sprite));
 				} else
-					ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power, base_stats.special, base_stats.sprite, spawn_point, QA, stats.celerity));
+					ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power, base_stats.special, base_stats.sprite, spawn_point, QA, stats.celerity, -1, base_stats.emissive_mode, base_stats.emissive_sprite));
 			}
 		}
 

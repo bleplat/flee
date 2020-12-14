@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.VisualBasic;
 
 namespace Flee {
+
 	public class GunStats {
 
 		// shared
@@ -14,6 +15,8 @@ namespace Flee {
 		public int effect = 0;
 		public string desc = "";
 		public int special = 0;
+		public int emissive_mode = 0;
+		public string emissive_sprite = null;
 
 		// stats
 		public int range = 180;
@@ -46,58 +49,24 @@ namespace Flee {
 
 			return total;
 		}
-
 		public void SetProperty(string name, string value) {
 			switch (name ?? "") {
-				case "desc": {
-						desc = value;
-						break;
-					}
-
-				case "sprite": {
-						sprite = value;
-						break;
-					}
-
-				case "effect": {
-						effect = Convert.ToInt32(value);
-						break;
-					}
-
-				case "range": {
-						range = Convert.ToInt32(value);
-						break;
-					}
-
-				case "celerity": {
-						celerity = Convert.ToInt32(value);
-						break;
-					}
-
-				case "power": {
-						power = Convert.ToInt32(value);
-						break;
-					}
-
-				case "loadtime": {
-						loadtime = Convert.ToInt32(value);
-						break;
-					}
-
-				case "salvo": {
-						salvo = Convert.ToInt32(value);
-						break;
-					}
-
-				case "special": {
-						special = Weapon.SpecialFromString(value);
-						break;
-					}
-
-				default: {
-						throw new Exception("Property " + name + " is not part of gun class!");
-						break;
-					}
+				case "desc": desc = value; break;
+				case "sprite": sprite = value; break;
+				case "effect": effect = Convert.ToInt32(value); break;
+				case "range": range = Convert.ToInt32(value); break;
+				case "celerity": celerity = Convert.ToInt32(value); break;
+				case "power": power = Convert.ToInt32(value); break;
+				case "loadtime": loadtime = Convert.ToInt32(value); break;
+				case "salvo": salvo = Convert.ToInt32(value); break;
+				case "special": special = Weapon.SpecialFromString(value); break;
+				case "emissive_mode": 
+					emissive_mode = Shoot.ShootEmissiveMode(value);
+					if (emissive_sprite == null) 
+						emissive_sprite = "Plasma";
+					break;
+				case "emissive_sprite": emissive_sprite = value; break;
+				default:throw new Exception("Property " + name + " is not part of gun class!");
 			}
 		}
 

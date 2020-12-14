@@ -15,6 +15,9 @@ namespace Flee {
 		Hostile = 16 // Hostile to other teams
 	}
 
+	/**
+	 * @brief Represent an engagement/battle.
+	 */
 	public class Engagement {
 		public Point location;
 		public int timeout;
@@ -98,8 +101,8 @@ namespace Flee {
 		public void InitPlayerTeam(AffinityEnum affinity = AffinityEnum.Friendly) {
 			SetAffinityAndShipLimit(affinity);
 			this.ship_count_limit = 12;
-			this.color = Color.Lime;
 			this.bot_team = false;
+			InitTeamColor(new Random(world.gameplay_random.Next()));
 		}
 		public void InitTeam(Random rand) {
 			InitTeamColor(new Random(rand.Next()));
@@ -121,8 +124,8 @@ namespace Flee {
 				friendly_colors.Add(Color.FromArgb(173, 136, 26)); // olive (looks yellow)
 				friendly_colors.Add(Color.FromArgb(64, 64, 255)); // a bit light blue
 				// hostiles colors
-				friendly_colors.Add(Color.FromArgb(173, 76, 38)); // brown (too redish, looks hostile)
-				friendly_colors.Add(Color.FromArgb(128, 0, 255)); // dark purple (too pinkish)
+				hostile_colors.Add(Color.FromArgb(173, 76, 38)); // brown (too redish, looks hostile)
+				hostile_colors.Add(Color.FromArgb(128, 0, 255)); // dark purple (too pinkish)
 				hostile_colors.Add(Color.FromArgb(192, 0, 0)); // dark red
 				hostile_colors.Add(Color.FromArgb(173, 34, 69)); // crismon (pinkish 5th)
 				hostile_colors.Add(Color.FromArgb(255, 128, 255)); // pink (pinkish 4th)
@@ -135,10 +138,18 @@ namespace Flee {
 				hostile_colors.Add(Color.FromArgb(255, 48, 48)); // coral
 			}
 			// choose a color
+			//if (this.affinity == AffinityEnum.Friendly)
+			//	color = friendly_colors[rand.Next(0, friendly_colors.Count)];
+			//else
+			//	color = hostile_colors[rand.Next(0, hostile_colors.Count)];
 			if (this.affinity == AffinityEnum.Friendly)
-				color = friendly_colors[rand.Next(0, friendly_colors.Count)];
+				color = Color.FromArgb(rand.Next(0, 128), rand.Next(192, 256), rand.Next(64, 256));
+			else if (this.affinity == AffinityEnum.Neutral)
+				color = Color.FromArgb(rand.Next(64, 128), rand.Next(64, 128), rand.Next(128, 256));
+			else if (this.affinity == AffinityEnum.Dissident)
+				color = Color.FromArgb(rand.Next(192, 256), rand.Next(64, 192), rand.Next(64, 192));
 			else
-				color = hostile_colors[rand.Next(0, hostile_colors.Count)];
+				color = Color.FromArgb(rand.Next(192, 256), rand.Next(0, 64), rand.Next(0, 64));
 		}
 		public void InitTeamGenerationIndices(Random rand) {
 			this.station_type_index = rand.Next(0, Int32.MaxValue);

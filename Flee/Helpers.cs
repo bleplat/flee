@@ -10,6 +10,7 @@ namespace Flee {
 	public sealed class Helpers {
 		public static readonly ulong INVALID_UID = (ulong)(ulong.MaxValue - 1m);
 		private static ulong last_uid = 0UL;
+		public static Random rand = new Random();
 
 		/* Math */
 		public static double GetQA(int x1, int y1, int x2, int y2) {
@@ -21,6 +22,9 @@ namespace Flee {
 			if (QA >= 360d)
 				QA = QA - 360d;
 			return QA;
+		}
+		public static double Distance(ref PointF p1) {
+			return Math.Sqrt((p1.X - 0) * (p1.X - 0) + (p1.Y - 0) * (p1.Y - 0));
 		}
 		public static double Distance(ref PointF p1, ref PointF p2) {
 			return Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
@@ -166,6 +170,16 @@ namespace Flee {
 		public static string ToString(double d) {
 			return d.ToString("0.00", to_double_culture);
 		}
+		public static Color ToColor(string str) {
+			try {
+				return (Color.FromName(str));
+			} catch {
+				if (str[0] == '#')
+					return (Color.FromArgb(int.Parse(str.Substring(1), System.Globalization.NumberStyles.HexNumber) | unchecked((int)0xFF000000)));
+				else
+					throw new Exception("invalid color format");
+			}
+		}
 
 		/* Misc */
 		public static ulong GetNextUniqueID() {
@@ -181,6 +195,14 @@ namespace Flee {
 		}
 
 		/* Flee specific */
-
+		public double RateShip(Ship ship) {
+			double rst = 0.0;
+			rst += ship.integrity / 100.0;
+			rst += ship.shield / 80.0 * ship.stats.shield_opacity;
+			rst += ship.stats.deflectors / 2.0;
+			rst += ship.stats.speed / 4.0;
+			rst += ship.stats.default_weapons.Count / 3.0;
+			return (rst);
+		}
 	}
 }

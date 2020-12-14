@@ -14,8 +14,8 @@ namespace Flee {
 		Starter = 0x4, // May be summoned with a Shipyard in a player team.
 		Playable = 0x10, // May be summoned in a player team.
 		NPC = 0x20, // May be summoned in an NPC team.
-		Boss = 0x30, // May be summoned as a Boss.
-		Derelict = 0x40 // May be summoned as a derelict object.
+		Boss = 0x40, // May be summoned as a Boss.
+		Derelict = 0x80 // May be summoned as a derelict object.
 	}
 
 	/**

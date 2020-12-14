@@ -1,0 +1,65 @@
+upgrade Self-Destruct
+	desc=At least, this ship wont be salvaged.
+	install=0
+	sprite_coords=7;7
+	sprite_color=Red
+	effect=suicide()
+
+upgrade SOS
+	desc=Call nearby allies to help you.
+	install=0
+	sprite_coords=0;3
+	sprite_color=Orange
+	effect=sos()
+
+upgrade Armor
+	desc=Increase your ship's hull.
+	sprite_coords=0;2
+	sprite_color=Cyan
+	effect=integrity *= 1.35
+	cost=500;0;0;0
+	
+upgrade Armor_II
+	required_upgrade=Armor
+	desc=Increase your ship's hull.
+	sprite_coords=0;2
+	sprite_color=Green
+	requirement=integrity >= 100
+	effect=integrity *= 1.35
+	cost=1000;0;0;0
+	
+upgrade Armor_III
+	required_upgrade=Armor_II
+	desc=Increase your ship's hull.
+	sprite_coords=0;2
+	sprite_color=Yellow
+	requirement=integrity >= 100
+	effect=integrity *= 1.35
+	cost=1500;0;0;0
+	
+upgrade Armor_IV
+	required_upgrade=Armor_III
+	desc=Increase your ship's hull.
+	sprite_coords=0;2
+	sprite_color=Orange
+	requirement=integrity >= 100
+	effect=integrity *= 1.35
+	cost=2000;0;0;0
+
+upgrade Jump_Engine
+	desc=Allow to make small jumps.
+	sprite_coords=0;2
+	sprite_color=Lime
+	cost=1000;2;0;0
+
+upgrade Jump
+	required_upgrade=Jump_Engine
+	desc=Accelerate to an higher speed for a short distance.
+	install=0
+	sprite_color=Lime
+	effect=jump() 200
+	cost=0;1;0;0
+	
+	
+	
+	

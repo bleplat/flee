@@ -75,7 +75,8 @@ gun Standard-Artillery
 	celerity=12
 	power=55
 	loadtime=70
-	special=Propeled;
+	emissive_mode=Propeled
+	emissive_sprite=Plasma
 
 gun Intercepting-Artillery
 	desc=A weaker but longer ranged artillery.
@@ -84,7 +85,8 @@ gun Intercepting-Artillery
 	celerity=16
 	power=35
 	loadtime=35
-	special=Propeled;
+	emissive_mode=Propeled
+	emissive_sprite=Plasma
 	
 #
 # Bombs
@@ -97,7 +99,8 @@ gun Standard-PlasmaBomber
 	celerity=10
 	power=30
 	loadtime=35
-	special=Plasma;
+	emissive_mode=Emissive
+	emissive_sprite=Plasma
 
 gun Light-PlasmaBomber
 	desc=A slow but deadly weapon
@@ -106,7 +109,8 @@ gun Light-PlasmaBomber
 	celerity=11
 	power=20
 	loadtime=30
-	special=Plasma;
+	emissive_mode=Emissive
+	emissive_sprite=Plasma
 
 gun Heavy-PlasmaBomber
 	desc=A slow but deadly heavy weapon
@@ -115,7 +119,8 @@ gun Heavy-PlasmaBomber
 	celerity=9
 	power=50
 	loadtime=55
-	special=Plasma;
+	emissive_mode=Emissive
+	emissive_sprite=Plasma
 
 gun Longrange-PlasmaBomber
 	desc=A slow but deadly heavy weapon
@@ -124,7 +129,8 @@ gun Longrange-PlasmaBomber
 	celerity=6
 	power=15
 	loadtime=21
-	special=Plasma;
+	emissive_mode=Emissive
+	emissive_sprite=Plasma
 
 #
 # Special
@@ -216,18 +222,20 @@ gun Bio-Gun
 	sprite=PRJ_GreenCharge
 	range=310
 	celerity=24
-	power=16
+	power=24
 	loadtime=24
-	special=BioDrops;
+	emissive_mode=Side|Emissive|Front
+	emissive_sprite=Plasma
 
 gun Heavy-Bio-Gun
 	desc=Deadly weapon used by bugs bosses.
 	sprite=PRJ_GreenCharge
 	range=200
 	celerity=12
-	power=24
+	power=32
 	loadtime=32
-	special=BioDrops;
+	emissive_mode=Side|Emissive|Front
+	emissive_sprite=Plasma
 
 gun Finalizer
 	sprite=PRJ_D
@@ -244,7 +252,8 @@ gun Ori
 	power=55
 	loadtime=35
 	salvo=7
-	special=Propeled;
+	emissive_mode=Propeled
+	emissive_sprite=Plasma
 
 gun DeinsGun1
 	sprite=PRJ_RedCharge

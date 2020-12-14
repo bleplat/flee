@@ -124,7 +124,7 @@ namespace Flee {
 			// Stars
 			for (int i = 0, loopTo = rand.Next(1, 3); i <= loopTo; i++) {
 				string T = "Star";
-				ships.Add(new Ship(this, null, T) { location = new Point(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Width)), direction = rand.Next(0, 360) });
+				ships.Add(new Ship(this, this.wilderness_team, T) { location = new Point(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Width)), direction = rand.Next(0, 360) });
 			}
 			// Derelicts
 			for (int i = 1; i <= 30; i++) {
@@ -132,7 +132,7 @@ namespace Flee {
 				var location = new PointF(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Height));
 				double direction = rand.Next(0, 360);
 				for (int j = 0, loopTo1 = rand.Next(derelict_type.spawning_amount_min, derelict_type.spawning_amount_max); j < loopTo1; j++) {
-					ships.Add(new Ship(this, null, derelict_type.name) { location = new PointF(location.X + rand.Next(-4, 5), location.Y + rand.Next(-4, 5)), direction = (float)direction });
+					ships.Add(new Ship(this, this.wilderness_team, derelict_type.name) { location = new PointF(location.X + rand.Next(-4, 5), location.Y + rand.Next(-4, 5)), direction = (float)direction });
 				}
 			}
 		}
@@ -231,9 +231,9 @@ namespace Flee {
 			for (int i_shoot = 0; i_shoot < shoots.Count; i_shoot += 1) {
 				Shoot AShoot = shoots[i_shoot];
 				foreach (Ship AShip in AShoot.sector.EnumerateNearbyShips()) {
-					if (!ReferenceEquals(AShoot.Team, AShip.team) && (AShoot.Team is null || !AShoot.Team.IsFriendWith(AShip.team)))
+					if (!ReferenceEquals(AShoot.Team, AShip.team) && (!AShoot.Team.IsFriendWith(AShip.team)))
 						if (Helpers.Distance(AShoot.location.X, AShoot.location.Y, AShip.location.X, AShip.location.Y) < AShip.stats.width / 2d) {
-							if (AShip.team is object && AShoot.Team is object)
+							if (AShoot.Team.affinity != AffinityEnum.Wilderness)
 								AShip.team.NotifyEngagement(AShip.location);
 							AShoot.time_to_live = 0;
 							if (AShip.stats.hot_deflector > 0d && gameplay_random.Next(0, 100) < AShip.stats.hot_deflector)
@@ -241,16 +241,16 @@ namespace Flee {
 							else {
 								if (AShip.deflectors_loaded > 0)
 									effects.Add(new Effect(-1, "EFF_Deflected", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
-								else if (AShoot.Power < 16)
+								else if (AShoot.power < 16)
 									effects.Add(new Effect(-1, "EFF_Impact0", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
-								else if (AShoot.Power < 32)
+								else if (AShoot.power < 32)
 									effects.Add(new Effect(-1, "EFF_Impact1", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
-								else if (AShoot.Power < 48)
+								else if (AShoot.power < 48)
 									effects.Add(new Effect(-1, "EFF_Impact2", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
 								else
 									effects.Add(new Effect(-1, "EFF_Impact3", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
 
-								AShip.TakeDamages(AShoot.Power, ref AShoot);
+								AShip.TakeDamages(AShoot.power, ref AShoot);
 								AShip.last_damager_team = AShoot.Team;
 								if (AShip.stats.cold_deflector && AShip.cold_deflector_charge < AShip.stats.integrity * 4)
 									effects.Add(new Effect(-1, "EFF_Deflected3", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
@@ -293,7 +293,7 @@ namespace Flee {
 									a_ship.TakeDamages(10000, ref argFrom6);
 								}
 								
-								if (a_ship.team is object && a_ship.team.affinity == ships[i].team.affinity && a_ship.integrity <= 0 && ReferenceEquals(a_ship.team, ships[i].team))
+								if (a_ship.team.affinity == ships[i].team.affinity && a_ship.integrity <= 0 && ReferenceEquals(a_ship.team, ships[i].team))
 									FriendlyFireCount += 1;
 
 								if (FriendlyFireCount >= 4) 
@@ -320,7 +320,7 @@ namespace Flee {
 
 		public bool HasTeamWon(Team team) {
 			foreach (var aShip in ships) {
-				if (aShip.team is null || (aShip.team.affinity == AffinityEnum.Neutral))
+				if (aShip.team.affinity == AffinityEnum.Wilderness || aShip.team.affinity == AffinityEnum.Neutral)
 					continue;
 				if ((aShip.stats.role & (int)ShipRole.Shipyard) != 0 && !aShip.team.IsFriendWith(team))
 					return false;
@@ -335,50 +335,36 @@ namespace Flee {
 			return (false);
 		}
 
-		public void SpawnDerelictsObjects() {
-			var rand = generation_random;
-			if (ticks % 128 == 0) {
-				// Spawn Location
-				var Spawn = new Point();
+		public Point RandomBorderSpawnPoint(Random rand) {
 				switch (rand.Next(0, 4)) {
-				case 0: {
-					Spawn = new Point(rand.Next(50, ArenaSize.Width - 50), 0);
-					break;
-				} // top
-
-				case 1: { 
-					Spawn = new Point(rand.Next(50, ArenaSize.Width - 50), ArenaSize.Height);
-					break; // bottom
+				case 0: return (new Point(rand.Next(50, ArenaSize.Width - 50), 0)); // top
+				case 1: return (new Point(rand.Next(50, ArenaSize.Width - 50), ArenaSize.Height)); // bottom
+				case 2: return (new Point(0, rand.Next(50, ArenaSize.Height - 50))); // left
+				case 3: return (new Point(ArenaSize.Width, rand.Next(50, ArenaSize.Height - 50))); // right
+				default: throw new Exception("impossible");
 				}
-
-				case 2: { 
-					Spawn = new Point(0, rand.Next(50, ArenaSize.Height - 50));
-					break;// left
-				}
-
-				case 3: {
-					Spawn = new Point(ArenaSize.Width, rand.Next(50, ArenaSize.Height - 50));
-					break; // right
-				}
-				}
-				// Spawn Direction
+		}
+		public void SpawnDerelictsAndBosses() {
+			if (ticks % 128 == 0) {
+				// spawn Location
+				Point spawn = RandomBorderSpawnPoint(generation_random);
+				// direction
 				float dir = 0f;
-				dir = (float)(Helpers.GetQA(Spawn.X, Spawn.Y, (int)(ArenaSize.Width / 2d), (int)(ArenaSize.Height / 2d)) + rand.Next(-75, 75));
-				// Type and Team
-				ShipStats Type;
-				Team Team = wilderness_team;
-				if (is_invaded_by_bosses && rand.Next(0, 5) > 0)
-					Type = Loader.RandomShipFromRole(rand, (int)ShipRole.Derelict);
-				else if (!is_invaded_by_bosses && rand.Next(0, 33) > 0)
-					Type = Loader.RandomShipFromRole(rand, (int)ShipRole.Derelict);
+				dir = (float)(Helpers.GetQA(spawn.X, spawn.Y, (int)(ArenaSize.Width / 2d), (int)(ArenaSize.Height / 2d)) + generation_random.Next(-75, 75));
+				// type and team
+				ShipStats type;
+				Team team = wilderness_team;
+				if (is_invaded_by_bosses && generation_random.Next(0, 5) > 0)
+					type = Loader.RandomShipFromRole(generation_random, (int)ShipRole.Derelict);
+				else if (!is_invaded_by_bosses && generation_random.Next(0, 33) > 0)
+					type = Loader.RandomShipFromRole(generation_random, (int)ShipRole.Derelict);
 				else {
-					Type = Loader.RandomShipFromRole(rand, (int)ShipRole.Boss);
-					if (rand.Next(0, 3) == 0)
-						Team = teams[rand.Next(2, teams.Count)];
+					type = Loader.RandomShipFromRole(generation_random, (int)ShipRole.Boss);
+					team = boss_team;
 				}
-
-				for (int j = 0, loopTo = rand.Next(Type.spawning_amount_min, Type.spawning_amount_max); j < loopTo; j++) {
-					ships.Add(new Ship(this, Team, Type.name) { location = new Point(Spawn.X + rand.Next(-4, 5), Spawn.Y + rand.Next(-4, 5)), direction = dir });
+				// spawning the right amount
+				for (int j = 0, loopTo = generation_random.Next(type.spawning_amount_min, type.spawning_amount_max); j < loopTo; j++) {
+					ships.Add(new Ship(this, team, type.name) { location = new Point(spawn.X + generation_random.Next(-4, 5), spawn.Y + generation_random.Next(-4, 5)), direction = dir });
 				}
 			}
 		}
@@ -390,11 +376,11 @@ namespace Flee {
 				foreach (Team a_team in teams)
 					a_team.ship_count_approximation = 0;
 				foreach (Ship a_ship in ships)
-					if (a_ship.team is object)
+					if (!a_ship.auto)
 						a_ship.team.ship_count_approximation += 1;
 				// Summoning / upgrades
 				foreach (Ship a_ship in ships)
-					if (a_ship.team is object && a_ship.bot_ship && a_ship.UpProgress == 0 && a_ship.team.ship_count_approximation < a_ship.team.ship_count_limit) {
+					if (a_ship.team.affinity != AffinityEnum.Wilderness && a_ship.bot_ship && a_ship.UpProgress == 0 && a_ship.team.ship_count_approximation < a_ship.team.ship_count_limit) {
 						string wished_upgrade = null;
 						if (rand.Next(0, 16) < 8)                         // building ships
 							if (a_ship.stats.crafts.Count > 0) {
@@ -434,7 +420,7 @@ namespace Flee {
 		/* Per Tick */
 		public void Tick() {
 			UpdateStageDifficulty();
-			SpawnDerelictsObjects();
+			SpawnDerelictsAndBosses();
 			NPCUpgrades();
 			CheckAll();
 			UpdateSectors(); // Done after movements. This may be innacurate. This could be done per ship/shoot on every movement.
@@ -453,7 +439,7 @@ namespace Flee {
 			bool dissident_alive = false;
 			bool hostile_alive = false;
 			foreach (Ship ship in ships) {
-				if (ship.team is object && (ship.stats.role & (int)ShipRole.Shipyard) != 0) {
+				if ((ship.stats.role & (int)ShipRole.Shipyard) != 0) {
 					if (ship.team.affinity == AffinityEnum.Neutral)
 						neutral_alive = true;
 					if (ship.team.affinity == AffinityEnum.Friendly)

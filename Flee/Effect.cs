@@ -1,7 +1,10 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Configuration;
+using System.Drawing;
 
 namespace Flee {
 	public class Effect {
+		static Random rand = new Random();
 
 		// Members
 		public int time_to_live = 8;
@@ -15,7 +18,7 @@ namespace Flee {
 		public SpriteArray sprites = null;
 
 		// Constructor
-		public Effect(int time_to_live, string type, PointF location, float direction = 0.0f, float speed = 0, int sprite_y = 0) {
+		public Effect(int time_to_live, string type, PointF location, float direction = 0.0f, float speed = 0, int sprite_y = -1) {
 			this.time_to_live = time_to_live;
 			this.type = type;
 			this.location = location;
@@ -23,8 +26,10 @@ namespace Flee {
 			this.speed_vec = Helpers.GetNewPoint(new Point(0, 0), direction, speed);
 			this.sprite_y = sprite_y;
 			SetSpriteArray();
+			if (sprite_y == -1)
+				this.sprite_y = rand.Next(0, sprites.count_y);
 		}
-		public Effect(int time_to_live, string type, PointF location, float direction, PointF speed_vec, int sprite_y = 0) {
+		public Effect(int time_to_live, string type, PointF location, float direction, PointF speed_vec, int sprite_y = -1) {
 			this.time_to_live = time_to_live;
 			this.type = type;
 			this.location = location;
@@ -32,6 +37,8 @@ namespace Flee {
 			this.speed_vec = speed_vec;
 			this.sprite_y = sprite_y;
 			SetSpriteArray();
+			if (sprite_y == -1)
+				this.sprite_y = rand.Next(0, sprites.count_y);
 		}
 		private void SetSpriteArray() {
 			this.sprites = SpriteArray.GetSpriteArray(type);

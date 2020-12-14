@@ -71,6 +71,9 @@ namespace Flee {
 		/* Load Helpers */
 		public static void LoadLists() {
 			var list_classes = new List<ListClass>();
+			foreach (FileInfo file in new DirectoryInfo(data_folder + "/lists/upgrades/").EnumerateFiles()) {
+				list_classes.AddRange(GetListsFromFile(file.FullName));
+			}
 			foreach (FileInfo file in new DirectoryInfo(data_folder + "/lists/weapons/").EnumerateFiles()) {
 				list_classes.AddRange(GetListsFromFile(file.FullName));
 			}
@@ -91,25 +94,28 @@ namespace Flee {
 		}
 		public static void LoadLists(List<ListClass> list_classes) {
 			foreach (ListClass a_class in list_classes)
-				switch (a_class.type ?? "") {
+				switch (a_class.type) {
 				case "gun": {
 					if (!GunStats.classes.ContainsKey(a_class.name))
 						GunStats.classes[a_class.name] = new GunStats(a_class.name);
-
 					foreach (ListProperty prop in a_class.properties)
 						GunStats.classes[a_class.name].SetProperty(prop.name, prop.value);
 					break;
 				}
-
 				case "ship": {
 					if (!ShipStats.classes.ContainsKey(a_class.name))
 						ShipStats.classes[a_class.name] = new ShipStats(a_class.name);
-
 					foreach (ListProperty prop in a_class.properties)
 						ShipStats.classes[a_class.name].SetProperty(prop.name, prop.value);
 					break;
 				}
-
+				case "upgrade": {
+					if (!Upgrade2.upgrades.ContainsKey(a_class.name))
+						Upgrade2.upgrades[a_class.name] = new Upgrade2(a_class.name);
+					foreach (ListProperty prop in a_class.properties)
+						Upgrade2.upgrades[a_class.name].SetProperty(prop.name, prop.value);
+					break;
+				}
 				default: {
 					throw new Exception("Unknown class type: " + a_class.type);
 					break;

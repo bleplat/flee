@@ -14,7 +14,7 @@ namespace Flee {
 		Game game;
 
 		/* Drawing */
-		bool ready = false;
+		bool form_ready = false;
 		public static bool target_identification = false;
 		public static bool help = true;
 		private Point See = new Point(4700, 4700);
@@ -51,14 +51,14 @@ namespace Flee {
 				SeedTextBox.Text = new Random().Next().ToString();
 			// Play the music if it's available
 			try {
-				My.MyProject.Computer.Audio.Play("sounds/PhilippWeigl-SubdivisionOfTheMasses.wav", AudioPlayMode.BackgroundLoop);
+				My.MyProject.Computer.Audio.Play("data/musics/PhilippWeigl-SubdivisionOfTheMasses.wav", AudioPlayMode.BackgroundLoop);
 			} catch (Exception ex) {
 				Text = "Flee - Music not found!";
 			}
 			// Load lists
 			Loader.Load();
 			// 
-			ready = true;
+			form_ready = true;
 			this.Invalidate();
 		}
 
@@ -196,13 +196,13 @@ namespace Flee {
 						g.DrawRectangle(new Pen(Brushes.LightGray), x * 25, y * 25, 24, 24);
 					else
 						g.DrawRectangle(Pens.DimGray, x * 25, y * 25, 24, 24);
-				else if (selected_ships[0].team is null || !localHasEnough())               // cannot afford all
+				else if (!localHasEnough())               // cannot afford all
 					if (AUp.upgrade_slots_requiered > 0)
 						if (selected_ships[0].team.resources.HasEnough(ref AUp.cost))                      // can afford at least one
 							g.DrawRectangle(Pens.DarkOrange, x * 25, y * 25, 24, 24);
 						else                        // cannot even afford one
 							g.DrawRectangle(Pens.DarkRed, x * 25, y * 25, 24, 24);
-					else if (selected_ships[0].team is object && selected_ships[0].team.resources.HasEnough(ref AUp.cost))                      // can afford at least one
+					else if (selected_ships[0].team.resources.HasEnough(ref AUp.cost))                      // can afford at least one
 						g.DrawRectangle(Pens.PaleGoldenrod, x * 25, y * 25, 24, 24);
 					else                        // cannot even afford one
 						g.DrawRectangle(Pens.PaleVioletRed, x * 25, y * 25, 24, 24);
@@ -227,7 +227,7 @@ namespace Flee {
 				UpgradeDetails.Visible = false;
 		}
 		private void _UpgradesBox_Paint(object sender, PaintEventArgs e) {
-			if (ready && game is object && game.world is object)
+			if (form_ready && game is object && game.world is object)
 				DrawUpgrades(e.Graphics);
 			else
 				base.OnPaint(e);
@@ -260,8 +260,8 @@ namespace Flee {
 					W = 5;
 				var mini_color = AShip.color;
 				if (target_identification)
-					if (AShip.team is null || AShip.stats.sprite == "Comet")
-						mini_color = AShip.color;
+					if (AShip.team.affinity == AffinityEnum.Wilderness)
+						mini_color = Color.Black;
 					else if (AShip.team.affinity == AffinityEnum.Hostile)
 						mini_color = Color.Red;
 					else if (ReferenceEquals(AShip.team, game.player_team))
@@ -276,7 +276,7 @@ namespace Flee {
 			}
 		}
 		private void _MiniBox_Paint(object sender, PaintEventArgs e) {
-			if (ready && game is object && game.world is object)
+			if (form_ready && game is object && game.world is object)
 				DrawMinimap(e.Graphics);
 			else
 				base.OnPaint(e);
@@ -309,11 +309,10 @@ namespace Flee {
 			foreach (Ship AShip in game.world.ships) {
 				// Main screen '
 				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + g.VisibleClipBounds.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + g.VisibleClipBounds.Height) {
-					//var img = Helpers.GetSprite(AShip.stats.sprite, AShip.fram, 0, mini_color); // image
 					var img = AShip.sprites.GetSprite(AShip.fram, 0);
 					PointF center = new PointF(AShip.location.X - See.X, AShip.location.Y - See.Y); // centre
 					int AddD = 0;
-					if (AShip.team is null && AShip.stats.turn == 0d)
+					if (ReferenceEquals(AShip.team, AShip.world.wilderness_team) && AShip.stats.turn == 0d)
 						AddD = (int)(game.world.ticks % 360);
 					var MonM = new Matrix();
 					MonM.RotateAt(-AShip.direction + 180f + AddD, center); // rotation
@@ -325,14 +324,6 @@ namespace Flee {
 			// shoots
 			foreach (Shoot AShoot in game.world.shoots) {
 				// TODO: check bounds
-				// If AShoot.Coo.X > See.X AndAlso AShoot.Coo.X < See.X + DrawBox.Width AndAlso AShoot.Coo.Y > See.Y AndAlso AShoot.Coo.Y < See.Y + DrawBox.Height Then
-				Color col;
-				if (AShoot.Team is null)
-					col = Color.White;
-				else
-					col = AShoot.Team.color;
-
-				//var img = Helpers.GetSprite(AShoot.type, AShoot.fram, 0, col); // image
 				var img = AShoot.sprites.GetSprite(AShoot.fram, AShoot.sprite_y);
 				PointF center = new PointF(AShoot.location.X - See.X, AShoot.location.Y - See.Y); // centre
 				var MonM = new Matrix();
@@ -345,7 +336,6 @@ namespace Flee {
 			// effects
 			foreach (Effect AEffect in game.world.effects) {
 				if (AEffect.location.X > See.X && AEffect.location.X < See.X + g.VisibleClipBounds.Width && AEffect.location.Y > See.Y && AEffect.location.Y < See.Y + g.VisibleClipBounds.Height) {
-					//var img = Helpers.GetSprite(AEffect.type, AEffect.fram, AEffect.sprite_y); // image
 					var img = AEffect.sprites.GetSprite(AEffect.fram, AEffect.sprite_y);
 					PointF center = new PointF(AEffect.location.X - See.X, AEffect.location.Y - See.Y); // centre
 					var MonM = new Matrix();
@@ -366,7 +356,7 @@ namespace Flee {
 
 			foreach (Ship AShip in game.world.ships)
 				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + g.VisibleClipBounds.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + g.VisibleClipBounds.Height)
-					if (AShip.team is object && AShip.behavior != Ship.BehaviorMode.Drift && AShip.stats.sprite != "MSL") {
+					if (AShip.behavior != Ship.BehaviorMode.Drift && AShip.stats.sprite != "MSL") {
 						// selection rectangle
 						var drawrect = new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y - AShip.stats.width / 2d - See.Y)), new Size(AShip.stats.width, AShip.stats.width)); // zone de dessin
 						// draw rectangle arround allies or enemies																																																 // Target Identification mode
@@ -453,7 +443,7 @@ namespace Flee {
 			}
 		}
 		private void _DrawBox_Paint(object sender, PaintEventArgs e) {
-			if (ready && game is object && game.world is object)
+			if (form_ready && game is object && game.world is object)
 				DrawMain(e.Graphics);
 			else
 				base.OnPaint(e);
@@ -577,8 +567,7 @@ namespace Flee {
 								if (aship.location.Y - aship.stats.width / 2d < SS.Y + SS.Height)
 									if (!selected_ships.Contains(aship)) {
 										selected_ships.Add(aship);
-										if (aship.team is object)
-											game.player_team = aship.team;
+										game.player_team = aship.team;
 										if (down_mouse_location == last_mouse_location)
 											return;
 									}
@@ -592,8 +581,7 @@ namespace Flee {
 			foreach (Ship ship in selected_ships) {
 				ship.bot_ship = false;
 				if ((ship.stats.role & (int)ShipRole.Shipyard) != 0)
-					if (ship.team is object)
-						ship.team.bot_team = false;
+					ship.team.bot_team = false;
 			}
 			// ===' Recherche '==='
 			foreach (Ship AShip in game.world.ships)
@@ -611,7 +599,7 @@ namespace Flee {
 						AShip.TargetPTN = last_mouse_location;
 						AShip.target = null;
 						if ((AShip.stats.role & (int)ShipRole.Shipyard) != 0)
-							if (AShip.team is object && !ReferenceEquals(game.player_team, AShip.team))
+							if (!ReferenceEquals(game.player_team, AShip.team))
 								AShip.team.bot_team = true;
 					} else {
 						game.world.effects.Add(new Effect(-1, "EFF_Goto", last_mouse_location));
@@ -627,7 +615,7 @@ namespace Flee {
 					} else {
 						AShip.behavior = Ship.BehaviorMode.Folow;
 						AShip.target = target_ship;
-						if (AShip.team is object && AShip.team.IsFriendWith(target_ship.team))
+						if (AShip.team.IsFriendWith(target_ship.team))
 							game.world.effects.Add(new Effect(-1, "EFF_Assist", last_mouse_location, 180));
 						else
 							game.world.effects.Add(new Effect(-1, "EFF_OrderTarget", last_mouse_location));
@@ -638,7 +626,7 @@ namespace Flee {
 		private void PictureBoxAvailableStarfuel_Click(object sender, EventArgs e) {
 			if (game.player_team.cheats_enabled) {
 				var team = game.player_team;
-				if (selected_ships.Count > 0 && selected_ships[0].team is object)
+				if (selected_ships.Count > 0)
 					team = selected_ships[0].team;
 
 				team.resources = new MaterialSet(999999L, 999L, 9999L, 999999L);
@@ -660,7 +648,7 @@ namespace Flee {
 		}
 		public void update_displayed_materials() {
 			var selected_team = game.player_team;
-			if (selected_ships.Count > 0 && selected_ships[0].team is object)
+			if (selected_ships.Count > 0)
 				selected_team = selected_ships[0].team;
 
 			MetalTextBox.Text = selected_team.resources.Metal.ToString();
@@ -714,9 +702,8 @@ namespace Flee {
 				if (x == UpX && y == UpY)
 					foreach (Ship ship in selected_ships)
 						if (ship.CanUpgrade(AUp) && ReferenceEquals(ship.team, game.player_team) || game.player_team.cheats_enabled)
-							if (ship.team is null || ship.team.resources.HasEnough(ref AUp.cost) || game.player_team.cheats_enabled) {
-								if (ship.team is object)
-									ship.team.resources.Deplete(ref AUp.cost);
+							if (ship.team.resources.HasEnough(ref AUp.cost) || game.player_team.cheats_enabled) {
+								ship.team.resources.Deplete(ref AUp.cost);
 								ship.Upgrading = AUp;
 							}
 				// next item

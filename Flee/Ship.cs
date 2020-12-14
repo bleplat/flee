@@ -50,22 +50,13 @@ namespace Flee {
 		public float shield = 0f;
 		public List<Weapon> weapons = new List<Weapon>();
 		public Team last_damager_team = null;
+		public List<Upgrade2> upgrades = new List<Upgrade2>();
+		public bool auto = false; // for in-team auto objects (cf missiles)
 
-		// creation
-		public Ship(World world) : base(ref world) {
-			ResetShieldPoint();
-			TargetPTN = new PointF(location.X, location.Y);
-			UpdateSector();
-		}
-
-		public Ship(World world, string ship_class) : base(ref world) {
-			SetStats(ship_class);
-			ResetShieldPoint();
-			TargetPTN = new PointF(location.X, location.Y);
-			UpdateSector();
-		}
-
+		/* Construction */
 		public Ship(World world, Team team, string ship_class) : base(ref world) {
+			if (team == null) // TODO: NOW: remove this
+				throw new Exception ("team was null");
 			SetTeam(team);
 			SetStats(ship_class);
 			ResetShieldPoint();
@@ -88,8 +79,7 @@ namespace Flee {
 				if (upgrade_slots < 0) { // initial value is -1
 					upgrade_slots = base_stats.level;
 					if (base_stats.repair > 0)
-						if (team is object)
-							upgrade_slots += team.upgrade_slots_bonus;
+						upgrade_slots += team.upgrade_slots_bonus;
 				}
 				// Reset Weapons
 				weapons.Clear();
@@ -135,10 +125,8 @@ namespace Flee {
 		public void SetTeam(Team team) {
 			if (!ReferenceEquals(this.team, team)) {
 				this.team = team;
-				if (this.team is object) {
-					bot_ship = this.team.bot_team;
-					color = team.color;
-				}
+				bot_ship = this.team.bot_team;
+				color = team.color;
 			}
 		}
 
@@ -171,7 +159,7 @@ namespace Flee {
 			if (fram > 7)
 				fram = 0;
 			// ===' Bordures '==='
-			if (team is object && !team.bot_team) {
+			if (!team.bot_team) {
 				if (location.X < 0f)
 					location.X = 0f;
 				if (location.Y < 0f)
@@ -234,7 +222,7 @@ namespace Flee {
 				deflector_loading = stats.deflectors_cooldown;
 			// ===' Vie '==='
 			if (world.ticks % 40 == 0)
-				if (team is object) {
+				if (team.affinity != AffinityEnum.Wilderness) {
 					integrity = integrity + stats.repair;
 					if (integrity > stats.integrity)
 						integrity = stats.integrity;
@@ -307,7 +295,7 @@ namespace Flee {
 				Amount = (int)(Amount / 8d);
 			}
 
-			if (From is object && From.Team is object)
+			if (From is object)
 				if (stats.sprite == "Star")
 					From.Team.resources.Antimatter = (long)(From.Team.resources.Antimatter + Amount / 8d);
 				else if (stats.sprite == "Asteroid")
@@ -332,14 +320,14 @@ namespace Flee {
 			// ===' Fin de poursuite '==='
 			if (behavior == BehaviorMode.Folow && target is null)
 				behavior = BehaviorMode.Stand;
-			// no team mean drifting
-			if (team is null)
+			// wilderness team mean drifting
+			if (ReferenceEquals(team, world.wilderness_team))
 				behavior = BehaviorMode.Drift;
 			// ===' Auto-Activation '==='
 			if (rnd_num < 100)
 				agressivity += 0.05d;
 
-			if (bot_ship && behavior != BehaviorMode.Drift && team is object)
+			if (bot_ship && behavior != BehaviorMode.Drift && team.affinity != AffinityEnum.Wilderness)
 				if (target is null) {
 					var nearest_ship = GetClosestShip(agressivity, 1.0d, 0.1d);
 					if (nearest_ship is object) {
@@ -469,7 +457,7 @@ namespace Flee {
 						int weapon_location_y = (int)(Math.Cos(2d * Math.PI * (AWeap.Loc + direction) / 360d) * (stats.width / 2d) + location.Y);
 						// target in range
 						if (target is object && behavior != BehaviorMode.Mine)
-							if (team is null || !team.IsFriendWith(target.team)) {
+							if (!team.IsFriendWith(target.team)) {
 								var argp2 = AWeap.ForseeShootingLocation(target);
 								double dist = Helpers.Distance(ref location, ref argp2) - target.stats.width / 2d;
 								if (dist < AWeap.stats.range * 0.9d)
@@ -485,17 +473,16 @@ namespace Flee {
 									continue;
 
 								if (Helpers.Distance(ref location, ref OVessel.location) < AWeap.stats.range)
-									if (team is null || !team.IsFriendWith(OVessel.team)) {
+									if (!team.IsFriendWith(OVessel.team)) {
 										// Dim dist As Integer = Helpers.Distance(ToX, ToY, OVessel.location.X, OVessel.location.Y) - OVessel.stats.width / 2
 										var argp21 = AWeap.ForseeShootingLocation(OVessel);
 										double score = Helpers.Distance(ref location, ref argp21) - OVessel.stats.width / 2d;
 										if (score < AWeap.stats.range * 0.9d) {
 											if (score < AWeap.stats.range) {
-												if (team is null || OVessel.team is object && !team.IsFriendWith(OVessel.team))
-													score /= 8d;
-
+												if (!ReferenceEquals(OVessel.team, world.wilderness_team) && !team.IsFriendWith(OVessel.team))
+													score /= 8;
 												if (ReferenceEquals(target, OVessel))
-													score /= 4d;
+													score /= 4;
 											}
 
 											if (score < closest_score) {
@@ -546,7 +533,7 @@ namespace Flee {
 		}
 		// return true if the upgrade is available
 		public bool CanUpgrade(Upgrade upgrade) {
-			if (team is object && team.cheats_enabled)
+			if (team.cheats_enabled)
 				return true;
 			if (Upgrading is object)
 				return false;
@@ -560,7 +547,7 @@ namespace Flee {
 		}
 		// return true if the upgrade have its conditions met
 		public bool IsUpgradeCompatible(Upgrade upgrade) {
-			if (team is object && team.cheats_enabled)
+			if (team.cheats_enabled)
 				return true;
 			if (ReferenceEquals(upgrade, Upgrading))
 				return true;
@@ -685,7 +672,7 @@ namespace Flee {
 			}
 
 			case "?MS": {
-				if (team is null || world.CountTeamShips(team) < team.ship_count_limit)
+				if (world.CountTeamShips(team) < team.ship_count_limit)
 					return true;
 				break;
 			}
@@ -915,7 +902,7 @@ namespace Flee {
 					world.ships.Add(new Ship(this.world, team, Spliter[1]) { location = new Point((int)(location.X + world.gameplay_random.Next(-10, 11)), (int)(location.Y + world.gameplay_random.Next(-10, 11))) });
 				world.ships[world.ships.Count - 1].direction = direction;
 				if (world.ships[world.ships.Count - 1].weapons.Count > 0 && (world.ships[world.ships.Count - 1].weapons[0].stats.special & (int)Weapon.SpecialBits.SelfExplode) != 0) {
-					if (team is null || target is null || target.team is null || !team.IsFriendWith(target.team))
+					if (target is null || !team.IsFriendWith(target.team))
 						world.ships[world.ships.Count - 1].target = target;
 					else
 						world.ships[world.ships.Count - 1].target = null;
@@ -993,7 +980,7 @@ namespace Flee {
 				if (!ReferenceEquals(this, other_ship)) {
 					double distance_sq;
 					// relationship priority
-					if (other_ship.team is null || team is null)
+					if (other_ship.team.affinity == AffinityEnum.Wilderness || team.affinity == AffinityEnum.Wilderness)
 						distance_sq = Helpers.DistanceSQ(ref location, ref other_ship.location) / neutrals;
 					else if (team.IsFriendWith(other_ship.team))
 						distance_sq = Helpers.DistanceSQ(ref location, ref other_ship.location) / allies;

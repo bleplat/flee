@@ -1,7 +1,39 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Flee {
 	public class Shoot : WorldEntity {
+
+		/**
+		 * @brief Special effect for a projectile.
+		 */
+		public enum EmissiveMode {
+			Trace = 0x1, // effect appears where the projectile was
+			Fast = 0x2, // faster emission
+			Back = 0x10, // effect is shot backward
+			Front = 0x20, // effect is shot forward
+			Side = 0x40, // effect is shot sideward
+			Propeled = 0x100, // effect is spreaded backward
+			Emissive = 0x200, // effect is spreaded arround
+		}
+		public static int ShootEmissiveMode(string roles_str) {
+			int total = 0;
+			foreach (string role_str in roles_str.Split('|')) {
+				total |= (int)Enum.Parse(typeof(EmissiveMode), role_str, true);
+			}
+			return (total);
+		}
+		public static string ShootEmissiveMode(int roles) {
+			string total = "";
+			foreach (EmissiveMode role in Enum.GetValues(typeof(EmissiveMode))) {
+				if ((roles & (int)role) != 0) {
+					if (total.Length > 0)
+						total += '|';
+					total += role.ToString();
+				}
+			}
+			return (total);
+		}
 
 		// Primaire
 		public string type = "Default";
@@ -10,36 +42,46 @@ namespace Flee {
 		public Team Team = null;
 		public SpriteArray sprites = null;
 		public int sprite_y = 0;
+		public int emissive_mode = 0;
+		public string emissive_sprite = null;
 
 		// Secondaire
-		public float Power = 10;
+		public float power = 10;
 		public int special = 0;
 
-		public Shoot(ref World world, ref Team team, int time_to_live, float power, int special, string type, PointF location, float direction, float speed, int sprite_y = 0) : base(ref world) {
+		public Shoot(ref World world, ref Team team, int time_to_live, float power, int special, string type, PointF location, float direction, float speed, int sprite_y = 0, int emissive_mode = 0, string emissive_sprite = null) : base(ref world) {
 			this.time_to_live = time_to_live;
 			this.Team = team;
-			this.Power = power;
+			this.power = power;
 			this.special = special;
 			this.type = type;
 			this.location = location;
 			this.direction = direction;
 			this.speed_vec = Helpers.GetNewPoint(new Point(0, 0), direction, speed);
 			this.sprite_y = sprite_y;
+			this.emissive_mode = emissive_mode;
+			this.emissive_sprite = emissive_sprite;
 			// UpdateSector(); // useless in practice
-			this.sprites = SpriteArray.GetSpriteArray(this.type, (this.Team is object) ? this.Team.color : default);
+			this.sprites = SpriteArray.GetSpriteArray(this.type, this.Team.color);
+			if (sprite_y == -1)
+				this.sprite_y = Helpers.rand.Next(0, sprites.count_y);
 		}
-		public Shoot(ref World world, ref Team team, int time_to_live, float power, int special, string type, PointF location, float direction, PointF speed_vec, int sprite_y = 0) : base(ref world) {
+		public Shoot(ref World world, ref Team team, int time_to_live, float power, int special, string type, PointF location, float direction, PointF speed_vec, int sprite_y = 0, int emissive_mode = 0, string emissive_sprite = null) : base(ref world) {
 			this.time_to_live = time_to_live;
 			this.Team = team;
-			this.Power = power;
+			this.power = power;
 			this.special = special;
 			this.type = type;
 			this.location = location;
 			this.direction = direction;
 			this.speed_vec = speed_vec;
 			this.sprite_y = sprite_y;
+			this.emissive_mode = emissive_mode;
+			this.emissive_sprite = emissive_sprite;
 			// UpdateSector(); // useless in practice
-			this.sprites = SpriteArray.GetSpriteArray(this.type, (this.Team is object) ? this.Team.color : default);
+			this.sprites = SpriteArray.GetSpriteArray(this.type, this.Team.color);
+			if (sprite_y == -1)
+				this.sprite_y = Helpers.rand.Next(0, sprites.count_y);
 		}
 
 		public void Check() {
@@ -48,13 +90,27 @@ namespace Flee {
 			location.X = location.X + speed_vec.X;
 			location.Y = location.Y + speed_vec.Y;
 			time_to_live = time_to_live - 1;
-			if ((special & (int)Weapon.SpecialBits.Plasma) != 0)
-				world.effects.Add(new Effect(-1, "Plasma", location, world.gameplay_random.Next(0, 360), 1));
-			if ((special & (int)Weapon.SpecialBits.Propeled) != 0)
-				world.shoots.Add(new Shoot(ref world, ref Team, 5, 1, 0, "PRJ_A", location, world.gameplay_random.Next(0, 360), 2)); // TODO: make effect
-			if ((special & (int)Weapon.SpecialBits.BioDrops) != 0) {
-				world.shoots.Add(new Shoot(ref world, ref Team, 8, 2, 0, "PRJ_B", location, direction + world.gameplay_random.Next(-90, 90), world.gameplay_random.Next(4, 8))); // TODO: make effect
-				world.shoots.Add(new Shoot(ref world, ref Team, 8, Power / 2, 0, "PRJ_B", location, world.gameplay_random.Next(0, 360), world.gameplay_random.Next(6, 10))); // TODO: make effect
+			float speed = (float)Math.Sqrt(this.speed_vec.X * this.speed_vec.X + this.speed_vec.Y * this.speed_vec.Y);
+			if ((emissive_mode & (int)EmissiveMode.Fast) != 0) 
+				speed *= 1.75f;
+			if ((emissive_mode & (int)EmissiveMode.Trace) != 0) {
+				world.effects.Add(new Effect(-1, emissive_sprite, location, world.gameplay_random.Next(0, 360), 0));
+			}
+			if ((emissive_mode & (int)EmissiveMode.Front) != 0) {
+				world.effects.Add(new Effect(-1, emissive_sprite, location, direction, speed * 1.25f));
+			}
+			if ((emissive_mode & (int)EmissiveMode.Back) != 0) {
+				world.effects.Add(new Effect(-1, emissive_sprite, location, direction, speed * 0.75f));
+			}
+			if ((emissive_mode & (int)EmissiveMode.Side) != 0) {
+				world.effects.Add(new Effect(-1, emissive_sprite, location, direction + 90, speed * 0.25f));
+				world.effects.Add(new Effect(-1, emissive_sprite, location, direction - 90, speed * 0.25f));
+			}
+			if ((emissive_mode & (int)EmissiveMode.Propeled) != 0) {
+				world.effects.Add(new Effect(-1, emissive_sprite, location, direction + 180 + world.gameplay_random.Next(-35, 36), speed * 0.5f));
+			}
+			if ((emissive_mode & (int)EmissiveMode.Emissive) != 0) {
+				world.effects.Add(new Effect(-1, emissive_sprite, location, world.gameplay_random.Next(0, 360), speed * 0.25f));
 			}
 		}
 

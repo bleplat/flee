@@ -40,7 +40,7 @@ ship FissileMeteoroid
 ship Comet
 	role=Derelict
 	spawning_amount=1
-	spawning_frequency=0.1
+	spawning_frequency=0.5
 	level=0
 	width=25
 	integrity=2
