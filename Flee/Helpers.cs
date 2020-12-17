@@ -171,6 +171,13 @@ namespace Flee {
 			return d.ToString("0.00", to_double_culture);
 		}
 		public static Color ToColor(string str) {
+			switch (str) {
+			case "UpgradeColor1": return (Color.Yellow);
+			case "UpgradeColor2": return (Color.Orange);
+			case "UpgradeColor3": return (Color.Red);
+			case "UpgradeColor4": return (Color.Purple);
+			default: break;
+			}
 			try {
 				return (Color.FromName(str));
 			} catch {

@@ -24,7 +24,8 @@ ship MiniColonizer
 	weapon=-135;Heavy-ParticleGun
 	weapon=135;Heavy-ParticleGun
 	shield=200
-	shield_opacity=75.00
+	shield_opacity=0.75
+	shield_regeneration=0.001
 	cost=166;1;0;0
 	craft=MSL
 
@@ -40,8 +41,8 @@ ship DeinsCruiser
 	weapon=-135;DeinsGun1
 	weapon=135;DeinsGun1
 	shield=256
-	shield_opacity=256.00
-	shield_regeneration=100
+	shield_opacity=2.0
+	shield_regeneration=0.01
 	cost=4000;32;2;600
 	craft=MSL
 	native_upgrade=Jump_Engine_II

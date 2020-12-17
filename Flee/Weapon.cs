@@ -8,18 +8,22 @@ namespace Flee {
 
 		// Special effect flag
 		public enum SpecialBits {
+			ReloadRNG = 1,		// Reload time become non-constant
+			NoAim = 2,			// Shoots doesnt aim
 			Explode = 4,
+			KeepFire = 4,		// Never stops firing
 			SelfExplode = 16,
 			SelfNuke = 32,
 			SpreadOrigin = 64,
 			Rail = 128,
 			Flak = 256,
-			Summon = 512
+			Summon = 512,
+			EMP = 1024,
 		}
 
 		public static int SpecialFromString(string input) {
 			int total = 0;
-			foreach (string item in input.Split(';')) { // TODO: NOW: replace with '|'
+			foreach (string item in input.Split('|')) { // TODO: NOW: replace with '|'
 				if (item != "")
 					total += (int)(SpecialBits)Enum.Parse(typeof(SpecialBits), item);
 			}
@@ -28,7 +32,7 @@ namespace Flee {
 		public static string SpecialToString() {
 			string total = "";
 			foreach (SpecialBits special in Enum.GetValues(typeof(SpecialBits))) {
-				total += special.ToString() + ";";
+				total += special.ToString() + "|";
 			}
 			return total;
 		}
@@ -71,6 +75,8 @@ namespace Flee {
 				int time_to_live = (int)(stats.range / (double)stats.celerity);
 				float power = this.stats.power;
 				power *= this.ship.team.damage_multiplicator;
+				if ((base_stats.special & (int)SpecialBits.NoAim) != 0)
+					QA = ship.world.gameplay_random.Next(0, 360);
 				if ((base_stats.special & (int)SpecialBits.SpreadOrigin) != 0)
 					spawn_point = new PointF(PTN.X + ship.world.gameplay_random.Next(-7, 8), PTN.Y + ship.world.gameplay_random.Next(-7, 8));
 				if ((base_stats.special & (int)SpecialBits.Rail) != 0) {

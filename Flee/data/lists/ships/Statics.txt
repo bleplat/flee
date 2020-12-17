@@ -1,0 +1,126 @@
+#
+# Blue Star
+#
+
+gun Blue-Star-Waves
+	sprite=PRJ_EMP
+	range=210
+	celerity=16
+	power=0
+	loadtime=15
+	salvo=1
+	special=Flak|NoAim|ReloadRNG|KeepFire
+
+ship Blue_Star
+	role=Static|Mine
+	level=0
+	width=130
+	integrity=1073741823
+	turn=0.00
+	weapon=0;Blue-Star-Waves
+	weapon=-90;Blue-Star-Waves
+	weapon=90;Blue-Star-Waves
+	weapon=180;Blue-Star-Waves
+	cost=0;0;0;4
+
+#
+# Orange Star
+#
+
+gun Orange-Star-Waves
+	sprite=PRJ_C
+	range=210
+	celerity=4
+	power=0
+	loadtime=75
+	salvo=8
+	special=NoAim|ReloadRNG|KeepFire
+
+ship Orange_Star
+	role=Static|Mine
+	level=0
+	width=95
+	integrity=1073741823
+	turn=1.00
+	weapon=0;Orange-Star-Waves
+	weapon=-90;Orange-Star-Waves
+	weapon=90;Orange-Star-Waves
+	weapon=180;Orange-Star-Waves
+	cost=0;0;0;4
+
+#
+# Red Star
+#
+
+ship Red_Star
+	role=Static|Mine
+	level=0
+	width=55
+	integrity=999999
+	turn=1.00
+	cost=1;0;0;2
+
+#
+# Black Star
+#
+
+ship Black_Star
+	role=Static|Mine
+	level=0
+	width=55
+	integrity=999999
+	turn=1.00
+	cost=3;2;1;0
+
+#
+# EMP Star
+#
+
+gun EMP-Star-Waves
+	sprite=PRJ_EMP
+	range=1090
+	celerity=16
+	power=145
+	loadtime=35
+	salvo=1
+	special=EMP|NoAim|Rail|ReloadRNG|KeepFire
+
+ship EMP_Star
+	role=Static|Mine
+	level=0
+	width=55
+	integrity=999999
+	weapon=0;EMP-Star-Waves
+	weapon=-90;EMP-Star-Waves
+	weapon=90;EMP-Star-Waves
+	weapon=180;EMP-Star-Waves
+	turn=1.00
+	cost=3;2;1;0
+
+#
+# EMP Storm
+#
+
+gun EMP-Storm-Waves
+	sprite=EMP_Storm
+	range=800
+	celerity=6
+	power=75
+	loadtime=45
+	salvo=1
+	special=EMP|NoAim|ReloadRNG|KeepFire
+	
+ship EMP_Storm
+	sprite=Empty
+	role=Static
+	spawning_amount_min=8
+	spawning_amount_max=17
+	level=0
+	width=16
+	integrity=1073741823
+	weapon=0;EMP-Storm-Waves
+	turn=0.00
+	cost=0;0;0;0
+
+
+

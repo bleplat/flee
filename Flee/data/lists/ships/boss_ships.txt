@@ -9,7 +9,7 @@ ship Loneboss
 	weapon=135;MachineGun
 	weapon=0;RailGun
 	deflectors=4
-	hot_deflector=55.00
+	hot_deflectors=8
 	cost=6000;32;8;800
 	craft=MSL
 
@@ -24,8 +24,8 @@ ship Bugs
 	weapon=-45;Heavy-Bio-Gun
 	weapon=45;Heavy-Bio-Gun
 	weapon=180;Bio-Gun
-	hot_deflector=8.00
-	cold_deflector=1
+	hot_deflectors=8
+	cold_deflectors=1
 	cost=8000;64;16;900
 	native_upgrade=Jump_Engine
 
@@ -45,8 +45,8 @@ ship Converter
 	weapon=-135;MachineGun
 	weapon=135;MachineGun
 	shield=1200
-	shield_regeneration=30.00
-	shield_opacity=100.00
+	shield_regeneration=0.001
+	shield_opacity=0.9
 	cost=6000;32;8;800
 	craft=Converter_A
 	craft=Converter_B
@@ -63,7 +63,7 @@ ship Converter_A
 	weapon=45;MachineGun
 	shield=250
 	shield_regeneration=0.00
-	shield_opacity=65.00
+	shield_opacity=0.65
 	cost=400;4;0;0
 
 ship Converter_B
@@ -76,7 +76,7 @@ ship Converter_B
 	weapon=0;Heavy-PlasmaBomber
 	shield=250
 	shield_regeneration=0.00
-	shield_opacity=65.00
+	shield_opacity=.65
 	cost=400;4;0;0
 
 ship Purger_Dronner
@@ -90,7 +90,7 @@ ship Purger_Dronner
 	weapon=90;Heavy-PlasmaBomber
 	weapon=180;MachineGun
 	shield=300
-	shield_regeneration=20.00
+	shield_regeneration=0.001
 	shield_opacity=75.00
 	cost=6000;32;8;800
 	craft=Purger_Drone_1
@@ -106,8 +106,8 @@ ship Purger_Drone_1
 	turn=4.60
 	weapon=0;MachineGun
 	shield=8
-	shield_regeneration=2.00
-	shield_opacity=75.00
+	shield_regeneration=0.001
+	shield_opacity=0.75
 	cost=200;8;0;0
 
 ship Purger_Drone_2
@@ -118,8 +118,8 @@ ship Purger_Drone_2
 	turn=7.50
 	weapon=0;MachineGun
 	shield=8
-	shield_regeneration=2.00
-	shield_opacity=85.00
+	shield_regeneration=0.001
+	shield_opacity=0.85
 	cost=200;8;0;0
 
 ship Purger_Drone_3
@@ -130,8 +130,8 @@ ship Purger_Drone_3
 	turn=2.80
 	weapon=0;MachineGun
 	shield=8
-	shield_regeneration=2.00
-	shield_opacity=100.00
+	shield_regeneration=0.001
+	shield_opacity=1.0
 	cost=200;8;0;0
 
 ship Civil_A
@@ -144,7 +144,8 @@ ship Civil_A
 	turn=1.40
 	weapon=-90;MachineGun
 	weapon=90;MachineGun
-	deflectors=6
+	deflectors=4
+	cold_deflectors=16
 	deflectors_cooldown=32
 	cost=4000;4;2;400
 
@@ -157,8 +158,8 @@ ship Finalizer
 	weapon=-90;Finalizer
 	weapon=90;Finalizer
 	shield=1800
-	shield_regeneration=350.00
-	shield_opacity=100.00
+	shield_regeneration=0.01
+	shield_opacity=1.00
 	cost=10000;64;16;1000
 	craft=Station
 	craft=Station_Drones
@@ -179,6 +180,6 @@ ship Ori
 	weapon=180;Standard-Cannon
 	weapon=0;Ori
 	shield=2200
-	shield_regeneration=380.00
-	shield_opacity=100.00
+	shield_regeneration=0.01
+	shield_opacity=1.00
 	cost=10000;64;16;1000

@@ -15,7 +15,9 @@ namespace Flee {
 		Playable = 0x10, // May be summoned in a player team.
 		NPC = 0x20, // May be summoned in an NPC team.
 		Boss = 0x40, // May be summoned as a Boss.
-		Derelict = 0x80 // May be summoned as a derelict object.
+		Derelict = 0x80 ,// May be summoned as a derelict object.
+		Static = 0x100, // May be summoned as a static object such as a star.
+		Mine = 0x200, // Is mined instead of looted.
 	}
 
 	/**
@@ -71,22 +73,23 @@ namespace Flee {
 		public int width = -1;
 
 		// stats (base)
-		public int integrity = 0;
-		public int repair = 0;
+		public double integrity = 0;
+		public double repair = 0;
 		public double speed = 0.0d;
 		public double turn = 0.0d;
 		public List<string> default_weapons = new List<string>();
 
 		// stats (shields)
-		public int shield = 0;
-		public int shield_regeneration = 10;
+		public double shield = 0;
+		public double shield_regeneration = 0.001;
 		public double shield_opacity = 0d;
 
 		// stats (deflectors)
 		public int deflectors = 0;
-		public int deflectors_cooldown = 64;
-		public double hot_deflector = 0d;
-		public bool cold_deflector = false;
+		public int deflectors_cooldown = 128;
+		public int hot_deflectors = 0;
+		public int cold_deflectors = 0;
+		public int TotalDeflectorsMax() { return (cold_deflectors + hot_deflectors); }
 
 		// crafting
 		public List<string> crafts = new List<string>();
@@ -168,7 +171,7 @@ namespace Flee {
 				break;
 			}
 			case "shield_regeneration": {
-				shield_regeneration = (int)Helpers.ToDouble(value);
+				shield_regeneration = Helpers.ToDouble(value);
 				break;
 			}
 			case "shield_opacity": {
@@ -183,12 +186,12 @@ namespace Flee {
 				deflectors_cooldown = Convert.ToInt32(value);
 				break;
 			}
-			case "hot_deflector": {
-				hot_deflector = Helpers.ToDouble(value);
+			case "hot_deflectors": {
+				hot_deflectors = Convert.ToInt32(value);
 				break;
 			}
-			case "cold_deflector": {
-				cold_deflector = (Convert.ToInt32(value)) != 0;
+			case "cold_deflectors": {
+				cold_deflectors = Convert.ToInt32(value);
 				break;
 			}
 			case "craft": {
@@ -202,7 +205,7 @@ namespace Flee {
 			case "cost": {
 				cost = new MaterialSet(value);
 				if (complexity == 0)
-					complexity = (int)((width * 5) + (cost.Metal / 8) + (cost.Crystal * 15L) + (cost.Antimatter / 4d) + (cost.Fissile * 100L));
+					complexity = (int)((width * 5) + (cost.Metal / 8) + (cost.Crystal * 15L) + (cost.Starfuel / 4d) + (cost.Fissile * 100L));
 				break;
 			}
 			case "complexity": {
@@ -260,11 +263,11 @@ namespace Flee {
 					total += Constants.vbTab + "deflectors_cooldown=" + deflectors_cooldown.ToString() + Constants.vbLf;
 			}
 
-			if (hot_deflector != 0)
-				total += Constants.vbTab + "hot_deflector=" + Helpers.ToString(hot_deflector) + Constants.vbLf;
+			if (hot_deflectors != 0)
+				total += "\thot_deflectors=" + hot_deflectors.ToString() + "\n";
 
-			if (cold_deflector)
-				total += Constants.vbTab + "cold_deflector=" + Convert.ToInt32(cold_deflector).ToString() + Constants.vbLf;
+			if (cold_deflectors != 0)
+				total += "\tcold_deflectors=" + cold_deflectors.ToString() + "\n";
 
 			foreach (string item in crafts)
 				total += Constants.vbTab + "craft=" + item + Constants.vbLf;

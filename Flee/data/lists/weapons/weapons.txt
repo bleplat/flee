@@ -143,7 +143,7 @@ gun Pusher
 	celerity=10
 	power=12
 	loadtime=25
-	special=Flak;
+	special=Flak
 
 gun Shuriken-Bombs
 	desc=Long ranged but slow weapon, useful against slow targets.
@@ -180,21 +180,13 @@ gun Beam-6
 	loadtime=50
 	salvo=6
 
-gun Star-Waves
-	sprite=PRJ_C
-	range=210
-	celerity=4
-	power=0
-	loadtime=75
-	salvo=8
-
 gun Explode-On-Contact
 	sprite=PRJ_Z
 	range=8
 	celerity=8
 	power=45
 	loadtime=2
-	special=SelfExplode;
+	special=SelfExplode
 
 gun Nuke-On-Contact
 	sprite=PRJ_Z
@@ -202,7 +194,7 @@ gun Nuke-On-Contact
 	celerity=8
 	power=50
 	loadtime=2
-	special=SelfNuke;
+	special=SelfNuke
 
 #
 # Boss guns
@@ -215,7 +207,7 @@ gun RailGun
 	celerity=16
 	power=32
 	loadtime=65
-	special=Rail;
+	special=Rail
 
 gun Bio-Gun
 	desc=Deadly weapon used by bugs bosses.

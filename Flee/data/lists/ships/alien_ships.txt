@@ -6,8 +6,8 @@ ship Kastou
 	turn=2.20
 	weapon=0;Heavy-PlasmaBomber
 	shield=100
-	shield_regeneration=20.00
-	shield_opacity=100.00
+	shield_regeneration=0.001
+	shield_opacity=1.0
 	cost=4500;6;0;50
 	craft=Yerka
 	craft=MSL
@@ -31,8 +31,8 @@ ship Strange
 	turn=1.20
 	weapon=0;Beam-6
 	shield=25
-	shield_regeneration=25.00
-	shield_opacity=25.00
+	shield_regeneration=0.01
+	shield_opacity=0.25
 	cost=1800;4;0;0
 
 ship Sacred

@@ -1,63 +1,104 @@
-upgrade Self-Destruct
+ability Self-Destruct
 	desc=At least, this ship wont be salvaged.
-	install=0
 	sprite_coords=7;7
 	sprite_color=Red
-	effect=suicide()
+	once_effect=suicide()
 
-upgrade SOS
+ability SOS
 	desc=Call nearby allies to help you.
-	install=0
-	sprite_coords=0;3
+	sprite_coords=2;0
 	sprite_color=Orange
-	effect=sos()
+	once_effect=sos()
 
-upgrade Armor
+outfit Armor
 	desc=Increase your ship's hull.
 	sprite_coords=0;2
-	sprite_color=Cyan
+	sprite_color=UpgradeColor1
 	effect=integrity *= 1.35
+	once_effect=ship.integrity *= 1.35
+	required_stat=integrity >= 80
+	time=150
 	cost=500;0;0;0
 	
-upgrade Armor_II
+outfit Armor_II
 	required_upgrade=Armor
 	desc=Increase your ship's hull.
 	sprite_coords=0;2
-	sprite_color=Green
-	requirement=integrity >= 100
+	sprite_color=UpgradeColor2
+	required_stat=integrity >= 100
 	effect=integrity *= 1.35
+	once_effect=ship.integrity *= 1.35
+	time=200
 	cost=1000;0;0;0
 	
-upgrade Armor_III
+outfit Armor_III
 	required_upgrade=Armor_II
 	desc=Increase your ship's hull.
 	sprite_coords=0;2
-	sprite_color=Yellow
-	requirement=integrity >= 100
+	sprite_color=UpgradeColor3
+	required_stat=integrity >= 100
 	effect=integrity *= 1.35
+	once_effect=ship.integrity *= 1.35
+	time=250
 	cost=1500;0;0;0
 	
-upgrade Armor_IV
+outfit Armor_IV
 	required_upgrade=Armor_III
 	desc=Increase your ship's hull.
 	sprite_coords=0;2
-	sprite_color=Orange
-	requirement=integrity >= 100
+	sprite_color=UpgradeColor4
+	required_stat=integrity >= 100
 	effect=integrity *= 1.35
+	once_effect=ship.integrity *= 1.35
+	time=300
 	cost=2000;0;0;0
 
-upgrade Jump_Engine
+outfit Jump_Engine
 	desc=Allow to make small jumps.
-	sprite_coords=0;2
+	sprite_coords=6;5
 	sprite_color=Lime
+	time=100
 	cost=1000;2;0;0
 
-upgrade Jump
+ability Jump
 	required_upgrade=Jump_Engine
 	desc=Accelerate to an higher speed for a short distance.
-	install=0
+	sprite_coords=0;1
 	sprite_color=Lime
-	effect=jump() 200
+	once_effect=ship.speed += 60
+	cost=0;1;0;0
+	
+outfit Jump_Engine_II
+	required_upgrade=Jump_Engine
+	desc=Allow to make small jumps.
+	sprite_coords=6;5
+	sprite_color=Yellow
+	time=100
+	cost=1000;2;0;0
+
+ability Jump_II
+	required_upgrade=Jump_Engine_II
+	desc=Accelerate to an higher speed for a short distance.
+	install=0
+	sprite_coords=0;1
+	sprite_color=Yellow
+	once_effect=ship.speed += 80
+	cost=0;1;0;0
+	
+outfit Warp_Drive
+	desc=Allow to make small jumps.
+	sprite_coords=6;5
+	sprite_color=Purple
+	time=100
+	cost=1000;2;0;0
+
+ability Warp
+	required_upgrade=Warp_Drive
+	desc=Warp to an approximative location.
+	install=0
+	sprite_coords=1;1
+	sprite_color=Purple
+	effect=warp()
 	cost=0;1;0;0
 	
 	

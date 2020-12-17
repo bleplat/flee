@@ -1,16 +1,6 @@
-ship Star
-	level=0
-	width=95
-	integrity=1073741823
-	turn=1.00
-	weapon=0;Star-Waves
-	weapon=-90;Star-Waves
-	weapon=90;Star-Waves
-	weapon=180;Star-Waves
-	cost=0;0;0;0
-
 ship Asteroid
 	role=Derelict
+	spawning_frequency=0.99
 	spawning_amount_min=1
 	spawning_amount_max=5
 	level=0
@@ -19,8 +9,20 @@ ship Asteroid
 	turn=1.00
 	cost=500;2;0;0
 
+ship FissileAsteroid
+	role=Derelict
+	spawning_frequency=0.01
+	spawning_amount_min=1
+	spawning_amount_max=5
+	level=0
+	integrity=4000
+	speed=0.90
+	turn=1.00
+	cost=500;2;1;0
+
 ship Meteoroid
 	role=Derelict
+	spawning_frequency=1.0
 	spawning_amount_min=4
 	spawning_amount_max=13
 	level=0
@@ -30,7 +32,8 @@ ship Meteoroid
 	cost=0;2;0;0
 
 ship FissileMeteoroid
-	sprite=Meteoroid
+	role=Derelict
+	spawning_frequency=0.01
 	level=0
 	integrity=4
 	speed=2.00

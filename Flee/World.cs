@@ -121,10 +121,14 @@ namespace Flee {
 		}
 		public void InitDerelicts(Random rand) {
 			// TODO: use 'role'
-			// Stars
-			for (int i = 0, loopTo = rand.Next(1, 3); i <= loopTo; i++) {
-				string T = "Star";
-				ships.Add(new Ship(this, this.wilderness_team, T) { location = new Point(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Width)), direction = rand.Next(0, 360) });
+			// Statics
+			for (int i = 0, loopTo = rand.Next(2, 6); i <= loopTo; i++) {
+				ShipStats static_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Static);
+				var location = new PointF(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Height));
+				double direction = rand.Next(0, 360);
+				for (int j = 0, loopTo1 = rand.Next(static_type.spawning_amount_min, static_type.spawning_amount_max); j < loopTo1; j++) {
+					ships.Add(new Ship(this, this.wilderness_team, static_type.name) { location = new PointF(location.X + rand.Next(-4, 5), location.Y + rand.Next(-4, 5)), direction = (float)direction });
+				}
 			}
 			// Derelicts
 			for (int i = 1; i <= 30; i++) {
@@ -236,25 +240,8 @@ namespace Flee {
 							if (AShoot.Team.affinity != AffinityEnum.Wilderness)
 								AShip.team.NotifyEngagement(AShip.location);
 							AShoot.time_to_live = 0;
-							if (AShip.stats.hot_deflector > 0d && gameplay_random.Next(0, 100) < AShip.stats.hot_deflector)
-								effects.Add(new Effect(-1, "EFF_Deflected2", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
-							else {
-								if (AShip.deflectors_loaded > 0)
-									effects.Add(new Effect(-1, "EFF_Deflected", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
-								else if (AShoot.power < 16)
-									effects.Add(new Effect(-1, "EFF_Impact0", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
-								else if (AShoot.power < 32)
-									effects.Add(new Effect(-1, "EFF_Impact1", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
-								else if (AShoot.power < 48)
-									effects.Add(new Effect(-1, "EFF_Impact2", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
-								else
-									effects.Add(new Effect(-1, "EFF_Impact3", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
-
-								AShip.TakeDamages(AShoot.power, ref AShoot);
-								AShip.last_damager_team = AShoot.Team;
-								if (AShip.stats.cold_deflector && AShip.cold_deflector_charge < AShip.stats.integrity * 4)
-									effects.Add(new Effect(-1, "EFF_Deflected3", AShoot.location, AShoot.direction, AShip.speed_vec, gameplay_random.Next()));
-							}
+							AShip.TakeDamages(AShoot.power, AShoot);
+							AShip.last_damager_team = AShoot.Team;
 						}
 				}
 			}
@@ -274,33 +261,23 @@ namespace Flee {
 								effects.Add(new Effect(gameplay_random.Next(64, 128), "EFF_Debris", ships[i].location, gameplay_random.Next(0, 360), gameplay_random.Next(5, 256), gameplay_random.Next()));
 							int FriendlyFireCount = 0;
 							foreach (Ship a_ship in ships) {
-								a_ship.shield = 0f;
-								a_ship.deflectors_loaded = 0;
-								Shoot argFrom = null;
-								a_ship.TakeDamages(8, ref argFrom);
-								Shoot argFrom1 = null;
-								a_ship.TakeDamages(8, ref argFrom1);
-								Shoot argFrom2 = null;
-								a_ship.TakeDamages(8, ref argFrom2);
-								Shoot argFrom3 = null;
-								a_ship.TakeDamages(8, ref argFrom3);
-								Shoot argFrom4 = null;
-								a_ship.TakeDamages((int)Math.Max(0d, Math.Sqrt(Math.Max(0d, 7000d - Helpers.Distance(ships[i].location.X, ships[i].location.Y, a_ship.location.X, a_ship.location.Y)))), ref argFrom4);
-								Shoot argFrom5 = null;
-								a_ship.TakeDamages(24, ref argFrom5);
+								a_ship.shield = 0;
+								a_ship.deflectors = -a_ship.stats.cold_deflectors;
+								a_ship.TakeDamages(8, null);
+								a_ship.TakeDamages(8, null);
+								a_ship.TakeDamages(8, null);
+								a_ship.TakeDamages(8, null);
+								a_ship.TakeDamages((int)Math.Max(0d, Math.Sqrt(Math.Max(0d, 7000d - Helpers.Distance(ships[i].location.X, ships[i].location.Y, a_ship.location.X, a_ship.location.Y)))), null);
+								a_ship.TakeDamages(24, null);
 								if (Helpers.Distance(ships[i].location.X, ships[i].location.Y, a_ship.location.X, a_ship.location.Y) < 5500d) {
-									Shoot argFrom6 = null;
-									a_ship.TakeDamages(10000, ref argFrom6);
+									a_ship.TakeDamages(10000, null);
 								}
-								
 								if (a_ship.team.affinity == ships[i].team.affinity && a_ship.integrity <= 0 && ReferenceEquals(a_ship.team, ships[i].team))
 									FriendlyFireCount += 1;
-
 								if (FriendlyFireCount >= 4) 
 									ships[i].team.affinity = AffinityEnum.Hostile;
 							}
 						}
-
 						if (ships[i].last_damager_team is object)
 							ships[i].last_damager_team.resources.AddLoot(ref ships[i].stats.cost);
 
@@ -380,38 +357,35 @@ namespace Flee {
 						a_ship.team.ship_count_approximation += 1;
 				// Summoning / upgrades
 				foreach (Ship a_ship in ships)
-					if (a_ship.team.affinity != AffinityEnum.Wilderness && a_ship.bot_ship && a_ship.UpProgress == 0 && a_ship.team.ship_count_approximation < a_ship.team.ship_count_limit) {
+					if (a_ship.team.affinity != AffinityEnum.Wilderness && a_ship.bot_ship && a_ship.upgrade_progress == 0 && a_ship.team.ship_count_approximation < a_ship.team.ship_count_limit) {
 						string wished_upgrade = null;
 						if (rand.Next(0, 16) < 8)                         // building ships
-							if (a_ship.stats.crafts.Count > 0) {
+							if (true) { // TODO: this was broken by condition changes
 								wished_upgrade = Loader.GetRandomSpawnUpgrade(rand, a_ship);
 								if (wished_upgrade is object)
-									Upgrade.ForceUpgradeToShip(a_ship, wished_upgrade);
+									a_ship.UpgradeForFree(wished_upgrade);
 							} else if (rand.Next(0, 2) == 0) {
 								// upgrading
-								var PossibleUps = a_ship.AvailableUpgrades();
+								var PossibleUps = a_ship.AvailableNotInstalledUpgrades();
 								if (PossibleUps.Count >= 1)
 									a_ship.Upgrading = PossibleUps[rand.Next(0, PossibleUps.Count)];
 							} else {
-								// boss bases must suicide to not use the max ship counter
-								if (a_ship.team.affinity == AffinityEnum.Hostile && a_ship.stats.turn == 0.0d)
-									Upgrade.ForceUpgradeToShip(a_ship, "Suicide");
 								// ships equiped with cold deflectors jumps when unable to fire
-								if (a_ship.cold_deflector_charge > 24)
-									if (a_ship.CanUpgrade(Upgrade.UpgradeFromName("Jump")))
-										Upgrade.ForceUpgradeToShip(a_ship, "Jump");
-									else if (a_ship.CanUpgrade(Upgrade.UpgradeFromName("Jump_II")))
-										Upgrade.ForceUpgradeToShip(a_ship, "Jump_II");
-									else if (a_ship.CanUpgrade(Upgrade.UpgradeFromName("Warp")))
-										Upgrade.ForceUpgradeToShip(a_ship, "Warp");
+								if (a_ship.deflectors < 0)
+									if (a_ship.CanUpgradeFree("Jump"))
+										a_ship.UpgradeForFree("Jump");
+									else if (a_ship.CanUpgradeFree("Jump_II"))
+										a_ship.UpgradeForFree("Jump_II");
+									else if (a_ship.CanUpgradeFree("Warp"))
+										a_ship.UpgradeForFree("Warp");
 								// ship jumping when not in good shape
 								if (a_ship.integrity + a_ship.shield < (a_ship.stats.integrity + a_ship.stats.shield) / 3d)
-									if (a_ship.CanUpgrade(Upgrade.UpgradeFromName("Jump")))
-										Upgrade.ForceUpgradeToShip(a_ship, "Jump");
-									else if (a_ship.CanUpgrade(Upgrade.UpgradeFromName("Jump_II")))
-										Upgrade.ForceUpgradeToShip(a_ship, "Jump_II");
-									else if (a_ship.CanUpgrade(Upgrade.UpgradeFromName("Warp")))
-										Upgrade.ForceUpgradeToShip(a_ship, "Warp");
+									if (a_ship.CanUpgradeFree("Jump"))
+										a_ship.UpgradeForFree("Jump");
+									else if (a_ship.CanUpgradeFree("Jump_II"))
+										a_ship.UpgradeForFree("Jump_II");
+									else if (a_ship.CanUpgradeFree("Warp"))
+										a_ship.UpgradeForFree("Warp");
 							}
 					}
 			}
@@ -470,18 +444,19 @@ namespace Flee {
 				this.is_invaded_by_bosses = false;
 			}
 		}
-		public int CountTeamShips(Team team) {
+		public int CountTeamShips(Team team) { // TODO: reverify
 			int count = 0;
-			foreach (Ship aship in ships)
+			foreach (Ship aship in ships) {
 				if (ReferenceEquals(aship.team, team)) {
-					if (aship.stats.speed != 0.0d || (aship.stats.role & (int)ShipRole.Shipyard) == 0)
-						count = count + 1;
-
-					if (aship.Upgrading is object && aship.Upgrading.effect.StartsWith("!Sum"))
-						count = count + 1;
+					if (aship.auto)
+						continue;
+					if ((aship.stats.role & (int)ShipRole.Shipyard) != 0)
+						continue;
+					count += 1;
+					// TODO: count being built ships
 				}
-
-			return count;
+			}
+			return (count);
 		}
 	}
 }

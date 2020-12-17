@@ -10,7 +10,7 @@ namespace Flee {
 			if (line[0] == '\t' || line[0] == ' ')
 				throw new Exception("Malformed property: " + line);
 
-			var tuple = line.Split('=');
+			var tuple = line.Split(new char[] { '=' }, 2);
 			name = tuple[0];
 			value = tuple[1];
 		}

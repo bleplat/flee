@@ -132,12 +132,12 @@ namespace Flee {
 		}
 
 		/* Drawing */
-		public void UpdateUpgradeInfo(Upgrade up, int buy_amount) {
+		public void UpdateUpgradeInfo(Upgrade2 up, int buy_amount) {
 			// title
 			if (selected_ships.Count > 1)
-				UpName.Text = up.name + " (" + buy_amount.ToString() + ")";
+				UpName.Text = up.name.Replace("_", " ") + " (" + buy_amount.ToString() + ")";
 			else
-				UpName.Text = up.name;
+				UpName.Text = up.name.Replace("_", " ");
 
 			UpDesc.Text = up.desc;
 
@@ -145,20 +145,20 @@ namespace Flee {
 			PriceC.Text = (up.cost.Crystal * buy_amount).ToString();
 			PriceM.Text = (up.cost.Metal * buy_amount).ToString();
 			PriceU.Text = (up.cost.Fissile * buy_amount).ToString();
-			PriceA.Text = (up.cost.Antimatter * buy_amount).ToString();
-			PriceSlots.Text = (up.upgrade_slots_requiered).ToString();
+			PriceA.Text = (up.cost.Starfuel * buy_amount).ToString();
+			PriceSlots.Text = (up.required_upgrade_slots).ToString();
 
 			// resources visibility
-			PriceM.Visible = up.cost.Metal != 0L;
-			PriceMIcon.Visible = up.cost.Metal != 0L;
-			PriceC.Visible = up.cost.Crystal != 0L;
-			PriceCIcon.Visible = up.cost.Crystal != 0L;
-			PriceU.Visible = up.cost.Fissile != 0L;
-			PriceUIcon.Visible = up.cost.Fissile != 0L;
-			PriceA.Visible = up.cost.Antimatter != 0L;
-			PriceAIcon.Visible = up.cost.Antimatter != 0L;
-			PriceSlots.Visible = up.upgrade_slots_requiered != 0L;
-			PriceSlotsIcon.Visible = up.upgrade_slots_requiered != 0L;
+			PriceM.Visible = up.cost.Metal != 0;
+			PriceMIcon.Visible = up.cost.Metal != 0;
+			PriceC.Visible = up.cost.Crystal != 0;
+			PriceCIcon.Visible = up.cost.Crystal != 0;
+			PriceU.Visible = up.cost.Fissile != 0;
+			PriceUIcon.Visible = up.cost.Fissile != 0;
+			PriceA.Visible = up.cost.Starfuel != 0;
+			PriceAIcon.Visible = up.cost.Starfuel != 0;
+			PriceSlots.Visible = up.install;
+			PriceSlotsIcon.Visible = up.install;
 		}
 		public void DrawUpgrades(Graphics g) {
 			bool udV = false;
@@ -168,7 +168,7 @@ namespace Flee {
 			g.Clear(Color.Black);
 			int x = 0;
 			int y = 0;
-			foreach (Upgrade AUp in listed_upgrades) {
+			foreach (Upgrade2 AUp in listed_upgrades) {
 				int ships_upgradable = Ship.CountShipsBuyableNowUpgrade(selected_ships, AUp);
 				int ships_installed = Ship.CountShipsHavingUpgrade(selected_ships, AUp);
 				int min_progress = Ship.MinUpgradeProgress(selected_ships, AUp);
@@ -187,9 +187,9 @@ namespace Flee {
 				if (ships_installed == selected_ships.Count)                // already installed
 					g.DrawRectangle(new Pen(Brushes.White, 2f), x * 25 + 1, y * 25 + 1, 24 - 1, 24 - 1);
 				else if (min_progress < int.MaxValue) {
-					// being installing
+					// installing
 					g.DrawRectangle(new Pen(Brushes.Yellow, 2f), x * 25, y * 25, 24, 24);
-					int ph = (int)(min_progress / Math.Max(1m, AUp.delay) * 25m);
+					int ph = (int)(min_progress / Math.Max(1m, AUp.time) * 25m);
 					g.FillRectangle(Brushes.White, x * 25, y * 25 + 25 - ph, 25, ph);
 				} else if (ships_upgradable == 0)               // no update slot remaining
 					if (ships_installed != 0)
@@ -197,7 +197,7 @@ namespace Flee {
 					else
 						g.DrawRectangle(Pens.DimGray, x * 25, y * 25, 24, 24);
 				else if (!localHasEnough())               // cannot afford all
-					if (AUp.upgrade_slots_requiered > 0)
+					if (AUp.install)
 						if (selected_ships[0].team.resources.HasEnough(ref AUp.cost))                      // can afford at least one
 							g.DrawRectangle(Pens.DarkOrange, x * 25, y * 25, 24, 24);
 						else                        // cannot even afford one
@@ -206,12 +206,12 @@ namespace Flee {
 						g.DrawRectangle(Pens.PaleGoldenrod, x * 25, y * 25, 24, 24);
 					else                        // cannot even afford one
 						g.DrawRectangle(Pens.PaleVioletRed, x * 25, y * 25, 24, 24);
-				else if (AUp.upgrade_slots_requiered == 0)
+				else if (!AUp.install)
 					g.DrawRectangle(Pens.PaleGreen, x * 25, y * 25, 24, 24);
 				else
 					g.DrawRectangle(Pens.DarkGreen, x * 25, y * 25, 24, 24);
 
-				g.DrawImage(Helpers.GetSprite(AUp.file, AUp.frame_coords.X, AUp.frame_coords.Y), new Rectangle(new Point(x * 25, y * 25), new Size(25, 25)));
+				g.DrawImage(AUp.sprite_array.GetSprite(AUp.sprite_coords.X, AUp.sprite_coords.Y), new Rectangle(new Point(x * 25, y * 25), new Size(25, 25))) ;
 
 				// item suivant
 				x = x + 1;
@@ -399,18 +399,21 @@ namespace Flee {
 						}
 						// life   'New Pen(getSColor(AShip.Color))
 						if (AShip.stats.integrity > 20) {
-							g.DrawRectangle(Pens.DimGray, new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 5d - See.Y)), new Size(AShip.stats.width, 1)));
-							g.DrawRectangle(new Pen(AShip.team.color), new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 5d - See.Y)), new Size((int)(AShip.integrity / (double)AShip.stats.integrity * AShip.stats.width), 1)));
-							g.DrawString((int)AShip.integrity + "/" + AShip.stats.integrity, Font, new SolidBrush(AShip.team.color), new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 7d - See.Y)));
-							if (AShip.stats.deflectors > 0)
-								if (AShip.deflectors_loaded == AShip.stats.deflectors)
-									g.DrawString(AShip.deflectors_loaded + "/" + AShip.stats.deflectors, Font, new SolidBrush(Color.Gray), new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 7d + 7d - See.Y)));
+							g.DrawRectangle(Pens.DimGray, new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 5 - See.Y)), new Size(AShip.stats.width, 1)));
+							g.DrawRectangle(new Pen(AShip.team.color), new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 5 - See.Y)), new Size((int)(AShip.integrity / (double)AShip.stats.integrity * AShip.stats.width), 1)));
+							g.DrawString((int)AShip.integrity + "/" + (int)AShip.stats.integrity, Font, new SolidBrush(AShip.team.color), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 - See.Y)));
+							if (AShip.stats.shield > 0)
+								g.DrawString((int)AShip.shield + "/" + (int)AShip.stats.shield, Font, Brushes.LightGray, new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 - See.Y + 7)));
+							if (AShip.stats.TotalDeflectorsMax() > 0 || AShip.stats.cold_deflectors > 0)
+								if (AShip.deflectors == AShip.stats.deflectors)
+									g.DrawString(AShip.deflectors + "/" + AShip.stats.deflectors, Font, new SolidBrush(Color.DimGray), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 14 - See.Y)));
 								else
-									g.DrawString(AShip.deflectors_loaded + "/" + AShip.stats.deflectors + " <- " + AShip.deflector_loading, Font, new SolidBrush(Color.Gray), new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2d + 7d + 7d - See.Y)));
+									g.DrawString(AShip.deflectors + "/" + AShip.stats.deflectors + " <- " + AShip.deflector_cooldown, Font, new SolidBrush(Color.Gray), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 14 - See.Y)));
 						}
 					}
 			// text infos
-			g.DrawString("Ships : " + game.world.CountTeamShips(game.player_team) + " / " + game.player_team.ship_count_limit + " Max.", new Font("Consolas", 10f), Brushes.Lime, new Point(0, 0));
+			g.DrawImage(SpriteArray.GetSpriteArray("Upgrades").GetSprite(5, 0), new PointF(0, 0));
+			g.DrawString(game.world.CountTeamShips(game.player_team) + " / " + game.player_team.ship_count_limit, new Font("Consolas", 10f), Brushes.Gray, new Point(32, 8));
 			if (game.play_state == PlayState.Paused)
 				g.DrawString("PAUSE", new Font("Consolas", 16f), Brushes.White, new Point(0, (int)g.VisibleClipBounds.Height - 32));
 			else if (game.play_state == PlayState.Timelapse)
@@ -640,7 +643,7 @@ namespace Flee {
 
 		/* Selection Panel */
 		public List<Ship> selected_ships = new List<Ship>();
-		public List<Upgrade> listed_upgrades = new List<Upgrade>();
+		public List<Upgrade2> listed_upgrades = new List<Upgrade2>();
 		public void CheckRightPanel() {
 			update_displayed_materials();
 			verify_selected_ships_existence();
@@ -654,7 +657,7 @@ namespace Flee {
 			MetalTextBox.Text = selected_team.resources.Metal.ToString();
 			CristalTextBox.Text = selected_team.resources.Crystal.ToString();
 			UraniumTextBox.Text = selected_team.resources.Fissile.ToString();
-			AntimatterTextBox.Text = selected_team.resources.Antimatter.ToString();
+			AntimatterTextBox.Text = selected_team.resources.Starfuel.ToString();
 		}
 		public void verify_selected_ships_existence() {
 			for (int index = selected_ships.Count - 1; index >= 0; index -= 1)
@@ -674,7 +677,7 @@ namespace Flee {
 			if (selected_ships.Count == 1) {
 				SShipImageBox.Image = Helpers.GetSprite(selected_ships[0].stats.sprite, 0, 0, selected_ships[0].color);
 				SShipTypeBox.Text = selected_ships[0].stats.name.Replace("_", " ");
-				SShipUpsMax.Text = selected_ships[0].Ups.Count + " / " + selected_ships[0].upgrade_slots;
+				SShipUpsMax.Text = selected_ships[0].upgrades.Count + " / " + selected_ships[0].upgrade_slots;
 				AllowMiningBox.Visible = !selected_ships[0].AllowMining;
 			} else {
 				SShipImageBox.Image = My.Resources.Resources.Fleet;
@@ -683,7 +686,7 @@ namespace Flee {
 				AllowMiningBox.Visible = false;
 			}
 			// upgrade list
-			listed_upgrades = (List<Upgrade>)Ship.ListedUpgrades(selected_ships);
+			listed_upgrades = Ship.ListedUpgrades(selected_ships);
 		}
 		private int UpX = -1;
 		private int UpY = -1;
@@ -698,10 +701,10 @@ namespace Flee {
 				return;
 			int x = 0;
 			int y = 0;
-			foreach (Upgrade AUp in listed_upgrades) {
+			foreach (Upgrade2 AUp in listed_upgrades) {
 				if (x == UpX && y == UpY)
 					foreach (Ship ship in selected_ships)
-						if (ship.CanUpgrade(AUp) && ReferenceEquals(ship.team, game.player_team) || game.player_team.cheats_enabled)
+						if (ship.CanUpgradeFree(AUp) && ReferenceEquals(ship.team, game.player_team) || game.player_team.cheats_enabled)
 							if (ship.team.resources.HasEnough(ref AUp.cost) || game.player_team.cheats_enabled) {
 								ship.team.resources.Deplete(ref AUp.cost);
 								ship.Upgrading = AUp;

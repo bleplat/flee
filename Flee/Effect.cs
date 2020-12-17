@@ -13,6 +13,7 @@ namespace Flee {
 		public float direction = 0f;
 		public PointF speed_vec = new PointF();
 		public int sprite_y = 0;
+		public float rotation_speed = 0;
 
 		public int fram = 0;
 		public SpriteArray sprites = null;
@@ -52,6 +53,7 @@ namespace Flee {
 			fram = (fram + 1) % sprites.count_x;
 			location.X = location.X + speed_vec.X;
 			location.Y = location.Y + speed_vec.Y;
+			direction += rotation_speed;
 			time_to_live = time_to_live - 1;
 		}
 

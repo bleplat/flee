@@ -56,8 +56,8 @@ namespace Flee {
 		public static List<string> GetSpawnUpgrades(Ship ship) {
 			var upgrades = new List<string>();
 			foreach (string craft in ship.stats.crafts)
-				foreach (Upgrade a_up in Upgrade.upgrades)
-					if ((a_up.name ?? "") == ("Build_" + craft ?? "") || (a_up.name ?? "") == ("Launch_" + craft ?? ""))
+				foreach (Upgrade2 a_up in Upgrade2.upgrades.Values)
+					if (a_up.name == "Build_" + craft || a_up.name == "Launch_" + craft)
 						upgrades.Add(a_up.name);
 			return upgrades;
 		}
@@ -109,9 +109,18 @@ namespace Flee {
 						ShipStats.classes[a_class.name].SetProperty(prop.name, prop.value);
 					break;
 				}
+				case "build" :
+				case "outfit" :
+				case "ability" :
 				case "upgrade": {
 					if (!Upgrade2.upgrades.ContainsKey(a_class.name))
 						Upgrade2.upgrades[a_class.name] = new Upgrade2(a_class.name);
+					if (a_class.type == "build")
+						Upgrade2.upgrades[a_class.name].SetAsBuild();
+					if (a_class.type == "outfit")
+						Upgrade2.upgrades[a_class.name].SetAsOutfit();
+					if (a_class.type == "ability")
+						Upgrade2.upgrades[a_class.name].SetAsAbility();
 					foreach (ListProperty prop in a_class.properties)
 						Upgrade2.upgrades[a_class.name].SetProperty(prop.name, prop.value);
 					break;
@@ -155,9 +164,8 @@ namespace Flee {
 
 		/* Load & Unload */
 		public static void Load() {
-			Upgrade.LoadRegUpgrades();
 			LoadLists();
-			Upgrade.LoadBuildUpgrades();
+			Upgrade2.LoadBuildUpgrades();
 		}
 		public static void UnLoad() {
 			ShipStats.classes.Clear();
