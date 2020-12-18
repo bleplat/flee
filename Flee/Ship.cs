@@ -54,8 +54,8 @@ namespace Flee {
 		}
 
 		/* Uprades */
-		public List<Upgrade2> upgrades = new List<Upgrade2>();
-		public Upgrade2 Upgrading = null;
+		public List<Upgrade> upgrades = new List<Upgrade>();
+		public Upgrade Upgrading = null;
 		public int upgrade_progress;
 		public int upgrade_slots = -1;
 
@@ -81,7 +81,7 @@ namespace Flee {
 				// native upgrades
 				if (upgrades.Count == 0)
 					foreach (string native_upgrade_name in base_stats.native_upgrades)
-						upgrades.Add(Upgrade2.upgrades[native_upgrade_name]);
+						upgrades.Add(Upgrade.upgrades[native_upgrade_name]);
 				// upgrade_slots
 				if (upgrade_slots < 0) { // initial value is -1
 					upgrade_slots = base_stats.level;
@@ -538,15 +538,15 @@ namespace Flee {
 		}
 
 		// get updates to display
-		public static List<Upgrade2> ListedUpgrades(List<Ship> ships) {
-			var met_upgrades = new List<Upgrade2>();
-			foreach (Upgrade2 upgrade in Upgrade2.upgrades.Values)
+		public static List<Upgrade> ListedUpgrades(List<Ship> ships) {
+			var met_upgrades = new List<Upgrade>();
+			foreach (Upgrade upgrade in Upgrade.upgrades.Values)
 				if (CountShipsListingUpgrade(ships, upgrade) == ships.Count)
 					met_upgrades.Add(upgrade);
 			return (met_upgrades);
 		}
 
-		public bool InstalledOrInstallUpgrade(Upgrade2 upgrade) {
+		public bool InstalledOrInstallUpgrade(Upgrade upgrade) {
 			if (this.upgrades.Contains(upgrade))
 				return (true);
 			if (ReferenceEquals(Upgrading, upgrade))
@@ -556,57 +556,57 @@ namespace Flee {
 		/**
 		 * @brief List upgrades that this ship have installed or that are available to it.
 		 */
-		public List<Upgrade2> AvailableOrInstalledUgrades() {
-			var met_upgrades = new List<Upgrade2>();
-			foreach (Upgrade2 upgrade in Upgrade2.upgrades.Values)
-				if (upgrade.GetAvailability(this) == Upgrade2.Availability.Available || this.InstalledOrInstallUpgrade(upgrade))
+		public List<Upgrade> AvailableOrInstalledUgrades() {
+			var met_upgrades = new List<Upgrade>();
+			foreach (Upgrade upgrade in Upgrade.upgrades.Values)
+				if (upgrade.GetAvailability(this) == Upgrade.Availability.Available || this.InstalledOrInstallUpgrade(upgrade))
 					met_upgrades.Add(upgrade);
 			return (met_upgrades);
 		}
 		/**
 		 * @brief List upgrades that the ship could potentially do.
 		 */
-		public List<Upgrade2> AvailableNotInstalledUpgrades() {
-			var possible_upgrades = new List<Upgrade2>();
-			foreach (Upgrade2 upgrade in Upgrade2.upgrades.Values)
-				if (upgrade.GetAvailability(this) == Upgrade2.Availability.Available && !this.InstalledOrInstallUpgrade(upgrade))
+		public List<Upgrade> AvailableNotInstalledUpgrades() {
+			var possible_upgrades = new List<Upgrade>();
+			foreach (Upgrade upgrade in Upgrade.upgrades.Values)
+				if (upgrade.GetAvailability(this) == Upgrade.Availability.Available && !this.InstalledOrInstallUpgrade(upgrade))
 					possible_upgrades.Add(upgrade);
 			return (possible_upgrades);
 		}
 		/**
 		 * @brief Get if an upgrade is doable right now (price isnt counted).
 		 */
-		public bool CanUpgradeFree(Upgrade2 upgrade) {
+		public bool CanUpgradeFree(Upgrade upgrade) {
 			if (team.cheats_enabled)
 				return (true);
-			if (upgrade.GetAvailability(this) != Upgrade2.Availability.Available)
+			if (upgrade.GetAvailability(this) != Upgrade.Availability.Available)
 				return (false);
 			if (InstalledOrInstallUpgrade(upgrade))
 				return (false);
 			return (true);
 		}
 		public bool CanUpgradeFree(string upgrade_name) {
-			return CanUpgradeFree(Upgrade2.upgrades[upgrade_name]);
+			return CanUpgradeFree(Upgrade.upgrades[upgrade_name]);
 		}
 
-		public static int CountShipsListingUpgrade(List<Ship> ships, Upgrade2 upgrade) {
+		public static int CountShipsListingUpgrade(List<Ship> ships, Upgrade upgrade) {
 			int count = 0;
 			foreach (Ship ship in ships)
-				if (upgrade.GetAvailability(ship) == Upgrade2.Availability.Available || ship.InstalledOrInstallUpgrade(upgrade))
+				if (upgrade.GetAvailability(ship) == Upgrade.Availability.Available || ship.InstalledOrInstallUpgrade(upgrade))
 					count += 1;
 			return (count);
 		}
 
-		public static int CountShipsBuyableNowUpgrade(List<Ship> ships, Upgrade2 upgrade) {
+		public static int CountShipsBuyableNowUpgrade(List<Ship> ships, Upgrade upgrade) {
 			int count = 0;
 			foreach (Ship ship in ships)
 				if (ship.Upgrading is null)
-					if (upgrade.GetAvailability(ship) == Upgrade2.Availability.Available && !ship.InstalledOrInstallUpgrade(upgrade))
+					if (upgrade.GetAvailability(ship) == Upgrade.Availability.Available && !ship.InstalledOrInstallUpgrade(upgrade))
 						count += 1;
 			return (count);
 		}
 
-		public static int CountShipsHavingUpgrade(List<Ship> ships, Upgrade2 upgrade) {
+		public static int CountShipsHavingUpgrade(List<Ship> ships, Upgrade upgrade) {
 			int count = 0;
 			foreach (Ship ship in ships)
 				if (ship.upgrades.Contains(upgrade))
@@ -615,7 +615,7 @@ namespace Flee {
 		}
 
 		// get the minimum loading progress of an upgrade for a list of ship, or int.MaxValue if not being upgraded
-		public static int MinUpgradeProgress(List<Ship> ships, Upgrade2 upgrade) {
+		public static int MinUpgradeProgress(List<Ship> ships, Upgrade upgrade) {
 			int min = int.MaxValue;
 			foreach (Ship ship in ships)
 				if (ReferenceEquals(ship.Upgrading, upgrade))
@@ -624,25 +624,25 @@ namespace Flee {
 		}
 		// apply all upgrades effects this ship have
 		public void ApplyUpgrades() {
-			foreach (Upgrade2 upgrade in upgrades) {
+			foreach (Upgrade upgrade in upgrades) {
 				upgrade.ApplyEffects(this);
 			}
 		}
 
 		// Get if a ship have a specified upgrade
-		public bool HaveUp(ref Upgrade2 upgrade) {
+		public bool HaveUp(ref Upgrade upgrade) {
 			return upgrades.Contains(upgrade);
 		}
 
 		/**
 		 * @brief Starts upgrading for free.
 		 */
-		public void UpgradeForFree(Upgrade2 upgrade) {
+		public void UpgradeForFree(Upgrade upgrade) {
 			this.Upgrading = upgrade;
 			this.upgrade_progress = 0;
 		}
 		public void UpgradeForFree(string upgrade_name) {
-			UpgradeForFree(Upgrade2.upgrades[upgrade_name]);
+			UpgradeForFree(Upgrade.upgrades[upgrade_name]);
 		}
 
 		public bool IsDestroyed() {

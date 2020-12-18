@@ -1,0 +1,95 @@
+#
+# Weapon Reload
+#
+
+outfit Oiled_Reloader
+	desc=The main weapon reloads faster.
+	sprite_coords=0;4
+	sprite_color=UpgradeColor1
+	required_stat=weapon_count > 0
+	time=300
+	effect=weapon_loadtime *= 0.80
+	cost=750;1;0;0
+
+outfit Oiled_Reloader_II
+	desc=The main weapon reloads faster.
+	sprite_coords=0;4
+	sprite_color=UpgradeColor2
+	required_upgrade=Oiled_Reloader
+	time=300
+	effect=weapon_loadtime *= 0.85
+	cost=850;2;0;0
+
+outfit Oiled_Reloader_III
+	desc=The main weapon reloads faster.
+	sprite_coords=0;4
+	sprite_color=UpgradeColor3
+	required_upgrade=Oiled_Reloader_II
+	time=300
+	effect=weapon_loadtime *= 0.80
+	cost=950;3;0;0
+
+outfit Oiled_Reloader_IV
+	desc=The main weapon reloads faster.
+	sprite_coords=0;4
+	sprite_color=UpgradeColor4
+	required_upgrade=Oiled_Reloader_III
+	time=300
+	effect=weapon_loadtime *= 0.85
+	cost=1050;4;0;0
+
+#
+# Celerity & range
+#
+
+outfit Advanced_Aiming
+	desc=The main weapon's range is slightly increased.
+	sprite_coords=2;4
+	sprite_color=UpgradeColor1
+	required_stat=weapon_count > 0
+	time=300
+	effect=weapon_range *= 1.15
+	cost=750;1;0;0
+
+outfit Premium_Ammo
+	desc=The main weapon deals more damage.
+	sprite_coords=1;4
+	sprite_color=Purple
+	required_stat=weapon_count > 0
+	time=300
+	effect=weapon_power *= 1.25
+	cost=1100;2;0;100
+
+#
+# Salvo
+#
+
+outfit Double_Barrel
+	desc=Add an additional barrel to shoot at once, but it's longer to reload.
+	sprite_coords=5;4
+	sprite_color=Purple
+	required_stat=weapon_count > 0
+	time=300
+	effect=weapon_salvo *= 2
+	effect=weapon_loadtime *= 1.80
+	cost=2100;2;0;0
+
+outfit Double_Double_Barrel
+	desc=Two barrels are not enough? Not an issue!
+	sprite_coords=6;4
+	sprite_color=Purple
+	required_upgrade=Double_Barrel
+	time=300
+	effect=weapon_salvo *= 2
+	effect=weapon_loadtime *= 1.80
+	cost=2600;4;0;100
+
+outfit Ingeniors_Are_On_Weed
+	desc=Would this satisfy your wishes sir?
+	sprite_coords=7;4
+	sprite_color=Purple
+	required_upgrade=Double_Double_Barrel
+	time=300
+	effect=weapon_salvo *= 2
+	effect=weapon_loadtime *= 1.80
+	cost=3100;8;0;100

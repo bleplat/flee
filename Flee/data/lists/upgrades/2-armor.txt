@@ -1,0 +1,69 @@
+#
+# Armors
+#
+
+outfit Reinforced_Armor
+	desc=Increase your ship's hull.
+	sprite_coords=0;2
+	sprite_color=UpgradeColor1
+	required_stat=integrity >= 50
+	time=150
+	once_effect=ship.integrity *= 1.35
+	effect=integrity += 15
+	effect=integrity *= 1.30
+	cost=500;0;0;0
+
+outfit Reinforced_Armor_II
+	desc=Increase your ship's hull.
+	sprite_coords=0;2
+	sprite_color=UpgradeColor2
+	required_upgrade=Reinforced_Armor
+	time=200
+	once_effect=ship.integrity *= 1.35
+	effect=integrity += 10
+	effect=integrity *= 1.30
+	cost=750;0;0;0
+
+outfit Reinforced_Armor_III
+	desc=Increase your ship's hull.
+	sprite_coords=0;2
+	sprite_color=UpgradeColor3
+	required_upgrade=Reinforced_Armor_II
+	time=250
+	once_effect=ship.integrity *= 1.35
+	effect=integrity += 5
+	effect=integrity *= 1.25
+	cost=1000;0;0;0
+
+outfit Reinforced_Armor_IV
+	desc=Increase your ship's hull.
+	sprite_coords=1;2
+	sprite_color=UpgradeColor4
+	required_upgrade=Reinforced_Armor_III
+	time=300
+	once_effect=ship.integrity *= 1.35
+	effect=integrity *= 1.20
+	cost=1250;0;0;0
+
+#
+# Repair Bots
+#
+
+outfit Repair_Bots
+	desc=Increase your ship's hull.
+	sprite_coords=2;2
+	sprite_color=UpgradeColor1
+	required_stat=integrity >= 100
+	time=300
+	effect=repair += 1
+	cost=500;2;0;0
+
+outfit Repair_Bots_II
+	required_upgrade=Repair_Bots
+	desc=Increase your ship's hull.
+	sprite_coords=3;2
+	sprite_color=UpgradeColor2
+	required_stat=integrity >= 200
+	time=300
+	effect=repair += 1
+	cost=750;4;0;0

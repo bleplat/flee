@@ -19,9 +19,9 @@ namespace Flee {
 		public string emissive_sprite = null;
 
 		// stats
-		public int range = 180;
-		public int celerity = 16;
-		public int power = 0;
+		public double range = 180;
+		public double celerity = 16;
+		public double power = 0;
 		public int loadtime = 15;
 		public int salvo = 1;
 

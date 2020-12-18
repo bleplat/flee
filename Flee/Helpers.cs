@@ -172,10 +172,10 @@ namespace Flee {
 		}
 		public static Color ToColor(string str) {
 			switch (str) {
-			case "UpgradeColor1": return (Color.Yellow);
-			case "UpgradeColor2": return (Color.Orange);
-			case "UpgradeColor3": return (Color.Red);
-			case "UpgradeColor4": return (Color.Purple);
+			case "UpgradeColor1": return (Color.Green);
+			case "UpgradeColor2": return (Color.Yellow);
+			case "UpgradeColor3": return (Color.Orange);
+			case "UpgradeColor4": return (Color.Red);
 			default: break;
 			}
 			try {

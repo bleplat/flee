@@ -9,8 +9,8 @@ ship Kastou
 	shield_regeneration=0.001
 	shield_opacity=1.0
 	cost=4500;6;0;50
-	craft=Yerka
-	craft=MSL
+	craft=Build_Yerka
+	craft=Build_MSL
 	complexity=900
 
 ship Yerka

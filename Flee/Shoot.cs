@@ -46,10 +46,10 @@ namespace Flee {
 		public string emissive_sprite = null;
 
 		// Secondaire
-		public float power = 10;
+		public double power = 10;
 		public int special = 0;
 
-		public Shoot(ref World world, ref Team team, int time_to_live, float power, int special, string type, PointF location, float direction, float speed, int sprite_y = 0, int emissive_mode = 0, string emissive_sprite = null) : base(ref world) {
+		public Shoot(ref World world, ref Team team, int time_to_live, double power, int special, string type, PointF location, float direction, double speed, int sprite_y = 0, int emissive_mode = 0, string emissive_sprite = null) : base(ref world) {
 			this.time_to_live = time_to_live;
 			this.Team = team;
 			this.power = power;
@@ -57,7 +57,7 @@ namespace Flee {
 			this.type = type;
 			this.location = location;
 			this.direction = direction;
-			this.speed_vec = Helpers.GetNewPoint(new Point(0, 0), direction, speed);
+			this.speed_vec = Helpers.GetNewPoint(new Point(0, 0), direction, (float)speed);
 			this.sprite_y = sprite_y;
 			this.emissive_mode = emissive_mode;
 			this.emissive_sprite = emissive_sprite;
@@ -66,7 +66,7 @@ namespace Flee {
 			if (sprite_y == -1)
 				this.sprite_y = Helpers.rand.Next(0, sprites.count_y);
 		}
-		public Shoot(ref World world, ref Team team, int time_to_live, float power, int special, string type, PointF location, float direction, PointF speed_vec, int sprite_y = 0, int emissive_mode = 0, string emissive_sprite = null) : base(ref world) {
+		public Shoot(ref World world, ref Team team, int time_to_live, double power, int special, string type, PointF location, float direction, PointF speed_vec, int sprite_y = 0, int emissive_mode = 0, string emissive_sprite = null) : base(ref world) {
 			this.time_to_live = time_to_live;
 			this.Team = team;
 			this.power = power;

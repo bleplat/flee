@@ -1,0 +1,46 @@
+#
+# Diplomacy
+#
+
+ability SOS
+	desc=Call nearby allies to help you.
+	sprite_coords=2;0
+	sprite_color=Orange
+	require_nonbot=1
+	once_effect=sos()
+
+ability Self-Destruct
+	desc=At least, this ship wont be salvaged.
+	sprite_coords=7;7
+	sprite_color=Red
+	require_nonbot=1
+	once_effect=suicide()
+
+ability Abandon
+	desc=Release this ship.
+	sprite_coords=6;0
+	sprite_color=Gray
+	require_nonbot=1
+	once_effect=free()
+
+ability Gift
+	desc=Give this ship to the nearest faction.
+	sprite_coords=3;0
+	sprite_color=Orange
+	require_nonbot=1
+	once_effect=give()
+
+ability Surrender
+	desc=Surrender to the given faction. This may be refused or have side-effects.
+	desc=/!\ This count as a defeat!
+	sprite_coords=0;0
+	sprite_color=White
+	require_nonbot=1
+	once_effect=surrender()
+
+ability War_Declaration
+	desc=Declare war to all factions.
+	sprite_coords=4;0
+	sprite_color=Red
+	require_nonbot=1
+	once_effect=hostile()

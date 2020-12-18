@@ -162,7 +162,7 @@
     <Compile Include="Shoot.cs" />
     <Compile Include="SpriteArray.cs" />
     <Compile Include="Team.cs" />
-    <Compile Include="Upgrade2.cs" />
+    <Compile Include="Upgrade.cs" />
     <Compile Include="UpgradeCondition.cs" />
     <Compile Include="UpgradeEffect.cs" />
     <Compile Include="Weapon.cs" />

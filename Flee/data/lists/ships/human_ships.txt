@@ -9,9 +9,9 @@ ship Colonizer
 	weapon=-135;Heavy-ParticleGun
 	weapon=135;Heavy-ParticleGun
 	cost=166;1;0;0
-	craft=Anti-Light_Turret
-	craft=Anti-Heavy_Turret
-	craft=Pointvortex_Turret
+	craft=Build_Anti-Light_Turret
+	craft=Build_Anti-Heavy_Turret
+	craft=Build_Pointvortex_Turret
 
 ship MiniColonizer
 	role=Starter|Playable
@@ -27,7 +27,7 @@ ship MiniColonizer
 	shield_opacity=0.75
 	shield_regeneration=0.001
 	cost=166;1;0;0
-	craft=MSL
+	craft=Build_MSL
 
 ship DeinsCruiser
 	width=60
@@ -44,7 +44,7 @@ ship DeinsCruiser
 	shield_opacity=2.0
 	shield_regeneration=0.01
 	cost=4000;32;2;600
-	craft=MSL
+	craft=Build_MSL
 	native_upgrade=Jump_Engine_II
 
 ship Ambassador
@@ -58,7 +58,7 @@ ship Ambassador
 	weapon=-45;Basic-Cannon
 	weapon=180;Heavy-ParticleGun
 	cost=166;1;0;0
-	craft=Nuke
+	craft=Build_Nuke
 
 ship Hunter
 	desc=A light ship with light weapons.
@@ -89,7 +89,7 @@ ship Cargo
 	turn=2.00
 	weapon=90;Basic-Cannon
 	cost=800;0;0;0
-	craft=Miner_Drone
+	craft=Build_Miner_Drone
 	native_upgrade=Jump_Engine
 
 ship Simpleship
@@ -109,7 +109,7 @@ ship Scout
 	weapon=-45;Standard-ParticleGun
 	weapon=45;Standard-ParticleGun
 	cost=2000;4;0;0
-	craft=MSL
+	craft=Build_MSL
 
 ship Bomber
 	level=12
@@ -145,10 +145,10 @@ ship Dronner
 	turn=1.50
 	weapon=0;Standard-Cannon
 	cost=3500;8;0;0
-	craft=Fighter_Drone
-	craft=Dodger_Drone
-	craft=Bomber_Drone
-	craft=Master_Drone
+	craft=Build_Fighter_Drone
+	craft=Build_Dodger_Drone
+	craft=Build_Bomber_Drone
+	craft=Build_Master_Drone
 
 ship Miner_Drone
 	level=0

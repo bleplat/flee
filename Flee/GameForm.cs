@@ -132,7 +132,7 @@ namespace Flee {
 		}
 
 		/* Drawing */
-		public void UpdateUpgradeInfo(Upgrade2 up, int buy_amount) {
+		public void UpdateUpgradeInfo(Upgrade up, int buy_amount) {
 			// title
 			if (selected_ships.Count > 1)
 				UpName.Text = up.name.Replace("_", " ") + " (" + buy_amount.ToString() + ")";
@@ -168,7 +168,7 @@ namespace Flee {
 			g.Clear(Color.Black);
 			int x = 0;
 			int y = 0;
-			foreach (Upgrade2 AUp in listed_upgrades) {
+			foreach (Upgrade AUp in listed_upgrades) {
 				int ships_upgradable = Ship.CountShipsBuyableNowUpgrade(selected_ships, AUp);
 				int ships_installed = Ship.CountShipsHavingUpgrade(selected_ships, AUp);
 				int min_progress = Ship.MinUpgradeProgress(selected_ships, AUp);
@@ -643,7 +643,7 @@ namespace Flee {
 
 		/* Selection Panel */
 		public List<Ship> selected_ships = new List<Ship>();
-		public List<Upgrade2> listed_upgrades = new List<Upgrade2>();
+		public List<Upgrade> listed_upgrades = new List<Upgrade>();
 		public void CheckRightPanel() {
 			update_displayed_materials();
 			verify_selected_ships_existence();
@@ -701,7 +701,7 @@ namespace Flee {
 				return;
 			int x = 0;
 			int y = 0;
-			foreach (Upgrade2 AUp in listed_upgrades) {
+			foreach (Upgrade AUp in listed_upgrades) {
 				if (x == UpX && y == UpY)
 					foreach (Ship ship in selected_ships)
 						if (ship.CanUpgradeFree(AUp) && ReferenceEquals(ship.team, game.player_team) || game.player_team.cheats_enabled)

@@ -53,12 +53,10 @@ namespace Flee {
 			}
 			throw new Exception("no ship found with required roles");
 		}
-		public static List<string> GetSpawnUpgrades(Ship ship) {
+		public static List<string> GetSpawnUpgrades(Ship ship) { // TODO:
 			var upgrades = new List<string>();
 			foreach (string craft in ship.stats.crafts)
-				foreach (Upgrade2 a_up in Upgrade2.upgrades.Values)
-					if (a_up.name == "Build_" + craft || a_up.name == "Launch_" + craft)
-						upgrades.Add(a_up.name);
+				upgrades.Add(Upgrade.upgrades[craft].name);
 			return upgrades;
 		}
 		public static string GetRandomSpawnUpgrade(Random rand, Ship ship) {
@@ -113,16 +111,16 @@ namespace Flee {
 				case "outfit" :
 				case "ability" :
 				case "upgrade": {
-					if (!Upgrade2.upgrades.ContainsKey(a_class.name))
-						Upgrade2.upgrades[a_class.name] = new Upgrade2(a_class.name);
+					if (!Upgrade.upgrades.ContainsKey(a_class.name))
+						Upgrade.upgrades[a_class.name] = new Upgrade(a_class.name);
 					if (a_class.type == "build")
-						Upgrade2.upgrades[a_class.name].SetAsBuild();
+						Upgrade.upgrades[a_class.name].SetAsBuild();
 					if (a_class.type == "outfit")
-						Upgrade2.upgrades[a_class.name].SetAsOutfit();
+						Upgrade.upgrades[a_class.name].SetAsOutfit();
 					if (a_class.type == "ability")
-						Upgrade2.upgrades[a_class.name].SetAsAbility();
+						Upgrade.upgrades[a_class.name].SetAsAbility();
 					foreach (ListProperty prop in a_class.properties)
-						Upgrade2.upgrades[a_class.name].SetProperty(prop.name, prop.value);
+						Upgrade.upgrades[a_class.name].SetProperty(prop.name, prop.value);
 					break;
 				}
 				default: {
@@ -165,7 +163,7 @@ namespace Flee {
 		/* Load & Unload */
 		public static void Load() {
 			LoadLists();
-			Upgrade2.LoadBuildUpgrades();
+			Upgrade.LoadBuildUpgrades();
 		}
 		public static void UnLoad() {
 			ShipStats.classes.Clear();

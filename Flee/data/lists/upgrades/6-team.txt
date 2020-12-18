@@ -1,0 +1,85 @@
+#
+# Max ships
+#
+
+outfit Improved_Communiquations
+	teamwide=1
+	desc=Allow to control 4 more ships.
+	sprite_coords=0;6
+	sprite_color=UpgradeColor1
+	time=100
+	once_effect=max_ships() 4
+	cost=2500;30;0;200
+
+outfit Improved_Communiquations_II
+	teamwide=1
+	desc=Allow to control 4 more ships.
+	sprite_coords=0;6
+	sprite_color=UpgradeColor2
+	required_upgrade=Improved_Communiquations
+	time=100
+	once_effect=max_ships() 4
+	cost=5000;30;1;200
+
+outfit Improved_Communiquations_III
+	teamwide=1
+	desc=Allow to control 4 more ships.
+	sprite_coords=0;6
+	sprite_color=UpgradeColor3
+	required_upgrade=Improved_Communiquations_II
+	time=100
+	once_effect=max_ships() 4
+	cost=7500;30;1;200
+
+outfit Improved_Communiquations_IV
+	teamwide=1
+	desc=Allow to control 4 more ships.
+	sprite_coords=0;6
+	sprite_color=UpgradeColor4
+	required_upgrade=Improved_Communiquations_III
+	time=100
+	once_effect=max_ships() 4
+	cost=10000;30;1;200
+
+#
+# Upgrade Bonus
+#
+
+outfit Optimized_Build_Plans
+	teamwide=1
+	desc=Allow for an additional upgrade in newly built upgradable ships.
+	sprite_coords=1;6
+	sprite_color=UpgradeColor1
+	time=100
+	once_effect=max_upgrades() 1
+	cost=1500;5;0;0
+
+outfit Optimized_Build_Plans_II
+	teamwide=1
+	desc=Allow for an additional upgrade in newly built upgradable ships.
+	sprite_coords=1;6
+	sprite_color=UpgradeColor2
+	required_upgrade=Optimized_Build_Plans
+	time=100
+	once_effect=max_upgrades() 1
+	cost=3000;15;0;100
+
+outfit Optimized_Build_Plans_III
+	teamwide=1
+	desc=Allow for an additional upgrade in newly built upgradable ships.
+	sprite_coords=1;6
+	sprite_color=UpgradeColor3
+	required_upgrade=Optimized_Build_Plans_II
+	time=100
+	once_effect=max_upgrades() 1
+	cost=5000;30;1;200
+
+outfit Optimized_Build_Plans_IV
+	teamwide=1
+	desc=Allow for an additional upgrade in newly built upgradable ships.
+	sprite_coords=1;6
+	sprite_color=UpgradeColor4
+	required_upgrade=Optimized_Build_Plans_III
+	time=100
+	once_effect=max_upgrades() 1
+	cost=6000;40;1;300

@@ -9,14 +9,18 @@ ship Station
 	width=100
 	integrity=2000
 	cost=5000;32;4;0
-	craft=Cargo
-	craft=Hunter
-	craft=Harass
-	craft=Simpleship
-	craft=Nuke
-	craft=Anti-Light_Turret
-	craft=Anti-Heavy_Turret
-	craft=Pointvortex_Turret
+	craft=Build_Cargo
+	craft=Build_Hunter
+	craft=Build_Harass
+	craft=Build_Simpleship
+	craft=Build_Scout
+	craft=Build_Bomber
+	craft=Build_Artillery
+	craft=Build_Dronner
+	craft=Build_Nuke
+	craft=Build_Anti-Light_Turret
+	craft=Build_Anti-Heavy_Turret
+	craft=Build_Pointvortex_Turret
 
 ship Station_Simples
 	sprite=Station
@@ -25,11 +29,11 @@ ship Station_Simples
 	width=100
 	integrity=2500
 	cost=5000;32;4;0
-	craft=Harass
-	craft=Artillery
-	craft=Bomber
-	craft=Scout
-	craft=Capturer
+	craft=Build_Harass
+	craft=Build_Artillery
+	craft=Build_Bomber
+	craft=Build_Scout
+	craft=Build_Capturer
 
 ship Station_Legendaries
 	level=100
@@ -37,11 +41,11 @@ ship Station_Legendaries
 	width=100
 	integrity=2500
 	cost=5000;32;4;0
-	craft=Legend_I
-	craft=Legend_K
-	craft=Legend_L
-	craft=Legend_U
-	craft=Legend_Y
+	craft=Build_Legend_I
+	craft=Build_Legend_K
+	craft=Build_Legend_L
+	craft=Build_Legend_U
+	craft=Build_Legend_Y
 
 ship Station_Drones
 	level=100
@@ -49,9 +53,9 @@ ship Station_Drones
 	width=100
 	integrity=2500
 	cost=5000;32;4;0
-	craft=Hunter
-	craft=Harass
-	craft=Dronner
+	craft=Build_Hunter
+	craft=Build_Harass
+	craft=Build_Dronner
 	
 ship Station_Kastous
 	level=100
@@ -59,7 +63,7 @@ ship Station_Kastous
 	width=100
 	integrity=2500
 	cost=5000;32;4;0
-	craft=Kastou
+	craft=Build_Kastou
 
 ship Station_Stranges
 	level=100
@@ -67,10 +71,10 @@ ship Station_Stranges
 	width=100
 	integrity=2500
 	cost=5000;32;4;0
-	craft=Strange
-	craft=Strange
-	craft=Sacred
-	craft=Pusher
+	craft=Build_Strange
+	craft=Build_Strange
+	craft=Build_Sacred
+	craft=Build_Pusher
 
 ship Station_Crushers
 	level=100
@@ -80,7 +84,7 @@ ship Station_Crushers
 	integrity=2500
 	cost=5000;32;4;0
 	weapon=0;Heavy-PlasmaBomber
-	craft=Crusher
+	craft=Build_Crusher
 
 ship Station_Minimum_Warship
 	role=Shipyard|NPC
@@ -94,7 +98,7 @@ ship Station_Minimum_Warship
 	weapon=90;Longrange-ParticleGun
 	weapon=180;Longrange-ParticleGun
 	cost=3500;16;1;400
-	craft=Minimum_Warship
+	craft=Build_Minimum_Warship
 
 #
 # Turrets

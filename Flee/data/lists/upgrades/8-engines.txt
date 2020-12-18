@@ -1,0 +1,82 @@
+#
+# Speed
+#
+
+outfit Faster_Engines
+	desc=Allow the ship to go a little faster.
+	sprite_coords=0;5
+	sprite_color=UpgradeColor1
+	time=300
+	effect=speed *= 1.25
+	cost=250;1;0;0
+
+outfit Faster_Engines_II
+	desc=Allow the ship to go a little faster.
+	sprite_coords=0;5
+	sprite_color=UpgradeColor2
+	required_upgrade=Faster_Engines
+	time=300
+	effect=speed *= 1.25
+	cost=300;3;0;10
+
+outfit Faster_Engines_III
+	desc=Allow the ship to go a little faster.
+	sprite_coords=0;5
+	sprite_color=UpgradeColor3
+	required_upgrade=Faster_Engines_II
+	time=300
+	effect=speed *= 1.25
+	cost=500;5;0;20
+
+outfit Faster_Engines_IV
+	desc=Allow the ship to go a little faster.
+	sprite_coords=0;5
+	sprite_color=UpgradeColor4
+	required_upgrade=Faster_Engines_III
+	time=300
+	effect=speed *= 1.25
+	cost=750;7;0;30
+
+#
+# Turn
+#
+
+outfit Faster_Steering
+	desc=Allow the ship to turn faster.
+	sprite_coords=1;5
+	sprite_color=UpgradeColor1
+	time=300
+	effect=speed *= 1.45
+	cost=250;1;0;0
+
+outfit Faster_Steering_II
+	desc=Allow the ship to turn faster.
+	sprite_coords=1;5
+	sprite_color=UpgradeColor2
+	required_upgrade=Faster_Steering
+	time=300
+	effect=turn *= 1.35
+	cost=250;1;0;5
+
+#
+# Afterburner
+#
+
+outfit Engine_Afterburner
+	desc=Allow to temporarily slightly increase the ship speed while also reloading 2 deflectors.
+	desc=/!\ Space afterburn is slow to ignite.
+	sprite_coords=0;5
+	sprite_color=Purple
+	time=250
+	effect=speed *= 1.25
+	cost=750;7;0;30
+
+ability Afterburn
+	desc=Get a speed boost and reload 2 deflectors.
+	sprite_coords=0;5
+	sprite_color=Purple
+	required_upgrade=Engine_Afterburner
+	time=350
+	effect=ship.speed += 30
+	effect=ship.deflectors += 2
+	cost=0;0;0;50

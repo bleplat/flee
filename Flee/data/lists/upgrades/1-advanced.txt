@@ -1,0 +1,69 @@
+#
+# Jump engines
+#
+
+outfit Jump_Engine
+	desc=Allow to make small jumps.
+	sprite_coords=6;5
+	sprite_color=UpgradeColor1
+	time=200
+	cost=750;2;0;0
+
+ability Jump
+	desc=Accelerate to an higher speed for a short distance.
+	desc=Also reloads a deflector.
+	sprite_coords=1;1
+	sprite_color=UpgradeColor1
+	required_upgrade=Jump_Engine
+	time=200
+	once_effect=ship.speed += 60
+	once_effect=effect() EFF_jumped
+	once_effect=ship.deflectors += 1
+	cost=0;1;0;0
+
+outfit Jump_Engine_II
+	desc=Allow to make small jumps.
+	desc=Also reloads a deflector.
+	sprite_coords=6;5
+	sprite_color=UpgradeColor2
+	required_upgrade=Jump_Engine
+	time=300
+	cost=1000;2;0;0
+
+ability Jump_II
+	desc=Accelerate to an higher speed for a short distance.
+	desc=/!\ Require starfuel to jump.
+	install=0
+	sprite_coords=1;1
+	sprite_color=UpgradeColor2
+	required_upgrade=Jump_Engine_II
+	time=300
+	once_effect=ship.speed += 80
+	once_effect=effect() EFF_jumped
+	once_effect=ship.deflectors += 1
+	cost=0;1;0;16
+
+#
+# Warp Engines
+#
+
+outfit Warp_Drive
+	desc=Allow to warp to an approximative location. This takes longer than a jump.
+	desc=/!\ Require starfuel to warp.
+	sprite_coords=7;5
+	sprite_color=Purple
+	time=300
+	cost=1250;16;0;600
+
+ability Warp
+	desc=Warp to an approximative location.
+	desc=This also reloads 4 deflectors.
+	install=0
+	sprite_coords=6;5
+	sprite_color=Purple
+	required_upgrade=Warp_Drive
+	time=400
+	once_effect=warp()
+	once_effect=effect() EFF_warped
+	once_effect=ship.deflectors += 4
+	cost=48;1;0;48

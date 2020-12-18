@@ -73,7 +73,7 @@ namespace Flee {
 				Bar = Bar - 1;
 				PointF spawn_point = PTN; // TODO: simplify
 				int time_to_live = (int)(stats.range / (double)stats.celerity);
-				float power = this.stats.power;
+				double power = this.stats.power;
 				power *= this.ship.team.damage_multiplicator;
 				if ((base_stats.special & (int)SpecialBits.NoAim) != 0)
 					QA = ship.world.gameplay_random.Next(0, 360);

@@ -1,0 +1,105 @@
+#
+# Deflectors
+#
+
+outfit Deflector
+	desc=Blocks almost any projectile once. Slowly reloads.
+	sprite_coords=0;0
+	sprite=EFF_deflected
+	time=300
+	once_effect=effect() EFF_deflected
+	effect=deflectors += 1
+	cost=500;2;0;50
+
+outfit Deflector_II
+	desc=Blocks almost any projectile once. Slowly reloads.
+	sprite_coords=1;0
+	sprite=EFF_deflected
+	required_upgrade=Deflector
+	time=300
+	once_effect=effect() EFF_deflected
+	effect=deflectors += 1
+	cost=500;4;0;50
+
+outfit Deflector_III
+	desc=Blocks almost any projectile once. Slowly reloads.
+	sprite_coords=2;0
+	sprite=EFF_deflected
+	required_upgrade=Deflector_II
+	time=300
+	once_effect=effect() EFF_deflected
+	effect=deflectors += 1
+	cost=750;6;0;50
+
+outfit Deflector_IV
+	desc=Blocks almost any projectile once. Slowly reloads.
+	sprite_coords=3;0
+	sprite=EFF_deflected
+	required_upgrade=Deflector_III
+	time=300
+	once_effect=effect() EFF_deflected
+	effect=deflectors += 1
+	cost=750;8;0;50
+
+#
+# Hot Deflectors
+#
+
+outfit Hot_Deflector
+	desc=Convert a deflector to 2 hot deflectors.
+	desc=Hot deflectors doesnt reload by themselves, but some actions do.
+	sprite_coords=4;0
+	sprite=EFF_hot_deflected
+	required_stat=deflectors > 0
+	time=200
+	once_effect=effect() EFF_hot_deflected
+	effect=deflectors -= 1
+	effect=hot_deflectors += 2
+	cost=550;2;0;25
+
+outfit Hot_Deflector_II
+	desc=Convert a deflector to 2 hot deflectors.
+	sprite_coords=5;0
+	sprite=EFF_hot_deflected
+	required_upgrade=Hot_Deflector
+	required_stat=deflectors > 0
+	time=200
+	once_effect=effect() EFF_hot_deflected
+	effect=deflectors -= 1
+	effect=hot_deflectors += 2
+	cost=550;2;0;25
+
+ability Charge_Deflectors
+	desc=Reloads 16 deflectors, but takes some time.
+	sprite_coords=0;0
+	sprite=EFF_hot_deflected
+	required_upgrade=Hot_Deflector
+	required_stat=deflectors > 0
+	time=450
+	once_effect=effect() EFF_hot_deflected
+	once_effect=ship.deflectors += 16
+	cost=0;0;0;120
+
+#
+# Cold Deflectors
+#
+
+outfit Cold_Deflector
+	desc=The cold deflectors allow to block additional projectiles but consume so much power that the other systems may be affected.
+	desc=/!\ This realy change what role the ship can and cannot assume in combat!
+	sprite_coords=6;0
+	sprite=EFF_cold_deflected
+	time=150
+	once_effect=effect() EFF_cold_deflected
+	effect=cold_deflectors += 4
+	cost=1500;4;0;25
+
+outfit Deflectors_Reloader
+	desc=Deflectors reload slightly faster.
+	sprite_coords=1;0
+	sprite_color=Purple
+	required_upgrade=Deflector
+	time=300
+	once_effect=effect() EFF_cold_deflected
+	effect=deflectors_cooldown *= 0.85
+	cost=500;4;0;50

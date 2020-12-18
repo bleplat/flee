@@ -7,7 +7,7 @@ namespace Flee {
 	/**
 	 * @brief Represent a Purchasable item, either an upgrade or a 
 	 */
-	public class Upgrade2 {
+	public class Upgrade {
 
 		/**
 		 * @brief Represent the availability of an upgrade for a ship.
@@ -23,13 +23,13 @@ namespace Flee {
 		}
 
 		/* static list */
-		public static Dictionary<string, Upgrade2> upgrades = new Dictionary<string, Upgrade2>();
+		public static Dictionary<string, Upgrade> upgrades = new Dictionary<string, Upgrade>();
 		public static void LoadBuildUpgrades() {
 			foreach (ShipStats ship_class in ShipStats.classes.Values) {
 				string build_ship_upgrade_name = "Build_" + ship_class.name;
 				string launch_ship_upgrade_name = "Launch_" + ship_class.name;
 				if (!upgrades.ContainsKey(build_ship_upgrade_name) && !upgrades.ContainsKey(launch_ship_upgrade_name)) {
-					upgrades[build_ship_upgrade_name] = (new Upgrade2(build_ship_upgrade_name));
+					upgrades[build_ship_upgrade_name] = (new Upgrade(build_ship_upgrade_name));
 					upgrades[build_ship_upgrade_name].cost = ship_class.cost;
 					upgrades[build_ship_upgrade_name].install = false;
 					upgrades[build_ship_upgrade_name].required_upgrade_slots = 0;
@@ -64,7 +64,7 @@ namespace Flee {
 		}
 
 		/* Constructor */
-		public Upgrade2(string name) {
+		public Upgrade(string name) {
 			this.name = name;
 		}
 		public void SetAsOutfit() {
@@ -89,7 +89,7 @@ namespace Flee {
 		public bool require_craft = false;
 		public int required_upgrade_slots = 1;
 		public bool teamwide = false;
-		public List<Upgrade2> required_upgrades = new List<Upgrade2>();
+		public List<Upgrade> required_upgrades = new List<Upgrade>();
 		public List<UpgradeCondition> required_stats = new List<UpgradeCondition>();
 		public int required_team_slots = 0;
 
@@ -105,14 +105,15 @@ namespace Flee {
 		public override string ToString() {
 			string total = "";
 			total += "upgrade " + name + "\n";
-			total += "\tsprite=" + sprite_name + "\n";
 			total += "\tdesc=" + desc + "\n";
+			total += "\tsprite=" + sprite_name + "\n";
 			total += "\tsprite_coords=" + sprite_coords.X.ToString() + ";" + sprite_coords.Y.ToString() + "\n";
 			total += "\tsprite_color=" + sprite_color.ToString() + "\n";
 			total += "\tinstall=" + (install ? "1" : "0") + "\n";
+			total += "\tteamwide=" + (teamwide ? "1" : "0") + "\n";
 			total += "\trequire_nonbot=" + (require_nonbot ? "1" : "0") + "\n";
 			total += "\trequire_craft=" + (require_nonbot ? "1" : "0") + "\n";
-			foreach (Upgrade2 upgrade in required_upgrades)
+			foreach (Upgrade upgrade in required_upgrades)
 				total += "\trequired_upgrade=" + upgrade.name + "\n";
 			foreach (UpgradeCondition condition in required_stats)
 				total += "\rrequired_stat=" + condition.ToString() + "\n";
@@ -127,7 +128,7 @@ namespace Flee {
 		}
 		public void SetProperty(string name, string value) {
 			switch (name) {
-			case "desc": desc = value; break;
+			case "desc": desc += value + "\r\n"; break;
 			case "sprite": 
 				sprite_name = value;
 				UpdateSpriteArray();
@@ -138,6 +139,7 @@ namespace Flee {
 				UpdateSpriteArray();
 				break;
 			case "install": install = (Convert.ToInt32(value) != 0); break;
+			case "teamwide": teamwide = (Convert.ToInt32(value) != 0); break;
 			case "require_nonbot": require_nonbot = (Convert.ToInt32(value) != 0); break;
 			case "require_craft": require_craft = (Convert.ToInt32(value) != 0); break;
 			case "required_upgrade": required_upgrades.Add(upgrades[value]); break;
@@ -160,7 +162,7 @@ namespace Flee {
 			return (true);
 		}
 		public bool ArePriorUpgradeRequirementsMetBy(Ship ship) {
-			foreach (Upgrade2 upgrade in this.required_upgrades) {
+			foreach (Upgrade upgrade in this.required_upgrades) {
 				if (!ship.upgrades.Contains(upgrade))
 					return (false);
 			}
@@ -170,6 +172,8 @@ namespace Flee {
 			if (ship.team.cheats_enabled)
 				return (Availability.Available);
 			if (ship.bot_ship && require_nonbot)
+				return (Availability.NotVisible);
+			if (this.teamwide && (ship.stats.role & (int)ShipRole.Shipyard) == 0)
 				return (Availability.NotVisible);
 			if (require_craft && !ship.stats.crafts.Contains(this.name))
 				return (Availability.NotVisible);

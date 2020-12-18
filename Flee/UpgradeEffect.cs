@@ -53,17 +53,25 @@ namespace Flee {
 		public void Apply(Ship ship) {
 			if (this.advanced) {
 				switch (this.op) {
-				case "brightshield()": ship.BrightShield(); return;
+				// politic
 				case "sos()": return;
+				case "suicide()": ship.integrity = Int32.MinValue / 2; return;
+				case "free()": ship.SetTeam(ship.world.wilderness_team); return;
+				case "give()": return;
+				case "surrender()": return;
+				case "hostile()": ship.team.affinity = AffinityEnum.Hostile; return;
+				//
+				case "effect()":
+					ship.world.effects.Add(new Effect(-1, this.right, ship.location, ship.direction, ship.speed_vec));
+					return;
+				case "max_ships()": ship.team.ship_count_limit += Convert.ToInt32(this.right); return;
+				case "max_upgrades()": ship.team.upgrade_slots_bonus += Convert.ToInt32(this.right); return;
+				case "brightshield()": ship.BrightShield(); return;
 				case "ask_surrender()": return;
 				case "team_surrender()": return;
 				case "warp()": /* // TODO: */ return;
-				case "max_ships()": ship.team.ship_count_limit += Convert.ToInt32(this.right); return;
-				case "bonus_slots()": ship.team.upgrade_slots_bonus += Convert.ToInt32(this.right); return;
 				case "affinity()": ship.team.affinity = (AffinityEnum)Enum.Parse(typeof(AffinityEnum), this.right); return;
 				case "abandon()": ship.team = ship.world.wilderness_team; return;
-				case "give()": return;
-				case "suicide()": ship.integrity = Int32.MinValue / 2; return;
 				case "ascend()": ship.team.has_ascended = true; return;
 				case "enable_cheats()": ship.team.cheats_enabled = true; return;
 				case "disable_cheats()": ship.team.cheats_enabled = false; return;
@@ -162,7 +170,9 @@ namespace Flee {
 			SetOp(op, ref arg1, (float)Helpers.ToDouble(arg2));
 		}
 		public static void SetOp(string op, ref int arg1, string arg2) {
-			SetOp(op, ref arg1, Convert.ToInt32(arg2));
+			double prev = arg1;
+			SetOp(op, ref prev, Helpers.ToDouble(arg2));
+			arg1 = (int)prev;
 		}
 
 		/* Value Return Operations */

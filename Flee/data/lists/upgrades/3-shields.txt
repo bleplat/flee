@@ -1,0 +1,109 @@
+#
+# Shield Emitters
+#	
+
+outfit Shield_Emitters
+	desc=Adds Shields emitters to the hull, blocking 33% of the damages.
+	sprite_coords=0;3
+	sprite_color=UpgradeColor1
+	required_stat=integrity >= 60
+	time=300
+	effect=shield += 75
+	effect=shield_opacity += 0.33
+	effect=shield_regeneration min()= 0.005
+	cost=350;1;0;0
+
+outfit Shield_Emitters_II
+	desc=Adds Shields emitters to the hull, blocking 33% of the damages. Also slightly increase the shields durability.
+	sprite_coords=0;3
+	sprite_color=UpgradeColor2
+	required_upgrade=Shield_Emitters
+	time=300
+	effect=shield += 50
+	effect=shield_opacity += 0.33
+	cost=550;2;0;0
+
+outfit Shield_Emitters_III
+	desc=Adds Shields emitters to the hull, blocking 33% of the damages. Also very slightly increase the shields durability.
+	sprite_coords=0;3
+	sprite_color=UpgradeColor3
+	required_upgrade=Shield_Emitters_II
+	time=300
+	effect=shield += 25
+	effect=shield_opacity += 0.34
+	cost=750;4;0;0
+
+#
+# Extra opacity
+#
+
+outfit Shield_Opacifier
+	desc=Shields block 25% more damages. More than 100% opacity helps against EMP effect.
+	sprite_coords=1;3
+	sprite_color=UpgradeColor3
+	required_upgrade=Shield_Emitters_III
+	time=300
+	effect=shield_opacity += 0.25
+	cost=1000;6;0;0
+
+outfit Shield_Opacifier_II
+	desc=Shields block 50% more damages. More than 100% opacity helps against EMP effect.
+	sprite_coords=1;3
+	sprite_color=UpgradeColor4
+	required_upgrade=Shield_Opacifier
+	time=300
+	effect=shield_opacity += 0.25
+	cost=750;4;0;0
+
+#
+# Shield Capacitors
+#
+
+outfit Shield_Capacitors
+	desc=Add durability to the shields.
+	sprite_coords=7;3
+	sprite_color=UpgradeColor1
+	required_stat=shield > 0
+	time=300
+	effect=shield += 75
+	cost=350;2;0;0
+
+outfit Shield_Capacitors_II
+	desc=Add durability to the shields.
+	sprite_coords=7;3
+	sprite_color=UpgradeColor2
+	required_upgrade=Shield_Capacitors
+	time=300
+	effect=shield += 75
+	cost=450;4;0;0
+
+outfit Shield_Capacitors_III
+	desc=Add durability to the shields.
+	sprite_coords=7;3
+	sprite_color=UpgradeColor3
+	required_upgrade=Shield_Capacitors_II
+	time=300
+	effect=shield += 75
+	cost=550;6;0;0
+
+#
+# Shield Reloaders
+#
+
+outfit Shield_Reloader
+	desc=Helps reloading the shields.
+	sprite_coords=2;3
+	sprite_color=UpgradeColor1
+	required_stat=shield > 0
+	time=300
+	effect=shield_regeneration += 0.005
+	cost=450;4;0;50
+
+outfit Shield_Reloader_II
+	desc=Helps reloading the shields.
+	sprite_coords=2;3
+	sprite_color=UpgradeColor1
+	required_upgrade=Shield_Reloader
+	time=300
+	effect=shield_regeneration += 0.005
+	cost=950;6;0;100

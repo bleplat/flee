@@ -11,7 +11,7 @@ ship Loneboss
 	deflectors=4
 	hot_deflectors=8
 	cost=6000;32;8;800
-	craft=MSL
+	craft=Build_MSL
 
 ship Bugs
 	role=Boss
@@ -48,8 +48,8 @@ ship Converter
 	shield_regeneration=0.001
 	shield_opacity=0.9
 	cost=6000;32;8;800
-	craft=Converter_A
-	craft=Converter_B
+	craft=Build_Converter_A
+	craft=Build_Converter_B
 	native_upgrade=Jump_Engine_II
 
 ship Converter_A
@@ -93,9 +93,9 @@ ship Purger_Dronner
 	shield_regeneration=0.001
 	shield_opacity=75.00
 	cost=6000;32;8;800
-	craft=Purger_Drone_1
-	craft=Purger_Drone_2
-	craft=Purger_Drone_3
+	craft=Build_Purger_Drone_1
+	craft=Build_Purger_Drone_2
+	craft=Build_Purger_Drone_3
 	native_upgrade=Jump_Engine_II
 
 ship Purger_Drone_1
@@ -161,14 +161,14 @@ ship Finalizer
 	shield_regeneration=0.01
 	shield_opacity=1.00
 	cost=10000;64;16;1000
-	craft=Station
-	craft=Station_Drones
-	craft=Station_Legendaries
-	craft=Station_Kastous
-	craft=Station_Stranges
-	craft=Station_Crushers
-	craft=BomberFactory
-	craft=Kastou
+	craft=Build_Station
+	craft=Build_Station_Drones
+	craft=Build_Station_Legendaries
+	craft=Build_Station_Kastous
+	craft=Build_Station_Stranges
+	craft=Build_Station_Crushers
+	craft=Build_BomberFactory
+	craft=Build_Kastou
 	native_upgrade=Warp_Drive
 
 ship Ori

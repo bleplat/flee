@@ -4,7 +4,7 @@
 
 gun Blue-Star-Waves
 	sprite=PRJ_EMP
-	range=210
+	range=410
 	celerity=16
 	power=0
 	loadtime=15
@@ -16,7 +16,7 @@ ship Blue_Star
 	level=0
 	width=130
 	integrity=1073741823
-	turn=0.00
+	turn=1.00
 	weapon=0;Blue-Star-Waves
 	weapon=-90;Blue-Star-Waves
 	weapon=90;Blue-Star-Waves
