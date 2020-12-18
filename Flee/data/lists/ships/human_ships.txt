@@ -93,11 +93,12 @@ ship Cargo
 	native_upgrade=Jump_Engine
 
 ship Simpleship
+	desc=An old ship design supporting firing EMPs at enemies.
 	level=6
 	integrity=90
 	speed=2.80
 	turn=2.00
-	weapon=0;Standard-Cannon
+	weapon=0;EMP-Cannon
 	cost=1000;1;0;0
 
 ship Scout

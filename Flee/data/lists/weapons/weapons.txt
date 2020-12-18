@@ -63,6 +63,14 @@ gun Basic-Cannon
 	celerity=11
 	power=10
 	loadtime=25
+	
+gun EMP-Cannon
+	desc=
+	sprite=PRJ_EMP
+	range=210
+	celerity=16
+	power=25
+	loadtime=35
 
 #
 # Artilleries
