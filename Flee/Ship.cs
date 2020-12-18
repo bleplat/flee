@@ -277,15 +277,6 @@ namespace Flee {
 		}
 
 		public void TakeDamages(double Amount, Shoot From = null) {
-			// EMP capability
-			if (From != null && (From.special & (int)Weapon.SpecialBits.EMP) != 0) {
-				this.emp_damage *= (1.0 - this.stats.shield_opacity / 2);
-				this.emp_damage += Amount;
-				double angle_ship_shoot_rel = Helpers.NormalizeAngleUnsigned(Helpers.GetAngle(location.X, location.Y, From.location.X, From.location.Y) - direction);
-				int shield_ptn_index = (int)(angle_ship_shoot_rel * 16d / 360d);
-				ShieldPoints[shield_ptn_index % 16] = 255;
-				return;
-			}
 			// deflectors
 			if (deflectors > -stats.cold_deflectors) {
 				if (From != null) {
@@ -297,6 +288,15 @@ namespace Flee {
 						this.world.effects.Add(new Effect(-1, "EFF_cold_deflected", From.location, From.direction, this.speed_vec));
 				}
 				deflectors -= 1;
+				return;
+			}
+			// EMP capability
+			if (From != null && (From.special & (int)Weapon.SpecialBits.EMP) != 0) {
+				this.emp_damage *= (1.0 - this.stats.shield_opacity / 2);
+				this.emp_damage += Amount;
+				double angle_ship_shoot_rel = Helpers.NormalizeAngleUnsigned(Helpers.GetAngle(location.X, location.Y, From.location.X, From.location.Y) - direction);
+				int shield_ptn_index = (int)(angle_ship_shoot_rel * 16d / 360d);
+				ShieldPoints[shield_ptn_index % 16] = 255;
 				return;
 			}
 			// shield
