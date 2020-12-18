@@ -192,14 +192,16 @@ namespace Flee {
 					}
 				}
 				// weapons
-				foreach (Weapon AWeapon in weapons) {
-					if (AWeapon.Bar == 0) {
-						if ((AWeapon.stats.special & (int)Weapon.SpecialBits.ReloadRNG) != 0)
-							AWeapon.Load += + 1;
-						AWeapon.Load += + 1;
-						if (AWeapon.Load >= AWeapon.stats.loadtime) {
-							AWeapon.Load = 0;
-							AWeapon.Bar = AWeapon.stats.salvo;
+				if (this.deflectors >= 0 || world.ticks % 4 == 0) {
+					foreach (Weapon AWeapon in weapons) {
+						if (AWeapon.Bar == 0) {
+							if ((AWeapon.stats.special & (int)Weapon.SpecialBits.ReloadRNG) != 0)
+								AWeapon.Load += +1;
+							AWeapon.Load += +1;
+							if (AWeapon.Load >= AWeapon.stats.loadtime) {
+								AWeapon.Load = 0;
+								AWeapon.Bar = AWeapon.stats.salvo;
+							}
 						}
 					}
 				}
