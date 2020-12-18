@@ -71,6 +71,7 @@ gun EMP-Cannon
 	celerity=16
 	power=25
 	loadtime=35
+	special=EMP
 
 #
 # Artilleries
