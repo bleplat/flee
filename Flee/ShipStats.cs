@@ -89,7 +89,7 @@ namespace Flee {
 		public int deflectors_cooldown = 128;
 		public int hot_deflectors = 0;
 		public int cold_deflectors = 0;
-		public int TotalDeflectorsMax() { return (cold_deflectors + hot_deflectors); }
+		public int TotalDeflectorsMax() { return (deflectors + hot_deflectors); }
 
 		// crafting
 		public List<string> crafts = new List<string>();
