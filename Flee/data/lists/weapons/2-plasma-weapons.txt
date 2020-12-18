@@ -1,0 +1,67 @@
+#
+# Artilleries
+#
+
+gun Standard-Artillery
+	desc=A deadly long ranged gun.
+	sprite=PRJ_plasma
+	range=380
+	celerity=12
+	power=55
+	loadtime=70
+	emissive_mode=Propeled
+	emissive_sprite=Plasma
+
+gun Intercepting-Artillery
+	desc=A weaker but longer ranged artillery.
+	sprite=PRJ_Deins
+	range=420
+	celerity=16
+	power=35
+	loadtime=35
+	emissive_mode=Propeled
+	emissive_sprite=Plasma
+	
+#
+# Bombs
+#
+
+gun Standard-PlasmaBomber
+	desc=A slow but deadly weapon
+	sprite=PRJ_plasma
+	range=210
+	celerity=10
+	power=30
+	loadtime=35
+	emissive_mode=Emissive
+	emissive_sprite=Plasma
+
+gun Light-PlasmaBomber
+	desc=A slow but deadly weapon
+	sprite=PRJ_plasma
+	range=190
+	celerity=11
+	power=20
+	loadtime=30
+	emissive_mode=Emissive
+	emissive_sprite=Plasma
+
+gun Heavy-PlasmaBomber
+	desc=A slow but deadly heavy weapon
+	sprite=PRJ_plasma
+	range=260
+	celerity=9
+	power=50
+	loadtime=55
+	emissive_mode=Emissive
+	emissive_sprite=Plasma
+
+gun Longrange-PlasmaBomber
+	desc=A slow but deadly heavy weapon
+	sprite=PRJ_plasma
+	range=340
+	celerity=6
+	power=15
+	loadtime=21
+	emissive_mode=Emissive
+	emissive_sprite=Plasma

@@ -6,6 +6,7 @@ outfit Jump_Engine
 	desc=Allow to make small jumps.
 	sprite_coords=6;5
 	sprite_color=UpgradeColor1
+	required_stat=speed > 0
 	time=200
 	cost=750;2;0;0
 

@@ -6,6 +6,7 @@ outfit Faster_Engines
 	desc=Allow the ship to go a little faster.
 	sprite_coords=0;5
 	sprite_color=UpgradeColor1
+	required_stat=speed > 0
 	time=300
 	effect=speed *= 1.25
 	cost=250;1;0;0

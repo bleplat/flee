@@ -1,0 +1,36 @@
+#
+# Kastous
+#
+
+ship Station_Kastous
+	level=100
+	role=Shipyard|NPC
+	width=100
+	integrity=2500
+	cost=5000;32;4;0
+	craft=Build_Kastou
+
+ship Kastou
+	level=4
+	width=45
+	integrity=225
+	speed=3.00
+	turn=2.20
+	weapon=0;Heavy-PlasmaBomber
+	shield=100
+	shield_regeneration=0.001
+	shield_opacity=1.0
+	cost=4500;6;0;50
+	craft=Build_Yerka
+	craft=Build_MSL
+	complexity=900
+
+ship Yerka
+	level=2
+	width=25
+	integrity=75
+	speed=4.00
+	turn=4.20
+	weapon=270;Alien-MachineGun
+	cost=900;6;0;0
+	complexity=1300

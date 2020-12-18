@@ -19,11 +19,13 @@ namespace Flee {
 		public string emissive_sprite = null;
 
 		// stats
-		public double range = 180;
-		public double celerity = 16;
-		public double power = 0;
+		public float range = 180;
+		public float celerity = 16;
+		public float power = 0;
+		public float emp_power = 0;
 		public int loadtime = 15;
 		public int salvo = 1;
+		public int sub_ammos = 1;
 
 		// constructor
 		public GunStats(string name) {
@@ -42,10 +44,12 @@ namespace Flee {
 			total += Constants.vbTab + "range=" + range.ToString() + Constants.vbLf;
 			total += Constants.vbTab + "celerity=" + celerity.ToString() + Constants.vbLf;
 			total += Constants.vbTab + "power=" + power.ToString() + Constants.vbLf;
+			total += Constants.vbTab + "emp_power=" + emp_power.ToString() + Constants.vbLf;
 			total += Constants.vbTab + "loadtime=" + loadtime.ToString() + Constants.vbLf;
 			if (salvo != 1) total += Constants.vbTab + "salvo=" + salvo.ToString() + Constants.vbLf;
+			if (sub_ammos != 1) total += Constants.vbTab + "sub_ammos=" + salvo.ToString() + Constants.vbLf;
 
-			if (special != 0) total += Constants.vbTab + "salvo=" + Weapon.SpecialToString()[special] + Constants.vbLf;
+			if (special != 0) total += Constants.vbTab + "special=" + Weapon.SpecialToString()[special] + Constants.vbLf;
 
 			return total;
 		}
@@ -57,9 +61,22 @@ namespace Flee {
 				case "range": range = Convert.ToInt32(value); break;
 				case "celerity": celerity = Convert.ToInt32(value); break;
 				case "power": power = Convert.ToInt32(value); break;
+				case "emp_power": emp_power = Convert.ToInt32(value); break;
 				case "loadtime": loadtime = Convert.ToInt32(value); break;
 				case "salvo": salvo = Convert.ToInt32(value); break;
-				case "special": special = Weapon.SpecialFromString(value); break;
+				case "sub_ammos": sub_ammos = Convert.ToInt32(value); break;
+				case "special": special = Weapon.SpecialFromString(value);
+					if (this.sub_ammos == 1) {
+						if ((special & (int)Weapon.SpecialBits.Flak) != 0)
+							sub_ammos = 8;
+						if ((special & (int)Weapon.SpecialBits.Rail) != 0)
+							sub_ammos = 8;
+						if ((special & (int)Weapon.SpecialBits.SelfExplode) != 0)
+							sub_ammos = 16;
+						if ((special & (int)Weapon.SpecialBits.SelfNuke) != 0)
+							sub_ammos = 16;
+					}
+					break;
 				case "emissive_mode": 
 					emissive_mode = Shoot.ShootEmissiveMode(value);
 					if (emissive_sprite == null) 

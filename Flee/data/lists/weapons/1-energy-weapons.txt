@@ -1,0 +1,42 @@
+#
+# Energy Cannons
+#
+
+gun Orange-Energy-Cannon
+	sprite=PRJ_energy_orange
+	range=260
+	celerity=15
+	power=12
+	emp_power=5
+	loadtime=20
+
+gun Yellow-Energy-Cannon
+	sprite=PRJ_energy_yellow
+	range=280
+	celerity=16
+	power=20
+	loadtime=25
+
+gun Red-Energy-Cannon
+	sprite=PRJ_energy_red
+	range=260
+	celerity=16
+	power=20
+	emp_power=5
+	loadtime=15
+
+gun Magenta-Energy-Cannon
+	sprite=PRJ_energy_magenta
+	range=290
+	celerity=16
+	power=20
+	emp_power=5
+	loadtime=15
+
+gun Cyan-Energy-Cannon
+	sprite=PRJ_energy_cyan
+	range=270
+	celerity=16
+	power=25
+	emp_power=10
+	loadtime=20

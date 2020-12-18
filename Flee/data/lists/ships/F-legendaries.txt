@@ -1,0 +1,72 @@
+#
+# Legendaries
+#
+
+ship Station_Legendaries
+	level=100
+	role=Shipyard|NPC
+	width=100
+	integrity=2500
+	cost=5000;32;4;0
+	craft=Build_Legend_I
+	craft=Build_Legend_K
+	craft=Build_Legend_L
+	craft=Build_Legend_U
+	craft=Build_Legend_Y
+
+ship Legend_I
+	level=12
+	complexity=600
+	width=45
+	integrity=170
+	speed=3.20
+	turn=1.80
+	weapon=0;Standard-Artillery
+	weapon=-135;Light-PlasmaBomber
+	weapon=135;Light-PlasmaBomber
+	cost=3000;16;1;0
+
+ship Legend_K
+	level=14
+	complexity=600
+	width=45
+	integrity=220
+	speed=2.80
+	turn=1.80
+	weapon=0;Shuriken-Bombs
+	weapon=-135;Shuriken-Bombs
+	weapon=135;Shuriken-Bombs
+	cost=3000;24;0;600
+
+ship Legend_L
+	level=12
+	complexity=600
+	width=45
+	integrity=240
+	speed=2.80
+	turn=1.80
+	weapon=0;4-Beam
+	cost=3000;24;0;600
+
+ship Legend_U
+	level=12
+	complexity=600
+	width=45
+	integrity=200
+	speed=2.80
+	turn=1.80
+	weapon=90;Pusher
+	weapon=-90;Pusher
+	cost=3000;24;0;600
+
+ship Legend_Y
+	level=12
+	complexity=600
+	width=50
+	integrity=180
+	speed=3.20
+	turn=1.80
+	weapon=0;Light-MachineGun
+	weapon=-135;MachineGun
+	weapon=135;MachineGun
+	cost=3000;24;0;600

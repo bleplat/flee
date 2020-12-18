@@ -524,7 +524,7 @@ namespace Flee {
 			}
 			if (e.KeyData == Keys.F8)
 				foreach (Ship a_ship in game.world.ships)
-					a_ship.agressivity = 1000.0d;
+					a_ship.agressivity = 1000.0f;
 			if (!pressed_keys.Contains(e.KeyData.ToString()))
 				pressed_keys.Add(e.KeyData.ToString());
 		}

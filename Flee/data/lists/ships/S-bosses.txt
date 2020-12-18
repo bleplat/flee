@@ -1,3 +1,26 @@
+#
+# Civil_A
+#
+
+ship Civil_A
+	role=Boss
+	spawning_frequency=2.0
+	level=0
+	width=60
+	integrity=320
+	speed=2.20
+	turn=1.40
+	weapon=-90;MachineGun
+	weapon=90;MachineGun
+	deflectors=4
+	cold_deflectors=16
+	deflectors_cooldown=32
+	cost=4000;4;2;400
+
+#
+# Lonebosses
+#
+
 ship Loneboss
 	role=Boss
 	spawning_frequency=1.0
@@ -5,13 +28,17 @@ ship Loneboss
 	integrity=520
 	speed=3.20
 	turn=1.50
-	weapon=-135;MachineGun
-	weapon=135;MachineGun
-	weapon=0;RailGun
+	weapon=-135;Red-Energy-Cannon
+	weapon=135;Red-Energy-Cannon
+	weapon=0;Red-Charge-Cannon
 	deflectors=4
 	hot_deflectors=8
 	cost=6000;32;8;800
 	craft=Build_MSL
+
+#
+# Bugs
+#
 
 ship Bugs
 	role=Boss
@@ -29,6 +56,10 @@ ship Bugs
 	cost=8000;64;16;900
 	native_upgrade=Jump_Engine
 
+#
+# Converters
+#
+
 ship Converter
 	role=Boss
 	spawning_frequency=0.1
@@ -37,13 +68,13 @@ ship Converter
 	integrity=360
 	speed=1.20
 	turn=0.80
-	weapon=0;MachineGun
-	weapon=-45;MachineGun
-	weapon=45;MachineGun
-	weapon=-90;MachineGun
-	weapon=90;MachineGun
-	weapon=-135;MachineGun
-	weapon=135;MachineGun
+	weapon=0;Magenta-Energy-Cannon
+	weapon=-45;Magenta-Energy-Cannon
+	weapon=45;Magenta-Energy-Cannon
+	weapon=-90;Magenta-Energy-Cannon
+	weapon=90;Magenta-Energy-Cannon
+	weapon=-135;Magenta-Energy-Cannon
+	weapon=135;Magenta-Energy-Cannon
 	shield=1200
 	shield_regeneration=0.001
 	shield_opacity=0.9
@@ -59,8 +90,8 @@ ship Converter_A
 	repair=0
 	speed=3.50
 	turn=6.50
-	weapon=-45;MachineGun
-	weapon=45;MachineGun
+	weapon=-45;Magenta-Energy-Cannon
+	weapon=45;Magenta-Energy-Cannon
 	shield=250
 	shield_regeneration=0.00
 	shield_opacity=0.65
@@ -73,11 +104,15 @@ ship Converter_B
 	repair=0
 	speed=2.80
 	turn=1.50
-	weapon=0;Heavy-PlasmaBomber
+	weapon=0;White-Charge-Cannon
 	shield=250
 	shield_regeneration=0.00
 	shield_opacity=.65
 	cost=400;4;0;0
+
+#
+# Purger Dronner
+#
 
 ship Purger_Dronner
 	role=Boss
@@ -86,8 +121,8 @@ ship Purger_Dronner
 	integrity=355
 	speed=2.80
 	turn=1.20
-	weapon=-90;Heavy-PlasmaBomber
-	weapon=90;Heavy-PlasmaBomber
+	weapon=-90;Orange-Energy-Cannon
+	weapon=90;Orange-Energy-Cannon
 	weapon=180;MachineGun
 	shield=300
 	shield_regeneration=0.001
@@ -104,7 +139,7 @@ ship Purger_Drone_1
 	repair=0
 	speed=3.80
 	turn=4.60
-	weapon=0;MachineGun
+	weapon=0;Light-ParticleGun
 	shield=8
 	shield_regeneration=0.001
 	shield_opacity=0.75
@@ -116,7 +151,7 @@ ship Purger_Drone_2
 	repair=0
 	speed=3.80
 	turn=7.50
-	weapon=0;MachineGun
+	weapon=0;Light-ParticleGun
 	shield=8
 	shield_regeneration=0.001
 	shield_opacity=0.85
@@ -128,26 +163,15 @@ ship Purger_Drone_3
 	repair=0
 	speed=3.80
 	turn=2.80
-	weapon=0;MachineGun
+	weapon=0;Light-ParticleGun
 	shield=8
 	shield_regeneration=0.001
 	shield_opacity=1.0
 	cost=200;8;0;0
 
-ship Civil_A
-	role=Boss
-	spawning_frequency=2.0
-	level=0
-	width=60
-	integrity=320
-	speed=2.20
-	turn=1.40
-	weapon=-90;MachineGun
-	weapon=90;MachineGun
-	deflectors=4
-	cold_deflectors=16
-	deflectors_cooldown=32
-	cost=4000;4;2;400
+#
+# Ascended
+#
 
 ship Finalizer
 	level=0
@@ -177,9 +201,31 @@ ship Ori
 	integrity=880
 	speed=3.80
 	turn=1.60
-	weapon=180;Standard-Cannon
+	weapon=180;Ori
 	weapon=0;Ori
 	shield=2200
 	shield_regeneration=0.01
 	shield_opacity=1.00
 	cost=10000;64;16;1000
+
+#
+# Deins
+#
+
+ship DeinsCruiser
+	width=60
+	integrity=370
+	speed=3.00
+	turn=1.20
+	weapon=-45;DeinsGun1
+	weapon=45;DeinsGun1
+	weapon=-90;DeinsGun2
+	weapon=90;DeinsGun2
+	weapon=-135;DeinsGun1
+	weapon=135;DeinsGun1
+	shield=256
+	shield_opacity=2.0
+	shield_regeneration=0.01
+	cost=4000;32;2;600
+	craft=Build_MSL
+	native_upgrade=Jump_Engine_II

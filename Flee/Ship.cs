@@ -26,18 +26,18 @@ namespace Flee {
 		public int fram = 0;
 
 		/* state */
-		public double integrity = 20;
+		public float integrity = 20;
 		public int deflectors = 0;
 		public int deflector_cooldown = 0;
-		public double shield = 0f;
+		public float shield = 0f;
 		public List<Weapon> weapons = new List<Weapon>();
 		public Team last_damager_team = null;
-		public double emp_damage = 0;
+		public float emp_damage = 0;
 
 		/* Automated control */
 		public bool auto = false; // for in-team auto objects (cf missiles)
 		public bool bot_ship = true;
-		public double agressivity = 1.0d;
+		public float agressivity = 1.0f;
 
 		/* AI */
 		public bool AllowMining = true;
@@ -238,8 +238,8 @@ namespace Flee {
 			}
 			// emp damage decrease
 			if (stats.cold_deflectors >= 0) {
-				this.emp_damage -= 0.05;
-				this.emp_damage *= 0.99;
+				this.emp_damage -= 0.05f;
+				this.emp_damage *= 0.99f;
 				if (this.emp_damage < 0)
 					this.emp_damage = 0;
 			}
@@ -277,7 +277,7 @@ namespace Flee {
 				direction = (float)(direction + stats.turn);
 		}
 
-		public void TakeDamages(double Amount, Shoot From = null) {
+		public void TakeDamages(float Amount, Shoot From = null) {
 			// deflectors
 			if (deflectors > -stats.cold_deflectors) {
 				if (From != null) {
@@ -292,8 +292,9 @@ namespace Flee {
 				return;
 			}
 			// EMP capability
-			if (From != null && (From.special & (int)Weapon.SpecialBits.EMP) != 0) {
-				this.emp_damage *= (1.0 - this.stats.shield_opacity / 2);
+			if (From != null && From.emp_power > 0) {
+				if (this.shield > 0)
+					this.emp_damage *= (1.0f - this.stats.shield_opacity * Math.Max(0.0f, this.shield / this.stats.shield) / 2.0f);
 				this.emp_damage += Amount;
 				double angle_ship_shoot_rel = Helpers.NormalizeAngleUnsigned(Helpers.GetAngle(location.X, location.Y, From.location.X, From.location.Y) - direction);
 				int shield_ptn_index = (int)(angle_ship_shoot_rel * 16d / 360d);
@@ -316,10 +317,10 @@ namespace Flee {
 			}
 			// Wilderness mining
 			if (team.affinity == AffinityEnum.Wilderness && From != null  && (this.stats.role & (int)ShipRole.Mine) != 0) {
-				From.Team.resources.Metal += (long)(this.stats.cost.Metal * Amount / 8.0);
+				From.Team.resources.Metal += (long)(this.stats.cost.Metal * Amount / 1024.0);
 				if (world.gameplay_random.Next(0, 100) < this.stats.cost.Crystal)
 					From.Team.resources.Crystal += 1;
-				From.Team.resources.Starfuel += (long)(this.stats.cost.Starfuel * Amount / 8.0);
+				From.Team.resources.Starfuel += (long)(this.stats.cost.Starfuel * Amount / 1024.0);
 				if (world.gameplay_random.Next(0, 100) < this.stats.cost.Fissile)
 					From.Team.resources.Fissile += 1;
 			}
@@ -348,7 +349,7 @@ namespace Flee {
 				this.speed = 0;
 				return;
 			}
-			var QA = default(float);
+			float QA = 0.0f;
 			bool NeedSpeed = false;
 			// remove destroyed target
 			if (target is object && target.IsDestroyed())
@@ -361,7 +362,7 @@ namespace Flee {
 				behavior = BehaviorMode.Drift;
 			// ===' Auto-Activation '==='
 			if (rnd_num < 100)
-				agressivity += 0.05d;
+				agressivity += 0.05f;
 
 			if (bot_ship && behavior != BehaviorMode.Drift && team.affinity != AffinityEnum.Wilderness)
 				if (target is null) {

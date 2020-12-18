@@ -3,15 +3,18 @@
 #	
 
 outfit Shield_Emitters
-	desc=Adds Shields emitters to the hull, blocking 33% of the damages.
+	desc=Adds Shields emitters to the hull, at least blocking 33% of the damages.
+	desc=/!\ Ships already having a shield will gain less from this upgrade.
 	sprite_coords=0;3
 	sprite_color=UpgradeColor1
 	required_stat=integrity >= 60
 	time=300
 	once_effect=brightshield()
-	effect=shield += 75
-	effect=shield_opacity += 0.33
-	effect=shield_regeneration min()= 0.005
+	effect=shield min()= 50
+	effect=shield += 25
+	effect=shield_opacity min()= 0.22
+	effect=shield_opacity += 0.11
+	effect=shield_regeneration min()= 0.004
 	cost=350;1;0;0
 
 outfit Shield_Emitters_II

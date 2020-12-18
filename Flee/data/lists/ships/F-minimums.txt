@@ -1,0 +1,25 @@
+#
+# Minimum warships
+#
+
+ship Station_Minimum_Warship
+	role=Shipyard|NPC
+	spawning_amount=8
+	level=4
+	complexity=250
+	width=68 
+	integrity=650
+	weapon=0;ParticleGun
+	weapon=-90;ParticleGun
+	weapon=90;ParticleGun
+	weapon=180;ParticleGun
+	cost=3500;16;1;400
+	craft=Build_Minimum_Warship
+
+ship Minimum_Warship
+	level=1
+	integrity=190
+	speed=2.80
+	turn=1.80 
+	weapon=0;ShellCannon
+	cost=1200;2;0;0

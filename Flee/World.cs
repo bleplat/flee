@@ -122,7 +122,7 @@ namespace Flee {
 		public void InitDerelicts(Random rand) {
 			// TODO: use 'role'
 			// Statics
-			for (int i = 0, loopTo = rand.Next(2, 6); i <= loopTo; i++) {
+			for (int i = 0, loopTo = rand.Next(2, 5); i <= loopTo; i++) {
 				ShipStats static_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Static);
 				var location = new PointF(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Height));
 				double direction = rand.Next(0, 360);
@@ -131,7 +131,7 @@ namespace Flee {
 				}
 			}
 			// Derelicts
-			for (int i = 1; i <= 30; i++) {
+			for (int i = 1; i <= 40; i++) {
 				ShipStats derelict_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Derelict);
 				var location = new PointF(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Height));
 				double direction = rand.Next(0, 360);

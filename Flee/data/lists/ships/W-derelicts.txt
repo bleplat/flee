@@ -1,5 +1,5 @@
 ship Asteroid
-	role=Derelict
+	role=Derelict|Mine
 	spawning_frequency=0.99
 	spawning_amount_min=1
 	spawning_amount_max=5
@@ -7,10 +7,10 @@ ship Asteroid
 	integrity=4000
 	speed=0.90
 	turn=1.00
-	cost=500;2;0;0
+	cost=300;2;0;0
 
 ship FissileAsteroid
-	role=Derelict
+	role=Derelict|Mine
 	spawning_frequency=0.01
 	spawning_amount_min=1
 	spawning_amount_max=5
@@ -18,7 +18,7 @@ ship FissileAsteroid
 	integrity=4000
 	speed=0.90
 	turn=1.00
-	cost=500;2;1;0
+	cost=280;2;1;0
 
 ship Meteoroid
 	role=Derelict

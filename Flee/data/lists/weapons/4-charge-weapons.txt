@@ -1,0 +1,28 @@
+#
+# Charge Cannons
+#
+# This kind of weapon takes a while to charge but deliver high damages.
+
+gun Red-Charge-Cannon
+	sprite=PRJ_energy_orange
+	range=260
+	celerity=15
+	power=100
+	special=Rail
+	loadtime=75
+
+gun Orange-Charge-Cannon
+	sprite=PRJ_energy_orange
+	range=260
+	celerity=14
+	power=85
+	special=Rail
+	loadtime=65
+
+gun White-Charge-Cannon
+	sprite=PRJ_energy_orange
+	range=280
+	celerity=16
+	power=90
+	special=Rail
+	loadtime=70

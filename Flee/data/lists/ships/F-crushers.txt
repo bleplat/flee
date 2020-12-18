@@ -1,0 +1,26 @@
+#
+# Crushers
+#
+
+ship Station_Crushers
+	level=100
+	role=Shipyard|NPC
+	width=100
+	turn=0.01
+	integrity=2500
+	cost=5000;32;4;0
+	weapon=0;Heavy-PlasmaBomber
+	craft=Build_Crusher
+
+ship Crusher
+	level=4
+	width=75
+	integrity=465
+	speed=2.20
+	turn=0.40
+	weapon=0;Intercepting-Artillery
+	weapon=-90;Longrange-PlasmaBomber
+	weapon=90;Standard-PlasmaBomber
+	cost=6000;4;0;0
+	native_upgrade=Jump_Engine
+	native_upgrade=Jump_Engine_II

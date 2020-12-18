@@ -85,7 +85,7 @@ namespace Flee {
 						else
 							ship.world.ships[ship.world.ships.Count - 1].target = null;
 						ship.world.ships[ship.world.ships.Count - 1].behavior = Ship.BehaviorMode.Folow;
-						ship.world.ships[ship.world.ships.Count - 1].agressivity = ship.agressivity * 100d;
+						ship.world.ships[ship.world.ships.Count - 1].agressivity = ship.agressivity * 100.0f;
 						ship.world.ships[ship.world.ships.Count - 1].bot_ship = true;
 					} else {
 						ship.world.ships[ship.world.ships.Count - 1].behavior = Ship.BehaviorMode.Folow;

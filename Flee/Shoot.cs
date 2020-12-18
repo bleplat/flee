@@ -41,43 +41,30 @@ namespace Flee {
 		public int fram = 0;
 		public Team Team = null;
 		public SpriteArray sprites = null;
-		public int sprite_y = 0;
+		public int sprite_y = -1;
 		public int emissive_mode = 0;
 		public string emissive_sprite = null;
 
 		// Secondaire
-		public double power = 10;
+		public float power = 10;
+		public float emp_power = 0;
 		public int special = 0;
 
-		public Shoot(ref World world, ref Team team, int time_to_live, double power, int special, string type, PointF location, float direction, double speed, int sprite_y = 0, int emissive_mode = 0, string emissive_sprite = null) : base(ref world) {
-			this.time_to_live = time_to_live;
-			this.Team = team;
-			this.power = power;
-			this.special = special;
-			this.type = type;
+		public Shoot(ref World world, Weapon weapon, PointF location, float direction, float speed = -1) : base(ref world) {
+			this.time_to_live = (int)(weapon.stats.range / weapon.stats.celerity);
+			this.Team = weapon.ship.team;
+			this.power = weapon.stats.power / weapon.stats.sub_ammos;
+			this.emp_power = weapon.stats.emp_power / weapon.stats.sub_ammos;
+			this.special = weapon.stats.special;
+			this.type = weapon.stats.sprite;
 			this.location = location;
 			this.direction = direction;
-			this.speed_vec = Helpers.GetNewPoint(new Point(0, 0), direction, (float)speed);
-			this.sprite_y = sprite_y;
-			this.emissive_mode = emissive_mode;
-			this.emissive_sprite = emissive_sprite;
-			// UpdateSector(); // useless in practice
-			this.sprites = SpriteArray.GetSpriteArray(this.type, this.Team.color);
-			if (sprite_y == -1)
-				this.sprite_y = Helpers.rand.Next(0, sprites.count_y);
-		}
-		public Shoot(ref World world, ref Team team, int time_to_live, double power, int special, string type, PointF location, float direction, PointF speed_vec, int sprite_y = 0, int emissive_mode = 0, string emissive_sprite = null) : base(ref world) {
-			this.time_to_live = time_to_live;
-			this.Team = team;
-			this.power = power;
-			this.special = special;
-			this.type = type;
-			this.location = location;
-			this.direction = direction;
-			this.speed_vec = speed_vec;
-			this.sprite_y = sprite_y;
-			this.emissive_mode = emissive_mode;
-			this.emissive_sprite = emissive_sprite;
+			if (speed == -1)
+				this.speed_vec = Helpers.GetNewPoint(new Point(0, 0), direction, weapon.stats.celerity);
+			else
+				this.speed_vec = Helpers.GetNewPoint(new Point(0, 0), direction, weapon.stats.celerity);
+			this.emissive_mode = weapon.stats.emissive_mode;
+			this.emissive_sprite = weapon.stats.emissive_sprite;
 			// UpdateSector(); // useless in practice
 			this.sprites = SpriteArray.GetSpriteArray(this.type, this.Team.color);
 			if (sprite_y == -1)
@@ -97,17 +84,17 @@ namespace Flee {
 				world.effects.Add(new Effect(-1, emissive_sprite, location, world.gameplay_random.Next(0, 360), 0));
 			}
 			if ((emissive_mode & (int)EmissiveMode.Front) != 0) {
-				world.effects.Add(new Effect(-1, emissive_sprite, location, direction, speed * 1.25f));
+				world.effects.Add(new Effect(-1, emissive_sprite, location, (float)direction, speed * 1.25f));
 			}
 			if ((emissive_mode & (int)EmissiveMode.Back) != 0) {
-				world.effects.Add(new Effect(-1, emissive_sprite, location, direction, speed * 0.75f));
+				world.effects.Add(new Effect(-1, emissive_sprite, location, (float)direction, speed * 0.75f));
 			}
 			if ((emissive_mode & (int)EmissiveMode.Side) != 0) {
-				world.effects.Add(new Effect(-1, emissive_sprite, location, direction + 90, speed * 0.25f));
-				world.effects.Add(new Effect(-1, emissive_sprite, location, direction - 90, speed * 0.25f));
+				world.effects.Add(new Effect(-1, emissive_sprite, location, (float)direction + 90, speed * 0.25f));
+				world.effects.Add(new Effect(-1, emissive_sprite, location, (float)direction - 90, speed * 0.25f));
 			}
 			if ((emissive_mode & (int)EmissiveMode.Propeled) != 0) {
-				world.effects.Add(new Effect(-1, emissive_sprite, location, direction + 180 + world.gameplay_random.Next(-35, 36), speed * 0.5f));
+				world.effects.Add(new Effect(-1, emissive_sprite, location, (float)direction + 180.0f + world.gameplay_random.Next(-35, 36), speed * 0.5f));
 			}
 			if ((emissive_mode & (int)EmissiveMode.Emissive) != 0) {
 				world.effects.Add(new Effect(-1, emissive_sprite, location, world.gameplay_random.Next(0, 360), speed * 0.25f));

@@ -1,0 +1,249 @@
+#
+# Stations
+#
+
+ship Station
+	sprite=Station
+	role=Shipyard|Playable
+	level=100
+	width=100
+	integrity=2000
+	cost=5000;32;4;0
+	craft=Build_Cargo
+	craft=Build_Hunter
+	craft=Build_Harass
+	craft=Build_Simpleship
+	craft=Build_Scout
+	craft=Build_Bomber
+	craft=Build_Artillery
+	craft=Build_Dronner
+	craft=Build_Nuke
+	craft=Build_Anti-Light_Turret
+	craft=Build_Anti-Heavy_Turret
+	craft=Build_Pointvortex_Turret
+
+ship Station_Simples
+	sprite=Station
+	role=Shipyard|NPC
+	level=100
+	width=100
+	integrity=2500
+	cost=5000;32;4;0
+	craft=Build_Harass
+	craft=Build_Artillery
+	craft=Build_Bomber
+	craft=Build_Scout
+	craft=Build_Capturer
+
+ship Station_Drones
+	level=100
+	role=Shipyard|NPC
+	width=100
+	integrity=2500
+	cost=5000;32;4;0
+	craft=Build_Hunter
+	craft=Build_Harass
+	craft=Build_Dronner
+
+#
+# Light
+#
+
+ship Hunter
+	desc=A light ship with light weapons.
+	level=2
+	width=25
+	integrity=60
+	speed=3.50
+	turn=2.80
+	weapon=0;MachineGun
+	cost=700;0;0;0
+
+ship Harass
+	desc=A light ship with heavy weapons.
+	level=2
+	width=25
+	integrity=75
+	speed=3.30
+	turn=2.30
+	weapon=0;Javelin-Launcher
+	cost=800;1;0;0
+
+ship Cargo
+	role=Starter|Playable
+	desc=Weak ship but comes with a builtin jump engine.
+	level=4
+	integrity=70
+	speed=3.20
+	turn=2.00
+	weapon=0;ParticleGun
+	cost=800;0;0;0
+	craft=Build_Miner_Drone
+	native_upgrade=Jump_Engine
+
+#
+# Medium
+#
+
+ship Simpleship
+	desc=An old ship design supporting firing EMPs at enemies.
+	level=6
+	integrity=90
+	speed=2.80
+	turn=2.00
+	weapon=0;EMP-Beam
+	cost=1000;1;0;0
+
+ship Scout
+	level=8
+	width=35
+	integrity=105
+	speed=3.50
+	turn=2.50
+	weapon=-45;MachineGun
+	weapon=45;MachineGun
+	cost=2000;4;0;0
+	craft=Build_MSL
+
+ship Bomber
+	level=12
+	integrity=210
+	speed=2.80
+	turn=1.80
+	weapon=45;Torpedo-Launcher
+	cost=2500;4;0;0
+
+ship Artillery
+	level=10
+	width=35
+	integrity=140
+	speed=2.80
+	turn=1.80
+	weapon=0;Standard-Artillery
+	cost=3000;4;0;0
+
+ship Dronner
+	level=8
+	integrity=135
+	speed=3.10
+	turn=1.50
+	weapon=0;Orange-Energy-Cannon
+	cost=3500;8;0;0
+	craft=Build_Fighter_Drone
+	craft=Build_Dodger_Drone
+	craft=Build_Bomber_Drone
+	craft=Build_Master_Drone
+
+#
+# Heavy
+#
+
+ship Colonizer
+	role=Starter|Playable
+	level=9
+	width=55
+	integrity=165
+	speed=2.80
+	turn=1.80
+	weapon=0;ShellCannon
+	weapon=-135;Orange-Energy-Cannon
+	weapon=135;Orange-Energy-Cannon
+	cost=166;1;0;0
+	craft=Build_Anti-Light_Turret
+	craft=Build_Anti-Heavy_Turret
+	craft=Build_Pointvortex_Turret
+
+ship MiniColonizer
+	role=Starter|Playable
+	spawning_frequency=2
+	width=55
+	integrity=145
+	speed=2.80
+	turn=1.80
+	weapon=0;ShellCannon
+	weapon=-135;Orange-Energy-Cannon
+	weapon=135;Orange-Energy-Cannon
+	shield_regeneration=0.001
+	cost=166;1;0;0
+	craft=Build_MSL
+	native_upgrade=Shield_Emitters
+	native_upgrade=Shield_Emitters_II
+	native_upgrade=Shield_Capacitors
+
+ship Ambassador
+	role=Starter|Playable
+	level=9
+	width=50
+	integrity=175
+	speed=2.80
+	turn=1.80
+	weapon=45;Orange-Energy-Cannon
+	weapon=-45;Orange-Energy-Cannon
+	weapon=180;Light-ParticleGun
+	cost=166;1;0;0
+	craft=Build_Nuke
+
+ship Capturer
+	desc=The heaviest and oldest ship humans have never made. Unfortunately, it is hardly upgradable.
+	width=60
+	level=2
+	integrity=510
+	speed=1.40
+	turn=0.50
+	weapon=-45;ShellCannon
+	weapon=45;ShellCannon
+	cost=3500;8;0;0
+
+#
+# Drones
+#
+
+ship Miner_Drone
+	level=0
+	width=15
+	integrity=5
+	repair=0
+	speed=2.80
+	turn=8.50
+	weapon=0;Light-ParticleGun
+	cost=150;0;0;0
+
+ship Fighter_Drone
+	level=0
+	width=14
+	integrity=25
+	repair=0
+	speed=3.50
+	weapon=180;Light-MachineGun
+	weapon=-180;Light-MachineGun
+	cost=300;0;0;0
+
+ship Dodger_Drone
+	level=0
+	width=14
+	integrity=35
+	repair=0
+	speed=3.50
+	turn=5.50
+	weapon=0;Light-MachineGun
+	cost=250;0;0;0
+
+ship Bomber_Drone
+	level=0
+	width=14
+	integrity=40
+	repair=0
+	speed=3.50
+	turn=1.50
+	weapon=0;Light-ShellCannon
+	cost=300;0;0;0
+
+ship Master_Drone
+	level=2
+	width=25
+	integrity=70
+	repair=0
+	speed=3.50
+	turn=4.50
+	weapon=0;ShellCannon
+	cost=700;1;0;0

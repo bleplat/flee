@@ -73,16 +73,16 @@ namespace Flee {
 		public int width = -1;
 
 		// stats (base)
-		public double integrity = 0;
-		public double repair = 0;
-		public double speed = 0.0d;
-		public double turn = 0.0d;
+		public float integrity = 0;
+		public float repair = 0;
+		public float speed = 0.0f;
+		public float turn = 0.0f;
 		public List<string> default_weapons = new List<string>();
 
 		// stats (shields)
-		public double shield = 0;
-		public double shield_regeneration = 0.001;
-		public double shield_opacity = 0d;
+		public float shield = 0;
+		public float shield_regeneration = 0.001f;
+		public float shield_opacity = 0.0f;
 
 		// stats (deflectors)
 		public int deflectors = 0;
@@ -151,13 +151,13 @@ namespace Flee {
 				break;
 			}
 			case "speed": {
-				speed = Helpers.ToDouble(value);
+				speed = Helpers.ToFloat(value);
 				if (turn == 0d)
 					turn = speed;
 				break;
 			}
 			case "turn": {
-				turn = Helpers.ToDouble(value);
+				turn = Helpers.ToFloat(value);
 				break;
 			}
 			case "weapon": {
@@ -166,16 +166,16 @@ namespace Flee {
 			}
 			case "shield": {
 				shield = Convert.ToInt32(value);
-				if (shield_opacity == 0d)
-					shield_opacity = 25d;
+				if (shield_opacity == 0.0)
+					shield_opacity = 0.25f;
 				break;
 			}
 			case "shield_regeneration": {
-				shield_regeneration = Helpers.ToDouble(value);
+				shield_regeneration = Helpers.ToFloat(value);
 				break;
 			}
 			case "shield_opacity": {
-				shield_opacity = Helpers.ToDouble(value);
+				shield_opacity = Helpers.ToFloat(value);
 				break;
 			}
 			case "deflectors": {

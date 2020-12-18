@@ -93,6 +93,7 @@ namespace Flee {
 		public static void LoadLists(List<ListClass> list_classes) {
 			foreach (ListClass a_class in list_classes)
 				switch (a_class.type) {
+				case "weapon" :
 				case "gun": {
 					if (!GunStats.classes.ContainsKey(a_class.name))
 						GunStats.classes[a_class.name] = new GunStats(a_class.name);

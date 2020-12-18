@@ -166,6 +166,9 @@ namespace Flee {
 		public static double ToDouble(string s) {
 			return double.Parse(s.Replace(",", "."), to_double_format);
 		}
+		public static float ToFloat(string s) {
+			return float.Parse(s.Replace(",", "."), to_double_format);
+		}
 		static readonly CultureInfo to_double_culture = CultureInfo.CreateSpecificCulture("en-US");
 		public static string ToString(double d) {
 			return d.ToString("0.00", to_double_culture);

@@ -1,0 +1,56 @@
+#
+# Boss guns
+#
+
+gun Bio-Gun
+	desc=Deadly weapon used by bugs bosses.
+	sprite=PRJ_plasma_green
+	range=310
+	celerity=24
+	power=24
+	loadtime=24
+	emissive_mode=Side|Emissive|Front
+	emissive_sprite=Plasma
+
+gun Heavy-Bio-Gun
+	desc=Deadly weapon used by bugs bosses.
+	sprite=PRJ_plasma_green
+	range=200
+	celerity=12
+	power=32
+	loadtime=32
+	emissive_mode=Side|Emissive|Front
+	emissive_sprite=Plasma
+
+gun Finalizer
+	sprite=PRJ_plasma
+	range=860
+	celerity=22
+	power=64
+	loadtime=32
+	salvo=3
+
+gun Ori
+	sprite=PRJ_plasma
+	range=460
+	celerity=20
+	power=55
+	loadtime=35
+	salvo=7
+	emissive_mode=Propeled
+	emissive_sprite=Plasma
+
+gun DeinsGun1
+	sprite=PRJ_charge_red
+	range=320
+	celerity=18
+	power=45
+	loadtime=55
+	salvo=1
+gun DeinsGun2
+	sprite=PRJ_charge_green
+	range=280
+	celerity=18
+	power=25
+	loadtime=35
+	salvo=2

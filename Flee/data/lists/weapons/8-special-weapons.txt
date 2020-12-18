@@ -1,0 +1,73 @@
+#
+# Particle Guns
+#
+
+gun ParticleGun
+	desc=A fast firing gun, efficient against small targets.
+	sprite=PRJ_particles
+	range=240
+	celerity=16
+	power=4
+	loadtime=6
+
+gun Light-ParticleGun
+	desc=For drones.
+	sprite=PRJ_particles
+	range=180
+	celerity=16
+	power=3
+	loadtime=4
+
+#
+# EMP specific
+#
+
+gun EMP-Cannon
+	sprite=PRJ_wave_cyan
+	range=280
+	celerity=16
+	power=15
+	emp_power=25
+	loadtime=25
+	special=EMP
+
+#
+# Special
+#
+
+gun Pusher
+	desc=A slow but deadly heavy weapon
+	sprite=PRJ_wave_green
+	range=180
+	celerity=10
+	power=12
+	loadtime=25
+	special=Flak
+
+gun Shuriken-Bombs
+	desc=Long ranged but slow weapon, useful against slow targets.
+	sprite=PRJ_shuriken
+	range=350
+	celerity=8
+	power=15
+	loadtime=50
+
+#
+# Misc
+#
+
+gun Explode-On-Contact
+	sprite=PRJ_sparks
+	range=8
+	celerity=8
+	power=45
+	loadtime=2
+	special=SelfExplode
+
+gun Nuke-On-Contact
+	sprite=PRJ_sparks
+	range=32
+	celerity=8
+	power=50
+	loadtime=2
+	special=SelfNuke

@@ -1,0 +1,45 @@
+#
+# Stranges
+#
+
+ship Station_Stranges
+	level=100
+	role=Shipyard|NPC
+	width=100
+	integrity=2500
+	cost=5000;32;4;0
+	craft=Build_Strange
+	craft=Build_Strange
+	craft=Build_Sacred
+	craft=Build_Pusher
+
+ship Strange
+	level=2
+	width=44
+	integrity=185
+	speed=2.80
+	turn=1.20
+	weapon=0;6-Beam
+	shield=25
+	shield_regeneration=0.01
+	shield_opacity=0.25
+	cost=1800;4;0;0
+
+ship Sacred
+	level=8
+	width=30
+	integrity=85
+	speed=3.50
+	turn=2.50
+	weapon=0;Magenta-Energy-Cannon
+	cost=700;2;0;0
+
+ship Pusher
+	level=2
+	width=25
+	integrity=95
+	speed=2.80
+	turn=3.80
+	weapon=0;Pusher
+	cost=700;2;0;0
+	native_upgrade=Jump_Engine

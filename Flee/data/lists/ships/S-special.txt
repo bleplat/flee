@@ -1,0 +1,22 @@
+ship MSL
+	level=0
+	width=15
+	integrity=3
+	repair=0
+	speed=8.00
+	turn=3.50
+	weapon=0;Explode-On-Contact
+	cost=250;0;0;0
+	complexity=500
+
+ship Nuke
+	desc=When something go wrong, it still can go worse.
+	level=0
+	integrity=72
+	repair=0
+	speed=3.00
+	turn=2.50
+	weapon=0;Nuke-On-Contact
+	weapon=0;Explode-On-Contact
+	weapon=180;Light-MachineGun
+	cost=8000;32;7;800

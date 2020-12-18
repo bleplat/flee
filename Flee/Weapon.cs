@@ -75,25 +75,23 @@ namespace Flee {
 				int time_to_live = (int)(stats.range / (double)stats.celerity);
 				double power = this.stats.power;
 				power *= this.ship.team.damage_multiplicator;
+				int dispersion = stats.sub_ammos;
 				if ((base_stats.special & (int)SpecialBits.NoAim) != 0)
 					QA = ship.world.gameplay_random.Next(0, 360);
 				if ((base_stats.special & (int)SpecialBits.SpreadOrigin) != 0)
 					spawn_point = new PointF(PTN.X + ship.world.gameplay_random.Next(-7, 8), PTN.Y + ship.world.gameplay_random.Next(-7, 8));
 				if ((base_stats.special & (int)SpecialBits.Rail) != 0) {
-					int dispersion = 8;
 					for (int i = 0, loopTo = dispersion; i <= loopTo; i++)
-						ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power / dispersion, base_stats.special, base_stats.sprite, spawn_point, QA, (float)(stats.celerity + i / 2d), -1, base_stats.emissive_mode, base_stats.emissive_sprite));
+						ship.world.shoots.Add(new Shoot(ref ship.world, this, spawn_point, QA, stats.celerity + i / 2.0f));
 				} else if ((base_stats.special & (int)SpecialBits.Flak) != 0) {
-					int dispersion = 8;
 					for (double i = -(dispersion / 2d), loopTo1 = dispersion / 2d; i <= loopTo1; i++)
-						ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power / dispersion, base_stats.special, base_stats.sprite, spawn_point, (float)(QA + i * (360d / dispersion / 16d)), (float)(stats.celerity + (i + dispersion) % 4d / 2.0d), -1, base_stats.emissive_mode, base_stats.emissive_sprite));
+						ship.world.shoots.Add(new Shoot(ref ship.world, this, spawn_point, (float)(QA + i * (360d / dispersion / 16d)), (float)(stats.celerity + (i + dispersion) % 4d / 2.0d)));
 				} else if ((base_stats.special & (int)SpecialBits.SelfExplode) != 0 || (base_stats.special & (int)SpecialBits.SelfNuke) != 0) {
-					int dispersion = 16;
 					for (double i = -(dispersion / 2d), loopTo2 = dispersion / 2d; i <= loopTo2; i++)
-						ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power / 4 / dispersion, base_stats.special, base_stats.sprite, spawn_point, (float)(QA + i * (360d / dispersion)), stats.celerity, -1, base_stats.emissive_mode, base_stats.emissive_sprite));
-					ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power, base_stats.special, base_stats.sprite, spawn_point, QA, stats.celerity, -1, base_stats.emissive_mode, base_stats.emissive_sprite));
+						ship.world.shoots.Add(new Shoot(ref ship.world, this, spawn_point, (float)(QA + i * (360.0f / dispersion))));
+					ship.world.shoots.Add(new Shoot(ref ship.world, this, spawn_point, QA, stats.celerity));
 				} else
-					ship.world.shoots.Add(new Shoot(ref ship.world, ref ship.team, time_to_live, (float)stats.power, base_stats.special, base_stats.sprite, spawn_point, QA, stats.celerity, -1, base_stats.emissive_mode, base_stats.emissive_sprite));
+					ship.world.shoots.Add(new Shoot(ref ship.world, this, spawn_point, QA));
 			}
 		}
 
