@@ -408,7 +408,7 @@ namespace Flee {
 								if (AShip.deflectors == AShip.stats.deflectors)
 									g.DrawString(AShip.deflectors + "/" + AShip.stats.deflectors, Font, new SolidBrush(Color.DimGray), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 14 - See.Y)));
 								else
-									g.DrawString(AShip.deflectors + "/" + AShip.stats.deflectors + " <- " + AShip.deflector_cooldown, Font, new SolidBrush(Color.Gray), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 14 - See.Y)));
+									g.DrawString(AShip.deflectors + "/" + AShip.stats.TotalDeflectorsMax() + " <- " + AShip.deflector_cooldown, Font, new SolidBrush(Color.Gray), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 14 - See.Y)));
 						}
 					}
 			// text infos
