@@ -90,8 +90,8 @@ ship Converter_A
 	repair=0
 	speed=3.50
 	turn=6.50
-	weapon=-45;Magenta-Energy-Cannon
-	weapon=45;Magenta-Energy-Cannon
+	weapon=-45;Red-Energy-Cannon
+	weapon=45;Red-Energy-Cannon
 	shield=250
 	shield_regeneration=0.00
 	shield_opacity=0.65

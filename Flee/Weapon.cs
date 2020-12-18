@@ -82,7 +82,7 @@ namespace Flee {
 					spawn_point = new PointF(PTN.X + ship.world.gameplay_random.Next(-7, 8), PTN.Y + ship.world.gameplay_random.Next(-7, 8));
 				if ((base_stats.special & (int)SpecialBits.Rail) != 0) {
 					for (int i = 0, loopTo = dispersion; i <= loopTo; i++)
-						ship.world.shoots.Add(new Shoot(ref ship.world, this, spawn_point, QA, stats.celerity + i / 2.0f));
+						ship.world.shoots.Add(new Shoot(ref ship.world, this, spawn_point, QA, stats.celerity + i / 1.5f));
 				} else if ((base_stats.special & (int)SpecialBits.Flak) != 0) {
 					for (double i = -(dispersion / 2d), loopTo1 = dispersion / 2d; i <= loopTo1; i++)
 						ship.world.shoots.Add(new Shoot(ref ship.world, this, spawn_point, (float)(QA + i * (360d / dispersion / 16d)), (float)(stats.celerity + (i + dispersion) % 4d / 2.0d)));

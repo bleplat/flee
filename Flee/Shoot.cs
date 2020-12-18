@@ -62,7 +62,7 @@ namespace Flee {
 			if (speed == -1)
 				this.speed_vec = Helpers.GetNewPoint(new Point(0, 0), direction, weapon.stats.celerity);
 			else
-				this.speed_vec = Helpers.GetNewPoint(new Point(0, 0), direction, weapon.stats.celerity);
+				this.speed_vec = Helpers.GetNewPoint(new Point(0, 0), direction, speed);
 			this.emissive_mode = weapon.stats.emissive_mode;
 			this.emissive_sprite = weapon.stats.emissive_sprite;
 			// UpdateSector(); // useless in practice

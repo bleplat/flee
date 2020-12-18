@@ -7,22 +7,23 @@ gun Orange-Energy-Cannon
 	range=260
 	celerity=15
 	power=12
-	emp_power=5
+	emp_power=2
 	loadtime=20
 
 gun Yellow-Energy-Cannon
 	sprite=PRJ_energy_yellow
 	range=280
 	celerity=16
-	power=20
-	loadtime=25
+	power=25
+	emp_power=3
+	loadtime=30
 
 gun Red-Energy-Cannon
 	sprite=PRJ_energy_red
 	range=260
 	celerity=16
 	power=20
-	emp_power=5
+	emp_power=3
 	loadtime=15
 
 gun Magenta-Energy-Cannon

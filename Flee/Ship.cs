@@ -295,7 +295,7 @@ namespace Flee {
 			if (From != null && From.emp_power > 0) {
 				if (this.shield > 0)
 					this.emp_damage *= (1.0f - this.stats.shield_opacity * Math.Max(0.0f, this.shield / this.stats.shield) / 2.0f);
-				this.emp_damage += Amount;
+				this.emp_damage += From.emp_power;
 				double angle_ship_shoot_rel = Helpers.NormalizeAngleUnsigned(Helpers.GetAngle(location.X, location.Y, From.location.X, From.location.Y) - direction);
 				int shield_ptn_index = (int)(angle_ship_shoot_rel * 16d / 360d);
 				ShieldPoints[shield_ptn_index % 16] = 255;

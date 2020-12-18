@@ -4,7 +4,7 @@
 # This kind of weapon takes a while to charge but deliver high damages.
 
 gun Red-Charge-Cannon
-	sprite=PRJ_energy_orange
+	sprite=PRJ_charge_red
 	range=260
 	celerity=15
 	power=100
@@ -12,7 +12,7 @@ gun Red-Charge-Cannon
 	loadtime=75
 
 gun Orange-Charge-Cannon
-	sprite=PRJ_energy_orange
+	sprite=PRJ_charge_orange
 	range=260
 	celerity=14
 	power=85
@@ -20,7 +20,7 @@ gun Orange-Charge-Cannon
 	loadtime=65
 
 gun White-Charge-Cannon
-	sprite=PRJ_energy_orange
+	sprite=PRJ_charge_white
 	range=280
 	celerity=16
 	power=90
