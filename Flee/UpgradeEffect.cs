@@ -103,11 +103,9 @@ namespace Flee {
 				case "ship.shield": SetOp(this.op, ref ship.shield, this.right); return;
 				case "shield_opacity":
 					SetOp(this.op, ref ship.stats.shield_opacity, this.right);
-					ship.BrightShield();
 					return;
 				case "shield_regeneration":
 					SetOp(this.op, ref ship.stats.shield_regeneration, this.right);
-					ship.BrightShield();
 					return;
 				case "deflectors": SetOp(this.op, ref ship.stats.deflectors, this.right); return;
 				case "hot_deflectors": SetOp(this.op, ref ship.stats.hot_deflectors, this.right); return;

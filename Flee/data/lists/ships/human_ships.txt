@@ -2,7 +2,7 @@ ship Colonizer
 	role=Starter|Playable
 	level=9
 	width=55
-	integrity=185
+	integrity=165
 	speed=2.80
 	turn=1.80
 	weapon=0;Basic-Cannon
@@ -17,17 +17,18 @@ ship MiniColonizer
 	role=Starter|Playable
 	spawning_frequency=2
 	width=55
-	integrity=150
+	integrity=145
 	speed=2.80
 	turn=1.80
 	weapon=0;Standard-Artillery
 	weapon=-135;Heavy-ParticleGun
 	weapon=135;Heavy-ParticleGun
-	shield=200
-	shield_opacity=0.75
 	shield_regeneration=0.001
 	cost=166;1;0;0
 	craft=Build_MSL
+	native_upgrade=Shield_Emitters
+	native_upgrade=Shield_Emitters_II
+	native_upgrade=Shield_Capacitors
 
 ship DeinsCruiser
 	width=60

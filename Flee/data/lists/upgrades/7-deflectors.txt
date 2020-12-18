@@ -46,7 +46,7 @@ outfit Deflector_IV
 #
 
 outfit Hot_Deflector
-	desc=Convert a deflector to 2 hot deflectors.
+	desc=Convert a deflector to 3 hot deflectors.
 	desc=Hot deflectors doesnt reload by themselves, but some actions do.
 	sprite_coords=4;0
 	sprite=EFF_hot_deflected
@@ -54,11 +54,11 @@ outfit Hot_Deflector
 	time=200
 	once_effect=effect() EFF_hot_deflected
 	effect=deflectors -= 1
-	effect=hot_deflectors += 2
+	effect=hot_deflectors += 3
 	cost=550;2;0;25
 
 outfit Hot_Deflector_II
-	desc=Convert a deflector to 2 hot deflectors.
+	desc=Convert a deflector to 3 hot deflectors.
 	sprite_coords=5;0
 	sprite=EFF_hot_deflected
 	required_upgrade=Hot_Deflector
@@ -66,7 +66,7 @@ outfit Hot_Deflector_II
 	time=200
 	once_effect=effect() EFF_hot_deflected
 	effect=deflectors -= 1
-	effect=hot_deflectors += 2
+	effect=hot_deflectors += 3
 	cost=550;2;0;25
 
 ability Charge_Deflectors

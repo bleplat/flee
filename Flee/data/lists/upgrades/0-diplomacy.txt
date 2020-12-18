@@ -7,6 +7,7 @@ ability SOS
 	sprite_coords=2;0
 	sprite_color=Orange
 	require_nonbot=1
+	time=1
 	once_effect=sos()
 
 ability Self-Destruct
@@ -43,4 +44,5 @@ ability War_Declaration
 	sprite_coords=4;0
 	sprite_color=Red
 	require_nonbot=1
+	time=1
 	once_effect=hostile()

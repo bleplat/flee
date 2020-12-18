@@ -66,6 +66,7 @@ namespace Flee {
 				throw new Exception ("team was null");
 			SetTeam(team);
 			SetStats(ship_class);
+			ApplyUpgrades();
 			BrightShield();
 			TargetPTN = new PointF(location.X, location.Y);
 			UpdateSector();
