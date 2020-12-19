@@ -1,0 +1,115 @@
+#
+# Standard missile
+#
+
+gun Missile-Charge
+	sprite=PRJ_sparks
+	range=8
+	celerity=8
+	power=125
+	loadtime=2
+	special=SelfExplode
+
+ship MSL
+	level=0
+	width=15
+	integrity=4
+	repair=0
+	speed=8.00
+	turn=3.50
+	weapon=0;Missile-Charge
+	cost=250;0;0;0
+	complexity=500
+
+gun Missile-Launcher
+	sprite=MSL
+	range=300
+	celerity=4
+	loadtime=512
+	special=Launch|Straight
+
+#
+# Torpedoes (straight missile)
+#
+
+gun Torpedo-Charge
+	sprite=PRJ_sparks
+	range=8
+	celerity=8
+	power=150
+	loadtime=2
+	special=SelfExplode
+
+ship Torpedo
+	sprite=PRJ_Torpedo
+	level=0
+	width=15
+	integrity=6
+	repair=0
+	speed=7.50
+	turn=1.50
+	weapon=0;Torpedo-Charge
+	cost=300;1;0;0
+	complexity=500
+
+gun Torpedo-Launcher
+	sprite=Torpedo
+	range=400
+	celerity=4.5
+	loadtime=512
+	special=Launch|Straight
+
+#
+# Javelin (lighter missile)
+#
+
+gun Javelin-Charge
+	sprite=PRJ_sparks
+	range=8
+	celerity=8
+	power=65
+	loadtime=2
+	special=SelfExplode
+
+ship Javelin
+	sprite=PRJ_Javelin
+	level=0
+	width=15
+	integrity=3
+	repair=0
+	speed=8.50
+	turn=1.50
+	weapon=0;Javelin-Charge
+	cost=150;0;0;0
+	complexity=500
+
+gun Javelin-Launcher
+	sprite=Javelin
+	range=300
+	celerity=4.5
+	loadtime=512
+	salvo=3
+	special=Launch|Straight
+
+#
+# Nukes
+#
+
+gun Nuke-Charge
+	sprite=PRJ_sparks
+	range=32
+	celerity=8
+	power=50
+	loadtime=2
+	special=SelfNuke|SelfExplode
+
+ship Nuke
+	desc=When something go wrong, it still can go worse.
+	level=0
+	integrity=72
+	repair=0
+	speed=3.00
+	turn=2.50
+	weapon=0;Nuke-Charge
+	weapon=180;Light-MachineGun
+	cost=8000;32;7;800

@@ -53,21 +53,13 @@ gun Shuriken-Bombs
 	loadtime=50
 
 #
-# Misc
+# Conveniency
 #
 
 gun Explode-On-Contact
 	sprite=PRJ_sparks
 	range=8
 	celerity=8
-	power=125
+	power=32
 	loadtime=2
 	special=SelfExplode
-
-gun Nuke-On-Contact
-	sprite=PRJ_sparks
-	range=32
-	celerity=8
-	power=50
-	loadtime=2
-	special=SelfNuke

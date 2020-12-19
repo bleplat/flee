@@ -11,14 +11,15 @@ namespace Flee {
 			ReloadRNG = 1,		// Reload time become non-constant
 			NoAim = 2,			// Shoots doesnt aim
 			Explode = 4,
-			KeepFire = 4,		// Never stops firing
+			KeepFire = 8,		// Never stops firing
 			SelfExplode = 16,
 			SelfNuke = 32,
 			SpreadOrigin = 64,
 			Rail = 128,
 			Flak = 256,
-			Summon = 512,
+			Launch = 512,
 			EMP = 1024,
+			Straight = 2048,
 		}
 
 		public static int SpecialFromString(string input) {
@@ -76,10 +77,23 @@ namespace Flee {
 				double power = this.stats.power;
 				power *= this.ship.team.damage_multiplicator;
 				int dispersion = stats.sub_ammos;
+				if ((base_stats.special & (int)SpecialBits.Straight) != 0)
+					QA = ship.direction;
 				if ((base_stats.special & (int)SpecialBits.NoAim) != 0)
 					QA = ship.world.gameplay_random.Next(0, 360);
 				if ((base_stats.special & (int)SpecialBits.SpreadOrigin) != 0)
 					spawn_point = new PointF(PTN.X + ship.world.gameplay_random.Next(-7, 8), PTN.Y + ship.world.gameplay_random.Next(-7, 8));
+				if ((base_stats.special & (int)SpecialBits.Launch) != 0) {
+					ship.world.ships.Add(new Ship(ship.world, ship.team, this.stats.sprite));
+					ship.world.ships[ship.world.ships.Count - 1].location = Launcher.location;
+					ship.world.ships[ship.world.ships.Count - 1].direction = Launcher.direction;
+					ship.world.ships[ship.world.ships.Count - 1].speed = this.stats.celerity;
+					ship.world.ships[ship.world.ships.Count - 1].auto = true;
+					ship.world.ships[ship.world.ships.Count - 1].target = ship.target;
+					ship.world.ships[ship.world.ships.Count - 1].agressivity = 10000.0f;
+					ship.world.ships[ship.world.ships.Count - 1].behavior = Ship.BehaviorMode.Folow;
+					return;
+				}
 				if ((base_stats.special & (int)SpecialBits.Rail) != 0) {
 					for (int i = 0, loopTo = dispersion; i <= loopTo; i++)
 						ship.world.shoots.Add(new Shoot(ref ship.world, this, spawn_point, QA, stats.celerity + i / 1.5f));

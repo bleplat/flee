@@ -13,18 +13,26 @@ gun MachineGun
 gun Light-MachineGun
 	sprite=PRJ_bullet_red
 	range=180
-	celerity=17
+	celerity=18
 	power=1
 	salvo=3
 	loadtime=6
 
 gun Alien-MachineGun
 	sprite=PRJ_bullet_purple
+	range=300
+	celerity=18
+	power=3
+	salvo=2
+	loadtime=7
+
+gun Strange-MachineGun
+	sprite=PRJ_bullet_magenta
 	range=250
 	celerity=17
-	power=1
+	power=2
 	salvo=2
-	loadtime=4
+	loadtime=8
 
 #
 # ShellCannons
@@ -50,7 +58,7 @@ gun Light-ShellCannon
 # Launchers
 #
 
-gun Torpedo-Launcher
+gun Straight-Torpedo-Launcher
 	sprite=PRJ_torpedo
 	range=230
 	celerity=14
@@ -59,7 +67,7 @@ gun Torpedo-Launcher
 	emissive_mode=Propeled
 	emissive_sprite=PRJ_sparks
 
-gun Javelin-Launcher
+gun Straight-Javelin-Launcher
 	sprite=PRJ_javelin
 	range=220
 	celerity=16

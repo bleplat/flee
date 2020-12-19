@@ -10,6 +10,8 @@ ship Station_Stranges
 	cost=5000;32;4;0
 	craft=Build_Strange
 	craft=Build_Strange
+	craft=Build_Strange
+	craft=Build_StrangeV2
 	craft=Build_Sacred
 	craft=Build_Pusher
 
@@ -20,6 +22,19 @@ ship Strange
 	speed=2.80
 	turn=1.20
 	weapon=0;6-Beam
+	shield=35
+	shield_regeneration=0.01
+	shield_opacity=0.25
+	cost=1800;4;0;0
+
+ship StrangeV2
+	level=2
+	width=44
+	integrity=185
+	speed=2.80
+	turn=1.20
+	weapon=-45;Magenta-Energy-Cannon
+	weapon=45;Strange-MachineGun
 	shield=25
 	shield_regeneration=0.01
 	shield_opacity=0.25

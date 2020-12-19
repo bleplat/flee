@@ -66,6 +66,7 @@ ship Harass
 	integrity=75
 	speed=3.30
 	turn=2.30
+	weapon=0;ShellCannon
 	weapon=0;Javelin-Launcher
 	cost=800;1;0;0
 

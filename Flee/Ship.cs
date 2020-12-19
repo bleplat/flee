@@ -255,6 +255,9 @@ namespace Flee {
 				shield = stats.shield;
 			if (deflectors > stats.TotalDeflectorsMax())
 				deflectors = stats.TotalDeflectorsMax();
+			// autos should not live forever
+			if (this.auto && world.ticks % 128 == 0)
+				integrity -= 1;
 		}
 
 		public void TurnToQA(float qa) {
@@ -347,6 +350,7 @@ namespace Flee {
 		}
 
 		public void IA(int rnd_num) {
+			// emp imobilize the ship
 			if (this.emp_damage > this.stats.width) {
 				this.speed = 0;
 				return;
@@ -366,7 +370,7 @@ namespace Flee {
 			if (rnd_num < 100)
 				agressivity += 0.05f;
 
-			if (bot_ship && behavior != BehaviorMode.Drift && team.affinity != AffinityEnum.Wilderness)
+			if ((bot_ship || auto) && behavior != BehaviorMode.Drift && team.affinity != AffinityEnum.Wilderness)
 				if (target is null) {
 					var nearest_ship = GetClosestShip(agressivity, 1.0d, 0.1d);
 					if (nearest_ship is object) {

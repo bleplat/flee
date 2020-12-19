@@ -223,8 +223,8 @@ namespace Flee {
 			// ===' Ships '==='
 			for (int i = ships.Count - 1; i >= 0; i -= 1)
 				ships[i].Check();
-			foreach (Ship AShip in ships)
-				AShip.IA(gameplay_random.Next(0, 10000));
+			for (int i = ships.Count - 1; i >= 0; i -= 1)
+				ships[i].IA(gameplay_random.Next(0, 10000));
 			// ===' Shoots '==='
 			for (int i = shoots.Count - 1; i >= 0; i -= 1)
 				shoots[i].Check();

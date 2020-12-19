@@ -59,7 +59,7 @@ namespace Flee {
 				case "sprite": sprite = value; break;
 				case "effect": effect = Convert.ToInt32(value); break;
 				case "range": range = Convert.ToInt32(value); break;
-				case "celerity": celerity = Convert.ToInt32(value); break;
+				case "celerity": celerity = Helpers.ToFloat(value); break;
 				case "power": power = Convert.ToInt32(value); break;
 				case "emp_power": emp_power = Convert.ToInt32(value); break;
 				case "loadtime": loadtime = Convert.ToInt32(value); break;
