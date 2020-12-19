@@ -147,9 +147,8 @@ ship Colonizer
 	integrity=165
 	speed=2.80
 	turn=1.80
-	weapon=0;ShellCannon
-	weapon=-135;Orange-Energy-Cannon
-	weapon=135;Orange-Energy-Cannon
+	weapon=0;Orange-Charge-Cannon
+	weapon=180;Orange-Energy-Cannon
 	cost=166;1;0;0
 	craft=Build_Anti-Light_Turret
 	craft=Build_Anti-Heavy_Turret
