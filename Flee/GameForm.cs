@@ -414,6 +414,9 @@ namespace Flee {
 			// text infos
 			g.DrawImage(SpriteArray.GetSpriteArray("Upgrades").GetSprite(5, 0), new PointF(0, 0));
 			g.DrawString(game.world.CountTeamShips(game.player_team) + " / " + game.player_team.ship_count_limit, new Font("Consolas", 10f), Brushes.Gray, new Point(32, 8));
+			// special infos
+			if (game.player_team == null || game.player_team.ship_count_approximation == 0)
+				g.DrawString("spectator", new Font("Consolas", 7f), Brushes.DarkCyan, new Point(64, 0));
 			if (game.player_team != null && game.player_team.cheats_enabled)
 				g.DrawString("cheats enabled", new Font("Consolas", 7f), Brushes.DarkRed, new Point(64, 0));
 			if (game.play_state == PlayState.Paused)
