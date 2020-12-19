@@ -353,7 +353,6 @@ namespace Flee {
 				g.DrawRectangle(Pens.White, NR);
 			}
 			// ship specials
-
 			foreach (Ship AShip in game.world.ships)
 				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + g.VisibleClipBounds.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + g.VisibleClipBounds.Height)
 					if (AShip.behavior != Ship.BehaviorMode.Drift && AShip.stats.sprite != "MSL") {
@@ -381,13 +380,12 @@ namespace Flee {
 							var shields_colors = new Color[16];
 							for (int i = 0, loopTo = shields_ptns.Length - 1; i <= loopTo; i++) {
 								shields_ptns[i] = Helpers.GetNewPoint(new PointF((float)(drawrect.X + drawrect.Width / 2d), (float)(drawrect.Y + drawrect.Height / 2d)), (float)(i * 360 / 16d + AShip.direction), (float)(drawrect.Width / 2d + drawrect.Width / 4d + 16d)); 
-
 								double f_alpha = AShip.ShieldPoints[i] / 256.0d;
 								double f_red_0 = 1.0d - AShip.shield / AShip.stats.shield / 2.0d;
 								double f_red_1 = 1.0d - AShip.shield / AShip.stats.shield;
-								double f_green_0 = (AShip.stats.shield_opacity - 25d) / 75.0d + AShip.stats.shield_regeneration / 40.0d;
+								double f_green_0 = (AShip.stats.shield_opacity + AShip.stats.shield_regeneration) / 2.0;
 								double f_green_1 = f_green_0 * Math.Sqrt(Math.Max(0f, AShip.shield / AShip.stats.shield));
-								double f_blue_0 = Math.Sqrt(AShip.stats.shield) * 20.0d / 400.0d;
+								double f_blue_0 = Math.Sqrt(AShip.stats.shield) / 375.0f;
 								double f_blue_1 = f_blue_0 * (AShip.shield / AShip.stats.shield);
 								shields_colors[i] = Color.FromArgb((int)Math.Min(255d, f_alpha * 255d * 2d), (int)Math.Min(255d, Math.Max(0d, (1.0d - f_alpha) * f_red_0 * 256d + f_alpha * f_red_1 * 256d)), (int)Math.Min(255d, Math.Max(0d, (1.0d - f_alpha) * f_green_0 * 256d + f_alpha * f_green_1 * 256d)), (int)Math.Min(255d, Math.Max(0d, (1.0d - f_alpha) * f_blue_0 * 256d + f_alpha * f_blue_1 * 256d)));
 							}

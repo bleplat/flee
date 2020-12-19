@@ -81,7 +81,7 @@ namespace Flee {
 
 		// stats (shields)
 		public float shield = 0;
-		public float shield_regeneration = 0.001f;
+		public float shield_regeneration = 0.0005f;
 		public float shield_opacity = 0.0f;
 
 		// stats (deflectors)
