@@ -526,8 +526,9 @@ namespace Flee {
 													score /= 8;
 												if (ReferenceEquals(target, OVessel))
 													score /= 4;
+												if ((AWeap.stats.special & (int)Weapon.SpecialBits.EMP) != 0 && OVessel.emp_damage * 0.8 > OVessel.stats.width)
+													score *= 3;
 											}
-
 											if (score < closest_score) {
 												closest_score = score;
 												weapon_targeted_ship = OVessel;
