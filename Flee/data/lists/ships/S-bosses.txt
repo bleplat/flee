@@ -186,14 +186,6 @@ ship Finalizer
 	shield_regeneration=0.01
 	shield_opacity=1.00
 	cost=10000;64;16;1000
-	craft=Build_Station
-	craft=Build_Station_Drones
-	craft=Build_Station_Legendaries
-	craft=Build_Station_Kastous
-	craft=Build_Station_Stranges
-	craft=Build_Station_Crushers
-	craft=Build_BomberFactory
-	craft=Build_Kastou
 	native_upgrade=Warp_Drive
 
 ship Ori

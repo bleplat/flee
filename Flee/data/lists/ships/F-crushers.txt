@@ -9,11 +9,14 @@ ship Station_Crushers
 	turn=0.01
 	integrity=2500
 	cost=5000;32;4;0
-	weapon=0;Heavy-PlasmaBomber
+	weapon=0;Cyan-Energy-Cannon
+	weapon=-90;Cyan-Energy-Cannon
+	weapon=90;Cyan-Energy-Cannon
 	craft=Build_Crusher
 
 ship Crusher
 	level=4
+	complexity=2000
 	width=75
 	integrity=465
 	speed=2.20
