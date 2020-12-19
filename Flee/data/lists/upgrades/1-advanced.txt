@@ -17,7 +17,7 @@ ability Jump
 	sprite_color=UpgradeColor1
 	required_upgrade=Jump_Engine
 	time=200
-	once_effect=ship.speed += 60
+	once_effect=ship.speed += 65
 	once_effect=effect() EFF_jumped
 	once_effect=ship.deflectors += 1
 	cost=0;1;0;0
@@ -28,7 +28,7 @@ outfit Jump_Engine_II
 	sprite_coords=6;5
 	sprite_color=UpgradeColor2
 	required_upgrade=Jump_Engine
-	time=300
+	time=320
 	cost=1000;2;0;0
 
 ability Jump_II
@@ -38,8 +38,8 @@ ability Jump_II
 	sprite_coords=1;1
 	sprite_color=UpgradeColor2
 	required_upgrade=Jump_Engine_II
-	time=300
-	once_effect=ship.speed += 80
+	time=320
+	once_effect=ship.speed += 85
 	once_effect=effect() EFF_jumped
 	once_effect=ship.deflectors += 1
 	cost=0;1;0;16

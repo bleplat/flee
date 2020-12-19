@@ -8,7 +8,7 @@ outfit Faster_Engines
 	sprite_color=UpgradeColor1
 	required_stat=speed > 0
 	time=300
-	effect=speed *= 1.25
+	effect=speed *= 1.15
 	cost=250;1;0;0
 
 outfit Faster_Engines_II
@@ -17,7 +17,7 @@ outfit Faster_Engines_II
 	sprite_color=UpgradeColor2
 	required_upgrade=Faster_Engines
 	time=300
-	effect=speed *= 1.25
+	effect=speed *= 1.15
 	cost=300;3;0;10
 
 outfit Faster_Engines_III
@@ -26,7 +26,7 @@ outfit Faster_Engines_III
 	sprite_color=UpgradeColor3
 	required_upgrade=Faster_Engines_II
 	time=300
-	effect=speed *= 1.25
+	effect=speed *= 1.15
 	cost=500;5;0;20
 
 outfit Faster_Engines_IV
@@ -35,7 +35,7 @@ outfit Faster_Engines_IV
 	sprite_color=UpgradeColor4
 	required_upgrade=Faster_Engines_III
 	time=300
-	effect=speed *= 1.25
+	effect=speed *= 1.15
 	cost=750;7;0;30
 
 #
@@ -47,7 +47,7 @@ outfit Faster_Steering
 	sprite_coords=1;5
 	sprite_color=UpgradeColor1
 	time=300
-	effect=speed *= 1.45
+	effect=turn *= 1.45
 	cost=250;1;0;0
 
 outfit Faster_Steering_II
@@ -69,7 +69,6 @@ outfit Engine_Afterburner
 	sprite_coords=0;5
 	sprite_color=Purple
 	time=250
-	effect=speed *= 1.25
 	cost=750;7;0;30
 
 ability Afterburn
@@ -78,6 +77,6 @@ ability Afterburn
 	sprite_color=Purple
 	required_upgrade=Engine_Afterburner
 	time=350
-	effect=ship.speed += 30
+	effect=ship.speed += 35
 	effect=ship.deflectors += 2
 	cost=0;0;0;50

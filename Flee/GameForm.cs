@@ -406,7 +406,7 @@ namespace Flee {
 								g.DrawString((int)AShip.shield + "/" + (int)AShip.stats.shield, Font, Brushes.LightGray, new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 - See.Y + 7)));
 							if (AShip.stats.TotalDeflectorsMax() > 0 || AShip.stats.cold_deflectors > 0)
 								if (AShip.deflectors == AShip.stats.deflectors)
-									g.DrawString(AShip.deflectors + "/" + AShip.stats.deflectors, Font, new SolidBrush(Color.DimGray), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 14 - See.Y)));
+									g.DrawString(AShip.deflectors + "/" + AShip.stats.TotalDeflectorsMax(), Font, new SolidBrush(Color.DimGray), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 14 - See.Y)));
 								else
 									g.DrawString(AShip.deflectors + "/" + AShip.stats.TotalDeflectorsMax() + " <- " + AShip.deflector_cooldown, Font, new SolidBrush(Color.Gray), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 14 - See.Y)));
 							if (AShip.emp_damage > 0.0f)

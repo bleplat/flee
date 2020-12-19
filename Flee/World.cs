@@ -188,7 +188,9 @@ namespace Flee {
 				string starter_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Starter | (int)ShipRole.Playable).name;
 				ships.Add(new Ship(this, player_team, starter_type) { location = new Point((int)(origin.X + (i % 3 - 1)), (int)origin.Y + (i / 2 % 3 - 1)) });
 				ships[ships.Count - 1].direction = (float)Helpers.GetQA((int)origin.X, (int)origin.Y, (int)origin.X, (int)origin.Y);
-				ships[ships.Count - 1].upgrade_slots += rand.Next(6, 12);
+				ships[ships.Count - 1].upgrade_slots += rand.Next(0, 4);
+				if (ships[ships.Count - 1].upgrades.Count > ships[ships.Count - 1].upgrade_slots)
+					ships[ships.Count - 1].upgrade_slots = ships[ships.Count - 1].upgrades.Count;
 			}
 			return (teams[teams.Count - 1]);
 		}
@@ -360,7 +362,7 @@ namespace Flee {
 					if (a_ship.team.affinity != AffinityEnum.Wilderness && a_ship.bot_ship && a_ship.upgrade_progress == 0 && a_ship.team.ship_count_approximation < a_ship.team.ship_count_limit) {
 						string wished_upgrade = null;
 						if (rand.Next(0, 16) < 8)                         // building ships
-							if (true) { // TODO: this was broken by condition changes
+							if (rand.Next(0, 2) == 0) { // TODO: this was broken by condition changes
 								wished_upgrade = Loader.GetRandomSpawnUpgrade(rand, a_ship);
 								if (wished_upgrade is object)
 									a_ship.UpgradeForFree(wished_upgrade);

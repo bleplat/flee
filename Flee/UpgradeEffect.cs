@@ -59,7 +59,7 @@ namespace Flee {
 				case "free()": ship.SetTeam(ship.world.wilderness_team); return;
 				case "give()": return;
 				case "surrender()": return;
-				case "hostile()": ship.team.affinity = AffinityEnum.Hostile; return;
+				case "affinity()": ship.team.affinity = (AffinityEnum)Enum.Parse(typeof(AffinityEnum), this.right); return;
 				//
 				case "effect()":
 					ship.world.effects.Add(new Effect(-1, this.right, ship.location, ship.direction, ship.speed_vec));
@@ -70,12 +70,21 @@ namespace Flee {
 				case "ask_surrender()": return;
 				case "team_surrender()": return;
 				case "warp()": /* // TODO: */ return;
-				case "affinity()": ship.team.affinity = (AffinityEnum)Enum.Parse(typeof(AffinityEnum), this.right); return;
 				case "abandon()": ship.team = ship.world.wilderness_team; return;
 				case "ascend()": ship.team.has_ascended = true; return;
-				case "enable_cheats()": ship.team.cheats_enabled = true; return;
-				case "disable_cheats()": ship.team.cheats_enabled = false; return;
-				case "color()": ship.color = Helpers.ToColor(right); return;
+				case "toggle_cheats()": ship.team.cheats_enabled = !ship.team.cheats_enabled; return;
+				case "set_bot()": ship.bot_ship = (Convert.ToInt32(this.right) != 0); return;
+				case "team_set_bot()": ship.bot_ship = (Convert.ToInt32(this.right) != 0); return;
+				case "color()": 
+					ship.color = Helpers.ToColor(right);
+					ship.UpdateSprite();
+					return;
+				case "clear_upgrades()":
+					ship.Upgrading = null;
+					ship.upgrade_progress = 0;
+					ship.upgrades.Clear();
+					ship.ResetStats();
+					return;
 				case "summon()":
 					ship.world.ships.Add(new Ship(ship.world, ship.team, right) { location = new Point((int)(ship.location.X + ship.world.gameplay_random.Next(-10, 11)), (int)(ship.location.Y + ship.world.gameplay_random.Next(-10, 11))) });
 					ship.world.ships[ship.world.ships.Count - 1].direction = ship.direction;

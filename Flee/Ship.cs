@@ -110,11 +110,14 @@ namespace Flee {
 						color = Color.FromArgb(80, 80, 48);
 					}
 				}
-				// sprite
-				this.sprites = SpriteArray.GetSpriteArray(stats.sprite, this.color);
 				// 
 				ResetStats();
+				// sprite
+				UpdateSprite();
 			}
+		}
+		public void UpdateSprite() {
+			this.sprites = SpriteArray.GetSpriteArray(stats.sprite, this.color);
 		}
 
 		public void SetTeam(Team team) {

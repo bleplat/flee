@@ -45,4 +45,4 @@ ability War_Declaration
 	sprite_color=Red
 	require_nonbot=1
 	time=1
-	once_effect=hostile()
+	once_effect=affinity() Hostile

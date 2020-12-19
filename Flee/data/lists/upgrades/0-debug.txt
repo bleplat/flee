@@ -1,0 +1,130 @@
+#
+# Toggle Cheat
+#
+
+ability Toggle-Cheats
+	sprite_coords=6;7
+	sprite_color=Gray
+	require_craft=1
+	time=16
+	once_effect=toggle_cheats()
+
+#
+# Affinity
+#
+
+ability Affinity-Wilderness
+	sprite_coords=0;0
+	sprite_color=Gray
+	require_craft=1
+	time=1
+	once_effect=affinity() Wilderness
+ability Affinity-Neutral
+	sprite_coords=0;0
+	sprite_color=White
+	require_craft=1
+	time=1
+	once_effect=affinity() Neutral
+ability Affinity-Friendly
+	sprite_coords=0;0
+	sprite_color=Lime
+	require_craft=1
+	time=1
+	once_effect=affinity() Friendly
+ability Affinity-Dissident
+	sprite_coords=0;0
+	sprite_color=Orange
+	require_craft=1
+	time=1
+	once_effect=affinity() Dissident
+ability Affinity-Hostile
+	sprite_coords=0;0
+	sprite_color=Red
+	require_craft=1
+	time=1
+	once_effect=affinity() Hostile
+
+#
+# Bot Switch
+#
+
+ability Set-NonBot
+	sprite_coords=7;0
+	sprite_color=Gray
+	require_craft=1
+	time=16
+	once_effect=set_bot() 0
+ability Set-Bot
+	sprite_coords=7;0
+	sprite_color=White
+	require_craft=1
+	time=16
+	once_effect=set_bot() 1
+ability Team-Set-NonBot
+	sprite_coords=7;0
+	sprite_color=Gray
+	require_craft=1
+	time=16
+	once_effect=team_set_bot() 0
+ability Team-Set-Bot
+	sprite_coords=7;0
+	sprite_color=White
+	require_craft=1
+	time=16
+	once_effect=team_set_bot() 1
+
+#
+# Misc
+#
+
+upgrade God
+	sprite_coords=3;7
+	sprite_color=White
+	require_craft=1
+	time=16
+	effect=integrity max()= 1000
+	effect=repair max()= 1000
+	effect=shield max()= 1000
+	effect=shield_opacity max()= 2.0
+	effect=shield_regeneration max()= 1.0
+ability Clear_Upgrades
+	sprite_coords=7;7
+	sprite_color=Black
+	require_craft=1
+	time=16
+	once_effect=clear_upgrades()
+
+#
+# Paint
+#
+
+ability Paint1
+	sprite_coords=5;7
+	sprite_color=White
+	require_craft=1
+	once_effect=color() White
+ability Paint2
+	sprite_coords=5;7
+	sprite_color=Lime
+	require_craft=1
+	once_effect=color() Lime
+ability Paint3
+	sprite_coords=5;7
+	sprite_color=Cyan
+	require_craft=1
+	once_effect=color() Cyan
+ability Paint4
+	sprite_coords=5;7
+	sprite_color=Magenta
+	require_craft=1
+	once_effect=color() Magenta
+ability Paint5
+	sprite_coords=5;7
+	sprite_color=Orange
+	require_craft=1
+	once_effect=color() Orange
+ability Paint6
+	sprite_coords=5;7
+	sprite_color=Red
+	require_craft=1
+	once_effect=color() Red

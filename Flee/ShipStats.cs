@@ -113,7 +113,7 @@ namespace Flee {
 			var try_bmp =  SpriteArray.GetSpriteArray(this.sprite).GetSprite(0, 0);
 			if (try_bmp is object) {
 				width = try_bmp.Width;
-				level = (int)Math.Sqrt(width);
+				level = (int)Math.Sqrt(width) / 2;
 				integrity = (int)(width * width / 12d);
 				if (width >= 25)
 					repair = 1;
