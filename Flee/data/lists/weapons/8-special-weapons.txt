@@ -60,7 +60,7 @@ gun Explode-On-Contact
 	sprite=PRJ_sparks
 	range=8
 	celerity=8
-	power=45
+	power=125
 	loadtime=2
 	special=SelfExplode
 
