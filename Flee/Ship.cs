@@ -9,12 +9,12 @@ namespace Flee {
 
 		// mode of behavior
 		public enum BehaviorMode {
-			None,
-			Stand,
-			Drift,
-			Folow,
-			Mine,
-			GoToPoint
+			None,		// No order
+			Stand,		// Order to stay here
+			Drift,		// Order to move forward indefinitely
+			Folow,		// Order to move to a ship
+			Mine,		// Order to mine nearby resources
+			GoToPoint	// Order to move to a point
 		}
 
 		/* identity */
@@ -40,10 +40,10 @@ namespace Flee {
 		public float agressivity = 1.0f;
 
 		/* AI */
-		public bool AllowMining = true;
+		public bool allow_mining = true;
 		public BehaviorMode behavior = BehaviorMode.Stand;
-		public Ship target = null;
-		public PointF TargetPTN = new PointF(0f, 0f);
+		public Ship target = null;								// ship targeted by the order
+		public PointF target_point = new PointF(0f, 0f);		// point targeted by the order
 
 		/* Shield effect */
 		public const int SHIELD_POINTS = 16;
@@ -68,7 +68,7 @@ namespace Flee {
 			SetStats(ship_class);
 			ApplyUpgrades();
 			BrightShield();
-			TargetPTN = new PointF(location.X, location.Y);
+			target_point = new PointF(location.X, location.Y);
 			UpdateSector();
 		}
 
@@ -260,7 +260,7 @@ namespace Flee {
 				integrity -= 1;
 		}
 
-		public void TurnToQA(float qa) {
+		public void TurnTowardDirection(float qa) {
 			while (qa > 360f)
 				qa -= 360f;
 			while (qa < 0f)
@@ -349,147 +349,194 @@ namespace Flee {
 			}
 		}
 
-		public void IA(int rnd_num) {
-			// emp imobilize the ship
-			if (this.emp_damage > this.stats.width) {
-				this.speed = 0;
-				return;
-			}
-			float QA = 0.0f;
-			bool NeedSpeed = false;
-			// remove destroyed target
+		/* AI */
+		public void AISanitize() {
 			if (target is object && target.IsDestroyed())
 				target = null;
-			// ===' Fin de poursuite '==='
 			if (behavior == BehaviorMode.Folow && target is null)
 				behavior = BehaviorMode.Stand;
-			// wilderness team mean drifting
 			if (ReferenceEquals(team, world.wilderness_team))
 				behavior = BehaviorMode.Drift;
-			// ===' Auto-Activation '==='
-			if (rnd_num < 100)
-				agressivity += 0.05f;
+		}
+		public void AI() {
+			float		required_direction = 0.0f;
+			bool		require_speed = false;
 
-			if ((bot_ship || auto) && behavior != BehaviorMode.Drift && team.affinity != AffinityEnum.Wilderness)
-				if (target is null) {
-					var nearest_ship = GetClosestShip(agressivity, 1.0d, 0.1d);
-					if (nearest_ship is object) {
-						target = nearest_ship;
-						behavior = BehaviorMode.Folow;
+			AISanitize();
+			// AI cant operate when EMP disabled
+			if (this.emp_damage > this.stats.width) {
+				if (!ReferenceEquals(team, world.wilderness_team))
+					this.speed = 0;
+				return;
+			}
+			if (bot_ship || auto) {
+				// Randomly increase ship's agressivity
+				if (world.gameplay_random.Next(0, 1000) < 1)
+					agressivity += 0.05f;
+				// Choose a target ship
+				if (behavior != BehaviorMode.Drift && team.affinity != AffinityEnum.Wilderness)
+					if (target is null) {
+						var nearest_ship = GetClosestShip(agressivity, 1.0d, 0.1d);
+						if (nearest_ship is object) {
+							target = nearest_ship;
+							behavior = BehaviorMode.Folow;
+						}
+					} else if (world.gameplay_random.Next(0, 1000) < 2 || !ReferenceEquals(team, target.team) && world.gameplay_random.Next(0, 1000) < 10) { // chance to change target
+						target = null;
+						behavior = BehaviorMode.Stand;
 					}
-				} else if (rnd_num < 6 || !ReferenceEquals(team, target.team) && rnd_num < 100) { // chance to change target
-					target = null;
-					behavior = BehaviorMode.Stand;
-				}
-			// ===' Execution '==='
+			}
+			// folow behavior
 			switch (behavior) {
 			case BehaviorMode.Mine: {
-				AllowMining = true;
+				allow_mining = true;
 				if (target is object) {
-					// has mining target already
-					QA = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)target.location.X, (int)target.location.Y);
-					double optimal_range = 50d;
-					if (weapons.Count > 0)
-						optimal_range = weapons[0].stats.range * 0.5d;
-					double rel_dist = Helpers.Distance(ref location, ref target.location) - target.stats.width / 2d;
-					if (rel_dist <= optimal_range) {
-						// turn if too close
-						if (Helpers.GetAngleDiff(direction, QA) < 120d)
-							QA = QA + 180f;
-
-						NeedSpeed = true;
-					} else
-						NeedSpeed = Helpers.GetAngleDiff(direction, QA) < 90d;
-
-					if (Helpers.Distance(ref TargetPTN, ref target.location) > world.ArenaSize.Width / 8d)                         // abort target if too far away from mining point
-						target = null;
+					AITowardTargetMining(ref required_direction, ref require_speed);
 				} else {
 					// no current mining target
 					int max_mining_distance = (int)(world.ArenaSize.Width / 8d);
 					var mining_target = GetClosestShip(0.0d, 1.0d);
-					if (mining_target is object && Helpers.Distance(ref TargetPTN, ref mining_target.location) > max_mining_distance)
+					if (mining_target is object && Helpers.Distance(ref target_point, ref mining_target.location) > max_mining_distance)
 						mining_target = null;
-
 					target = mining_target;
-					if (target is null) {
-						QA = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)TargetPTN.X, (int)TargetPTN.Y);
-						NeedSpeed = true;
-					}
+					if (target is null)
+						AITowardTargetPoint(ref required_direction, ref require_speed);
 				}
-
 				break;
 			}
-
 			case BehaviorMode.Folow: {
 				if (target is object) {
-					var forseen_location = ForseeLocation(target);
-					// world.Effects.Add(New Effect With {.Type = "EFF_OrderTarget", .Coo = forseen_location, .Direction = 45, .speed = 0})
-					QA = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)forseen_location.X, (int)forseen_location.Y);
-					double rel_forseen_dist = Helpers.Distance(ref location, ref forseen_location) - target.stats.width / 2d;
-					double optimal_range = 50d;
-					if (weapons.Count > 0)
-						optimal_range = weapons[0].stats.range * weapons[0].stats.range / rel_forseen_dist * 0.8d; // TODO: instead of this factor, just use the forseen location of the target
-					if (Helpers.Distance(ref location, ref target.location) <= optimal_range)
-						if (Helpers.GetAngleDiff(direction, QA) < 112d) {
-							QA = QA + 180f;
-							NeedSpeed = Helpers.GetAngleDiff(direction, QA - 180f) > 45d;
-						} else
-							NeedSpeed = Helpers.GetAngleDiff(direction, QA) > 90d;
-					else {
-						if (target.stats.speed * 1.1d >= stats.speed) {
-							double angle_to_target = Helpers.GetQA((int)location.X, (int)location.Y, (int)target.location.X, (int)target.location.Y);
-							if (Helpers.GetAngleDiff(angle_to_target, QA) > 90d)
-								QA = (float)angle_to_target;
-						}
-
-						NeedSpeed = Helpers.GetAngleDiff(direction, QA) < 90d;
-					}
-					// NeedSpeed = True
+					if (this.team.IsFriendWith(this.target.team))
+						AITowardTargetEscort(ref required_direction, ref require_speed);
+					else
+						AITowardTargetAgressive(ref required_direction, ref require_speed);
 				}
-
 				break;
 			}
-
 			case BehaviorMode.Stand: {
-				QA = direction;
-				NeedSpeed = false;
+				required_direction = direction;
+				require_speed = false;
 				break;
 			}
-
 			case BehaviorMode.Drift: {
-				QA = direction;
-				NeedSpeed = true;
+				required_direction = direction;
+				require_speed = true;
 				break;
 			}
-
 			case BehaviorMode.GoToPoint: {
-				QA = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)TargetPTN.X, (int)TargetPTN.Y);
-				if (Helpers.Distance(location.X, location.Y, TargetPTN.X, TargetPTN.Y) <= 50d)
-					behavior = BehaviorMode.Stand;
-
-				NeedSpeed = true;
+				AITowardTargetPoint(ref required_direction, ref require_speed);
 				break;
 			}
 			}
-			// ===' Appliquation '==='
-			TurnToQA(QA);
-			if (NeedSpeed)
+			// apply choices
+			AIApplyNow(required_direction, require_speed);
+			// weapons
+			AIFire();
+		}
+		void AITowardTargetPoint(ref float required_direction, ref bool require_speed) {
+				required_direction = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)target_point.X, (int)target_point.Y);
+				if (Helpers.Distance(location.X, location.Y, target_point.X, target_point.Y) <= 50d)
+					behavior = BehaviorMode.Stand;
+				require_speed = true;
+		}
+		void AITowardTargetAgressive(ref float required_direction, ref bool require_speed) {
+			var forseen_location = ForseeLocation(target);
+			// world.Effects.Add(New Effect With {.Type = "EFF_OrderTarget", .Coo = forseen_location, .Direction = 45, .speed = 0})
+			required_direction = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)forseen_location.X, (int)forseen_location.Y);
+			double rel_forseen_dist = Helpers.Distance(ref location, ref forseen_location) - target.stats.width / 2d;
+			double optimal_range = 100.0f;
+			if (weapons.Count > 0)
+				optimal_range = weapons[0].stats.range * weapons[0].stats.range / rel_forseen_dist * 0.8d;
+			if (Helpers.Distance(ref location, ref target.location) <= optimal_range)
+				if (Helpers.GetAngleDiff(direction, required_direction) < 112d) {
+					required_direction = required_direction + 180f;
+					require_speed = Helpers.GetAngleDiff(direction, required_direction - 180f) > 45d;
+				} else
+					require_speed = Helpers.GetAngleDiff(direction, required_direction) > 90d;
+			else {
+				if (target.stats.speed * 1.1d >= stats.speed) {
+					double angle_to_target = Helpers.GetQA((int)location.X, (int)location.Y, (int)target.location.X, (int)target.location.Y);
+					if (Helpers.GetAngleDiff(angle_to_target, required_direction) > 90d)
+						required_direction = (float)angle_to_target;
+				}
+				require_speed = Helpers.GetAngleDiff(direction, required_direction) < 90d;
+			}
+		}
+		void AITowardTargetEscort(ref float required_direction, ref bool require_speed) {
+			var forseen_location = ForseeLocation(target);
+			// world.Effects.Add(New Effect With {.Type = "EFF_OrderTarget", .Coo = forseen_location, .Direction = 45, .speed = 0})
+			required_direction = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)forseen_location.X, (int)forseen_location.Y);
+			double rel_forseen_dist = Helpers.Distance(ref location, ref forseen_location) - target.stats.width / 2d;
+			double optimal_range = target.stats.width * 4.0f + 10.0f;
+			if (target.weapons.Count > 0)
+				optimal_range = target.weapons[0].stats.range * target.weapons[0].stats.range / rel_forseen_dist * 0.8d;
+			// decrease optimal range for ships with high range
+			if (weapons.Count > 0)
+				optimal_range *= Math.Min(1.0f, Math.Max(0.2f, 150.0f / weapons[0].stats.range));
+			double dist = Helpers.Distance(ref location, ref target.location);
+			if (dist <= optimal_range * 0.6) {
+				if (Helpers.GetAngleDiff(direction, required_direction) < 112d) {
+					required_direction = required_direction + 180f;
+					require_speed = Helpers.GetAngleDiff(direction, required_direction - 180f) > 45d;
+				} else
+					require_speed = Helpers.GetAngleDiff(direction, required_direction) > 90d;
+			} else if (dist <= optimal_range * 1.1) {
+				if (target.stats.speed == 0.0f && target.stats.turn == 0.0f)
+					require_speed = true;
+				else
+					require_speed = (this.speed < target.speed);
+				required_direction = target.direction;
+			} else {
+				if (target.stats.speed * 1.1d >= stats.speed) {
+					double angle_to_target = Helpers.GetQA((int)location.X, (int)location.Y, (int)target.location.X, (int)target.location.Y);
+					if (Helpers.GetAngleDiff(angle_to_target, required_direction) > 90d)
+						required_direction = (float)angle_to_target;
+				}
+				require_speed = Helpers.GetAngleDiff(direction, required_direction) < 90d;
+			}
+		}
+		void AITowardTargetMining(ref float required_direction, ref bool require_speed) {
+			var forseen_location = ForseeLocation(target);
+			// world.Effects.Add(New Effect With {.Type = "EFF_OrderTarget", .Coo = forseen_location, .Direction = 45, .speed = 0})
+			required_direction = (float)Helpers.GetQA((int)location.X, (int)location.Y, (int)forseen_location.X, (int)forseen_location.Y);
+			double rel_forseen_dist = Helpers.Distance(ref location, ref forseen_location) - target.stats.width / 2d;
+			double optimal_range = 120.0f;
+			if (weapons.Count > 0)
+				optimal_range = weapons[0].stats.range * weapons[0].stats.range / rel_forseen_dist * 0.8d;
+			double dist = Helpers.Distance(ref location, ref target.location);
+			if (dist <= optimal_range * 0.7) {
+				if (Helpers.GetAngleDiff(direction, required_direction) < 112d) {
+					required_direction = required_direction + 180f;
+					require_speed = Helpers.GetAngleDiff(direction, required_direction - 180f) > 45d;
+				} else
+					require_speed = Helpers.GetAngleDiff(direction, required_direction) > 90d;
+			} else if (dist <= optimal_range * 1.2) {
+				required_direction = target.direction;
+				require_speed = (this.speed <= target.speed);
+			} else {
+				if (target.stats.speed * 1.1d >= stats.speed) {
+					double angle_to_target = Helpers.GetQA((int)location.X, (int)location.Y, (int)target.location.X, (int)target.location.Y);
+					if (Helpers.GetAngleDiff(angle_to_target, required_direction) > 90d)
+						required_direction = (float)angle_to_target;
+				}
+				require_speed = Helpers.GetAngleDiff(direction, required_direction) < 90d;
+			}
+		}
+		public void AIApplyNow(float required_direction, bool require_speed) {
+			TurnTowardDirection(required_direction);
+			if (require_speed)
 				speed = (float)(speed + stats.turn / 20d);
 			else
 				speed = (float)(speed - stats.turn / 20d);
-
 			if (speed > stats.speed) {
 				speed -= 1f;
 				if (speed < stats.speed)
 					speed = (float)stats.speed;
 			}
-
 			if (speed < 0f)
 				speed = 0f;
-			IAFire();
-		} // AIAIAIAIAI
-
-		public void IAFire() {
+		}
+		public void AIFire() {
 			// ===' Tirer '==='
 			if (weapons.Count > 0 && fram % 2 == 0)
 				foreach (Weapon AWeap in weapons)
@@ -512,7 +559,7 @@ namespace Flee {
 								if (ReferenceEquals(OVessel, this))
 									continue;
 
-								if (!AllowMining && (OVessel.stats.default_weapons.Count == 0 || AWeap.stats.power == 0))
+								if (!allow_mining && (OVessel.stats.default_weapons.Count == 0 || AWeap.stats.power == 0))
 									continue;
 
 								if (Helpers.Distance(ref location, ref OVessel.location) < AWeap.stats.range)

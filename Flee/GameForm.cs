@@ -603,10 +603,10 @@ namespace Flee {
 			// ===' Validation '==='
 			if (target_ship is null)
 				foreach (Ship AShip in selected_ships)
-					if (AShip.TargetPTN == last_mouse_location) {
+					if (AShip.target_point == last_mouse_location) {
 						game.world.effects.Add(new Effect(-1, "EFF_Mine", last_mouse_location));
 						AShip.behavior = Ship.BehaviorMode.Mine;
-						AShip.TargetPTN = last_mouse_location;
+						AShip.target_point = last_mouse_location;
 						AShip.target = null;
 						if ((AShip.stats.role & (int)ShipRole.Shipyard) != 0)
 							if (!ReferenceEquals(game.player_team, AShip.team))
@@ -614,14 +614,14 @@ namespace Flee {
 					} else {
 						game.world.effects.Add(new Effect(-1, "EFF_Goto", last_mouse_location));
 						AShip.behavior = Ship.BehaviorMode.GoToPoint;
-						AShip.TargetPTN = last_mouse_location;
+						AShip.target_point = last_mouse_location;
 						AShip.target = null;
 					}
 			else
 				foreach (Ship AShip in selected_ships)
 					if (ReferenceEquals(AShip, target_ship)) {
 						game.world.effects.Add(new Effect(-1, "EFF_OrderDefend", last_mouse_location));
-						AShip.AllowMining = false;
+						AShip.allow_mining = false;
 					} else {
 						AShip.behavior = Ship.BehaviorMode.Folow;
 						AShip.target = target_ship;
@@ -688,7 +688,7 @@ namespace Flee {
 				SShipImageBox.Image = Helpers.GetSprite(selected_ships[0].stats.sprite, 0, 0, selected_ships[0].color);
 				SShipTypeBox.Text = selected_ships[0].stats.name.Replace("_", " ");
 				SShipUpsMax.Text = selected_ships[0].upgrades.Count + " / " + selected_ships[0].upgrade_slots;
-				AllowMiningBox.Visible = !selected_ships[0].AllowMining;
+				AllowMiningBox.Visible = !selected_ships[0].allow_mining;
 			} else {
 				SShipImageBox.Image = My.Resources.Resources.Fleet;
 				SShipTypeBox.Text = selected_ships.Count.ToString() + " units";

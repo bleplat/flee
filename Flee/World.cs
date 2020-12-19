@@ -224,7 +224,7 @@ namespace Flee {
 			for (int i = ships.Count - 1; i >= 0; i -= 1)
 				ships[i].Check();
 			for (int i = ships.Count - 1; i >= 0; i -= 1)
-				ships[i].IA(gameplay_random.Next(0, 10000));
+				ships[i].AI();
 			// ===' Shoots '==='
 			for (int i = shoots.Count - 1; i >= 0; i -= 1)
 				shoots[i].Check();
