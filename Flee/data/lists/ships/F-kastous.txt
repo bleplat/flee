@@ -31,6 +31,6 @@ ship Yerka
 	integrity=75
 	speed=4.00
 	turn=4.20
-	weapon=270;Alien-MachineGun
+	weapon=0;Alien-MachineGun
 	cost=900;6;0;0
 	complexity=1300
