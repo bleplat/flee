@@ -556,6 +556,14 @@ namespace Flee {
 			return (met_upgrades);
 		}
 
+		public List<Upgrade> InstalledOrInstallUpgrades() {
+			var met_upgrades = new List<Upgrade>();
+			foreach (Upgrade upgrade in this.upgrades)
+				met_upgrades.Add(upgrade);
+			if (this.Upgrading != null)
+				met_upgrades.Add(this.Upgrading);
+			return (met_upgrades);
+		}
 		public bool InstalledOrInstallUpgrade(Upgrade upgrade) {
 			if (this.upgrades.Contains(upgrade))
 				return (true);

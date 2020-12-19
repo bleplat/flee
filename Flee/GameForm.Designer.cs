@@ -509,7 +509,7 @@ namespace Flee {
 			// 
 			this.SShipUpsMax.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.SShipUpsMax.ForeColor = System.Drawing.Color.White;
-			this.SShipUpsMax.Location = new System.Drawing.Point(99, 28);
+			this.SShipUpsMax.Location = new System.Drawing.Point(99, 32);
 			this.SShipUpsMax.Name = "SShipUpsMax";
 			this.SShipUpsMax.Size = new System.Drawing.Size(50, 16);
 			this.SShipUpsMax.TabIndex = 3;
@@ -554,8 +554,8 @@ namespace Flee {
 			// 
 			// SShipTypeBox
 			// 
-			this.SShipTypeBox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.SShipTypeBox.Location = new System.Drawing.Point(55, 3);
+			this.SShipTypeBox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.SShipTypeBox.Location = new System.Drawing.Point(55, 2);
 			this.SShipTypeBox.Name = "SShipTypeBox";
 			this.SShipTypeBox.Size = new System.Drawing.Size(91, 33);
 			this.SShipTypeBox.TabIndex = 0;

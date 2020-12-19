@@ -105,7 +105,7 @@ namespace Flee {
 			CheckPressedKeys();
 			if (game.play_state == PlayState.Timelapse)
 				CheckPressedKeys(); // Expected to run more often when timelapsing;
-			CheckRightPanel();
+			CheckSidePanels();
 			DrawAll();
 		}
 
@@ -565,24 +565,26 @@ namespace Flee {
 			var SS = Helpers.MakeRectangle(ref down_mouse_location, ref last_mouse_location);
 			if (MenuPanel.Visible)
 				return;
-			if (!ModifierKeys.HasFlag(Keys.Control))
+			if (!ModifierKeys.HasFlag(Keys.Control) || IsSelectionNonControlled())
 				selected_ships.Clear();
 			foreach (Ship aship in game.world.ships) {
-				if (ReferenceEquals(aship.team, game.player_team) || game.player_team.cheats_enabled)
-					if (aship.location.X + aship.stats.width / 2d > SS.X)
-						if (aship.location.X - aship.stats.width / 2d < SS.X + SS.Width)
-							if (aship.location.Y + aship.stats.width / 2d > SS.Y)
-								if (aship.location.Y - aship.stats.width / 2d < SS.Y + SS.Height)
-									if (!selected_ships.Contains(aship)) {
-										selected_ships.Add(aship);
-										game.player_team = aship.team;
-										if (down_mouse_location == last_mouse_location)
-											return;
-									}
+				if (!aship.auto)
+					if (ReferenceEquals(aship.team, game.player_team) || game.player_team.cheats_enabled || down_mouse_location == last_mouse_location)
+						if (aship.location.X + aship.stats.width / 2d > SS.X)
+							if (aship.location.X - aship.stats.width / 2d < SS.X + SS.Width)
+								if (aship.location.Y + aship.stats.width / 2d > SS.Y)
+									if (aship.location.Y - aship.stats.width / 2d < SS.Y + SS.Height)
+										if (!selected_ships.Contains(aship)) {
+											selected_ships.Add(aship);
+											if (game.player_team.cheats_enabled)
+												game.player_team = aship.team;
+											if (down_mouse_location == last_mouse_location)
+												return;
+										}
 			}
 		}
 		public void SelectOrder() {
-			if (selected_ships.Count == 0)
+			if (IsSelectionNonControlled())
 				return;
 			Ship target_ship = null;
 			// disable bots
@@ -646,23 +648,27 @@ namespace Flee {
 			SeedTextBox.Text = new Random().Next().ToString();
 		}
 
-		/* Selection Panel */
-		public List<Ship> selected_ships = new List<Ship>();
-		public List<Upgrade> listed_upgrades = new List<Upgrade>();
-		public void CheckRightPanel() {
-			update_displayed_materials();
-			verify_selected_ships_existence();
-			update_selected_ships_details();
-		}
+		/* Materials Panel */
 		public void update_displayed_materials() {
 			var selected_team = game.player_team;
 			if (selected_ships.Count > 0)
 				selected_team = selected_ships[0].team;
-
 			MetalTextBox.Text = selected_team.resources.Metal.ToString();
 			CristalTextBox.Text = selected_team.resources.Crystal.ToString();
 			UraniumTextBox.Text = selected_team.resources.Fissile.ToString();
 			AntimatterTextBox.Text = selected_team.resources.Starfuel.ToString();
+		}
+
+		/* Selection Panel */
+		public List<Ship> selected_ships = new List<Ship>();
+		public List<Upgrade> listed_upgrades = new List<Upgrade>();
+		public bool IsSelectionNonControlled() {
+			return (selected_ships.Count == 0 || (selected_ships.Count >= 1 && !ReferenceEquals(selected_ships[0].team, game.player_team)));
+		}
+		public void CheckSidePanels() {
+			update_displayed_materials();
+			verify_selected_ships_existence();
+			update_selected_ships_details();
 		}
 		public void verify_selected_ships_existence() {
 			for (int index = selected_ships.Count - 1; index >= 0; index -= 1)
@@ -675,7 +681,6 @@ namespace Flee {
 				SShipPanel.Visible = false;
 				return;
 			}
-
 			if (SShipPanel.Visible == false)
 				SShipPanel.Visible = true;
 			// ship details
@@ -691,7 +696,10 @@ namespace Flee {
 				AllowMiningBox.Visible = false;
 			}
 			// upgrade list
-			listed_upgrades = Ship.ListedUpgrades(selected_ships);
+			if (IsSelectionNonControlled())
+				listed_upgrades = selected_ships[0].InstalledOrInstallUpgrades();
+			else
+				listed_upgrades = Ship.ListedUpgrades(selected_ships);
 		}
 		private int UpX = -1;
 		private int UpY = -1;
@@ -701,6 +709,8 @@ namespace Flee {
 			UpgradeDetails.Top = UpgradesBox.Location.Y + e.Y;
 		}
 		private void UpgradesBox_Click(object sender, EventArgs e) {
+			if (IsSelectionNonControlled())
+				return;
 			int upgrade_columns = UpgradesBox.Width / 25;
 			if (MenuPanel.Visible)
 				return;
