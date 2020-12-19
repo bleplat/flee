@@ -17,8 +17,8 @@ ship Station_Minimum_Warship
 	craft=Build_Minimum_Warship
 
 ship Minimum_Warship
-	level=3
-	integrity=190
+	level=2
+	integrity=170
 	speed=2.80
 	turn=1.80 
 	weapon=0;ShellCannon
