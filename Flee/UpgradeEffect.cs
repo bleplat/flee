@@ -69,8 +69,16 @@ namespace Flee {
 				case "brightshield()": ship.BrightShield(); return;
 				case "ask_surrender()": return;
 				case "team_surrender()": return;
-				case "warp()": 
-					/* // TODO: */ 
+				case "warp()":
+					/* // TODO: */
+					PointF destination = ship.location;
+					if ((ship.behavior == Ship.BehaviorMode.Folow || ship.behavior == Ship.BehaviorMode.Mine) && ship.target != null)
+						destination = ship.target.location;
+					else if (ship.behavior == Ship.BehaviorMode.GoToPoint || ship.behavior == Ship.BehaviorMode.Mine)
+						destination = ship.target_point;
+					destination.X += ship.world.gameplay_random.Next(-512, 512);
+					destination.Y += ship.world.gameplay_random.Next(-512, 512);
+					ship.location = destination;
 					return;
 				case "abandon()": ship.team = ship.world.wilderness_team; return;
 				case "ascend()": ship.team.has_ascended = true; return;
