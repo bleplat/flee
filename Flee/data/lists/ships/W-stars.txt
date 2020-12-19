@@ -6,7 +6,7 @@ gun Blue-Star-Waves
 	sprite=PRJ_wave_blue
 	range=410
 	celerity=16
-	power=12
+	power=8
 	emp_power=8
 	loadtime=15
 	salvo=1
@@ -32,7 +32,7 @@ gun Orange-Star-Waves
 	sprite=PRJ_wave_orange
 	range=210
 	celerity=4
-	power=8
+	power=4
 	emp_power=2
 	loadtime=75
 	salvo=8

@@ -302,7 +302,6 @@ namespace Flee {
 				double angle_ship_shoot_rel = Helpers.NormalizeAngleUnsigned(Helpers.GetAngle(location.X, location.Y, From.location.X, From.location.Y) - direction);
 				int shield_ptn_index = (int)(angle_ship_shoot_rel * 16d / 360d);
 				ShieldPoints[shield_ptn_index % 16] = 255;
-				return;
 			}
 			// shield
 			if (shield > 0f) {
