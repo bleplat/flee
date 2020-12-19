@@ -35,7 +35,7 @@ ship Sacred
 	cost=700;2;0;0
 
 ship Pusher
-	level=2
+	level=4
 	width=25
 	integrity=95
 	speed=2.80

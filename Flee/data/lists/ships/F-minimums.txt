@@ -17,7 +17,7 @@ ship Station_Minimum_Warship
 	craft=Build_Minimum_Warship
 
 ship Minimum_Warship
-	level=1
+	level=3
 	integrity=190
 	speed=2.80
 	turn=1.80 

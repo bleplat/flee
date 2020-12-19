@@ -72,7 +72,7 @@ ship Harass
 ship Cargo
 	role=Starter|Playable
 	desc=Weak ship but comes with a builtin jump engine.
-	level=4
+	level=3
 	integrity=70
 	speed=3.20
 	turn=2.00
@@ -87,7 +87,7 @@ ship Cargo
 
 ship Simpleship
 	desc=An old ship design supporting firing EMPs at enemies.
-	level=6
+	level=4
 	integrity=90
 	speed=2.80
 	turn=2.00
@@ -95,7 +95,7 @@ ship Simpleship
 	cost=1000;1;0;0
 
 ship Scout
-	level=8
+	level=4
 	width=35
 	integrity=105
 	speed=3.50
@@ -106,7 +106,7 @@ ship Scout
 	craft=Build_MSL
 
 ship Bomber
-	level=12
+	level=4
 	integrity=210
 	speed=2.80
 	turn=1.80
@@ -114,7 +114,7 @@ ship Bomber
 	cost=2500;4;0;0
 
 ship Artillery
-	level=10
+	level=4
 	width=35
 	integrity=140
 	speed=2.80
@@ -123,7 +123,7 @@ ship Artillery
 	cost=3000;4;0;0
 
 ship Dronner
-	level=8
+	level=4
 	integrity=135
 	speed=3.10
 	turn=1.50
@@ -140,7 +140,7 @@ ship Dronner
 
 ship Colonizer
 	role=Starter|Playable
-	level=9
+	level=5
 	width=55
 	integrity=165
 	speed=2.80
@@ -155,6 +155,7 @@ ship Colonizer
 
 ship MiniColonizer
 	role=Starter|Playable
+	level=5
 	spawning_frequency=2
 	width=55
 	integrity=145
@@ -172,7 +173,7 @@ ship MiniColonizer
 
 ship Ambassador
 	role=Starter|Playable
-	level=9
+	level=6
 	width=50
 	integrity=175
 	speed=2.80
@@ -186,7 +187,7 @@ ship Ambassador
 ship Capturer
 	desc=The heaviest and oldest ship humans have never made. Unfortunately, it is hardly upgradable.
 	width=60
-	level=2
+	level=3
 	integrity=510
 	speed=1.40
 	turn=0.50
@@ -239,7 +240,7 @@ ship Bomber_Drone
 	cost=300;0;0;0
 
 ship Master_Drone
-	level=2
+	level=1
 	width=25
 	integrity=70
 	repair=0

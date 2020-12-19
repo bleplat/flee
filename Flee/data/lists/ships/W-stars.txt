@@ -6,7 +6,7 @@ gun Blue-Star-Waves
 	sprite=PRJ_wave_blue
 	range=410
 	celerity=16
-	power=8
+	power=12
 	emp_power=8
 	loadtime=15
 	salvo=1
@@ -22,7 +22,7 @@ ship Blue_Star
 	weapon=-90;Blue-Star-Waves
 	weapon=90;Blue-Star-Waves
 	weapon=180;Blue-Star-Waves
-	cost=0;0;0;40
+	cost=20;0;0;200
 
 #
 # Orange Star
@@ -32,7 +32,7 @@ gun Orange-Star-Waves
 	sprite=PRJ_wave_orange
 	range=210
 	celerity=4
-	power=4
+	power=8
 	emp_power=2
 	loadtime=75
 	salvo=8
@@ -48,7 +48,7 @@ ship Orange_Star
 	weapon=-90;Orange-Star-Waves
 	weapon=90;Orange-Star-Waves
 	weapon=180;Orange-Star-Waves
-	cost=40;0;0;40
+	cost=40;0;0;180
 
 #
 # Red Star
@@ -60,7 +60,7 @@ ship Red_Star
 	width=55
 	integrity=999999
 	turn=1.00
-	cost=60;0;0;20
+	cost=100;0;0;140
 
 #
 # Black Star
@@ -72,7 +72,7 @@ ship Black_Star
 	width=55
 	integrity=999999
 	turn=1.00
-	cost=70;2;1;0
+	cost=120;2;1;80
 
 #
 # EMP Star
@@ -98,7 +98,7 @@ ship EMP_Star
 	weapon=90;EMP-Star-Waves
 	weapon=180;EMP-Star-Waves
 	turn=1.00
-	cost=50;2;1;0
+	cost=80;2;1;140
 
 #
 # EMP Storm
@@ -117,8 +117,8 @@ gun EMP-Storm-Waves
 ship EMP_Storm
 	sprite=Empty
 	role=Static
-	spawning_amount_min=8
-	spawning_amount_max=17
+	spawning_amount_min=6
+	spawning_amount_max=15
 	level=0
 	width=16
 	integrity=1073741823
