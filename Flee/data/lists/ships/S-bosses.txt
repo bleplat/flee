@@ -7,13 +7,13 @@ ship Civil_A
 	spawning_frequency=2.0
 	level=0
 	width=60
-	integrity=320
+	integrity=420
 	speed=2.20
 	turn=1.40
 	weapon=-90;MachineGun
 	weapon=90;MachineGun
 	deflectors=4
-	cold_deflectors=16
+	cold_deflectors=8
 	deflectors_cooldown=32
 	cost=4000;4;2;400
 
@@ -32,6 +32,7 @@ ship Loneboss
 	weapon=135;Red-Energy-Cannon
 	weapon=0;Red-Charge-Cannon
 	deflectors=4
+	deflectors_cooldown=32
 	hot_deflectors=8
 	cost=6000;32;8;800
 	craft=Build_MSL
@@ -107,7 +108,7 @@ ship Converter_B
 	weapon=0;White-Charge-Cannon
 	shield=250
 	shield_regeneration=0.00
-	shield_opacity=.65
+	shield_opacity=0.65
 	cost=400;4;0;0
 
 #
@@ -126,7 +127,7 @@ ship Purger_Dronner
 	weapon=180;MachineGun
 	shield=300
 	shield_regeneration=0.001
-	shield_opacity=75.00
+	shield_opacity=2.00
 	cost=6000;32;8;800
 	craft=Build_Purger_Drone_1
 	craft=Build_Purger_Drone_2
