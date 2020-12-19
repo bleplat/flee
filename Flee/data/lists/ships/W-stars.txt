@@ -22,7 +22,7 @@ ship Blue_Star
 	weapon=-90;Blue-Star-Waves
 	weapon=90;Blue-Star-Waves
 	weapon=180;Blue-Star-Waves
-	cost=0;0;0;40
+	cost=20;0;0;60
 
 #
 # Orange Star
@@ -60,7 +60,7 @@ ship Red_Star
 	width=55
 	integrity=999999
 	turn=1.00
-	cost=60;0;0;20
+	cost=60;0;0;30
 
 #
 # Black Star
@@ -72,7 +72,7 @@ ship Black_Star
 	width=55
 	integrity=999999
 	turn=1.00
-	cost=70;2;1;0
+	cost=80;2;1;10
 
 #
 # EMP Star
@@ -98,7 +98,7 @@ ship EMP_Star
 	weapon=90;EMP-Star-Waves
 	weapon=180;EMP-Star-Waves
 	turn=1.00
-	cost=50;2;1;0
+	cost=60;2;1;40
 
 #
 # EMP Storm
@@ -117,8 +117,8 @@ gun EMP-Storm-Waves
 ship EMP_Storm
 	sprite=Empty
 	role=Static
-	spawning_amount_min=8
-	spawning_amount_max=17
+	spawning_amount_min=6
+	spawning_amount_max=15
 	level=0
 	width=16
 	integrity=1073741823

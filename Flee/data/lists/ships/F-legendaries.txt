@@ -15,7 +15,7 @@ ship Station_Legendaries
 	craft=Build_Legend_Y
 
 ship Legend_I
-	level=12
+	level=6
 	complexity=600
 	width=45
 	integrity=170
@@ -27,7 +27,7 @@ ship Legend_I
 	cost=3000;16;1;0
 
 ship Legend_K
-	level=14
+	level=6
 	complexity=600
 	width=45
 	integrity=220
@@ -39,7 +39,7 @@ ship Legend_K
 	cost=3000;24;0;600
 
 ship Legend_L
-	level=12
+	level=6
 	complexity=600
 	width=45
 	integrity=240
@@ -49,7 +49,7 @@ ship Legend_L
 	cost=3000;24;0;600
 
 ship Legend_U
-	level=12
+	level=6
 	complexity=600
 	width=45
 	integrity=200
@@ -60,7 +60,7 @@ ship Legend_U
 	cost=3000;24;0;600
 
 ship Legend_Y
-	level=12
+	level=6
 	complexity=600
 	width=50
 	integrity=180
