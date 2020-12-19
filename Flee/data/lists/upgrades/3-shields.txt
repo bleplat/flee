@@ -14,7 +14,7 @@ outfit Shield_Emitters
 	effect=shield += 25
 	effect=shield_opacity max()= 0.22
 	effect=shield_opacity += 0.11
-	effect=shield_regeneration max()= 0.004
+	effect=shield_regeneration max()= 0.002
 	cost=350;1;0;0
 
 outfit Shield_Emitters_II
