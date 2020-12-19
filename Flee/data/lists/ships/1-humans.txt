@@ -29,6 +29,7 @@ ship Station_Simples
 	width=100
 	integrity=2500
 	cost=5000;32;4;0
+	craft=Build_Simpleship
 	craft=Build_Harass
 	craft=Build_Artillery
 	craft=Build_Bomber
