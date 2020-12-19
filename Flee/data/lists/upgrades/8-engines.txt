@@ -46,6 +46,7 @@ outfit Faster_Steering
 	desc=Allow the ship to turn faster.
 	sprite_coords=1;5
 	sprite_color=UpgradeColor1
+	required_stat=turn > 0
 	time=300
 	effect=turn *= 1.45
 	cost=250;1;0;0
@@ -68,6 +69,7 @@ outfit Engine_Afterburner
 	desc=/!\ Space afterburn is slow to ignite.
 	sprite_coords=0;5
 	sprite_color=Purple
+	required_stat=speed > 0
 	time=250
 	cost=750;7;0;30
 

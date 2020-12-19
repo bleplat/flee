@@ -1,4 +1,17 @@
 #
+# Ascend
+#
+
+outfit Ascend
+	desc=Your scientists have been working on a way to make your people escape their mortal condition.
+	desc=/!\ Purchasing this upgrade counts as a victory.
+	sprite_coords=6;7
+	sprite_color=UpgradeColor1
+	required_slots=6
+	time=200
+	cost=16000;128;48;2000
+
+#
 # Jump engines
 #
 
