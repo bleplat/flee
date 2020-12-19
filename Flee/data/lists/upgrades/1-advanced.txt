@@ -77,6 +77,7 @@ ability Warp
 	sprite_color=Purple
 	required_upgrade=Warp_Drive
 	time=400
+	once_effect=effect() EFF_warped
 	once_effect=warp()
 	once_effect=effect() EFF_warped
 	once_effect=ship.deflectors += 4
