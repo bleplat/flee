@@ -196,7 +196,7 @@ namespace Flee {
 					}
 				}
 				// weapons
-				if (this.deflectors >= 0 || world.ticks % 4 == 0) {
+				if (this.deflectors >= 0) {
 					foreach (Weapon AWeapon in weapons) {
 						if (AWeapon.Bar == 0) {
 							if ((AWeapon.stats.special & (int)Weapon.SpecialBits.ReloadRNG) != 0)
