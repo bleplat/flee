@@ -4,7 +4,7 @@
 
 gun Orange-Energy-Cannon
 	sprite=PRJ_energy_orange
-	range=260
+	range=310
 	celerity=15
 	power=12
 	emp_power=2
@@ -12,7 +12,7 @@ gun Orange-Energy-Cannon
 
 gun Yellow-Energy-Cannon
 	sprite=PRJ_energy_yellow
-	range=280
+	range=330
 	celerity=16
 	power=25
 	emp_power=3
@@ -20,7 +20,7 @@ gun Yellow-Energy-Cannon
 
 gun Red-Energy-Cannon
 	sprite=PRJ_energy_red
-	range=260
+	range=310
 	celerity=16
 	power=20
 	emp_power=3
@@ -28,7 +28,7 @@ gun Red-Energy-Cannon
 
 gun Magenta-Energy-Cannon
 	sprite=PRJ_energy_magenta
-	range=290
+	range=340
 	celerity=16
 	power=20
 	emp_power=5
@@ -36,7 +36,7 @@ gun Magenta-Energy-Cannon
 
 gun Cyan-Energy-Cannon
 	sprite=PRJ_energy_cyan
-	range=270
+	range=320
 	celerity=16
 	power=25
 	emp_power=10

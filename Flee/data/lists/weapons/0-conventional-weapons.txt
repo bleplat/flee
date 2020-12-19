@@ -4,7 +4,7 @@
 
 gun MachineGun
 	sprite=PRJ_bullet
-	range=230
+	range=270
 	celerity=18
 	power=1
 	salvo=4
@@ -12,7 +12,7 @@ gun MachineGun
 
 gun Light-MachineGun
 	sprite=PRJ_bullet_red
-	range=180
+	range=220
 	celerity=18
 	power=1
 	salvo=3
@@ -28,7 +28,7 @@ gun Alien-MachineGun
 
 gun Strange-MachineGun
 	sprite=PRJ_bullet_magenta
-	range=250
+	range=290
 	celerity=17
 	power=2
 	salvo=2
@@ -41,7 +41,7 @@ gun Strange-MachineGun
 gun ShellCannon
 	desc=A default must-have weapon.
 	sprite=PRJ_shell
-	range=250
+	range=280
 	celerity=11
 	power=14
 	loadtime=30
@@ -49,18 +49,18 @@ gun ShellCannon
 gun Light-ShellCannon
 	desc=Suit drones.
 	sprite=PRJ_shell
-	range=195
+	range=225
 	celerity=11
 	power=10
 	loadtime=25
 
 #
-# Launchers
+# Launchers (deprecated)
 #
 
 gun Straight-Torpedo-Launcher
 	sprite=PRJ_torpedo
-	range=230
+	range=300
 	celerity=14
 	power=4
 	loadtime=40
@@ -69,7 +69,7 @@ gun Straight-Torpedo-Launcher
 
 gun Straight-Javelin-Launcher
 	sprite=PRJ_javelin
-	range=220
+	range=300
 	celerity=16
 	power=12
 	salvo=4

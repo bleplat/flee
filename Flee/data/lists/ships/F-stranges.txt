@@ -33,7 +33,7 @@ ship StrangeV2
 	integrity=185
 	speed=2.80
 	turn=1.20
-	weapon=-45;Magenta-Energy-Cannon
+	weapon=-45;Strange-MachineGun
 	weapon=45;Strange-MachineGun
 	shield=25
 	shield_regeneration=0.01

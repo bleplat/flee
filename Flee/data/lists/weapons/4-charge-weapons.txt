@@ -5,7 +5,7 @@
 
 gun Red-Charge-Cannon
 	sprite=PRJ_charge_red
-	range=260
+	range=280
 	celerity=15
 	power=100
 	special=Rail
@@ -13,7 +13,7 @@ gun Red-Charge-Cannon
 
 gun Orange-Charge-Cannon
 	sprite=PRJ_charge_orange
-	range=260
+	range=280
 	celerity=14
 	power=85
 	special=Rail
