@@ -354,9 +354,12 @@ namespace Flee {
 				// Count Teams's ships
 				foreach (Team a_team in teams)
 					a_team.ship_count_approximation = 0;
-				foreach (Ship a_ship in ships)
-					if (!a_ship.auto)
+				foreach (Ship a_ship in ships) {
+					if (!a_ship.auto && (a_ship.stats.role & (int)ShipRole.Shipyard) == 0)
 						a_ship.team.ship_count_approximation += 1;
+					if (a_ship.Upgrading != null)
+						a_ship.team.ship_count_approximation += a_ship.Upgrading.required_team_slots;
+				}
 				// Summoning / upgrades
 				foreach (Ship a_ship in ships)
 					if (a_ship.team.affinity != AffinityEnum.Wilderness && a_ship.bot_ship && a_ship.upgrade_progress == 0 && a_ship.team.ship_count_approximation < a_ship.team.ship_count_limit) {

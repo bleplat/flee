@@ -175,6 +175,8 @@ namespace Flee {
 				return (Availability.NotVisible);
 			if (this.teamwide && (ship.stats.role & (int)ShipRole.Shipyard) == 0)
 				return (Availability.NotVisible);
+			if (this.required_team_slots > ship.team.ship_count_limit - ship.team.ship_count_approximation) 
+				return (Availability.NotVisible);
 			if (require_craft && !ship.stats.crafts.Contains(this.name))
 				return (Availability.NotVisible);
 			if (install && (ship.upgrade_slots - ship.upgrades.Count) < required_upgrade_slots) 
