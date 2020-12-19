@@ -166,6 +166,8 @@ namespace Flee {
 				return (false);
 			if (this.affinity == AffinityEnum.Hostile || other.affinity == AffinityEnum.Hostile)
 				return (false);
+			if (this.affinity == AffinityEnum.Wilderness || other.affinity == AffinityEnum.Wilderness)
+				return (false);
 			if (this.affinity == AffinityEnum.Neutral || other.affinity == AffinityEnum.Neutral)
 				return (true);
 			if (this.affinity == AffinityEnum.Friendly && other.affinity == AffinityEnum.Friendly) 
