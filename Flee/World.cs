@@ -131,7 +131,7 @@ namespace Flee {
 				}
 			}
 			// Derelicts
-			for (int i = 1; i <= 40; i++) {
+			for (int i = 1; i <= 60; i++) {
 				ShipStats derelict_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Derelict);
 				var location = new PointF(rand.Next(0, ArenaSize.Width), rand.Next(0, ArenaSize.Height));
 				double direction = rand.Next(0, 360);
