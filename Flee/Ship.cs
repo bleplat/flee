@@ -164,9 +164,9 @@ namespace Flee {
 					location.X = world.ArenaSize.Width;
 				if (location.Y > world.ArenaSize.Height)
 					location.Y = world.ArenaSize.Height;
-			} else if (location.X < -100 || location.Y < -100 || location.X > world.ArenaSize.Width + 100 || location.Y > world.ArenaSize.Height + 100)
-				if (bot_ship == false)
-					integrity = 0;
+			} else if (location.X < -512 || location.Y < -512 || location.X > world.ArenaSize.Width + 512 || location.Y > world.ArenaSize.Height + 512)
+				if (world.ticks % 64 == 0)
+					this.integrity -= 1 + this.stats.integrity / 8;
 			// movement
 			if (stats.turn == 0d && stats.speed == 0d) {
 				direction = (float)(direction + 25.0f / stats.width);

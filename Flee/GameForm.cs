@@ -132,6 +132,19 @@ namespace Flee {
 		}
 
 		/* Drawing */
+		public string DebugString() {
+			return (""
+					+ "ships: " + game.world.ships.Count + "\r\n"
+					+ "effects: " + game.world.effects.Count + "\r\n"
+					+ "shoots: " + game.world.shoots.Count + "\r\n"
+					+ "ships[0, 0]: " + game.world.sectors[0, 0].ships.Count + "\r\n"
+					+ "ships[0, 1]: " + game.world.sectors[0, 1].ships.Count + "\r\n"
+					+ "ships[1, 1]: " + game.world.sectors[1, 1].ships.Count + "\r\n"
+					+ "shoots[0, 0]: " + game.world.sectors[0, 0].shoots.Count + "\r\n"
+					+ "shoots[0, 1]: " + game.world.sectors[0, 1].shoots.Count + "\r\n"
+					+ "shoots[1, 1]: " + game.world.sectors[1, 1].shoots.Count + "\r\n"
+					);
+		}
 		public void UpdateUpgradeInfo(Upgrade up, int buy_amount) {
 			// title
 			if (selected_ships.Count > 1)
@@ -423,6 +436,7 @@ namespace Flee {
 				g.DrawString("PAUSE", new Font("Consolas", 16f), Brushes.White, new Point(0, (int)g.VisibleClipBounds.Height - 32));
 			else if (game.play_state == PlayState.Timelapse)
 				g.DrawString("TIMELAPSE", new Font("Consolas", 16f), Brushes.White, new Point(0, (int)g.VisibleClipBounds.Height - 32));
+			//g.DrawString(DebugString(), new Font("Consolas", 8.0f), Brushes.Gray, new Point(0, (int)g.VisibleClipBounds.Height / 2));
 			if (help) {
 				string help_str = "";
 				if (!game.player_team.has_ascended) {
