@@ -292,8 +292,8 @@ namespace Flee {
 		public void TakeDamages(float Amount, Shoot From = null) {
 			// celerity transpher
 			if (From != null && this.stats.speed != 0.0f && this.stats.turn != 0.0f) {
-				this.speed_vec.X += From.speed_vec.X * From.power / 16.0f / (float)this.stats.width;
-				this.speed_vec.Y += From.speed_vec.Y * From.power / 16.0f / (float)this.stats.width;
+				this.speed_vec.X += From.speed_vec.X * From.power / 8.0f / (float)this.stats.width;
+				this.speed_vec.Y += From.speed_vec.Y * From.power / 8.0f / (float)this.stats.width;
 			}
 			// deflectors
 			if (deflectors > -stats.cold_deflectors) {
