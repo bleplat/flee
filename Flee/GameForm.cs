@@ -410,7 +410,7 @@ namespace Flee {
 							g.FillEllipse(shieldsbrush, new Rectangle(new Point((int)(drawrect.X - drawrect.Width / 16d - 4d), (int)(drawrect.Y - drawrect.Height / 16d - 4d)), new Size((int)(drawrect.Width + drawrect.Width / 8d + 8d), (int)(drawrect.Height + drawrect.Height / 8d + 8d))));
 						}
 						// life   'New Pen(getSColor(AShip.Color))
-						if (AShip.stats.integrity > 20) {
+						if (AShip.stats.integrity > 20 && !AShip.auto) {
 							g.DrawRectangle(Pens.DimGray, new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 5 - See.Y)), new Size(AShip.stats.width, 1)));
 							g.DrawRectangle(new Pen(AShip.team.color), new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 5 - See.Y)), new Size((int)(AShip.integrity / (double)AShip.stats.integrity * AShip.stats.width), 1)));
 							g.DrawString((int)AShip.integrity + "/" + (int)AShip.stats.integrity, Font, new SolidBrush(AShip.team.color), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 - See.Y)));
