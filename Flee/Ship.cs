@@ -6,7 +6,7 @@ using Microsoft.VisualBasic.CompilerServices;
 
 namespace Flee {
 	public class Ship : WorldEntity {
-		public float speed = 0f;
+		public float speed = 0.0f;
 		// mode of behavior
 		public enum BehaviorMode {
 			None,		// No order
@@ -167,14 +167,20 @@ namespace Flee {
 			} else if (location.X < -512 || location.Y < -512 || location.X > world.ArenaSize.Width + 512 || location.Y > world.ArenaSize.Height + 512)
 				if (world.ticks % 64 == 0)
 					this.integrity -= 1 + this.stats.integrity / 8;
-			// movement
-			if (stats.turn == 0d && stats.speed == 0d) {
+			// acceleration
+			if (stats.turn == 0.0f && stats.speed == 0.0f)
 				direction = (float)(direction + 25.0f / stats.width);
-				speed_vec = new PointF((float)(speed_vec.X * 0.925), (float)(speed_vec.Y * 0.925));
-			} else {
+			//if (stats.turn != 0.0f)
+			//	speed_vec = new PointF((float)(speed_vec.X * 0.925f), (float)(speed_vec.Y * 0.925f));
+			if (stats.turn == 0.0f && stats.speed != 0.0) {
+				if (speed_vec.X == 0.0f && speed_vec.Y == 0.0f)
+					speed_vec = Helpers.GetNewPoint(new PointF(0.0f, 0.0f), direction, stats.speed);
+			} 
+			if ((stats.turn != 0.0f && stats.speed != 0.0f) || (stats.turn == 0.0f && stats.speed == 0.0f)) {
 				var new_speed = Helpers.GetNewPoint(new Point(0, 0), direction, speed);
-				speed_vec = new PointF((float)(speed_vec.X * 0.925 + new_speed.X * 0.075), (float)(speed_vec.Y * 0.925 + new_speed.Y * 0.075));
+				speed_vec = new PointF((float)(speed_vec.X * 0.925f + new_speed.X * 0.075f), (float)(speed_vec.Y * 0.925f + new_speed.Y * 0.075f));
 			}
+			// movement
 			location.X = location.X + speed_vec.X;
 			location.Y = location.Y + speed_vec.Y;
 			// reloadings dependent on emp_damage
@@ -284,6 +290,11 @@ namespace Flee {
 		}
 
 		public void TakeDamages(float Amount, Shoot From = null) {
+			// celerity transpher
+			if (From != null && this.stats.speed != 0.0f && this.stats.turn != 0.0f) {
+				this.speed_vec.X += From.speed_vec.X * From.power / 16.0f / (float)this.stats.width;
+				this.speed_vec.Y += From.speed_vec.Y * From.power / 16.0f / (float)this.stats.width;
+			}
 			// deflectors
 			if (deflectors > -stats.cold_deflectors) {
 				if (From != null) {

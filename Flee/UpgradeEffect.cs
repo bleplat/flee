@@ -96,6 +96,7 @@ namespace Flee {
 					ship.upgrades.Clear();
 					ship.ResetStats();
 					return;
+				case "launch()":
 				case "summon()":
 					ship.world.ships.Add(new Ship(ship.world, ship.team, right) { location = new Point((int)(ship.location.X + ship.world.gameplay_random.Next(-10, 11)), (int)(ship.location.Y + ship.world.gameplay_random.Next(-10, 11))) });
 					ship.world.ships[ship.world.ships.Count - 1].direction = ship.direction;
@@ -111,6 +112,8 @@ namespace Flee {
 						ship.world.ships[ship.world.ships.Count - 1].behavior = Ship.BehaviorMode.Folow;
 						ship.world.ships[ship.world.ships.Count - 1].target = ship;
 					}
+					if (this.op == "launch()")
+						ship.world.ships[ship.world.ships.Count - 1].auto = true;
 					return;
 				default: throw new Exception("invalid op \'" + this.op + "\'");
 				}
