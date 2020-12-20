@@ -8,7 +8,9 @@ outfit Ascend
 	sprite_coords=6;7
 	sprite_color=UpgradeColor1
 	required_slots=6
+	require_nonbot=1
 	time=200
+	effect=team_set_cheats() 1
 	cost=16000;128;48;2000
 
 #

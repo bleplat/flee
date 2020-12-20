@@ -83,6 +83,7 @@ namespace Flee {
 				case "abandon()": ship.team = ship.world.wilderness_team; return;
 				case "ascend()": ship.team.has_ascended = true; return;
 				case "toggle_cheats()": ship.team.cheats_enabled = !ship.team.cheats_enabled; return;
+				case "team_set_cheats()": ship.team.cheats_enabled = (Convert.ToInt32(this.right) != 0); return;
 				case "set_bot()": ship.bot_ship = (Convert.ToInt32(this.right) != 0); return;
 				case "team_set_bot()": ship.bot_ship = (Convert.ToInt32(this.right) != 0); return;
 				case "color()": 
