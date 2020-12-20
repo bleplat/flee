@@ -739,6 +739,7 @@ namespace Flee {
 								ship.team.resources.Deplete(ref AUp.cost);
 								//ship.team.ship_count_approximation += AUp.required_team_slots;
 								ship.Upgrading = AUp;
+								ship.upgrade_progress = 0;
 							}
 				// next item
 				x = x + 1;

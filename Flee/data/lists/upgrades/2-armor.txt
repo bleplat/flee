@@ -50,7 +50,7 @@ outfit Reinforced_Armor_IV
 #
 
 outfit Repair_Bots
-	desc=Increase your ship's hull.
+	desc=Helps repairing your hull.
 	sprite_coords=2;2
 	sprite_color=UpgradeColor1
 	required_stat=integrity >= 100
@@ -60,7 +60,7 @@ outfit Repair_Bots
 
 outfit Repair_Bots_II
 	required_upgrade=Repair_Bots
-	desc=Increase your ship's hull.
+	desc=Helps repairing your hull.
 	sprite_coords=3;2
 	sprite_color=UpgradeColor2
 	required_stat=integrity >= 200

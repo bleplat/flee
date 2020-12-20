@@ -653,6 +653,8 @@ namespace Flee {
 		public bool CanUpgradeFree(Upgrade upgrade) {
 			if (team.cheats_enabled)
 				return (true);
+			if (Upgrading != null)
+				return (false);
 			if (upgrade.GetAvailability(this) != Upgrade.Availability.Available)
 				return (false);
 			if (InstalledOrInstallUpgrade(upgrade))
