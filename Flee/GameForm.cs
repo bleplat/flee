@@ -736,6 +736,7 @@ namespace Flee {
 						if (ship.CanUpgradeFree(AUp) && ReferenceEquals(ship.team, game.player_team) || game.player_team.cheats_enabled)
 							if (ship.team.resources.HasEnough(ref AUp.cost) || game.player_team.cheats_enabled) {
 								ship.team.resources.Deplete(ref AUp.cost);
+								ship.team.ship_count_approximation += AUp.required_team_slots;
 								ship.Upgrading = AUp;
 							}
 				// next item

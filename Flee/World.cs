@@ -348,10 +348,7 @@ namespace Flee {
 			}
 		}
 
-		public void NPCUpgrades() {
-			var rand = generation_random;
-			if (ticks % 80 == 0) {
-				// Count Teams's ships
+		public void UpdateTeamsShipCounts() {
 				foreach (Team a_team in teams)
 					a_team.ship_count_approximation = 0;
 				foreach (Ship a_ship in ships) {
@@ -360,6 +357,12 @@ namespace Flee {
 					if (a_ship.Upgrading != null)
 						a_ship.team.ship_count_approximation += a_ship.Upgrading.required_team_slots;
 				}
+		}
+		public void NPCUpgrades() {
+			var rand = generation_random;
+			if (ticks % 80 == 0) {
+				// Count Teams's ships
+				UpdateTeamsShipCounts();
 				// Summoning / upgrades
 				foreach (Ship a_ship in ships)
 					if (a_ship.team.affinity != AffinityEnum.Wilderness && a_ship.bot_ship && a_ship.upgrade_progress == 0 && a_ship.team.ship_count_approximation < a_ship.team.ship_count_limit) {
