@@ -376,12 +376,20 @@ namespace Flee {
 				// Choose a target ship
 				if (behavior != BehaviorMode.Drift && team.affinity != AffinityEnum.Wilderness)
 					if (target is null) {
-						var nearest_ship = GetClosestShip(agressivity, 1.0d, 0.1d);
+						Ship nearest_ship;
+						if (agressivity >= 0)
+							nearest_ship = GetClosestShip(agressivity, 1.0d, 0.1d);
+						else
+							nearest_ship = GetClosestShip(agressivity, 0.0d, 1.0d);
 						if (nearest_ship is object) {
 							target = nearest_ship;
 							behavior = BehaviorMode.Folow;
 						}
-					} else if (world.gameplay_random.Next(0, 1000) < 2 || !ReferenceEquals(team, target.team) && world.gameplay_random.Next(0, 1000) < 10) { // chance to change target
+					} else if (agressivity < 0.0f) { // non-agressives keep their target
+					} else if (world.gameplay_random.Next(0, 1000) < 2) { // chance to change target
+						target = null;
+						behavior = BehaviorMode.Stand;
+					} else if (!ReferenceEquals(team, target.team) && world.gameplay_random.Next(0, 1000) < 10) { // chance to change target
 						target = null;
 						behavior = BehaviorMode.Stand;
 					}
@@ -722,9 +730,9 @@ namespace Flee {
 			if (max_distance < Math.Sqrt(double.MaxValue))
 				closest_distance_sq = max_distance * max_distance;
 			// mods are applied to square distance so they should be sqare too
-			enemies *= enemies;
-			neutrals *= neutrals;
-			allies *= allies;
+			enemies *= Math.Abs(enemies);
+			neutrals *= Math.Abs(neutrals);
+			allies *= Math.Abs(allies);
 			// find the ship
 			Ship closest_ship = null;
 			foreach (Ship other_ship in world.ships)

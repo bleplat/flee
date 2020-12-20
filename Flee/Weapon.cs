@@ -89,8 +89,13 @@ namespace Flee {
 					ship.world.ships[ship.world.ships.Count - 1].direction = Launcher.direction;
 					ship.world.ships[ship.world.ships.Count - 1].speed = this.stats.celerity;
 					ship.world.ships[ship.world.ships.Count - 1].auto = true;
-					ship.world.ships[ship.world.ships.Count - 1].target = ship.target;
-					ship.world.ships[ship.world.ships.Count - 1].agressivity = 10000.0f;
+					if (this.stats.range > 0) {
+						ship.world.ships[ship.world.ships.Count - 1].target = ship.target;
+						ship.world.ships[ship.world.ships.Count - 1].agressivity = 10000.0f;
+					} else {
+						ship.world.ships[ship.world.ships.Count - 1].target = ship;
+						ship.world.ships[ship.world.ships.Count - 1].agressivity = -10000.0f;
+					}
 					ship.world.ships[ship.world.ships.Count - 1].behavior = Ship.BehaviorMode.Folow;
 					return;
 				}
