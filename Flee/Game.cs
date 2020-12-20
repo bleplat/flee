@@ -21,6 +21,7 @@ namespace Flee {
 		public int tick_duration_ms = 33;
 		public bool is_multiplayer = false;
 		public bool is_host = true;
+		public bool armagedon = true;
 
 		/* Members */
 		GameForm parent_form = null;
@@ -37,7 +38,7 @@ namespace Flee {
 			this.is_multiplayer = false;
 			this.is_host = true;
 			// create the world
-			world = new World(seed);
+			world = new World(seed, armagedon);
 			player_team = world.CreateAndSpawnPlayer(AffinityEnum.Friendly);
 			// set playing
 			play_state = PlayState.Playing;

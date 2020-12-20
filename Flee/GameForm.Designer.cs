@@ -36,7 +36,7 @@ namespace Flee {
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.SeedTextBox = new System.Windows.Forms.TextBox();
 			this.checkBoxLAN = new System.Windows.Forms.CheckBox();
-			this.checkBoxBetterGraphics = new System.Windows.Forms.CheckBox();
+			this.checkBoxArmagedon = new System.Windows.Forms.CheckBox();
 			this.checkBoxEnableBackground = new System.Windows.Forms.CheckBox();
 			this.checkBoxFPS = new System.Windows.Forms.CheckBox();
 			this.Label4 = new System.Windows.Forms.Label();
@@ -136,7 +136,7 @@ namespace Flee {
 			this.MenuPanel.Controls.Add(this.textBox1);
 			this.MenuPanel.Controls.Add(this.SeedTextBox);
 			this.MenuPanel.Controls.Add(this.checkBoxLAN);
-			this.MenuPanel.Controls.Add(this.checkBoxBetterGraphics);
+			this.MenuPanel.Controls.Add(this.checkBoxArmagedon);
 			this.MenuPanel.Controls.Add(this.checkBoxEnableBackground);
 			this.MenuPanel.Controls.Add(this.checkBoxFPS);
 			this.MenuPanel.Controls.Add(this.Label4);
@@ -207,20 +207,18 @@ namespace Flee {
 			this.checkBoxLAN.Text = "open to lan";
 			this.checkBoxLAN.UseVisualStyleBackColor = true;
 			// 
-			// checkBoxBetterGraphics
+			// checkBoxArmagedon
 			// 
-			this.checkBoxBetterGraphics.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.checkBoxArmagedon.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.checkBoxBetterGraphics.AutoSize = true;
-			this.checkBoxBetterGraphics.Checked = true;
-			this.checkBoxBetterGraphics.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.checkBoxBetterGraphics.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBoxBetterGraphics.Location = new System.Drawing.Point(149, 102);
-			this.checkBoxBetterGraphics.Name = "checkBoxBetterGraphics";
-			this.checkBoxBetterGraphics.Size = new System.Drawing.Size(96, 17);
-			this.checkBoxBetterGraphics.TabIndex = 9;
-			this.checkBoxBetterGraphics.Text = "better graphics";
-			this.checkBoxBetterGraphics.UseVisualStyleBackColor = true;
+			this.checkBoxArmagedon.AutoSize = true;
+			this.checkBoxArmagedon.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.checkBoxArmagedon.Location = new System.Drawing.Point(266, 278);
+			this.checkBoxArmagedon.Name = "checkBoxArmagedon";
+			this.checkBoxArmagedon.Size = new System.Drawing.Size(111, 17);
+			this.checkBoxArmagedon.TabIndex = 9;
+			this.checkBoxArmagedon.Text = "Armagedon mode";
+			this.checkBoxArmagedon.UseVisualStyleBackColor = true;
 			// 
 			// checkBoxEnableBackground
 			// 
@@ -952,7 +950,7 @@ namespace Flee {
 		private Button button1;
 		internal TextBox textBox1;
 		internal Label label5;
-		private CheckBox checkBoxBetterGraphics;
+		private CheckBox checkBoxArmagedon;
 		internal Label label7;
 		internal Label PriceSlots;
 		internal PictureBox PriceSlotsIcon;

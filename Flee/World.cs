@@ -85,10 +85,13 @@ namespace Flee {
 		public bool is_invaded_by_ascended = false;
 
 		/* Creation */
-		public World(int seed) {
+		public World(int seed, bool armagedon) {
 			InitSectors();
 			Random rand = InitRandom(seed);
 			InitCharacteristics(new Random(rand.Next()));
+			if (armagedon)
+				for (int i = 0; i < 8; i++)
+					InitTeams(new Random(rand.Next()));
 			InitTeams(new Random(rand.Next()));
 			InitDerelicts(new Random(rand.Next()));
 			InitBots(new Random(rand.Next()));
