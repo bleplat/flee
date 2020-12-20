@@ -23,7 +23,7 @@ ship MSL
 
 gun Missile-Launcher
 	sprite=MSL
-	range=300
+	range=400
 	celerity=4
 	loadtime=512
 	special=Launch|Straight
@@ -54,7 +54,7 @@ ship Torpedo
 
 gun Torpedo-Launcher
 	sprite=Torpedo
-	range=400
+	range=450
 	celerity=4.5
 	loadtime=512
 	special=Launch|Straight
@@ -78,14 +78,14 @@ ship Javelin
 	integrity=3
 	repair=0
 	speed=8.50
-	turn=1.50
+	turn=2.50
 	weapon=0;Javelin-Charge
 	cost=150;0;0;0
 	complexity=500
 
 gun Javelin-Launcher
 	sprite=Javelin
-	range=300
+	range=400
 	celerity=4.5
 	loadtime=512
 	salvo=3

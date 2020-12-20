@@ -78,7 +78,7 @@ ability Afterburn
 	sprite_coords=0;5
 	sprite_color=Purple
 	required_upgrade=Engine_Afterburner
-	time=350
-	effect=ship.speed += 35
-	effect=ship.deflectors += 2
+	time=150
+	once_effect=ship.speed += 35
+	once_effect=ship.deflectors += 2
 	cost=0;0;0;50

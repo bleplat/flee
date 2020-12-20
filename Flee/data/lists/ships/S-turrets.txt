@@ -36,3 +36,14 @@ ship Pointvortex_Turret
 	integrity=130
 	weapon=0;Intercepting-Artillery
 	cost=950;2;0;25
+
+ship Javelin_Turret
+	role=Defense|NPC|Playable
+	desc=A turret stacking javelin missiles to launch.
+	level=2
+	width=40
+	turn=0.0
+	integrity=130
+	weapon=-20;Javelin-Launcher
+	weapon=20;Javelin-Launcher
+	cost=950;3;0;0

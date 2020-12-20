@@ -26,6 +26,7 @@ ship Station
 	craft=Build_Anti-Light_Turret
 	craft=Build_Anti-Heavy_Turret
 	craft=Build_Pointvortex_Turret
+	craft=Build_Javelin_Turret
 
 ship Station_Simples
 	sprite=Station

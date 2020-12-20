@@ -68,6 +68,7 @@ outfit Warp_Drive
 	desc=/!\ Require starfuel to warp.
 	sprite_coords=7;5
 	sprite_color=Purple
+	required_stat=speed > 0
 	time=300
 	cost=1250;16;0;600
 
