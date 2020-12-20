@@ -6,6 +6,7 @@ ship Station_Crushers
 	level=100
 	role=Shipyard|NPC
 	width=100
+	speed=0.00001
 	turn=0.01
 	integrity=2500
 	cost=5000;32;4;0
