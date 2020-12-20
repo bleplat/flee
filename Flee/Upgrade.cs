@@ -119,6 +119,7 @@ namespace Flee {
 				total += "\rrequired_stat=" + condition.ToString() + "\n";
 			total += "\tcost=" + cost.ToString() + "\n";
 			total += "\trequired_slots=" + required_upgrade_slots.ToString() + "\n";
+			total += "\trequired_team_slots=" + required_team_slots.ToString() + "\n";
 			total += "\ttime=" + time + "\n";
 			foreach (UpgradeEffect effect in effects)
 				total += "\teffect=" + effect.ToString() + "\n";
@@ -146,6 +147,7 @@ namespace Flee {
 			case "required_stat": required_stats.Add(new UpgradeCondition(value)); break;
 			case "cost": cost.LoadFromString(value); break;
 			case "required_slots": required_upgrade_slots = Convert.ToInt32(value); break;
+			case "required_team_slots": required_upgrade_slots = Convert.ToInt32(value); break;
 			case "effect": effects.Add(new UpgradeEffect(value)); break;
 			case "once_effect": once_effects.Add(new UpgradeEffect(value)); break;
 			case "time": time = Convert.ToInt32(value); break;

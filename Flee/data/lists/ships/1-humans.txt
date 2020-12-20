@@ -18,6 +18,11 @@ ship Station
 	craft=Build_Artillery
 	craft=Build_Dronner
 	craft=Build_Nuke
+	craft=Conceive_Legend_I
+	craft=Conceive_Legend_K
+	craft=Conceive_Legend_L
+	craft=Conceive_Legend_U
+	craft=Conceive_Legend_Y
 	craft=Build_Anti-Light_Turret
 	craft=Build_Anti-Heavy_Turret
 	craft=Build_Pointvortex_Turret

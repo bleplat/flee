@@ -1,0 +1,58 @@
+#
+# Legendaries crafts
+#
+
+upgrade Conceive_Legend_I
+	sprite=Legend_I
+	desc=The master of the artilleries.
+	desc=/!\ You can only build this ship once!
+	teamwide=1
+	require_craft=1
+	required_team_slots=1
+	time=500
+	once_effect=summon() Legend_I
+	cost=5000;48;1;0
+
+upgrade Conceive_Legend_K
+	sprite=Legend_K
+	desc=The master of the bombers.
+	desc=/!\ You can only build this ship once!
+	teamwide=1
+	require_craft=1
+	required_team_slots=1
+	time=500
+	once_effect=summon() Legend_K
+	cost=5000;48;1;0
+
+upgrade Conceive_Legend_L
+	sprite=Legend_L
+	desc=A legendary ship with a powerful beam.
+	desc=/!\ You can only build this ship once!
+	teamwide=1
+	require_craft=1
+	required_team_slots=1
+	time=500
+	once_effect=summon() Legend_L
+	cost=5000;48;0;500
+
+upgrade Conceive_Legend_U
+	sprite=Legend_U
+	desc=A ship matching the description of a wall.
+	desc=/!\ You can only build this ship once!
+	teamwide=1
+	require_craft=1
+	required_team_slots=1
+	time=500
+	once_effect=summon() Legend_U
+	cost=5000;48;1;250
+
+upgrade Conceive_Legend_Y
+	sprite=Legend_Y
+	desc=The master of the scouts.
+	desc=/!\ You can only build this ship once!
+	teamwide=1
+	require_craft=1
+	required_team_slots=1
+	time=500
+	once_effect=summon() Legend_Y
+	cost=3000;64;1;250
