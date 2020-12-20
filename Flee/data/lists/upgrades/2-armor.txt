@@ -11,7 +11,7 @@ outfit Reinforced_Armor
 	once_effect=ship.integrity *= 1.35
 	effect=integrity += 15
 	effect=integrity *= 1.30
-	cost=500;0;0;0
+	cost=250;0;0;0
 
 outfit Reinforced_Armor_II
 	desc=Increase your ship's hull.
@@ -22,7 +22,7 @@ outfit Reinforced_Armor_II
 	once_effect=ship.integrity *= 1.35
 	effect=integrity += 10
 	effect=integrity *= 1.30
-	cost=750;0;0;0
+	cost=500;0;0;0
 
 outfit Reinforced_Armor_III
 	desc=Increase your ship's hull.
@@ -33,7 +33,7 @@ outfit Reinforced_Armor_III
 	once_effect=ship.integrity *= 1.35
 	effect=integrity += 5
 	effect=integrity *= 1.25
-	cost=1000;0;0;0
+	cost=750;0;0;0
 
 outfit Reinforced_Armor_IV
 	desc=Increase your ship's hull.
@@ -43,7 +43,7 @@ outfit Reinforced_Armor_IV
 	time=300
 	once_effect=ship.integrity *= 1.35
 	effect=integrity *= 1.20
-	cost=1250;0;0;0
+	cost=1000;0;0;0
 
 #
 # Repair Bots
