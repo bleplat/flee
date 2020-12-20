@@ -1,0 +1,67 @@
+#
+# Drones
+#
+
+weapon Miner_Drone-Launcher
+	sprite=Miner_Drone
+	range=0
+	celerity=4
+	loadtime=256
+	special=Launch|Straight|KeepFire	
+ship Miner_Drone
+	level=0
+	width=15
+	integrity=5
+	repair=0
+	speed=2.80
+	turn=8.50
+	weapon=0;Light-ParticleGun
+	cost=150;0;0;0
+	
+weapon Fighter_Drone-Launcher
+	sprite=Fighter_Drone
+	range=0
+	celerity=4
+	loadtime=1024
+	special=Launch|Straight|KeepFire
+ship Fighter_Drone
+	level=0
+	width=14
+	integrity=25
+	repair=0
+	speed=3.50
+	weapon=180;Light-MachineGun
+	weapon=-180;Light-MachineGun
+	cost=300;0;0;0
+
+weapon Dodger_Drone-Launcher
+	sprite=Dodger_Drone
+	range=0
+	celerity=4
+	loadtime=512
+	special=Launch|Straight|KeepFire
+ship Dodger_Drone
+	level=0
+	width=14
+	integrity=35
+	repair=0
+	speed=3.50
+	turn=5.50
+	weapon=0;Light-MachineGun
+	cost=250;0;0;0
+
+weapon Bomber_Drone-Launcher
+	sprite=Bomber_Drone
+	range=0
+	celerity=4
+	loadtime=1024
+	special=Launch|Straight|KeepFire
+ship Bomber_Drone
+	level=0
+	width=14
+	integrity=40
+	repair=0
+	speed=3.50
+	turn=1.50
+	weapon=0;Light-ShellCannon
+	cost=300;0;0;0

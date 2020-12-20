@@ -271,7 +271,7 @@ namespace Flee {
 				for (int i = ships.Count - 1; i >= 0; i -= 1)
 					if (ships[i].integrity <= 0) {
 						effects.Add(new Effect(-1, "EFF_Destroyed", ships[i].location, ships[i].direction, ships[i].speed_vec, gameplay_random.Next()));
-						for (int c = 1, loopTo = (int)(ships[i].stats.width / 8d); c <= loopTo; c++)
+						for (int c = 0, loopTo = ships[i].stats.width / 8 - 1; c < loopTo; c++)
 							effects.Add(new Effect(gameplay_random.Next(64, 192), "EFF_Debris", ships[i].location, gameplay_random.Next(0, 360), gameplay_random.Next(2, 7), gameplay_random.Next()));
 						if (ships[i].weapons.Count > 1 && (ships[i].weapons[0].stats.special & (int)Weapon.SpecialBits.SelfNuke) != 0) {
 							nuke_effect = 255;

@@ -12,11 +12,11 @@ gun MachineGun
 
 gun Light-MachineGun
 	sprite=PRJ_bullet_red
-	range=220
+	range=200
 	celerity=18
 	power=1
 	salvo=3
-	loadtime=6
+	loadtime=10
 
 gun Alien-MachineGun
 	sprite=PRJ_bullet_purple

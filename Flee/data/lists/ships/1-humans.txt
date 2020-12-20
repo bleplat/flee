@@ -42,6 +42,9 @@ ship Station_Drones
 	width=100
 	integrity=2500
 	cost=5000;32;4;0
+	weapon=0;Dodger_Drone-Launcher
+	weapon=-170;Fighter_Drone-Launcher
+	weapon=170;Bomber_Drone-Launcher
 	craft=Build_Hunter
 	craft=Build_Harass
 	craft=Build_Dronner
@@ -79,8 +82,8 @@ ship Cargo
 	speed=3.20
 	turn=2.00
 	weapon=0;ParticleGun
+	weapon=0;Miner_Drone-Launcher
 	cost=800;0;0;0
-	craft=Build_Miner_Drone
 	native_upgrade=Jump_Engine
 
 #
@@ -130,10 +133,10 @@ ship Dronner
 	speed=3.10
 	turn=1.50
 	weapon=0;Orange-Energy-Cannon
+	weapon=180;Fighter_Drone-Launcher
+	weapon=180;Dodger_Drone-Launcher
+	weapon=180;Bomber_Drone-Launcher
 	cost=3500;8;0;0
-	craft=Build_Fighter_Drone
-	craft=Build_Dodger_Drone
-	craft=Build_Bomber_Drone
 	craft=Build_Master_Drone
 
 #
@@ -199,46 +202,6 @@ ship Capturer
 #
 # Drones
 #
-
-ship Miner_Drone
-	level=0
-	width=15
-	integrity=5
-	repair=0
-	speed=2.80
-	turn=8.50
-	weapon=0;Light-ParticleGun
-	cost=150;0;0;0
-
-ship Fighter_Drone
-	level=0
-	width=14
-	integrity=25
-	repair=0
-	speed=3.50
-	weapon=180;Light-MachineGun
-	weapon=-180;Light-MachineGun
-	cost=300;0;0;0
-
-ship Dodger_Drone
-	level=0
-	width=14
-	integrity=35
-	repair=0
-	speed=3.50
-	turn=5.50
-	weapon=0;Light-MachineGun
-	cost=250;0;0;0
-
-ship Bomber_Drone
-	level=0
-	width=14
-	integrity=40
-	repair=0
-	speed=3.50
-	turn=1.50
-	weapon=0;Light-ShellCannon
-	cost=300;0;0;0
 
 ship Master_Drone
 	level=1
