@@ -383,8 +383,9 @@ namespace Flee {
 				foreach (Ship a_ship in ships)
 					if (a_ship.team.affinity != AffinityEnum.Wilderness && a_ship.bot_ship && a_ship.upgrade_progress == 0 && a_ship.team.ship_count_approximation < a_ship.team.ship_count_limit) {
 						string wished_upgrade = null;
-						if (rand.Next(0, 16) < 8)                         // building ships
-							if (rand.Next(0, 2) == 0) { // TODO: this was broken by condition changes
+						if (rand.Next(0, 16) < 8)
+							if (rand.Next(0, 2) == 0) { 
+								// build ships
 								wished_upgrade = Loader.GetRandomSpawnUpgrade(rand, a_ship);
 								if (wished_upgrade is object)
 									a_ship.UpgradeForFree(wished_upgrade);

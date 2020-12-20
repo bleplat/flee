@@ -26,3 +26,4 @@ gun EMP-Beam
 	emp_power=18
 	loadtime=50
 	salvo=3
+	special=EMP

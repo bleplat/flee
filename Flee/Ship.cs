@@ -386,10 +386,10 @@ namespace Flee {
 							behavior = BehaviorMode.Folow;
 						}
 					} else if (agressivity < 0.0f) { // non-agressives keep their target
-					} else if (world.gameplay_random.Next(0, 1000) < 2) { // chance to change target
+					} else if (world.gameplay_random.Next(0, 2000) < 2) { // chance to change target
 						target = null;
 						behavior = BehaviorMode.Stand;
-					} else if (!ReferenceEquals(team, target.team) && world.gameplay_random.Next(0, 1000) < 10) { // chance to change target
+					} else if (!ReferenceEquals(team, target.team) && world.gameplay_random.Next(0, 2000) < 10) { // chance to change target
 						target = null;
 						behavior = BehaviorMode.Stand;
 					}
@@ -574,7 +574,7 @@ namespace Flee {
 									if (!team.IsFriendWith(OVessel.team)) {
 										// Dim dist As Integer = Helpers.Distance(ToX, ToY, OVessel.location.X, OVessel.location.Y) - OVessel.stats.width / 2
 										var argp21 = AWeap.ForseeShootingLocation(OVessel);
-										double score = Helpers.Distance(ref location, ref argp21) - OVessel.stats.width / 2d;
+										double score = Helpers.Distance(ref location, ref argp21) - OVessel.stats.width / 2;
 										if (score < AWeap.stats.range * 0.9d) {
 											if (score < AWeap.stats.range) {
 												if (!ReferenceEquals(OVessel.team, world.wilderness_team) && !team.IsFriendWith(OVessel.team))
@@ -582,7 +582,7 @@ namespace Flee {
 												if (ReferenceEquals(target, OVessel))
 													score /= 4;
 												if ((AWeap.stats.special & (int)Weapon.SpecialBits.EMP) != 0 && OVessel.emp_damage * 0.8 > OVessel.stats.width)
-													score *= 3;
+													score *= 6;
 											}
 											if (score < closest_score) {
 												closest_score = score;
