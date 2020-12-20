@@ -124,10 +124,7 @@ namespace Flee {
 						Upgrade.upgrades[a_class.name].SetProperty(prop.name, prop.value);
 					break;
 				}
-				default: {
-					throw new Exception("Unknown class type: " + a_class.type);
-					break;
-				}
+				default: throw new Exception("Unknown class type: " + a_class.type);
 				}
 		}
 		public static List<ListClass> GetListsFromFile(string filename) {

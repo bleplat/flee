@@ -6,7 +6,7 @@ using Microsoft.VisualBasic.CompilerServices;
 
 namespace Flee {
 	public class Ship : WorldEntity {
-
+		public float speed = 0f;
 		// mode of behavior
 		public enum BehaviorMode {
 			None,		// No order
@@ -69,7 +69,7 @@ namespace Flee {
 			ApplyUpgrades();
 			BrightShield();
 			target_point = new PointF(location.X, location.Y);
-			UpdateSector();
+			world.UpdateSector(this);
 		}
 
 		public void SetStats(string ship_class) {
@@ -752,17 +752,6 @@ namespace Flee {
 			double dist = Helpers.Distance(ref location, ref target_ship.location);
 			double time = dist / Math.Max(1.0d, stats.speed);
 			return new PointF((float)(target_ship.location.X + target_ship.speed_vec.X * time), (float)(target_ship.location.Y + target_ship.speed_vec.Y * time));
-		}
-
-		public override void UpdateSector() {
-			Point new_sector_coords = ComputeCurrentSectorCoords();
-			if (new_sector_coords == sector_coords)
-				return;
-			if (sector is object)
-				sector.ships.Remove(this); // < Remove ship/shoot from ships/shoots here >
-			sector_coords = new_sector_coords;
-			sector = world.sectors[sector_coords.X, sector_coords.Y];
-			sector.ships.Add(this); // < Add ship/shoot to ships/shoots here >
 		}
 	}
 }

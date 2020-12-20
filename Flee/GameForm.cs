@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -52,7 +53,7 @@ namespace Flee {
 			// Play the music if it's available
 			try {
 				My.MyProject.Computer.Audio.Play("data/musics/PhilippWeigl-SubdivisionOfTheMasses.wav", AudioPlayMode.BackgroundLoop);
-			} catch (Exception ex) {
+			} catch (FileNotFoundException) {
 				Text = "Flee - Music not found!";
 			}
 			// Load lists
@@ -736,7 +737,7 @@ namespace Flee {
 						if (ship.CanUpgradeFree(AUp) && ReferenceEquals(ship.team, game.player_team) || game.player_team.cheats_enabled)
 							if (ship.team.resources.HasEnough(ref AUp.cost) || game.player_team.cheats_enabled) {
 								ship.team.resources.Deplete(ref AUp.cost);
-								ship.team.ship_count_approximation += AUp.required_team_slots;
+								//ship.team.ship_count_approximation += AUp.required_team_slots;
 								ship.Upgrading = AUp;
 							}
 				// next item

@@ -42,12 +42,30 @@ namespace Flee {
 			}
 		}
 		public void UpdateSectors() {
-			foreach (Ship ship in ships) {
-				ship.UpdateSector();
-			}
-			foreach (Shoot shoot in shoots) {
-				shoot.UpdateSector();
-			}
+			foreach (Ship ship in ships) 
+				UpdateSector(ship);
+			foreach (Shoot shoot in shoots) 
+				UpdateSector(shoot);
+		}
+		public void UpdateSector(Ship ship) {
+			Point new_sector_coords = ship.ComputeCurrentSectorCoords();
+			if (new_sector_coords == ship.sector_coords)
+				return;
+			if (ship.sector is object)
+				ship.sector.ships.Remove(ship);
+			ship.sector_coords = new_sector_coords;
+			ship.sector = sectors[ship.sector_coords.X, ship.sector_coords.Y];
+			ship.sector.ships.Add(ship);
+		}
+		public void UpdateSector(Shoot shoot) {
+			Point new_sector_coords = shoot.ComputeCurrentSectorCoords();
+			if (new_sector_coords == shoot.sector_coords)
+				return;
+			if (shoot.sector is object)
+				shoot.sector.shoots.Remove(shoot);
+			shoot.sector_coords = new_sector_coords;
+			shoot.sector = sectors[shoot.sector_coords.X, shoot.sector_coords.Y];
+			shoot.sector.shoots.Add(shoot);
 		}
 		public void Unspawn(in Ship ship) {
 			if (ship.sector is object)
@@ -177,8 +195,6 @@ namespace Flee {
 			Team player_team = new Team(this);
 			player_team.InitPlayerTeam(affinity);
 			teams.Add(player_team);
-			// Add Fleet
-			int power = 100;
 			// Player Station
 			ShipStats station_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Shipyard | (int)ShipRole.Playable);
 			PointF origin = SpawnStations(new Random(rand.Next()), station_type, player_team, 3);

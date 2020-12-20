@@ -5,16 +5,22 @@ using System.Linq;
 
 namespace Flee {
 	public class WorldSector {
+
+		/* Location */
 		public World world;
 		public Point coords = new Point(0, 0);
+		public List<WorldSector> foreign_sectors = new List<WorldSector>();
+
+		/* Content */
 		public List<Ship> ships = new List<Ship>();
 		public List<Shoot> shoots = new List<Shoot>();
+		
+		/* Build */
 		public WorldSector(in World world, int x, int y) {
 			this.world = world;
 			coords.X = x;
 			coords.Y = y;
 		}
-		public List<WorldSector> foreign_sectors = new List<WorldSector>();
 		public void InitForeignSectors() {
 			foreign_sectors.Clear();
 			foreign_sectors.Add(world.sectors[coords.X, coords.Y]);
@@ -28,6 +34,8 @@ namespace Flee {
 				}
 			}
 		}
+
+		/* Enumerators */
 		public IEnumerable<WorldSector> EnumerateNearbySectors() {
 			yield return world.sectors[coords.X, coords.Y];
 			int x_max = Math.Min(World.sectors_count_x - 1, coords.X + 1);
@@ -57,5 +65,6 @@ namespace Flee {
 			}
 			yield break;
 		}
+
 	}
 }

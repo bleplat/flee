@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Flee {
 	public class Shoot : WorldEntity {
-
+		public float speed = 0f;
 		/**
 		 * @brief Special effect for a projectile.
 		 */
@@ -101,16 +101,7 @@ namespace Flee {
 			}
 		}
 
-		public override void UpdateSector() {
-			Point new_sector_coords = ComputeCurrentSectorCoords();
-			if (new_sector_coords == sector_coords)
-				return;
-			if (sector is object)
-				sector.shoots.Remove(this); // < Remove ship/shoot from ships/shoots here >
-			sector_coords = new_sector_coords;
-			sector = world.sectors[sector_coords.X, sector_coords.Y];
-			sector.shoots.Add(this); // < Add ship/shoot to ships/shoots here >
-		}
+
 
 	}
 }

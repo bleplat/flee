@@ -222,10 +222,7 @@ namespace Flee {
 				spawning_amount_max = spawning_amount_min + 1;
 				break;
 			}
-			default: {
-				throw new Exception("'" + name + "' is not a valid ship property");
-				break;
-			}
+			default: throw new Exception("'" + name + "' is not a valid ship property");
 			}
 		}
 

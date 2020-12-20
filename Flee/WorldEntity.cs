@@ -7,15 +7,13 @@ using System.Text;
 
 namespace Flee {
 	public abstract class WorldEntity {
-		// world
+
+		/* Container & coords */
 		public World world = null;
-		// location & kinetics
 		public PointF location = new PointF(5000f, 5000f);
-		public PointF speed_vec = new PointF();
 		public float direction = 0f;
-		public float speed = 0f;
-		// advanced location
-		public Point sector_coords = new Point(-1, -1);
+
+		/* Sectors */
 		public WorldSector sector = null;
 		public Point ComputeCurrentSectorCoords() {
 			Point current_sector = new Point((int)location.X * World.sectors_count_x / world.ArenaSize.Width, (int)location.Y * World.sectors_count_y / world.ArenaSize.Height);
@@ -23,19 +21,20 @@ namespace Flee {
 			current_sector.Y = Math.Max(0, Math.Min(World.sectors_count_y - 1, current_sector.Y));
 			return (current_sector);
 		}
-		private void ExampleUpdateSector() {
-			Point new_sector_coords = ComputeCurrentSectorCoords();
-			if (new_sector_coords == sector_coords)
-				return;
-			//sector.ships.Remove(this); // < Remove ship/shoot from ships/shoots here >
-			sector_coords = new_sector_coords;
-			sector = world.sectors[sector_coords.X, sector_coords.Y];
-			//sector.ships.Add(this); // < Add ship/shoot to ships/shoots here >
+		// world should implement an UpdateSector(WorldEntity entity) function.
+
+		/* Movement */
+		public PointF speed_vec = new PointF();
+		public Point sector_coords = new Point(-1, -1);
+		public void TickMove() {
+			location.X += speed_vec.X;
+			location.Y += speed_vec.Y;
 		}
-		public abstract void UpdateSector();
-		// ctor
+
+		/* Constructor */
 		public WorldEntity(ref World world) {
 			this.world = world;
 		}
+
 	}
 }
