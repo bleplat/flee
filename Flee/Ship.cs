@@ -362,10 +362,8 @@ namespace Flee {
 
 		/* AI */
 		public void AISanitize() {
-			if (target is object && target.IsDestroyed())
+			if (target != null && target.IsDestroyed())
 				target = null;
-			if (behavior == BehaviorMode.Folow && target is null)
-				behavior = BehaviorMode.Stand;
 			if (ReferenceEquals(team, world.wilderness_team))
 				behavior = BehaviorMode.Drift;
 		}
@@ -424,12 +422,20 @@ namespace Flee {
 				break;
 			}
 			case BehaviorMode.Folow: {
-				if (target is object) {
+				if (target == null) {
+					int target_switch_range = 496;
+					target = GetClosestShip(this.target_point, 1.0, 0.0, 0.0);
+					if (target is object && Helpers.Distance(ref target_point, ref target.location) > target_switch_range)
+						target = null;
+				}
+				if (target != null) {
+					this.target_point = target.location;
 					if (this.team.IsFriendWith(this.target.team))
 						AITowardTargetEscort(ref required_direction, ref require_speed);
 					else
 						AITowardTargetAgressive(ref required_direction, ref require_speed);
-				}
+				} else
+					this.behavior = BehaviorMode.Stand;
 				break;
 			}
 			case BehaviorMode.Stand: {
@@ -736,7 +742,8 @@ namespace Flee {
 			return integrity <= 0;
 		}
 
-		public Ship GetClosestShip(double enemies = 2.0d, double neutrals = 1.0d, double allies = 0.0d) {
+
+		public Ship GetClosestShip(PointF ptn, double enemies = 2.0d, double neutrals = 1.0d, double allies = 0.0d) {
 			const double max_distance = double.PositiveInfinity;
 			// maximum square distance
 			double closest_distance_sq = double.PositiveInfinity;
@@ -753,19 +760,21 @@ namespace Flee {
 					double distance_sq;
 					// relationship priority
 					if (other_ship.team.affinity == AffinityEnum.Wilderness || team.affinity == AffinityEnum.Wilderness)
-						distance_sq = Helpers.DistanceSQ(ref location, ref other_ship.location) / neutrals;
+						distance_sq = Helpers.DistanceSQ(ref ptn, ref other_ship.location) / neutrals;
 					else if (team.IsFriendWith(other_ship.team))
-						distance_sq = Helpers.DistanceSQ(ref location, ref other_ship.location) / allies;
+						distance_sq = Helpers.DistanceSQ(ref ptn, ref other_ship.location) / allies;
 					else
-						distance_sq = Helpers.DistanceSQ(ref location, ref other_ship.location) / enemies;
+						distance_sq = Helpers.DistanceSQ(ref ptn, ref other_ship.location) / enemies;
 					// test if closer
 					if (distance_sq < closest_distance_sq) {
 						closest_ship = other_ship;
 						closest_distance_sq = distance_sq;
 					}
 				}
-
 			return closest_ship;
+		}
+		public Ship GetClosestShip(double enemies = 2.0d, double neutrals = 1.0d, double allies = 0.0d) {
+			return (GetClosestShip(this.location, enemies, neutrals, allies));
 		}
 
 		// calculat point to aim to reach a moving target
