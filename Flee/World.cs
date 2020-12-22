@@ -88,9 +88,10 @@ namespace Flee {
 		public World(int seed, bool armagedon) {
 			InitSectors();
 			Random rand = InitRandom(seed);
+			InitSpecialTeams();
 			InitCharacteristics(new Random(rand.Next()));
 			if (armagedon)
-				for (int i = 0; i < 8; i++)
+				for (int i = 0; i < 4; i++)
 					InitTeams(new Random(rand.Next()));
 			InitTeams(new Random(rand.Next()));
 			InitDerelicts(new Random(rand.Next()));
@@ -107,7 +108,7 @@ namespace Flee {
 			background_offset.X = rand.Next(0, 4096);
 			background_offset.Y = rand.Next(0, 4096);
 		}
-		void InitTeams(Random rand) {
+		void InitSpecialTeams() {
 			// Wilderness
 			teams.Add(new Team(this));
 			teams[teams.Count - 1].InitWildernessTeam();
@@ -116,6 +117,8 @@ namespace Flee {
 			teams.Add(new Team(this));
 			teams[teams.Count - 1].InitBossTeam();
 			boss_team = teams[teams.Count - 1];
+		}
+		void InitTeams(Random rand) {
 			// NPCs
 			{
 				teams.Add(new Team(this, AffinityEnum.Friendly, new Random(rand.Next()))); // at least 1 Friendly
