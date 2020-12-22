@@ -147,7 +147,7 @@ namespace Flee {
 			case "required_stat": required_stats.Add(new UpgradeCondition(value)); break;
 			case "cost": cost.LoadFromString(value); break;
 			case "required_slots": required_upgrade_slots = Convert.ToInt32(value); break;
-			case "required_team_slots": required_upgrade_slots = Convert.ToInt32(value); break;
+			case "required_team_slots": required_team_slots = Convert.ToInt32(value); break;
 			case "effect": effects.Add(new UpgradeEffect(value)); break;
 			case "once_effect": once_effects.Add(new UpgradeEffect(value)); break;
 			case "time": time = Convert.ToInt32(value); break;

@@ -145,11 +145,11 @@ namespace Flee {
 			if (this.affinity == AffinityEnum.Friendly)
 				color = Color.FromArgb(rand.Next(0, 128), rand.Next(192, 256), rand.Next(64, 256));
 			else if (this.affinity == AffinityEnum.Neutral)
-				color = Color.FromArgb(rand.Next(64, 128), rand.Next(64, 128), rand.Next(128, 256));
+				color = Color.FromArgb(rand.Next(64, 96), rand.Next(64, 128), rand.Next(128, 256));
 			else if (this.affinity == AffinityEnum.Dissident)
-				color = Color.FromArgb(rand.Next(192, 256), rand.Next(64, 192), rand.Next(64, 192));
+				color = Color.FromArgb(rand.Next(192, 256), rand.Next(64, 128), rand.Next(0, 256));
 			else
-				color = Color.FromArgb(rand.Next(192, 256), rand.Next(0, 64), rand.Next(0, 64));
+				color = Color.FromArgb(rand.Next(128, 256), rand.Next(0, 64), rand.Next(0, 256));
 		}
 		public void InitTeamGenerationIndices(Random rand) {
 			this.station_type_index = rand.Next(0, Int32.MaxValue);
