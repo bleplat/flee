@@ -276,20 +276,23 @@ namespace Flee {
 					W = 5;
 				var mini_color = AShip.color;
 				if (target_identification)
-					if (AShip.team.affinity == AffinityEnum.Wilderness)
-						mini_color = Color.Black;
-					else if (AShip.team.affinity == AffinityEnum.Hostile)
-						mini_color = Color.Red;
-					else if (ReferenceEquals(AShip.team, game.player_team))
-						mini_color = Color.Lime;
-					else if (AShip.team.affinity == AffinityEnum.Wilderness || AShip.team.affinity == AffinityEnum.Neutral)
-						mini_color = Color.White;
-					else if (AShip.team.IsFriendWith(game.player_team))
-						mini_color = Color.Cyan;
-					else
-						mini_color = Color.OrangeRed;
+					mini_color = RelationColor(AShip.team);
 				g.FillRectangle(new SolidBrush(mini_color), new Rectangle((int)(AShip.location.X / game.world.ArenaSize.Width * g.VisibleClipBounds.Width - W / 2d), (int)(AShip.location.Y / game.world.ArenaSize.Height * g.VisibleClipBounds.Height - W / 2d), W, W));
 			}
+		}
+		public Color RelationColor(Team team) {
+			if (ReferenceEquals(team, game.player_team))
+				return (Color.Lime);
+			else if (team.affinity == AffinityEnum.Wilderness)
+				return (Color.Black);
+			else if (team.affinity == AffinityEnum.Hostile)
+				return (Color.Red);
+			else if (team.affinity == AffinityEnum.Neutral)
+				return (Color.White);
+			else if (team.IsFriendWith(game.player_team))
+				return (Color.Cyan);
+			else
+				return (Color.OrangeRed);
 		}
 		private void _MiniBox_Paint(object sender, PaintEventArgs e) {
 			if (form_ready && game is object && game.world is object)
@@ -389,7 +392,7 @@ namespace Flee {
 						}
 						// draw selection rectangle
 						if (selected_ships.Contains(AShip))
-							g.DrawRectangle(new Pen(AShip.team.color), drawrect);
+							g.DrawRectangle(new Pen(RelationColor(AShip.team)), drawrect);
 						// shields
 						if (AShip.stats.shield >= 1) {
 							var shields_ptns = new PointF[16];
@@ -413,8 +416,11 @@ namespace Flee {
 						}
 						// life   'New Pen(getSColor(AShip.Color))
 						if (AShip.stats.integrity > 20 && !AShip.auto) {
+							Color integrity_color = AShip.color;
+							if (target_identification)
+								integrity_color = RelationColor(AShip.team);
 							g.DrawRectangle(Pens.DimGray, new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 5 - See.Y)), new Size(AShip.stats.width, 1)));
-							g.DrawRectangle(new Pen(AShip.team.color), new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 5 - See.Y)), new Size((int)(AShip.integrity / (double)AShip.stats.integrity * AShip.stats.width), 1)));
+							g.DrawRectangle(new Pen(integrity_color), new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 5 - See.Y)), new Size((int)(AShip.integrity / (double)AShip.stats.integrity * AShip.stats.width), 1)));
 							g.DrawString((int)AShip.integrity + "/" + (int)AShip.stats.integrity, Font, new SolidBrush(AShip.team.color), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 - See.Y)));
 							if (AShip.stats.shield > 0)
 								g.DrawString((int)AShip.shield + "/" + (int)AShip.stats.shield, Font, Brushes.LightGray, new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 - See.Y + 7)));

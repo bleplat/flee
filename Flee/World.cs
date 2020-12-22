@@ -400,7 +400,7 @@ namespace Flee {
 								wished_upgrade = Loader.GetRandomSpawnUpgrade(rand, a_ship);
 								if (wished_upgrade is object)
 									a_ship.UpgradeForFree(wished_upgrade);
-							} else if (rand.Next(0, 2) == 0) {
+							} else if (rand.Next(0, 3) < 2) {
 								// upgrading
 								var PossibleUps = a_ship.AvailableNotInstalledUpgrades();
 								if (PossibleUps.Count >= 1)
