@@ -30,22 +30,27 @@ namespace Flee {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
 			this.MainPanel = new System.Windows.Forms.Panel();
-			this._MiniBox = new System.Windows.Forms.PictureBox();
-			this.MenuPanel = new System.Windows.Forms.Panel();
-			this.button1 = new System.Windows.Forms.Button();
-			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.menuMain = new System.Windows.Forms.Panel();
+			this.buttonSettings = new System.Windows.Forms.Button();
+			this.buttonMultiplayer = new System.Windows.Forms.Button();
+			this.buttonHost = new System.Windows.Forms.Button();
+			this.Label3 = new System.Windows.Forms.Label();
+			this.Label4 = new System.Windows.Forms.Label();
+			this.menuSettings = new System.Windows.Forms.Panel();
+			this.buttonSettingsOk = new System.Windows.Forms.Button();
+			this.label8 = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
+			this.checkBoxEnableBackground = new System.Windows.Forms.CheckBox();
+			this.menuHost = new System.Windows.Forms.Panel();
 			this.SeedTextBox = new System.Windows.Forms.TextBox();
+			this.label6 = new System.Windows.Forms.Label();
 			this.checkBoxLAN = new System.Windows.Forms.CheckBox();
 			this.checkBoxArmagedon = new System.Windows.Forms.CheckBox();
-			this.checkBoxEnableBackground = new System.Windows.Forms.CheckBox();
-			this.checkBoxFPS = new System.Windows.Forms.CheckBox();
-			this.Label4 = new System.Windows.Forms.Label();
-			this.Label3 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
-			this.label7 = new System.Windows.Forms.Label();
 			this.Label2 = new System.Windows.Forms.Label();
 			this._StartPlayingButton = new System.Windows.Forms.Button();
 			this._RandomizeButton = new System.Windows.Forms.Button();
+			this._MiniBox = new System.Windows.Forms.PictureBox();
 			this.UpgradeDetails = new System.Windows.Forms.Panel();
 			this.PriceA = new System.Windows.Forms.Label();
 			this.PriceSlots = new System.Windows.Forms.Label();
@@ -79,8 +84,10 @@ namespace Flee {
 			this._DrawBox = new System.Windows.Forms.PictureBox();
 			this._Ticker = new System.Windows.Forms.Timer(this.components);
 			this.MainPanel.SuspendLayout();
+			this.menuMain.SuspendLayout();
+			this.menuSettings.SuspendLayout();
+			this.menuHost.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._MiniBox)).BeginInit();
-			this.MenuPanel.SuspendLayout();
 			this.UpgradeDetails.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.PriceCIcon)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PriceAIcon)).BeginInit();
@@ -104,8 +111,10 @@ namespace Flee {
 			this.MainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.MainPanel.Controls.Add(this.menuMain);
+			this.MainPanel.Controls.Add(this.menuHost);
+			this.MainPanel.Controls.Add(this.menuSettings);
 			this.MainPanel.Controls.Add(this._MiniBox);
-			this.MainPanel.Controls.Add(this.MenuPanel);
 			this.MainPanel.Controls.Add(this.UpgradeDetails);
 			this.MainPanel.Controls.Add(this.SShipPanel);
 			this.MainPanel.Controls.Add(this.PanelRes);
@@ -115,92 +124,195 @@ namespace Flee {
 			this.MainPanel.Size = new System.Drawing.Size(800, 600);
 			this.MainPanel.TabIndex = 0;
 			// 
-			// _MiniBox
+			// menuMain
 			// 
-			this._MiniBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this._MiniBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this._MiniBox.Location = new System.Drawing.Point(598, 398);
-			this._MiniBox.Name = "_MiniBox";
-			this._MiniBox.Size = new System.Drawing.Size(202, 202);
-			this._MiniBox.TabIndex = 1;
-			this._MiniBox.TabStop = false;
-			this._MiniBox.Paint += new System.Windows.Forms.PaintEventHandler(this._MiniBox_Paint);
-			this._MiniBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MiniBox_MouseDown);
-			this._MiniBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MiniBox_MouseMove);
-			this._MiniBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MiniBox_MouseUp);
+			this.menuMain.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.menuMain.Controls.Add(this.buttonSettings);
+			this.menuMain.Controls.Add(this.buttonMultiplayer);
+			this.menuMain.Controls.Add(this.buttonHost);
+			this.menuMain.Controls.Add(this.Label3);
+			this.menuMain.Controls.Add(this.Label4);
+			this.menuMain.Location = new System.Drawing.Point(224, 192);
+			this.menuMain.Name = "menuMain";
+			this.menuMain.Size = new System.Drawing.Size(346, 237);
+			this.menuMain.TabIndex = 6;
 			// 
-			// MenuPanel
+			// buttonSettings
 			// 
-			this.MenuPanel.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.MenuPanel.Controls.Add(this.button1);
-			this.MenuPanel.Controls.Add(this.textBox1);
-			this.MenuPanel.Controls.Add(this.SeedTextBox);
-			this.MenuPanel.Controls.Add(this.checkBoxLAN);
-			this.MenuPanel.Controls.Add(this.checkBoxArmagedon);
-			this.MenuPanel.Controls.Add(this.checkBoxEnableBackground);
-			this.MenuPanel.Controls.Add(this.checkBoxFPS);
-			this.MenuPanel.Controls.Add(this.Label4);
-			this.MenuPanel.Controls.Add(this.Label3);
-			this.MenuPanel.Controls.Add(this.label5);
-			this.MenuPanel.Controls.Add(this.label7);
-			this.MenuPanel.Controls.Add(this.Label2);
-			this.MenuPanel.Controls.Add(this._StartPlayingButton);
-			this.MenuPanel.Controls.Add(this._RandomizeButton);
-			this.MenuPanel.Font = new System.Drawing.Font("Corbel", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.MenuPanel.Location = new System.Drawing.Point(207, 112);
-			this.MenuPanel.Name = "MenuPanel";
-			this.MenuPanel.Size = new System.Drawing.Size(385, 353);
-			this.MenuPanel.TabIndex = 5;
+			this.buttonSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.buttonSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonSettings.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.buttonSettings.Location = new System.Drawing.Point(59, 146);
+			this.buttonSettings.Name = "buttonSettings";
+			this.buttonSettings.Size = new System.Drawing.Size(230, 34);
+			this.buttonSettings.TabIndex = 7;
+			this.buttonSettings.Text = "Settings";
+			this.buttonSettings.UseVisualStyleBackColor = true;
+			this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
 			// 
-			// button1
+			// buttonMultiplayer
 			// 
-			this.button1.Enabled = false;
-			this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.button1.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.button1.Location = new System.Drawing.Point(305, 148);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(77, 27);
-			this.button1.TabIndex = 10;
-			this.button1.Text = "JOIN";
-			this.button1.UseVisualStyleBackColor = true;
+			this.buttonMultiplayer.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.buttonMultiplayer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonMultiplayer.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.buttonMultiplayer.Location = new System.Drawing.Point(59, 106);
+			this.buttonMultiplayer.Name = "buttonMultiplayer";
+			this.buttonMultiplayer.Size = new System.Drawing.Size(230, 34);
+			this.buttonMultiplayer.TabIndex = 7;
+			this.buttonMultiplayer.Text = "Multiplayer";
+			this.buttonMultiplayer.UseVisualStyleBackColor = true;
+			this.buttonMultiplayer.Click += new System.EventHandler(this.buttonMultiplayer_Click);
 			// 
-			// textBox1
+			// buttonHost
 			// 
-			this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.textBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-			this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.textBox1.Enabled = false;
-			this.textBox1.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.textBox1.ForeColor = System.Drawing.Color.White;
-			this.textBox1.Location = new System.Drawing.Point(152, 148);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(147, 27);
-			this.textBox1.TabIndex = 6;
-			this.textBox1.Text = "127.0.0.1";
-			this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.buttonHost.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.buttonHost.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonHost.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.buttonHost.Location = new System.Drawing.Point(59, 66);
+			this.buttonHost.Name = "buttonHost";
+			this.buttonHost.Size = new System.Drawing.Size(230, 34);
+			this.buttonHost.TabIndex = 7;
+			this.buttonHost.Text = "Singleplayer";
+			this.buttonHost.UseVisualStyleBackColor = true;
+			this.buttonHost.Click += new System.EventHandler(this.buttonHost_Click);
+			// 
+			// Label3
+			// 
+			this.Label3.AutoSize = true;
+			this.Label3.Dock = System.Windows.Forms.DockStyle.Top;
+			this.Label3.Font = new System.Drawing.Font("Corbel", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label3.Location = new System.Drawing.Point(0, 0);
+			this.Label3.Name = "Label3";
+			this.Label3.Size = new System.Drawing.Size(87, 39);
+			this.Label3.TabIndex = 6;
+			this.Label3.Text = "FLEE";
+			// 
+			// Label4
+			// 
+			this.Label4.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.Label4.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label4.ForeColor = System.Drawing.Color.Silver;
+			this.Label4.Location = new System.Drawing.Point(0, 196);
+			this.Label4.Name = "Label4";
+			this.Label4.Size = new System.Drawing.Size(346, 41);
+			this.Label4.TabIndex = 8;
+			this.Label4.Text = "Some sprites are from MillionthVector.\r\nThe music is from PhilippWeigl.";
+			this.Label4.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+			// 
+			// menuSettings
+			// 
+			this.menuSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.menuSettings.Controls.Add(this.buttonSettingsOk);
+			this.menuSettings.Controls.Add(this.label8);
+			this.menuSettings.Controls.Add(this.label7);
+			this.menuSettings.Controls.Add(this.checkBoxEnableBackground);
+			this.menuSettings.Enabled = false;
+			this.menuSettings.Location = new System.Drawing.Point(23, 16);
+			this.menuSettings.Name = "menuSettings";
+			this.menuSettings.Size = new System.Drawing.Size(344, 203);
+			this.menuSettings.TabIndex = 7;
+			this.menuSettings.Visible = false;
+			// 
+			// buttonSettingsOk
+			// 
+			this.buttonSettingsOk.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.buttonSettingsOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonSettingsOk.Font = new System.Drawing.Font("Corbel", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.buttonSettingsOk.Location = new System.Drawing.Point(0, 165);
+			this.buttonSettingsOk.Name = "buttonSettingsOk";
+			this.buttonSettingsOk.Size = new System.Drawing.Size(344, 38);
+			this.buttonSettingsOk.TabIndex = 10;
+			this.buttonSettingsOk.Text = "OK";
+			this.buttonSettingsOk.UseVisualStyleBackColor = true;
+			this.buttonSettingsOk.Click += new System.EventHandler(this.buttonSettingsOk_Click);
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Dock = System.Windows.Forms.DockStyle.Top;
+			this.label8.Font = new System.Drawing.Font("Corbel", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label8.Location = new System.Drawing.Point(0, 0);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(227, 39);
+			this.label8.TabIndex = 7;
+			this.label8.Text = "FLEE - Settings";
+			// 
+			// label7
+			// 
+			this.label7.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.label7.AutoSize = true;
+			this.label7.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label7.Location = new System.Drawing.Point(3, 46);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(81, 19);
+			this.label7.TabIndex = 1;
+			this.label7.Text = "GRAPHICS";
+			// 
+			// checkBoxEnableBackground
+			// 
+			this.checkBoxEnableBackground.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.checkBoxEnableBackground.AutoSize = true;
+			this.checkBoxEnableBackground.Checked = true;
+			this.checkBoxEnableBackground.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBoxEnableBackground.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.checkBoxEnableBackground.Location = new System.Drawing.Point(129, 50);
+			this.checkBoxEnableBackground.Name = "checkBoxEnableBackground";
+			this.checkBoxEnableBackground.Size = new System.Drawing.Size(82, 17);
+			this.checkBoxEnableBackground.TabIndex = 9;
+			this.checkBoxEnableBackground.Text = "background";
+			this.checkBoxEnableBackground.UseVisualStyleBackColor = true;
+			// 
+			// menuHost
+			// 
+			this.menuHost.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.menuHost.Controls.Add(this.SeedTextBox);
+			this.menuHost.Controls.Add(this.label6);
+			this.menuHost.Controls.Add(this.checkBoxLAN);
+			this.menuHost.Controls.Add(this.checkBoxArmagedon);
+			this.menuHost.Controls.Add(this.label5);
+			this.menuHost.Controls.Add(this.Label2);
+			this.menuHost.Controls.Add(this._StartPlayingButton);
+			this.menuHost.Controls.Add(this._RandomizeButton);
+			this.menuHost.Enabled = false;
+			this.menuHost.Font = new System.Drawing.Font("Corbel", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.menuHost.Location = new System.Drawing.Point(345, 121);
+			this.menuHost.Name = "menuHost";
+			this.menuHost.Size = new System.Drawing.Size(385, 353);
+			this.menuHost.TabIndex = 5;
+			this.menuHost.Visible = false;
 			// 
 			// SeedTextBox
 			// 
-			this.SeedTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.SeedTextBox.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.SeedTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 			this.SeedTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.SeedTextBox.Font = new System.Drawing.Font("Corbel", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.SeedTextBox.ForeColor = System.Drawing.Color.White;
-			this.SeedTextBox.Location = new System.Drawing.Point(152, 209);
+			this.SeedTextBox.Location = new System.Drawing.Point(151, 108);
 			this.SeedTextBox.Name = "SeedTextBox";
 			this.SeedTextBox.Size = new System.Drawing.Size(230, 33);
 			this.SeedTextBox.TabIndex = 6;
 			this.SeedTextBox.Text = "876303952";
 			this.SeedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Dock = System.Windows.Forms.DockStyle.Top;
+			this.label6.Font = new System.Drawing.Font("Corbel", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label6.Location = new System.Drawing.Point(0, 0);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(282, 39);
+			this.label6.TabIndex = 6;
+			this.label6.Text = "FLEE - Singleplayer";
+			// 
 			// checkBoxLAN
 			// 
+			this.checkBoxLAN.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.checkBoxLAN.AutoCheck = false;
 			this.checkBoxLAN.AutoSize = true;
 			this.checkBoxLAN.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBoxLAN.Location = new System.Drawing.Point(152, 278);
+			this.checkBoxLAN.Location = new System.Drawing.Point(151, 192);
 			this.checkBoxLAN.Name = "checkBoxLAN";
 			this.checkBoxLAN.Size = new System.Drawing.Size(79, 17);
 			this.checkBoxLAN.TabIndex = 9;
@@ -209,98 +321,37 @@ namespace Flee {
 			// 
 			// checkBoxArmagedon
 			// 
-			this.checkBoxArmagedon.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.checkBoxArmagedon.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.checkBoxArmagedon.AutoSize = true;
 			this.checkBoxArmagedon.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBoxArmagedon.Location = new System.Drawing.Point(266, 278);
+			this.checkBoxArmagedon.Location = new System.Drawing.Point(151, 215);
 			this.checkBoxArmagedon.Name = "checkBoxArmagedon";
 			this.checkBoxArmagedon.Size = new System.Drawing.Size(111, 17);
 			this.checkBoxArmagedon.TabIndex = 9;
 			this.checkBoxArmagedon.Text = "Armagedon mode";
 			this.checkBoxArmagedon.UseVisualStyleBackColor = true;
 			// 
-			// checkBoxEnableBackground
-			// 
-			this.checkBoxEnableBackground.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.checkBoxEnableBackground.AutoSize = true;
-			this.checkBoxEnableBackground.Checked = true;
-			this.checkBoxEnableBackground.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.checkBoxEnableBackground.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBoxEnableBackground.Location = new System.Drawing.Point(149, 83);
-			this.checkBoxEnableBackground.Name = "checkBoxEnableBackground";
-			this.checkBoxEnableBackground.Size = new System.Drawing.Size(82, 17);
-			this.checkBoxEnableBackground.TabIndex = 9;
-			this.checkBoxEnableBackground.Text = "background";
-			this.checkBoxEnableBackground.UseVisualStyleBackColor = true;
-			// 
-			// checkBoxFPS
-			// 
-			this.checkBoxFPS.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.checkBoxFPS.AutoSize = true;
-			this.checkBoxFPS.Checked = true;
-			this.checkBoxFPS.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.checkBoxFPS.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBoxFPS.Location = new System.Drawing.Point(149, 64);
-			this.checkBoxFPS.Name = "checkBoxFPS";
-			this.checkBoxFPS.Size = new System.Drawing.Size(199, 17);
-			this.checkBoxFPS.TabIndex = 9;
-			this.checkBoxFPS.Text = "increase FPS (will play slightly faster)";
-			this.checkBoxFPS.UseVisualStyleBackColor = true;
-			// 
-			// Label4
-			// 
-			this.Label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.Label4.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.Label4.ForeColor = System.Drawing.Color.Silver;
-			this.Label4.Location = new System.Drawing.Point(159, 2);
-			this.Label4.Name = "Label4";
-			this.Label4.Size = new System.Drawing.Size(224, 41);
-			this.Label4.TabIndex = 8;
-			this.Label4.Text = "Some sprites are from MillionthVector.\r\nThe music is from PhilippWeigl.";
-			this.Label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			// 
-			// Label3
-			// 
-			this.Label3.AutoSize = true;
-			this.Label3.Font = new System.Drawing.Font("Corbel", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.Label3.Location = new System.Drawing.Point(3, 0);
-			this.Label3.Name = "Label3";
-			this.Label3.Size = new System.Drawing.Size(87, 39);
-			this.Label3.TabIndex = 6;
-			this.Label3.Text = "FLEE";
-			// 
 			// label5
 			// 
+			this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.label5.AutoSize = true;
 			this.label5.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label5.Location = new System.Drawing.Point(6, 150);
+			this.label5.Location = new System.Drawing.Point(5, 188);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(42, 19);
+			this.label5.Size = new System.Drawing.Size(63, 19);
 			this.label5.TabIndex = 1;
-			this.label5.Text = "JOIN";
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label7.Location = new System.Drawing.Point(6, 64);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(81, 19);
-			this.label7.TabIndex = 1;
-			this.label7.Text = "GRAPHICS";
+			this.label5.Text = "Options";
 			// 
 			// Label2
 			// 
+			this.Label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.Label2.AutoSize = true;
 			this.Label2.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.Label2.Location = new System.Drawing.Point(6, 209);
+			this.Label2.Location = new System.Drawing.Point(5, 108);
 			this.Label2.Name = "Label2";
-			this.Label2.Size = new System.Drawing.Size(50, 19);
+			this.Label2.Size = new System.Drawing.Size(47, 19);
 			this.Label2.TabIndex = 1;
-			this.Label2.Text = "HOST";
+			this.Label2.Text = "SEED";
 			// 
 			// _StartPlayingButton
 			// 
@@ -317,17 +368,30 @@ namespace Flee {
 			// 
 			// _RandomizeButton
 			// 
-			this._RandomizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this._RandomizeButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this._RandomizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this._RandomizeButton.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this._RandomizeButton.Location = new System.Drawing.Point(157, 241);
+			this._RandomizeButton.Location = new System.Drawing.Point(156, 140);
 			this._RandomizeButton.Name = "_RandomizeButton";
 			this._RandomizeButton.Size = new System.Drawing.Size(221, 31);
 			this._RandomizeButton.TabIndex = 7;
-			this._RandomizeButton.Text = "Randomize Seed";
+			this._RandomizeButton.Text = "Randomize";
 			this._RandomizeButton.UseVisualStyleBackColor = true;
 			this._RandomizeButton.Click += new System.EventHandler(this.RandomizeButton_Click);
+			// 
+			// _MiniBox
+			// 
+			this._MiniBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this._MiniBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this._MiniBox.Location = new System.Drawing.Point(598, 398);
+			this._MiniBox.Name = "_MiniBox";
+			this._MiniBox.Size = new System.Drawing.Size(202, 202);
+			this._MiniBox.TabIndex = 1;
+			this._MiniBox.TabStop = false;
+			this._MiniBox.Paint += new System.Windows.Forms.PaintEventHandler(this._MiniBox_Paint);
+			this._MiniBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MiniBox_MouseDown);
+			this._MiniBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MiniBox_MouseMove);
+			this._MiniBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MiniBox_MouseUp);
 			// 
 			// UpgradeDetails
 			// 
@@ -492,6 +556,7 @@ namespace Flee {
 			this.SShipPanel.Name = "SShipPanel";
 			this.SShipPanel.Size = new System.Drawing.Size(152, 538);
 			this.SShipPanel.TabIndex = 3;
+			this.SShipPanel.Visible = false;
 			// 
 			// AllowMiningBox
 			// 
@@ -690,7 +755,7 @@ namespace Flee {
 			// 
 			// _Ticker
 			// 
-			this._Ticker.Interval = 33;
+			this._Ticker.Interval = 25;
 			this._Ticker.Tick += new System.EventHandler(this.Ticker_Tick);
 			// 
 			// GameForm
@@ -712,9 +777,13 @@ namespace Flee {
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
 			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
 			this.MainPanel.ResumeLayout(false);
+			this.menuMain.ResumeLayout(false);
+			this.menuMain.PerformLayout();
+			this.menuSettings.ResumeLayout(false);
+			this.menuSettings.PerformLayout();
+			this.menuHost.ResumeLayout(false);
+			this.menuHost.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this._MiniBox)).EndInit();
-			this.MenuPanel.ResumeLayout(false);
-			this.MenuPanel.PerformLayout();
 			this.UpgradeDetails.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.PriceCIcon)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PriceAIcon)).EndInit();
@@ -885,7 +954,7 @@ namespace Flee {
 		internal Label PriceU;
 		internal PictureBox PriceUIcon;
 		internal Label WarCriminalLabel;
-		internal Panel MenuPanel;
+		internal Panel menuHost;
 		private Button _StartPlayingButton;
 
 		internal Button StartPlayingButton {
@@ -944,15 +1013,20 @@ namespace Flee {
 		internal Label PriceA;
 		internal PictureBox PriceAIcon;
 		internal Label Label4;
-		private CheckBox checkBoxFPS;
 		private CheckBox checkBoxEnableBackground;
 		private CheckBox checkBoxLAN;
-		private Button button1;
-		internal TextBox textBox1;
 		internal Label label5;
 		private CheckBox checkBoxArmagedon;
 		internal Label label7;
 		internal Label PriceSlots;
 		internal PictureBox PriceSlotsIcon;
+		private Panel menuMain;
+		private Button buttonHost;
+		private Panel menuSettings;
+		private Button buttonSettingsOk;
+		internal Label label8;
+		internal Label label6;
+		private Button buttonSettings;
+		private Button buttonMultiplayer;
 	}
 }

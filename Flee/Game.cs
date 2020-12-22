@@ -53,6 +53,11 @@ namespace Flee {
 			throw new Exception("not implementd");
 		}
 
+		/* Getters */
+		public bool IsPlaying() {
+			return (world != null);
+		}
+
 		/* Funtions */
 		public void Tick() {
 			// Tick world

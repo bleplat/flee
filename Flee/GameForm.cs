@@ -43,6 +43,8 @@ namespace Flee {
 			_StartPlayingButton.Name = "StartPlayingButton";
 			_UpgradesBox.Name = "UpgradesBox";
 			_DrawBox.Name = "DrawBox";
+			// init menu
+			AlignAllMenus();
 		}
 		private void MainForm_Load(object sender, EventArgs e) {
 			// Commandline
@@ -76,7 +78,6 @@ namespace Flee {
 				return;
 			}
 			// Timer
-			game.tick_duration_ms = checkBoxFPS.Checked ? 25 : 33;
 			Ticker.Interval = game.tick_duration_ms;
 			// multiplayer
 			game.is_multiplayer = checkBoxLAN.Checked;
@@ -85,7 +86,7 @@ namespace Flee {
 		}
 		void SetMenuVisible(bool visible) {
 			StartPlayingButton.Enabled = visible;
-			MenuPanel.Visible = visible;
+			menuHost.Visible = visible;
 		}
 		private void BeginButton_Click(object sender, EventArgs e) {
 			SetUISettingsFromMenu();
@@ -494,7 +495,9 @@ namespace Flee {
 		/* Minimap Controls */
 		private bool MiniMDown = false;
 		private void MiniBox_MouseDown(object sender, MouseEventArgs e) {
-			if (MenuPanel.Visible)
+			if (!game.IsPlaying())
+				return;
+			if (menuHost.Visible)
 				return;
 			MiniMDown = true;
 			See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBox.Width / 2d);
@@ -502,9 +505,13 @@ namespace Flee {
 			ClampCameraLocationToArena();
 		}
 		private void MiniBox_MouseUp(object sender, MouseEventArgs e) {
+			if (!game.IsPlaying())
+				return;
 			MiniMDown = false;
 		}
 		private void MiniBox_MouseMove(object sender, MouseEventArgs e) {
+			if (!game.IsPlaying())
+				return;
 			if (MiniMDown) {
 				See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBox.Width / 2d);
 				See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBox.Height / 2d);
@@ -538,6 +545,10 @@ namespace Flee {
 			// Cheats
 			if (e.KeyData == Keys.F12)
 				game.player_team.cheats_enabled = !game.player_team.cheats_enabled;
+			// Escape
+			if (e.KeyData == Keys.Escape) {
+				PressedEscape();
+			}
 			// Debug
 			if (e.KeyData == Keys.F7) {
 				string total = ShipStats.DumpClasses();
@@ -578,8 +589,10 @@ namespace Flee {
 			}
 		}
 		public void SelectInSquare() {
+			if (!game.IsPlaying())
+				return;
 			var SS = Helpers.MakeRectangle(ref down_mouse_location, ref last_mouse_location);
-			if (MenuPanel.Visible)
+			if (menuHost.Visible)
 				return;
 			if (!ModifierKeys.HasFlag(Keys.Control) || IsSelectionNonControlled())
 				selected_ships.Clear();
@@ -650,6 +663,8 @@ namespace Flee {
 
 		/* Cheat Resources */
 		private void PictureBoxAvailableStarfuel_Click(object sender, EventArgs e) {
+			if (!game.IsPlaying())
+				return;
 			if (game.player_team.cheats_enabled) {
 				var team = game.player_team;
 				if (selected_ships.Count > 0)
@@ -728,7 +743,7 @@ namespace Flee {
 			if (IsSelectionNonControlled())
 				return;
 			int upgrade_columns = UpgradesBox.Width / 25;
-			if (MenuPanel.Visible)
+			if (menuHost.Visible)
 				return;
 			int x = 0;
 			int y = 0;
@@ -754,6 +769,59 @@ namespace Flee {
 			UpgradeDetails.Visible = false;
 			UpX = -1;
 			UpY = -1;
+		}
+
+		/* Menu */
+		void AlignAllMenus() {
+			menuHost.Location = menuMain.Location;
+			menuHost.Size = menuMain.Size;
+			menuSettings.Location = menuMain.Location;
+			menuSettings.Size = menuMain.Size;
+		}
+		void CloseAllMenus() {
+			menuMain.Visible = false;
+			menuMain.Enabled = false;
+			menuHost.Visible = false;
+			menuHost.Enabled = false;
+			menuSettings.Visible = false;
+			menuSettings.Enabled = false;
+		}
+		void OpenMainMenu() {
+			CloseAllMenus();
+			menuMain.Visible = true;
+			menuMain.Enabled = true;
+		}
+		void OpenSettingsMenu() {
+			CloseAllMenus();
+			menuSettings.Visible = true;
+			menuSettings.Enabled = true;
+		}
+		void OpenHostsMenu() {
+			CloseAllMenus();
+			menuHost.Visible = true;
+			menuHost.Enabled = true;
+		}
+		void PressedEscape() {
+			if (!game.IsPlaying())
+				OpenMainMenu();
+			else {
+				if (!menuSettings.Visible)
+					OpenSettingsMenu();
+				else
+					CloseAllMenus();
+			}
+		}
+		private void buttonHost_Click(object sender, EventArgs e) {
+			OpenHostsMenu();
+		}
+		private void buttonMultiplayer_Click(object sender, EventArgs e) {
+			buttonMultiplayer.Text = "blehblehbleh";
+		}
+		private void buttonSettings_Click(object sender, EventArgs e) {
+			OpenSettingsMenu();
+		}
+		private void buttonSettingsOk_Click(object sender, EventArgs e) {
+			PressedEscape();
 		}
 
 	}
