@@ -36,11 +36,6 @@ namespace Flee {
 			this.buttonHost = new System.Windows.Forms.Button();
 			this.Label3 = new System.Windows.Forms.Label();
 			this.Label4 = new System.Windows.Forms.Label();
-			this.menuSettings = new System.Windows.Forms.Panel();
-			this.buttonSettingsOk = new System.Windows.Forms.Button();
-			this.label8 = new System.Windows.Forms.Label();
-			this.label7 = new System.Windows.Forms.Label();
-			this.checkBoxEnableBackground = new System.Windows.Forms.CheckBox();
 			this.menuHost = new System.Windows.Forms.Panel();
 			this.SeedTextBox = new System.Windows.Forms.TextBox();
 			this.label6 = new System.Windows.Forms.Label();
@@ -50,6 +45,11 @@ namespace Flee {
 			this.Label2 = new System.Windows.Forms.Label();
 			this._StartPlayingButton = new System.Windows.Forms.Button();
 			this._RandomizeButton = new System.Windows.Forms.Button();
+			this.menuSettings = new System.Windows.Forms.Panel();
+			this.buttonSettingsOk = new System.Windows.Forms.Button();
+			this.label8 = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
+			this.checkBoxEnableBackground = new System.Windows.Forms.CheckBox();
 			this._MiniBox = new System.Windows.Forms.PictureBox();
 			this.UpgradeDetails = new System.Windows.Forms.Panel();
 			this.PriceA = new System.Windows.Forms.Label();
@@ -85,8 +85,8 @@ namespace Flee {
 			this._Ticker = new System.Windows.Forms.Timer(this.components);
 			this.MainPanel.SuspendLayout();
 			this.menuMain.SuspendLayout();
-			this.menuSettings.SuspendLayout();
 			this.menuHost.SuspendLayout();
+			this.menuSettings.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._MiniBox)).BeginInit();
 			this.UpgradeDetails.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.PriceCIcon)).BeginInit();
@@ -198,69 +198,6 @@ namespace Flee {
 			this.Label4.TabIndex = 8;
 			this.Label4.Text = "Some sprites are from MillionthVector.\r\nThe music is from PhilippWeigl.";
 			this.Label4.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-			// 
-			// menuSettings
-			// 
-			this.menuSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.menuSettings.Controls.Add(this.buttonSettingsOk);
-			this.menuSettings.Controls.Add(this.label8);
-			this.menuSettings.Controls.Add(this.label7);
-			this.menuSettings.Controls.Add(this.checkBoxEnableBackground);
-			this.menuSettings.Enabled = false;
-			this.menuSettings.Location = new System.Drawing.Point(23, 16);
-			this.menuSettings.Name = "menuSettings";
-			this.menuSettings.Size = new System.Drawing.Size(344, 203);
-			this.menuSettings.TabIndex = 7;
-			this.menuSettings.Visible = false;
-			// 
-			// buttonSettingsOk
-			// 
-			this.buttonSettingsOk.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.buttonSettingsOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.buttonSettingsOk.Font = new System.Drawing.Font("Corbel", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.buttonSettingsOk.Location = new System.Drawing.Point(0, 165);
-			this.buttonSettingsOk.Name = "buttonSettingsOk";
-			this.buttonSettingsOk.Size = new System.Drawing.Size(344, 38);
-			this.buttonSettingsOk.TabIndex = 10;
-			this.buttonSettingsOk.Text = "OK";
-			this.buttonSettingsOk.UseVisualStyleBackColor = true;
-			this.buttonSettingsOk.Click += new System.EventHandler(this.buttonSettingsOk_Click);
-			// 
-			// label8
-			// 
-			this.label8.AutoSize = true;
-			this.label8.Dock = System.Windows.Forms.DockStyle.Top;
-			this.label8.Font = new System.Drawing.Font("Corbel", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label8.Location = new System.Drawing.Point(0, 0);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(227, 39);
-			this.label8.TabIndex = 7;
-			this.label8.Text = "FLEE - Settings";
-			// 
-			// label7
-			// 
-			this.label7.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.label7.AutoSize = true;
-			this.label7.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label7.Location = new System.Drawing.Point(3, 46);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(81, 19);
-			this.label7.TabIndex = 1;
-			this.label7.Text = "GRAPHICS";
-			// 
-			// checkBoxEnableBackground
-			// 
-			this.checkBoxEnableBackground.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.checkBoxEnableBackground.AutoSize = true;
-			this.checkBoxEnableBackground.Checked = true;
-			this.checkBoxEnableBackground.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.checkBoxEnableBackground.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBoxEnableBackground.Location = new System.Drawing.Point(129, 50);
-			this.checkBoxEnableBackground.Name = "checkBoxEnableBackground";
-			this.checkBoxEnableBackground.Size = new System.Drawing.Size(82, 17);
-			this.checkBoxEnableBackground.TabIndex = 9;
-			this.checkBoxEnableBackground.Text = "background";
-			this.checkBoxEnableBackground.UseVisualStyleBackColor = true;
 			// 
 			// menuHost
 			// 
@@ -378,6 +315,69 @@ namespace Flee {
 			this._RandomizeButton.Text = "Randomize";
 			this._RandomizeButton.UseVisualStyleBackColor = true;
 			this._RandomizeButton.Click += new System.EventHandler(this.RandomizeButton_Click);
+			// 
+			// menuSettings
+			// 
+			this.menuSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.menuSettings.Controls.Add(this.buttonSettingsOk);
+			this.menuSettings.Controls.Add(this.label8);
+			this.menuSettings.Controls.Add(this.label7);
+			this.menuSettings.Controls.Add(this.checkBoxEnableBackground);
+			this.menuSettings.Enabled = false;
+			this.menuSettings.Location = new System.Drawing.Point(23, 16);
+			this.menuSettings.Name = "menuSettings";
+			this.menuSettings.Size = new System.Drawing.Size(344, 203);
+			this.menuSettings.TabIndex = 7;
+			this.menuSettings.Visible = false;
+			// 
+			// buttonSettingsOk
+			// 
+			this.buttonSettingsOk.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.buttonSettingsOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonSettingsOk.Font = new System.Drawing.Font("Corbel", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.buttonSettingsOk.Location = new System.Drawing.Point(0, 165);
+			this.buttonSettingsOk.Name = "buttonSettingsOk";
+			this.buttonSettingsOk.Size = new System.Drawing.Size(344, 38);
+			this.buttonSettingsOk.TabIndex = 10;
+			this.buttonSettingsOk.Text = "OK";
+			this.buttonSettingsOk.UseVisualStyleBackColor = true;
+			this.buttonSettingsOk.Click += new System.EventHandler(this.buttonSettingsOk_Click);
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Dock = System.Windows.Forms.DockStyle.Top;
+			this.label8.Font = new System.Drawing.Font("Corbel", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label8.Location = new System.Drawing.Point(0, 0);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(227, 39);
+			this.label8.TabIndex = 7;
+			this.label8.Text = "FLEE - Settings";
+			// 
+			// label7
+			// 
+			this.label7.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.label7.AutoSize = true;
+			this.label7.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label7.Location = new System.Drawing.Point(3, 46);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(81, 19);
+			this.label7.TabIndex = 1;
+			this.label7.Text = "GRAPHICS";
+			// 
+			// checkBoxEnableBackground
+			// 
+			this.checkBoxEnableBackground.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.checkBoxEnableBackground.AutoSize = true;
+			this.checkBoxEnableBackground.Checked = true;
+			this.checkBoxEnableBackground.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBoxEnableBackground.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.checkBoxEnableBackground.Location = new System.Drawing.Point(129, 50);
+			this.checkBoxEnableBackground.Name = "checkBoxEnableBackground";
+			this.checkBoxEnableBackground.Size = new System.Drawing.Size(82, 17);
+			this.checkBoxEnableBackground.TabIndex = 9;
+			this.checkBoxEnableBackground.Text = "background";
+			this.checkBoxEnableBackground.UseVisualStyleBackColor = true;
 			// 
 			// _MiniBox
 			// 
@@ -779,10 +779,10 @@ namespace Flee {
 			this.MainPanel.ResumeLayout(false);
 			this.menuMain.ResumeLayout(false);
 			this.menuMain.PerformLayout();
-			this.menuSettings.ResumeLayout(false);
-			this.menuSettings.PerformLayout();
 			this.menuHost.ResumeLayout(false);
 			this.menuHost.PerformLayout();
+			this.menuSettings.ResumeLayout(false);
+			this.menuSettings.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this._MiniBox)).EndInit();
 			this.UpgradeDetails.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.PriceCIcon)).EndInit();

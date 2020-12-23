@@ -115,19 +115,19 @@ namespace Flee {
 		/* Key Controls */
 		public void CheckPressedKeys() {
 			foreach (string key in pressed_keys) {
-				if (key == "Up") {
+				if (key == "Up" || key == "Z") {
 					See.Y = See.Y - 50;
 					ClampCameraLocationToArena();
 				}
-				if (key == "Down") {
+				if (key == "Down" || key == "S") {
 					See.Y = See.Y + 50;
 					ClampCameraLocationToArena();
 				}
-				if (key == "Left") {
+				if (key == "Left" || key == "Q") {
 					See.X = See.X - 50;
 					ClampCameraLocationToArena();
 				}
-				if (key == "Right") {
+				if (key == "Right" || key == "D") {
 					See.X = See.X + 50;
 					ClampCameraLocationToArena();
 				}
