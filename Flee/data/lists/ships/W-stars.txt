@@ -86,7 +86,7 @@ ship Black_Star
 	width=55
 	integrity=999999
 	turn=1.00
-	cost=120;2;1;80
+	cost=120;2;0;80
 
 #
 # EMP Star
@@ -112,7 +112,7 @@ ship EMP_Star
 	weapon=90;EMP-Star-Waves
 	weapon=180;EMP-Star-Waves
 	turn=1.00
-	cost=80;2;1;140
+	cost=80;2;0;140
 
 #
 # EMP Storm

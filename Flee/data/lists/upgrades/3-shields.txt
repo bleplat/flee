@@ -109,7 +109,7 @@ outfit Shield_Reloader
 	time=300
 	once_effect=brightshield()
 	effect=shield_regeneration += 0.001
-	cost=450;4;0;50
+	cost=450;1;0;50
 
 outfit Shield_Reloader_II
 	desc=Helps reloading the shields.
@@ -119,4 +119,4 @@ outfit Shield_Reloader_II
 	time=300
 	once_effect=brightshield()
 	effect=shield_regeneration += 0.001
-	cost=950;6;0;100
+	cost=950;2;0;100

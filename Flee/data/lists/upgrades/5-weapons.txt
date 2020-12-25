@@ -43,12 +43,13 @@ outfit Oiled_Reloader_IV
 #
 
 outfit Advanced_Aiming
-	desc=The main weapon's range is slightly increased.
+	desc=The main weapon's range is increased.
 	sprite_coords=2;4
 	sprite_color=UpgradeColor1
 	required_stat=weapon_count > 0
 	time=300
-	effect=weapon_range *= 1.15
+	effect=weapon_range += 50.0
+	effect=weapon_range *= 1.10
 	cost=750;1;0;0
 
 outfit Premium_Ammo

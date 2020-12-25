@@ -4,11 +4,11 @@
 
 gun Standard-Artillery
 	desc=A deadly long ranged gun.
-	sprite=PRJ_plasma
+	sprite=PRJ_plasma_cyan
 	range=410
 	celerity=12
-	power=55
-	loadtime=70
+	power=50
+	loadtime=60
 	emissive_mode=Propeled
 	emissive_sprite=Plasma
 

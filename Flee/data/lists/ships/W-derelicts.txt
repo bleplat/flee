@@ -7,7 +7,7 @@ ship Asteroid
 	integrity=4000
 	speed=0.90
 	turn=0.00
-	cost=450;2;0;0
+	cost=450;0;0;0
 
 ship Big_Asteroid
 	role=Derelict|Mine
@@ -39,7 +39,7 @@ ship Meteoroid
 	integrity=4
 	speed=2.00
 	turn=0.00
-	cost=0;2;0;0
+	cost=0;4;0;0
 
 ship FissileMeteoroid
 	role=Derelict

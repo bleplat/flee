@@ -194,7 +194,6 @@ ship Ori
 	integrity=880
 	speed=3.80
 	turn=1.60
-	weapon=180;Ori
 	weapon=0;Ori
 	shield=2200
 	shield_regeneration=0.01

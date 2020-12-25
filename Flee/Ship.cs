@@ -333,11 +333,11 @@ namespace Flee {
 			}
 			// Wilderness mining
 			if (team.affinity == AffinityEnum.Wilderness && From != null  && (this.stats.role & (int)ShipRole.Mine) != 0) {
-				From.Team.resources.Metal += (long)(this.stats.cost.Metal * Amount / 1024.0);
-				if (world.gameplay_random.Next(0, 100) < this.stats.cost.Crystal)
+				From.Team.resources.Metal += Math.Max(1L, (long)(this.stats.cost.Metal * Amount / 1024.0));
+				if (this.stats.cost.Crystal > 0 && world.gameplay_random.Next(0, 10000) < this.stats.cost.Crystal + Amount)
 					From.Team.resources.Crystal += 1;
 				From.Team.resources.Starfuel += (long)(this.stats.cost.Starfuel * Amount / 1024.0);
-				if (world.gameplay_random.Next(0, 100) < this.stats.cost.Fissile)
+				if (this.stats.cost.Fissile > 0 && world.gameplay_random.Next(0, 10000) < this.stats.cost.Fissile + Amount)
 					From.Team.resources.Fissile += 1;
 			}
 			// integrity hit
@@ -407,11 +407,12 @@ namespace Flee {
 			switch (behavior) {
 			case BehaviorMode.Mine: {
 				allow_mining = true;
-				if (target is object) {
+				int max_mining_distance = (int)(world.ArenaSize.Width / 8d);
+				if (target is object && Helpers.Distance(ref target_point, ref target.location) <= max_mining_distance) {
 					AITowardTargetMining(ref required_direction, ref require_speed);
 				} else {
 					// no current mining target
-					int max_mining_distance = (int)(world.ArenaSize.Width / 8d);
+					target = null;
 					var mining_target = GetClosestShip(0.0d, 1.0d);
 					if (mining_target is object && Helpers.Distance(ref target_point, ref mining_target.location) > max_mining_distance)
 						mining_target = null;
@@ -494,7 +495,7 @@ namespace Flee {
 			double rel_forseen_dist = Helpers.Distance(ref location, ref forseen_location) - target.stats.width / 2d;
 			double optimal_range = target.stats.width * 4.0f + 10.0f;
 			if (target.weapons.Count > 0)
-				optimal_range = target.weapons[0].stats.range * target.weapons[0].stats.range / rel_forseen_dist * 0.8d;
+				optimal_range = target.weapons[0].stats.range * target.weapons[0].stats.range / rel_forseen_dist * 0.5f;
 			// decrease optimal range for ships with high range
 			if (weapons.Count > 0)
 				optimal_range *= Math.Min(1.0f, Math.Max(0.2f, 150.0f / weapons[0].stats.range));

@@ -31,7 +31,7 @@ gun Finalizer
 	salvo=3
 
 gun Ori
-	sprite=PRJ_plasma
+	sprite=PRJ_charge_orange
 	range=460
 	celerity=20
 	power=55
@@ -39,18 +39,19 @@ gun Ori
 	salvo=7
 	emissive_mode=Propeled
 	emissive_sprite=Plasma
+	special=Rail
 
 gun DeinsGun1
 	sprite=PRJ_charge_red
-	range=320
+	range=420
 	celerity=18
 	power=45
 	loadtime=55
 	salvo=1
 gun DeinsGun2
-	sprite=PRJ_charge_green
-	range=280
-	celerity=18
-	power=25
-	loadtime=35
-	salvo=2
+	sprite=PRJ_energy_red
+	range=380
+	celerity=19
+	power=15
+	loadtime=15
+	salvo=1
