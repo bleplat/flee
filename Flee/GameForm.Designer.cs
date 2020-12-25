@@ -596,10 +596,9 @@ namespace Flee {
 			// 
 			// SShipImageBox
 			// 
-			this.SShipImageBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.SShipImageBox.Location = new System.Drawing.Point(2, 2);
 			this.SShipImageBox.Name = "SShipImageBox";
-			this.SShipImageBox.Size = new System.Drawing.Size(50, 50);
+			this.SShipImageBox.Size = new System.Drawing.Size(48, 48);
 			this.SShipImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.SShipImageBox.TabIndex = 1;
 			this.SShipImageBox.TabStop = false;
