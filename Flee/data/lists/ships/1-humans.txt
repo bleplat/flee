@@ -67,18 +67,7 @@ ship Hunter
 	speed=3.50
 	turn=2.80
 	weapon=0;MachineGun
-	cost=700;0;0;0
-
-ship Harass
-	desc=A light ship with heavy weapons.
-	level=2
-	width=25
-	integrity=75
-	speed=3.30
-	turn=2.30
-	weapon=0;ShellCannon
-	weapon=0;Javelin-Launcher
-	cost=800;1;0;0
+	cost=600;0;0;0
 
 ship Cargo
 	role=Starter|Playable
@@ -92,18 +81,20 @@ ship Cargo
 	cost=800;0;0;0
 	native_upgrade=Jump_Engine
 
+ship Harass
+	desc=A light ship with heavy weapons.
+	level=2
+	width=25
+	integrity=75
+	speed=3.30
+	turn=2.30
+	weapon=0;ShellCannon
+	weapon=0;Javelin-Launcher
+	cost=800;1;0;0
+
 #
 # Medium
 #
-
-ship Simpleship
-	desc=An old ship design supporting firing EMPs at enemies.
-	level=4
-	integrity=90
-	speed=2.80
-	turn=2.00
-	weapon=0;EMP-Beam
-	cost=1000;1;0;0
 
 ship Scout
 	desc=A faster ship with light but fast weapons.
@@ -114,8 +105,17 @@ ship Scout
 	turn=2.50
 	weapon=-45;MachineGun
 	weapon=45;MachineGun
-	cost=2000;4;0;0
+	cost=1200;4;0;0
 	craft=Build_MSL
+
+ship Simpleship
+	desc=An old ship design supporting firing EMPs at enemies.
+	level=4
+	integrity=90
+	speed=2.80
+	turn=2.00
+	weapon=0;EMP-Beam
+	cost=1300;2;0;0
 
 ship Bomber
 	desc=A ship tank class, having more hull.
@@ -124,7 +124,7 @@ ship Bomber
 	speed=2.80
 	turn=1.80
 	weapon=0;Yellow-Energy-Cannon
-	cost=2500;4;0;0
+	cost=1600;4;0;0
 
 ship Artillery
 	desc=Uses a long-ranged heavy weapon.
@@ -134,7 +134,7 @@ ship Artillery
 	speed=2.80
 	turn=1.80
 	weapon=0;Standard-Artillery
-	cost=3000;4;0;0
+	cost=2000;4;0;0
 
 ship Dronner
 	desc=Automatically builds defense drones.
@@ -146,7 +146,7 @@ ship Dronner
 	weapon=180;Fighter_Drone-Launcher
 	weapon=180;Dodger_Drone-Launcher
 	weapon=180;Bomber_Drone-Launcher
-	cost=3500;8;0;0
+	cost=2500;8;0;0
 	craft=Build_Master_Drone
 
 #
@@ -221,4 +221,4 @@ ship Master_Drone
 	speed=3.50
 	turn=4.50
 	weapon=0;ShellCannon
-	cost=700;1;0;0
+	cost=600;0;0;0
