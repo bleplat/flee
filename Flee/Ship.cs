@@ -193,7 +193,7 @@ namespace Flee {
 				}
 				// shields
 				if (stats.shield > 0 && this.deflectors >= 0) {
-					shield += (float)(stats.shield * stats.shield_regeneration);
+					shield += (float)(stats.shield * stats.shield_regeneration * Math.Min(1.0f, Math.Max(0.0f, 1.0f - emp_damage / stats.width)));
 					int point_min = (int)Math.Max(0f, shield * 32f / stats.shield);
 					for (int i = 0; i <= SHIELD_POINTS - 1; i++) {
 						ShieldPoints[i] -= 4;
@@ -732,13 +732,13 @@ namespace Flee {
 		 * @brief Starts upgrading for free.
 		 */
 		public void UpgradeForFree(Upgrade upgrade) {
+			upgrade.ApplyPurchaseEffects(this);
 			this.Upgrading = upgrade;
 			this.upgrade_progress = 0;
 		}
 		public void UpgradeForFree(string upgrade_name) {
 			UpgradeForFree(Upgrade.upgrades[upgrade_name]);
 		}
-
 		public bool IsDestroyed() {
 			return integrity <= 0;
 		}

@@ -98,6 +98,7 @@ namespace Flee {
 
 		/* effect */
 		public int time = 0;
+		public List<UpgradeEffect> purchase_effects = new List<UpgradeEffect>();
 		public List<UpgradeEffect> once_effects = new List<UpgradeEffect>();
 		public List<UpgradeEffect> effects = new List<UpgradeEffect>();
 
@@ -121,10 +122,12 @@ namespace Flee {
 			total += "\trequired_slots=" + required_upgrade_slots.ToString() + "\n";
 			total += "\trequired_team_slots=" + required_team_slots.ToString() + "\n";
 			total += "\ttime=" + time + "\n";
-			foreach (UpgradeEffect effect in effects)
-				total += "\teffect=" + effect.ToString() + "\n";
+			foreach (UpgradeEffect purchase_effect in purchase_effects)
+				total += "\tpurchase_effect=" + purchase_effect.ToString() + "\n";
 			foreach (UpgradeEffect once_effect in once_effects)
 				total += "\tonce_effect=" + once_effect.ToString() + "\n";
+			foreach (UpgradeEffect effect in effects)
+				total += "\teffect=" + effect.ToString() + "\n";
 			return total;
 		}
 		public void SetProperty(string name, string value) {
@@ -148,8 +151,9 @@ namespace Flee {
 			case "cost": cost.LoadFromString(value); break;
 			case "required_slots": required_upgrade_slots = Convert.ToInt32(value); break;
 			case "required_team_slots": required_team_slots = Convert.ToInt32(value); break;
-			case "effect": effects.Add(new UpgradeEffect(value)); break;
+			case "purchase_effect": purchase_effects.Add(new UpgradeEffect(value)); break;
 			case "once_effect": once_effects.Add(new UpgradeEffect(value)); break;
+			case "effect": effects.Add(new UpgradeEffect(value)); break;
 			case "time": time = Convert.ToInt32(value); break;
 			default: throw new Exception("invalid upgrade property");
 			}
@@ -191,6 +195,12 @@ namespace Flee {
 		}
 
 		/* Application */
+		public void ApplyPurchaseEffects(Ship ship) {
+			ship.team.ship_count_approximation += this.required_team_slots;
+			foreach (UpgradeEffect purchase_effect in purchase_effects) {
+				purchase_effect.Apply(ship);
+			}
+		}
 		public void ApplyOnceEffects(Ship ship) {
 			foreach (UpgradeEffect once_effect in once_effects) {
 				once_effect.Apply(ship);

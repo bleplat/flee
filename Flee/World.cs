@@ -391,7 +391,8 @@ namespace Flee {
 				// Count Teams's ships
 				UpdateTeamsShipCounts();
 				// Summoning / upgrades
-				foreach (Ship a_ship in ships)
+				for (int i_ship = ships.Count - 1; i_ship >= 0; i_ship--) {
+					Ship a_ship = ships[i_ship];
 					if (a_ship.team.affinity != AffinityEnum.Wilderness && a_ship.bot_ship && a_ship.upgrade_progress == 0 && a_ship.team.ship_count_approximation < a_ship.team.ship_count_limit) {
 						string wished_upgrade = null;
 						if (rand.Next(0, 16) < 8)
@@ -424,6 +425,7 @@ namespace Flee {
 										a_ship.UpgradeForFree("Warp");
 							}
 					}
+				}
 			}
 		}
 

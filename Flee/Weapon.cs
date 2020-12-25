@@ -85,7 +85,7 @@ namespace Flee {
 					spawn_point = new PointF(PTN.X + ship.world.gameplay_random.Next(-7, 8), PTN.Y + ship.world.gameplay_random.Next(-7, 8));
 				if ((base_stats.special & (int)SpecialBits.Launch) != 0) {
 					ship.world.ships.Add(new Ship(ship.world, ship.team, this.stats.sprite));
-					ship.world.ships[ship.world.ships.Count - 1].location = Launcher.location;
+					ship.world.ships[ship.world.ships.Count - 1].location = spawn_point;
 					ship.world.ships[ship.world.ships.Count - 1].direction = QA;
 					if ((base_stats.special & (int)SpecialBits.Straight) != 0)
 						ship.world.ships[ship.world.ships.Count - 1].direction = ship.direction;
