@@ -77,8 +77,8 @@ namespace Flee {
 				double power = this.stats.power;
 				power *= this.ship.team.damage_multiplicator;
 				int dispersion = stats.sub_ammos;
-				if ((base_stats.special & (int)SpecialBits.Straight) != 0)
-					QA = ship.direction;
+				//if ((base_stats.special & (int)SpecialBits.Straight) != 0)
+				//	QA = ship.direction;
 				if ((base_stats.special & (int)SpecialBits.NoAim) != 0)
 					QA = ship.world.gameplay_random.Next(0, 360);
 				if ((base_stats.special & (int)SpecialBits.SpreadOrigin) != 0)
@@ -86,7 +86,9 @@ namespace Flee {
 				if ((base_stats.special & (int)SpecialBits.Launch) != 0) {
 					ship.world.ships.Add(new Ship(ship.world, ship.team, this.stats.sprite));
 					ship.world.ships[ship.world.ships.Count - 1].location = Launcher.location;
-					ship.world.ships[ship.world.ships.Count - 1].direction = Launcher.direction;
+					ship.world.ships[ship.world.ships.Count - 1].direction = QA;
+					if ((base_stats.special & (int)SpecialBits.Straight) != 0)
+						ship.world.ships[ship.world.ships.Count - 1].direction = ship.direction;
 					ship.world.ships[ship.world.ships.Count - 1].speed = this.stats.celerity;
 					ship.world.ships[ship.world.ships.Count - 1].auto = true;
 					if (this.stats.range > 0) {
