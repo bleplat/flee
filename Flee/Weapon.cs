@@ -91,14 +91,18 @@ namespace Flee {
 						ship.world.ships[ship.world.ships.Count - 1].direction = ship.direction;
 					ship.world.ships[ship.world.ships.Count - 1].speed = this.stats.celerity;
 					ship.world.ships[ship.world.ships.Count - 1].auto = true;
+					ship.world.ships[ship.world.ships.Count - 1].ai_formation_leader = Launcher;
 					if (this.stats.range > 0) {
-						ship.world.ships[ship.world.ships.Count - 1].target = ship.target;
+						ship.world.ships[ship.world.ships.Count - 1].lifespan =(int)(this.stats.range / ship.world.ships[ship.world.ships.Count - 1].stats.speed) * 2;
+						ship.world.ships[ship.world.ships.Count - 1].ai_order = (int)Ship.AIOrder.Attack;
+						ship.world.ships[ship.world.ships.Count - 1].ai_target = ship.ai_target;
 						ship.world.ships[ship.world.ships.Count - 1].agressivity = 10000.0f;
 					} else {
-						ship.world.ships[ship.world.ships.Count - 1].target = ship;
+						ship.world.ships[ship.world.ships.Count - 1].lifespan = ship.world.ships[ship.world.ships.Count - 1].stats.complexity * 40;
+						ship.world.ships[ship.world.ships.Count - 1].ai_order = (int)Ship.AIOrder.Escort;
+						ship.world.ships[ship.world.ships.Count - 1].ai_target = ship;
 						ship.world.ships[ship.world.ships.Count - 1].agressivity = -10000.0f;
 					}
-					ship.world.ships[ship.world.ships.Count - 1].behavior = Ship.BehaviorMode.Folow;
 					return;
 				}
 				if ((base_stats.special & (int)SpecialBits.Rail) != 0) {

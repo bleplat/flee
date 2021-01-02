@@ -1,0 +1,42 @@
+#
+# Forgottens
+#
+
+ship Forgotten_Barrier
+	width=38
+	role=Shipyard|NPC
+	spawning_amount=3
+	spawning_frequency=0.5
+	level=4
+	complexity=2500
+	integrity=320
+	speed=1.80
+	turn=1.80
+	weapon=-90;Cyan-Energy-Cannon
+	weapon=90;Cyan-Energy-Cannon
+	craft=Build_Forgotten_Barrier
+	craft=Build_Forgotten_Artillery
+	craft=Build_Forgotten_Artillery
+	craft=Build_Forgotten_Assistor
+	cost=7600;4;0;0
+
+ship Forgotten_Artillery
+	width=38
+	level=4
+	complexity=1800
+	integrity=140
+	speed=2.40
+	turn=1.40
+	weapon=0;Forgotten-Shurikens
+	craft=Build_Forgotten_Assistor
+	cost=1600;4;0;0
+
+ship Forgotten_Assistor
+	width=38
+	level=4
+	complexity=1000
+	integrity=105
+	speed=3.50
+	turn=1.80
+	weapon=0;EMP-Minigun
+	cost=1600;4;0;0

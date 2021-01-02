@@ -55,8 +55,8 @@ ship Orange_Star
 #
 
 gun Red-Star-Waves
-	sprite=PRJ_wave_orange
-	range=180
+	sprite=PRJ_wave_red
+	range=170
 	celerity=3
 	power=1
 	emp_power=0

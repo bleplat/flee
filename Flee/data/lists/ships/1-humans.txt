@@ -111,7 +111,7 @@ ship Scout
 ship Simpleship
 	desc=An old ship design supporting firing EMPs at enemies.
 	level=4
-	integrity=90
+	integrity=110
 	speed=2.80
 	turn=2.00
 	weapon=0;EMP-Beam
@@ -139,13 +139,13 @@ ship Artillery
 ship Dronner
 	desc=Automatically builds defense drones.
 	level=4
-	integrity=135
+	integrity=115
 	speed=3.10
 	turn=1.50
 	weapon=0;Orange-Energy-Cannon
-	weapon=180;Fighter_Drone-Launcher
-	weapon=180;Dodger_Drone-Launcher
-	weapon=180;Bomber_Drone-Launcher
+	weapon=-90;Fighter_Drone-Launcher
+	weapon=90;Dodger_Drone-Launcher
+	weapon=-90;Bomber_Drone-Launcher
 	cost=2500;8;0;0
 	craft=Build_Master_Drone
 

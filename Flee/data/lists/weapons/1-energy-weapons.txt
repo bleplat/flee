@@ -38,6 +38,6 @@ gun Cyan-Energy-Cannon
 	sprite=PRJ_energy_cyan
 	range=320
 	celerity=16
-	power=25
-	emp_power=10
+	power=10
+	emp_power=20
 	loadtime=20

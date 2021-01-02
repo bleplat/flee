@@ -15,7 +15,8 @@ namespace Flee {
 		public static int StringToFlags(string str_flags) {
 			int flags = 0;
 			foreach (Flags flag in Enum.GetValues(typeof(Flags))) {
-				if (((int)flag) != 0) ;
+				if (((int)flag) != 0) 
+					; // TODO:
 			}
 			return (flags);
 		}
@@ -59,6 +60,10 @@ namespace Flee {
 		public float width = 0;
 		public float mass = 0;
 		public int flags = 0;
+		public void TickLifespan() {
+			if (this.lifespan < Int32.MaxValue)
+				this.lifespan -= 1;
+		}
 
 		/* Constructor */
 		public WorldEntity(ref World world) {

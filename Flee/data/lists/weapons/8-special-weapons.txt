@@ -22,6 +22,24 @@ gun Light-ParticleGun
 # EMP specific
 #
 
+gun EMP-Flak
+	sprite=PRJ_EMP2
+	range=310
+	celerity=17
+	power=1
+	emp_power=5
+	loadtime=5
+	special=EMP|Flak
+
+gun EMP-Minigun
+	sprite=PRJ_EMP2
+	range=310
+	celerity=17
+	power=1
+	emp_power=5
+	loadtime=5
+	special=EMP
+
 gun EMP-Cannon
 	sprite=PRJ_wave_cyan
 	range=290
@@ -50,7 +68,16 @@ gun Shuriken-Bombs
 	range=380
 	celerity=8
 	power=15
+	emp_power=5
 	loadtime=50
+
+gun Forgotten-Shurikens
+	desc=Long ranged but slow weapon, useful against slow targets.
+	sprite=PRJ_forgotten_shuriken
+	range=430
+	celerity=20
+	power=25
+	loadtime=25
 
 #
 # Conveniency

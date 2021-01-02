@@ -374,7 +374,7 @@ namespace Flee {
 			// ship specials
 			foreach (Ship AShip in game.world.ships)
 				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + g.VisibleClipBounds.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + g.VisibleClipBounds.Height)
-					if (AShip.behavior != Ship.BehaviorMode.Drift && AShip.stats.sprite != "MSL") {
+					if (true) {
 						// selection rectangle
 						var drawrect = new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y - AShip.stats.width / 2d - See.Y)), new Size(AShip.stats.width, AShip.stats.width)); // zone de dessin
 						// draw rectangle arround allies or enemies																																																 // Target Identification mode
@@ -415,7 +415,7 @@ namespace Flee {
 							g.FillEllipse(shieldsbrush, new Rectangle(new Point((int)(drawrect.X - drawrect.Width / 16d - 4d), (int)(drawrect.Y - drawrect.Height / 16d - 4d)), new Size((int)(drawrect.Width + drawrect.Width / 8d + 8d), (int)(drawrect.Height + drawrect.Height / 8d + 8d))));
 						}
 						// life   'New Pen(getSColor(AShip.Color))
-						if (AShip.stats.integrity > 20 && !AShip.auto) {
+						if (AShip.stats.integrity > 20 && !AShip.auto && AShip.team.affinity != AffinityEnum.Wilderness) {
 							Color integrity_color = AShip.color;
 							if (target_identification)
 								integrity_color = RelationColor(AShip.team);
@@ -430,7 +430,7 @@ namespace Flee {
 								else
 									g.DrawString(AShip.deflectors + "/" + AShip.stats.TotalDeflectorsMax() + " <- " + AShip.deflector_cooldown, Font, new SolidBrush(Color.Gray), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 14 - See.Y)));
 							if (AShip.emp_damage > 0.0f)
-								g.DrawString(((int)AShip.emp_damage).ToString(), Font, Brushes.Cyan, new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 - See.Y + 7 + 7 + 7)));
+								g.DrawString(((int)AShip.emp_damage).ToString(), Font, Brushes.DarkBlue, new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 - See.Y + 7 + 7 + 7)));
 						}
 					}
 			// text infos
@@ -621,36 +621,33 @@ namespace Flee {
 		public void SelectOrder() {
 			if (IsSelectionNonControlled())
 				return;
-			Ship target_ship = null;
 			// disable bots
 			foreach (Ship ship in selected_ships) {
 				ship.bot_ship = false;
 				if ((ship.stats.role & (int)ShipRole.Shipyard) != 0)
 					ship.team.bot_team = false;
 			}
-			// ===' Recherche '==='
+			// find target ship
+			Ship target_ship = null;
 			foreach (Ship AShip in game.world.ships)
 				if (AShip.location.X + AShip.stats.width / 2d > last_mouse_location.X)
 					if (AShip.location.X - AShip.stats.width / 2d < last_mouse_location.X)
 						if (AShip.location.Y + AShip.stats.width / 2d > last_mouse_location.Y)
 							if (AShip.location.Y - AShip.stats.width / 2d < last_mouse_location.Y)
 								target_ship = AShip;
-			// ===' Validation '==='
+			// give order
 			if (target_ship is null)
 				foreach (Ship AShip in selected_ships)
-					if (AShip.target_point == last_mouse_location) {
+					if (AShip.ai_target_point == last_mouse_location) {
 						game.world.effects.Add(new Effect(-1, "EFF_Mine", last_mouse_location));
-						AShip.behavior = Ship.BehaviorMode.Mine;
-						AShip.target_point = last_mouse_location;
-						AShip.target = null;
-						if ((AShip.stats.role & (int)ShipRole.Shipyard) != 0)
-							if (!ReferenceEquals(game.player_team, AShip.team))
-								AShip.team.bot_team = true;
+						AShip.ai_order = (int)Ship.AIOrder.Mine;
+						AShip.ai_formation_leader = null;
+						AShip.ai_target = null;
+						AShip.ai_target_point = last_mouse_location;
 					} else {
 						game.world.effects.Add(new Effect(-1, "EFF_Goto", last_mouse_location));
-						AShip.behavior = Ship.BehaviorMode.GoToPoint;
-						AShip.target_point = last_mouse_location;
-						AShip.target = null;
+						AShip.ai_order = (int)Ship.AIOrder.Goto;
+						AShip.ai_target_point = last_mouse_location;
 					}
 			else
 				foreach (Ship AShip in selected_ships)
@@ -658,12 +655,16 @@ namespace Flee {
 						game.world.effects.Add(new Effect(-1, "EFF_OrderDefend", last_mouse_location));
 						AShip.allow_mining = false;
 					} else {
-						AShip.behavior = Ship.BehaviorMode.Folow;
-						AShip.target = target_ship;
-						if (AShip.team.IsFriendWith(target_ship.team))
+						if (AShip.team.IsFriendWith(target_ship.team)) {
+							AShip.ai_order = (int)Ship.AIOrder.Escort;
+							AShip.ai_formation_leader = target_ship;
 							game.world.effects.Add(new Effect(-1, "EFF_Assist", last_mouse_location, 180));
-						else
+						}
+						else {
+							AShip.AISetOrder((int)Ship.AIOrder.Attack, true);
+							AShip.ai_target = target_ship;
 							game.world.effects.Add(new Effect(-1, "EFF_OrderTarget", last_mouse_location));
+						}
 					}
 		}
 

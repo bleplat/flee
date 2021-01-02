@@ -72,10 +72,12 @@ namespace Flee {
 				case "warp()":
 					/* // TODO: */
 					PointF destination = ship.location;
-					if ((ship.behavior == Ship.BehaviorMode.Folow || ship.behavior == Ship.BehaviorMode.Mine) && ship.target != null)
-						destination = ship.target.location;
-					else if (ship.behavior == Ship.BehaviorMode.GoToPoint || ship.behavior == Ship.BehaviorMode.Mine)
-						destination = ship.target_point;
+					if (ship.ai_formation_leader != null && (ship.AIHasOrder((int)Ship.AIOrder.Escort) || ship.AIHasOrder((int)Ship.AIOrder.Retreat)))
+						destination = ship.ai_formation_leader.location;
+					else if (ship.ai_target != null && ship.AIHasOrder((int)Ship.AIOrder.Attack))
+						destination = ship.ai_target.location;
+					else if (ship.AIHasOrder((int)Ship.AIOrder.Goto) || ship.AIHasOrder((int)Ship.AIOrder.Mine))
+						destination = ship.ai_target_point;
 					destination.X += ship.world.gameplay_random.Next(-512, 512);
 					destination.Y += ship.world.gameplay_random.Next(-512, 512);
 					ship.location = destination;
@@ -101,19 +103,21 @@ namespace Flee {
 					ship.world.ships.Add(new Ship(ship.world, ship.team, right) { location = new Point((int)(ship.location.X + ship.world.gameplay_random.Next(-10, 11)), (int)(ship.location.Y + ship.world.gameplay_random.Next(-10, 11))) });
 					ship.world.ships[ship.world.ships.Count - 1].direction = ship.direction;
 					if (ship.world.ships[ship.world.ships.Count - 1].weapons.Count > 0 && (ship.world.ships[ship.world.ships.Count - 1].weapons[0].stats.special & (int)Weapon.SpecialBits.SelfExplode) != 0) {
-						if (ship.target != null && !ship.team.IsFriendWith(ship.target.team))
-							ship.world.ships[ship.world.ships.Count - 1].target = ship.target;
+						if (ship.ai_target != null && !ship.team.IsFriendWith(ship.ai_target.team))
+							ship.world.ships[ship.world.ships.Count - 1].ai_target = ship.ai_target;
 						else
-							ship.world.ships[ship.world.ships.Count - 1].target = null;
-						ship.world.ships[ship.world.ships.Count - 1].behavior = Ship.BehaviorMode.Folow;
+							ship.world.ships[ship.world.ships.Count - 1].ai_target = null;
+						ship.world.ships[ship.world.ships.Count - 1].ai_order = (int)Ship.AIOrder.Attack;
 						ship.world.ships[ship.world.ships.Count - 1].agressivity = ship.agressivity * 100.0f;
 						ship.world.ships[ship.world.ships.Count - 1].bot_ship = true;
 					} else {
-						ship.world.ships[ship.world.ships.Count - 1].behavior = Ship.BehaviorMode.Folow;
-						ship.world.ships[ship.world.ships.Count - 1].target = ship;
+						ship.world.ships[ship.world.ships.Count - 1].ai_order = (int)Ship.AIOrder.Escort;
+						ship.world.ships[ship.world.ships.Count - 1].ai_formation_leader = ship;
 					}
-					if (this.op == "launch()")
+					if (this.op == "launch()") {
 						ship.world.ships[ship.world.ships.Count - 1].auto = true;
+						ship.world.ships[ship.world.ships.Count - 1].lifespan = ship.world.ships[ship.world.ships.Count - 1].stats.complexity * 10;
+					}
 					return;
 				default: throw new Exception("invalid op \'" + this.op + "\'");
 				}

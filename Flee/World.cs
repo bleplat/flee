@@ -174,7 +174,7 @@ namespace Flee {
 			if (main_type is null)
 				main_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Shipyard | (int)ShipRole.NPC);
 			var main_coords = new Point(rand.Next(1000, ArenaSize.Width - 1000), rand.Next(1000, ArenaSize.Height - 1000));
-			for (int index = 0, loopTo = (rand.Next(main_type.spawning_amount_min, main_type.spawning_amount_max)); index < loopTo; index++)
+			for (int index = 0, loopTo = rand.Next(main_type.spawning_amount_min, main_type.spawning_amount_max); index < loopTo; index++)
 				if (index == 0) {
 					ships.Add(new Ship(this, team, main_type.name) { location = main_coords });
 				} else {
@@ -187,11 +187,13 @@ namespace Flee {
 				}
 			}
 			// spawn turrets
-			while (spawn_allies > 0) {
-				string ally_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Defense).name;
-				var ally_coords = new Point(main_coords.X + rand.Next(-512, 513), main_coords.Y + rand.Next(-512, 513));
-				ships.Add(new Ship(this, team, ally_type) { location = ally_coords });
-				spawn_allies -= 1;
+			if (main_type.speed < 0.01) {
+				while (spawn_allies > 0) {
+					string ally_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Defense).name;
+					var ally_coords = new Point(main_coords.X + rand.Next(-512, 513), main_coords.Y + rand.Next(-512, 513));
+					ships.Add(new Ship(this, team, ally_type) { location = ally_coords });
+					spawn_allies -= 1;
+				}
 			}
 			return (main_coords);
 		}
@@ -280,10 +282,12 @@ namespace Flee {
 			// Ships
 			if (ships.Count > 0)
 				for (int i = ships.Count - 1; i >= 0; i -= 1)
-					if (ships[i].integrity <= 0) {
-						effects.Add(new Effect(-1, "EFF_Destroyed", ships[i].location, ships[i].direction, ships[i].speed_vec, gameplay_random.Next()));
-						for (int c = 0, loopTo = ships[i].stats.width / 8 - 1; c < loopTo; c++)
-							effects.Add(new Effect(gameplay_random.Next(64, 192), "EFF_Debris", ships[i].location, gameplay_random.Next(0, 360), gameplay_random.Next(2, 7), gameplay_random.Next()));
+					if (ships[i].IsDestroyed()) {
+						if (ships[i].lifespan > 0 || ships[i].weapons.Count > 0 && (ships[i].weapons[0].stats.special & (int)Weapon.SpecialBits.SelfExplode) != 0) {
+							effects.Add(new Effect(-1, "EFF_Destroyed", ships[i].location, ships[i].direction, ships[i].speed_vec, gameplay_random.Next()));
+							for (int c = 0, loopTo = ships[i].stats.width / 8 - 1; c < loopTo; c++)
+								effects.Add(new Effect(gameplay_random.Next(64, 192), "EFF_Debris", ships[i].location, gameplay_random.Next(0, 360), gameplay_random.Next(2, 7), gameplay_random.Next()));
+						}
 						if (ships[i].weapons.Count > 1 && (ships[i].weapons[0].stats.special & (int)Weapon.SpecialBits.SelfNuke) != 0) {
 							nuke_effect = 255;
 							for (int c = 1; c <= 256; c++)
@@ -387,7 +391,7 @@ namespace Flee {
 		}
 		public void NPCUpgrades() {
 			var rand = generation_random;
-			if (ticks % 80 == 0) {
+			if (ticks % 128 == 0) {
 				// Count Teams's ships
 				UpdateTeamsShipCounts();
 				// Summoning / upgrades
@@ -401,7 +405,7 @@ namespace Flee {
 								wished_upgrade = Loader.GetRandomSpawnUpgrade(rand, a_ship);
 								if (wished_upgrade is object)
 									a_ship.UpgradeForFree(wished_upgrade);
-							} else if (rand.Next(0, 3) < 2) {
+							} else if (rand.Next(0, 3) == 0) {
 								// upgrading
 								var PossibleUps = a_ship.AvailableNotInstalledUpgrades();
 								if (PossibleUps.Count >= 1)

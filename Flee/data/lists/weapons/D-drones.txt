@@ -10,13 +10,14 @@ weapon Miner_Drone-Launcher
 	special=Launch|Straight|KeepFire	
 ship Miner_Drone
 	level=0
+	complexity=13
 	width=15
 	integrity=5
 	repair=0
 	speed=2.80
 	turn=8.50
 	weapon=0;Light-ParticleGun
-	cost=150;0;0;0
+	cost=130;0;0;0
 	
 weapon Fighter_Drone-Launcher
 	sprite=Fighter_Drone
