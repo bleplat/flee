@@ -30,7 +30,7 @@ gun Strange-MachineGun
 	sprite=PRJ_bullet_magenta
 	range=290
 	celerity=17
-	power=2
+	power=3
 	salvo=2
 	loadtime=8
 
