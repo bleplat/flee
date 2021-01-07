@@ -32,7 +32,7 @@ ship FissileAsteroid
 
 ship Meteoroid
 	role=Derelict
-	spawning_frequency=1.0
+	spawning_frequency=0.5
 	spawning_amount_min=4
 	spawning_amount_max=13
 	level=0
@@ -55,7 +55,7 @@ ship FissileMeteoroid
 ship Comet
 	role=Derelict
 	spawning_amount=1
-	spawning_frequency=0.5
+	spawning_frequency=0.4
 	level=0
 	width=25
 	integrity=2

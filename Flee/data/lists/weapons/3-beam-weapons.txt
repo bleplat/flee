@@ -4,7 +4,7 @@
 
 gun 4-Beam
 	sprite=PRJ_beam_green
-	range=290
+	range=310
 	celerity=16
 	power=16
 	loadtime=50
@@ -12,10 +12,10 @@ gun 4-Beam
 
 gun 6-Beam
 	sprite=PRJ_beam_purple
-	range=290
+	range=310
 	celerity=16
-	power=10
-	loadtime=50
+	power=12
+	loadtime=45
 	salvo=6
 
 gun EMP-Beam
