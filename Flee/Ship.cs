@@ -428,9 +428,12 @@ namespace Flee {
 						this.AISetOrder((int)AIOrder.Attack, false);
 				}
 				else if (AIHasOrder((int)AIOrder.Mine))
-					this.ai_target = GetClosestShip(0.0, 1.0d, 0.0d);
+					this.ai_target = GetClosestShip(this.ai_target_point, 0.0, 1.0d, 0.0d);
 				else {
 					this.ai_target = GetClosestShip(agressivity, 1.0d, 0.1d);
+					if (this.ai_target != null && this.ai_target.team.affinity == AffinityEnum.Wilderness) {
+						this.AISetOrder((int)AIOrder.Mine, true);
+					}
 					if (!team.IsFriendWith(this.ai_target.team)) {
 
 					}
@@ -441,6 +444,8 @@ namespace Flee {
 				AITowardTargetAgressive(ref required_direction, ref require_speed, this.ai_target);
 			} else if (this.ai_target != null && AIHasOrder((int)AIOrder.Mine)) {
 				AITowardTargetMining(ref required_direction, ref require_speed, this.ai_target);
+				if (Helpers.Distance(ref this.ai_target_point, ref this.ai_target.location) < 2000) 
+					this.ai_target = null;
 			} else if (this.ai_formation_leader != null && AIHasOrder((int)AIOrder.Escort)) {
 				if (this.ai_formation_leader.ai_target != null && !team.IsFriendWith(ai_formation_leader.ai_target.team) && ai_formation_leader.ai_target.team.affinity != AffinityEnum.Wilderness && Helpers.Distance(ref this.ai_formation_leader.location, ref this.ai_formation_leader.ai_target.location) < attack_range)
 					AITowardTargetAgressive(ref required_direction, ref require_speed, this.ai_formation_leader.ai_target);
