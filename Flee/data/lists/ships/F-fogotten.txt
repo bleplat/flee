@@ -6,7 +6,7 @@ ship Forgotten_Barrier
 	width=38
 	role=Shipyard|NPC
 	spawning_amount=3
-	spawning_frequency=0.5
+	spawning_frequency=0.25
 	level=4
 	complexity=2500
 	integrity=320
