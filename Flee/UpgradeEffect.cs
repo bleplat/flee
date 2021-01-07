@@ -142,11 +142,26 @@ namespace Flee {
 				case "speed": SetOp(this.op, ref ship.stats.speed, this.right); return;
 				case "ship.speed": SetOp(this.op, ref ship.speed, this.right); return;
 				case "turn": SetOp(this.op, ref ship.stats.turn, this.right); return;
-				case "weapon_salvo": SetOp(this.op, ref ship.weapons[0].stats.salvo, this.right); return;
-				case "weapon_celerity": SetOp(this.op, ref ship.weapons[0].stats.celerity, this.right); return;
-				case "weapon_loadtime": SetOp(this.op, ref ship.weapons[0].stats.loadtime, this.right); return;
-				case "weapon_power": SetOp(this.op, ref ship.weapons[0].stats.power, this.right); return;
-				case "weapon_range": SetOp(this.op, ref ship.weapons[0].stats.range, this.right); return;
+				case "weapon_salvo": 
+					if (ship.weapons.Count > 0) 
+						SetOp(this.op, ref ship.weapons[0].stats.salvo, this.right);
+					return;
+				case "weapon_celerity":
+					if (ship.weapons.Count > 0)
+						SetOp(this.op, ref ship.weapons[0].stats.celerity, this.right); 
+					return;
+				case "weapon_loadtime":
+					if (ship.weapons.Count > 0)
+						SetOp(this.op, ref ship.weapons[0].stats.loadtime, this.right); 
+					return;
+				case "weapon_power":
+					if (ship.weapons.Count > 0)
+						SetOp(this.op, ref ship.weapons[0].stats.power, this.right); 
+					return;
+				case "weapon_range":
+					if (ship.weapons.Count > 0)
+						SetOp(this.op, ref ship.weapons[0].stats.range, this.right); 
+					return;
 				case "type":
 					SetOp(this.op, ref ship.stats.name, this.right);
 					ship.SetStats(ship.stats.name);
