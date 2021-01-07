@@ -661,6 +661,7 @@ namespace Flee {
 							game.world.effects.Add(new Effect(-1, "EFF_Assist", last_mouse_location, 180));
 						}
 						else {
+							AShip.ai_order = 0;
 							AShip.AISetOrder((int)Ship.AIOrder.Attack, true);
 							AShip.ai_target = target_ship;
 							game.world.effects.Add(new Effect(-1, "EFF_OrderTarget", last_mouse_location));
