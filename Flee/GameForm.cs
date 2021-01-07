@@ -17,6 +17,7 @@ namespace Flee {
 		/* Drawing */
 		bool form_ready = false;
 		public static bool target_identification = false;
+		public static bool selection_focus = false;
 		public static bool help = true;
 		private Point See = new Point(4700, 4700);
 		public void InitDrawing() {
@@ -109,7 +110,27 @@ namespace Flee {
 			if (game.play_state == PlayState.Timelapse)
 				CheckPressedKeys(); // Expected to run more often when timelapsing;
 			CheckSidePanels();
+			CheckCameraLocationFocusMode();
 			DrawAll();
+		}
+
+		/*  */
+		void CheckCameraLocationFocusMode() {
+			if (selected_ships.Count == 0)
+				selection_focus = false;
+			if (selection_focus) {
+				this.See.X = 0;
+				this.See.Y = 0;
+				foreach (Ship ship in selected_ships) {
+					this.See.X += (int)ship.location.X;
+					this.See.Y += (int)ship.location.Y;
+				}
+				this.See.X /= selected_ships.Count;
+				this.See.Y /= selected_ships.Count;
+				this.See.X -= this.Width / 2;
+				this.See.Y -= this.Height / 2;
+				ClampCameraLocationToArena();
+			}
 		}
 
 		/* Key Controls */
@@ -118,18 +139,22 @@ namespace Flee {
 				if (key == "Up" || key == "Z") {
 					See.Y = See.Y - 50;
 					ClampCameraLocationToArena();
+					selection_focus = false;
 				}
 				if (key == "Down" || key == "S") {
 					See.Y = See.Y + 50;
 					ClampCameraLocationToArena();
+					selection_focus = false;
 				}
 				if (key == "Left" || key == "Q") {
 					See.X = See.X - 50;
 					ClampCameraLocationToArena();
+					selection_focus = false;
 				}
 				if (key == "Right" || key == "D") {
 					See.X = See.X + 50;
 					ClampCameraLocationToArena();
+					selection_focus = false;
 				}
 			}
 		}
@@ -451,17 +476,18 @@ namespace Flee {
 				if (!game.player_team.has_ascended) {
 					help_str += "The galaxy went into chaos. Find a way to escape." + Constants.vbNewLine;
 					help_str += Constants.vbNewLine;
-					help_str += "Use the arrows, or click the minimap to move the camera." + Constants.vbNewLine;
-					help_str += "Press SPACE to pause the game." + Constants.vbNewLine;
-					help_str += "Press M to accelerate time." + Constants.vbNewLine;
-					help_str += "Press I to display all allies in blue and all enemies in red." + Constants.vbNewLine;
+					help_str += "[H]                - toggle this text" + Constants.vbNewLine;
+					help_str += "[SPACE]            - pause" + Constants.vbNewLine;
+					help_str += "[M]                - timelapse" + Constants.vbNewLine;
+					help_str += "{ARROWS} / MINIMAP - move camera" + Constants.vbNewLine;
+					help_str += "[I]                - toggle relations colors mode" + Constants.vbNewLine;
+					help_str += "[T]                - toggle camera 'tracking selection' mode" + Constants.vbNewLine;
 					help_str += Constants.vbNewLine;
 					help_str += "Click or draw a sqare to select units." + Constants.vbNewLine;
 					help_str += "Right click to order them to move, folow an ally or attack an enemy." + Constants.vbNewLine;
 					help_str += "Double right click to order your ships to mine nearby asteroids." + Constants.vbNewLine;
 					help_str += "Right click onto your selected ship itself to order it to only attack enemies." + Constants.vbNewLine;
 					help_str += Constants.vbNewLine;
-					help_str += "Press H to hide this text." + Constants.vbNewLine;
 				} else {
 					help_str += "Congratulations!" + Constants.vbNewLine;
 					help_str += "Your people just accessed another level of existence." + Constants.vbNewLine;
@@ -533,6 +559,8 @@ namespace Flee {
 				target_identification = !target_identification;
 			if (e.KeyData == Keys.H)
 				help = !help;
+			if (e.KeyData == Keys.T && selected_ships.Count > 0)
+				selection_focus = !selection_focus;
 			// Pause and timelapse
 			if (game.is_host) {
 				if (e.KeyData == Keys.Space)
@@ -617,6 +645,8 @@ namespace Flee {
 												return;
 										}
 			}
+			if (selected_ships.Count == 0)
+				selection_focus = false;
 		}
 		public void SelectOrder() {
 			if (IsSelectionNonControlled())
