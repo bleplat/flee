@@ -359,6 +359,8 @@ namespace Flee {
 				Console.WriteLine();
 			}
 			AISanitize();
+			if (ai_order == (int)AIOrder.Goto) 
+				Console.WriteLine();
 			// bots agressivity and target switching
 			if (bot_ship) {
 				// agressivity
@@ -429,7 +431,7 @@ namespace Flee {
 				}
 				else if (AIHasOrder((int)AIOrder.Mine))
 					this.ai_target = GetClosestShip(this.ai_target_point, 0.0, 1.0d, 0.0d);
-				else {
+				else if (bot_ship) {
 					this.ai_target = GetClosestShip(agressivity, 1.0d, 0.1d);
 					if (this.ai_target != null && this.ai_target.team.affinity == AffinityEnum.Wilderness) {
 						this.AISetOrder((int)AIOrder.Mine, true);
