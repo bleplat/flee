@@ -83,6 +83,34 @@ namespace Flee {
 			}
 			return NR;
 		}
+		/**
+		 * Test if two rectangles are intercepting.
+		 */
+		public static bool HasIntercept(RectangleF a, RectangleF b) {
+			if (a.X + a.Width <= b.X)
+				return (false);
+			if (b.X + b.Width <= a.X)
+				return (false);
+			if (a.Y + a.Height <= b.Y)
+				return (false);
+			if (b.Y + b.Height <= a.Y)
+				return (false);
+			return (true);
+		}
+		public static bool HasIntercept2Centered(RectangleF a, RectangleF b) {
+			if (a.X + a.Width <= b.X - b.Width / 2)
+				return (false);
+			if (b.X + b.Width / 2 <= a.X)
+				return (false);
+			if (a.Y + a.Height <= b.Y - b.Height / 2)
+				return (false);
+			if (b.Y + b.Height / 2 <= a.Y)
+				return (false);
+			return (true);
+		}
+		public static bool HasIntercept2Centered(RectangleF a, PointF b_location, float b_size) {
+			return (HasIntercept2Centered(a, new RectangleF(b_location, new SizeF(b_size, b_size))));
+		}
 
 		/* Graphics */
 		public static System.Drawing.Imaging.PixelFormat _screen_pixel_format = System.Drawing.Imaging.PixelFormat.Undefined;

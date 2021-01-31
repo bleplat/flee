@@ -19,7 +19,7 @@ namespace Flee {
 		public static bool target_identification = false;
 		public static bool selection_focus = false;
 		public static bool help = true;
-		private Point See = new Point(4700, 4700);
+		private PointF camera_location = new Point(4700, 4700);
 		public void InitDrawing() {
 			// nothing
 		}
@@ -46,6 +46,7 @@ namespace Flee {
 			_DrawBox.Name = "DrawBox";
 			// init menu
 			AlignAllMenus();
+			this.MouseWheel += new MouseEventHandler(mouse_wheel);
 		}
 		private void MainForm_Load(object sender, EventArgs e) {
 			// Commandline
@@ -98,7 +99,7 @@ namespace Flee {
 			// close menu
 			SetMenuVisible(false);
 			// Place camera on player
-			See = new Point((int)(game.world.ships[game.world.ships.Count - 1].location.X - this.Width / 2), (int)(game.world.ships[game.world.ships.Count - 1].location.Y - this.Height / 2));
+			camera_location = new Point((int)(game.world.ships[game.world.ships.Count - 1].location.X), (int)(game.world.ships[game.world.ships.Count - 1].location.Y));
 			// finaly enable timer
 			Ticker.Enabled = true; // TODO: have ticker enabled since the begining
 		}
@@ -119,16 +120,14 @@ namespace Flee {
 			if (selected_ships.Count == 0)
 				selection_focus = false;
 			if (selection_focus) {
-				this.See.X = 0;
-				this.See.Y = 0;
+				this.camera_location.X = 0;
+				this.camera_location.Y = 0;
 				foreach (Ship ship in selected_ships) {
-					this.See.X += (int)ship.location.X;
-					this.See.Y += (int)ship.location.Y;
+					this.camera_location.X += (int)ship.location.X;
+					this.camera_location.Y += (int)ship.location.Y;
 				}
-				this.See.X /= selected_ships.Count;
-				this.See.Y /= selected_ships.Count;
-				this.See.X -= this.Width / 2;
-				this.See.Y -= this.Height / 2;
+				this.camera_location.X /= selected_ships.Count;
+				this.camera_location.Y /= selected_ships.Count;
 				ClampCameraLocationToArena();
 			}
 		}
@@ -137,22 +136,22 @@ namespace Flee {
 		public void CheckPressedKeys() {
 			foreach (string key in pressed_keys) {
 				if (key == "Up" || key == "Z") {
-					See.Y = See.Y - 50;
+					camera_location.Y -= (int)((1.0 / camera_scale) * 50);
 					ClampCameraLocationToArena();
 					selection_focus = false;
 				}
 				if (key == "Down" || key == "S") {
-					See.Y = See.Y + 50;
+					camera_location.Y += (int)((1.0 / camera_scale) * 50);
 					ClampCameraLocationToArena();
 					selection_focus = false;
 				}
 				if (key == "Left" || key == "Q") {
-					See.X = See.X - 50;
+					camera_location.X -= (int)((1.0 / camera_scale) * 50);
 					ClampCameraLocationToArena();
 					selection_focus = false;
 				}
 				if (key == "Right" || key == "D") {
-					See.X = See.X + 50;
+					camera_location.X += (int)((1.0 / camera_scale) * 50);
 					ClampCameraLocationToArena();
 					selection_focus = false;
 				}
@@ -160,6 +159,7 @@ namespace Flee {
 		}
 
 		/* Drawing */
+		public float camera_scale = 1.0f;
 		public string DebugString() {
 			return (""
 					+ "ships: " + game.world.ships.Count + "\r\n"
@@ -277,7 +277,11 @@ namespace Flee {
 			// Transparent clear
 			g.FillRectangle(new SolidBrush(Color.FromArgb(24, 0, 0, 0)), 0, 0, 200, 200);
 			// Visible area rectangle
-			g.DrawRectangle(Pens.White, new Rectangle(new Point((int)(See.X / (double)game.world.ArenaSize.Width * g.VisibleClipBounds.Width), (int)(See.Y / (double)game.world.ArenaSize.Height * g.VisibleClipBounds.Height)), new Size((int)(this.Width * g.VisibleClipBounds.Width / (double)game.world.ArenaSize.Width), (int)(this.Height * g.VisibleClipBounds.Height / (double)game.world.ArenaSize.Height))));
+			//g.DrawRectangle(Pens.White, new Rectangle(new Point((int)(camera_location.X / (double)game.world.ArenaSize.Width * g.VisibleClipBounds.Width), (int)(camera_location.Y / (double)game.world.ArenaSize.Height * g.VisibleClipBounds.Height)), new Size((int)(this.Width * g.VisibleClipBounds.Width / (double)game.world.ArenaSize.Width), (int)(this.Height * g.VisibleClipBounds.Height / (double)game.world.ArenaSize.Height))));
+			RectangleF visible_bounds = new RectangleF(new PointF(camera_location.X - (DrawBox.Width / 2.0f) * (1.0f / camera_scale), camera_location.Y - (DrawBox.Height / 2.0f) * (1.0f / camera_scale)), new SizeF(DrawBox.Width * (1.0f / camera_scale), DrawBox.Height * (1.0f / camera_scale)));
+
+			g.DrawRectangle(Pens.Red, new Rectangle(new Point((int)(camera_location.X), (int)(camera_location.Y)), new Size((int)(this.Width * g.VisibleClipBounds.Width / (double)game.world.ArenaSize.Width), (int)(this.Height * g.VisibleClipBounds.Height / (double)game.world.ArenaSize.Height))));
+			g.DrawRectangle(Pens.White, new Rectangle((int)(visible_bounds.X / (double)game.world.ArenaSize.Width * g.VisibleClipBounds.Width), (int)(visible_bounds.Y / (double)game.world.ArenaSize.Width * g.VisibleClipBounds.Width), (int)(visible_bounds.Width / (double)game.world.ArenaSize.Width * g.VisibleClipBounds.Width), (int)(visible_bounds.Height / (double)game.world.ArenaSize.Width * g.VisibleClipBounds.Width)));
 			// Engagements
 			if (game.player_team is object) {
 				foreach (Engagement engagement in game.player_team.engagements) {
@@ -333,11 +337,19 @@ namespace Flee {
 			return (background_size);
 		}
 		public void DrawMain(Graphics g) {
+			PointF world_translation = new PointF(-camera_location.X + DrawBox.Width / 2.0f, -camera_location.Y + DrawBox.Height / 2.0f);
+			RectangleF visible_bounds = new RectangleF(new PointF(camera_location.X - (DrawBox.Width / 2.0f) * (1.0f / camera_scale), camera_location.Y - (DrawBox.Height / 2.0f) * (1.0f / camera_scale)), new SizeF(DrawBox.Width * (1.0f / camera_scale), DrawBox.Height * (1.0f / camera_scale)));
+			g.ResetTransform();
+			// World Transphorm
+			Matrix world_matrix = new Matrix();
+			world_matrix.Translate(-camera_location.X, -camera_location.Y, MatrixOrder.Append);
+			world_matrix.Scale(camera_scale, camera_scale, MatrixOrder.Append);
+			world_matrix.Translate(DrawBox.Width / 2.0f, DrawBox.Height / 2.0f, MatrixOrder.Append);
 			// Background
 			if (!checkBoxEnableBackground.Checked) { // disable background image 
 				g.Clear(Color.Black);
 			} else {
-				GetBackgroundBrush().TranslateTransform(-See.X / (game.world.ArenaSize.Width / (GetBackgroundSize().Width - (int)g.VisibleClipBounds.Width)) + game.world.background_offset.X, -See.Y / (game.world.ArenaSize.Height / (GetBackgroundSize().Height - (int)g.VisibleClipBounds.Height)) + game.world.background_offset.Y);
+				GetBackgroundBrush().TranslateTransform((int)(-camera_location.X / (game.world.ArenaSize.Width / (GetBackgroundSize().Width - (int)g.VisibleClipBounds.Width)) + game.world.background_offset.X), (int)(-camera_location.Y / (game.world.ArenaSize.Height / (GetBackgroundSize().Height - (int)g.VisibleClipBounds.Height)) + game.world.background_offset.Y));
 				g.CompositingMode = CompositingMode.SourceCopy;
 				g.FillRectangle(GetBackgroundBrush(), g.VisibleClipBounds);
 				g.CompositingMode = CompositingMode.SourceOver;
@@ -352,56 +364,61 @@ namespace Flee {
 			// ships
 			foreach (Ship AShip in game.world.ships) {
 				// Main screen '
-				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + g.VisibleClipBounds.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + g.VisibleClipBounds.Height) {
+				if (Helpers.HasIntercept2Centered(visible_bounds, AShip.location, AShip.stats.width)) {
 					var img = AShip.sprites.GetSprite(AShip.fram, 0);
-					PointF center = new PointF(AShip.location.X - See.X, AShip.location.Y - See.Y); // centre
+					PointF center = new PointF(AShip.location.X, AShip.location.Y); // centre
 					int AddD = 0;
 					if (ReferenceEquals(AShip.team, AShip.world.wilderness_team) && AShip.stats.turn == 0d)
 						AddD = (int)(game.world.ticks % 360);
-					var MonM = new Matrix();
+					g.ResetTransform(); // reset
+					var MonM = world_matrix.Clone();
 					MonM.RotateAt(-AShip.direction + 180f + AddD, center); // rotation
 					g.Transform = MonM; // affectation
-					g.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
-					g.ResetTransform(); // reset
+					g.DrawImage(img, new PointF(AShip.location.X - img.Size.Width / 2.0f, AShip.location.Y - img.Size.Width / 2.0f)); // dessin
 				}
 			}
 			// shoots
 			foreach (Shoot AShoot in game.world.shoots) {
-				// TODO: check bounds
-				var img = AShoot.sprites.GetSprite(AShoot.fram, AShoot.sprite_y);
-				PointF center = new PointF(AShoot.location.X - See.X, AShoot.location.Y - See.Y); // centre
-				var MonM = new Matrix();
-				MonM.RotateAt(-AShoot.direction + 180f, center); // rotation
-				g.Transform = MonM; // affectation
-				g.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
-				g.ResetTransform(); // reset
-									// End If
+				if (Helpers.HasIntercept2Centered(visible_bounds, AShoot.location, 1.0f)) {
+					var img = AShoot.sprites.GetSprite(AShoot.fram, AShoot.sprite_y);
+					PointF center = new PointF(AShoot.location.X, AShoot.location.Y); // centre
+					g.ResetTransform(); // reset
+					var MonM = world_matrix.Clone();
+					MonM.RotateAt(-AShoot.direction + 180f, center); // rotation
+					g.Transform = MonM;
+					g.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
+				}
 			}
 			// effects
 			foreach (Effect AEffect in game.world.effects) {
-				if (AEffect.location.X > See.X && AEffect.location.X < See.X + g.VisibleClipBounds.Width && AEffect.location.Y > See.Y && AEffect.location.Y < See.Y + g.VisibleClipBounds.Height) {
+				if (Helpers.HasIntercept2Centered(visible_bounds, AEffect.location, 1.0f)) {
 					var img = AEffect.sprites.GetSprite(AEffect.fram, AEffect.sprite_y);
-					PointF center = new PointF(AEffect.location.X - See.X, AEffect.location.Y - See.Y); // centre
-					var MonM = new Matrix();
-					MonM.RotateAt(-AEffect.direction + 180f, center); // rotation
-					g.Transform = MonM; // affectation
-					g.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
+					PointF center = new PointF(AEffect.location.X, AEffect.location.Y); // centre
 					g.ResetTransform(); // reset
+					var MonM = world_matrix.Clone();
+					MonM.RotateAt(-AEffect.direction + 180f, center); // rotation
+					g.Transform = MonM;
+					g.DrawImage(img, new PointF((center.X - img.Size.Width / 2.0f), (center.Y - img.Size.Width / 2.0f))); // dessin
 				}
 			}
 			// Select rectangle
 			if (SelectStarted) {
 				var NR = Helpers.MakeRectangle(ref down_mouse_location, ref last_mouse_location);
-				NR.X = NR.X - See.X;
-				NR.Y = NR.Y - See.Y;
+				g.ResetTransform();
+				g.Transform = world_matrix;
 				g.DrawRectangle(Pens.White, NR);
 			}
 			// ship specials
-			foreach (Ship AShip in game.world.ships)
-				if (AShip.location.X + AShip.stats.width / 2d > See.X && AShip.location.X - AShip.stats.width / 2d < See.X + g.VisibleClipBounds.Width && AShip.location.Y + AShip.stats.width / 2d > See.Y && AShip.location.Y - AShip.stats.width / 2d < See.Y + g.VisibleClipBounds.Height)
+			foreach (Ship AShip in game.world.ships) {
+				if (Helpers.HasIntercept2Centered(visible_bounds, AShip.location, AShip.stats.width)) {
 					if (true) {
 						// selection rectangle
-						var drawrect = new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y - AShip.stats.width / 2d - See.Y)), new Size(AShip.stats.width, AShip.stats.width)); // zone de dessin
+						var drawrect = new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d), (int)(AShip.location.Y - AShip.stats.width / 2d)), new Size(AShip.stats.width, AShip.stats.width)); // zone de dessin
+
+						// Matrix
+						g.ResetTransform();
+						g.Transform = world_matrix;
+
 						// draw rectangle arround allies or enemies																																																 // Target Identification mode
 						if (false && target_identification) {
 							if (ReferenceEquals(AShip.team, game.player_team))
@@ -423,7 +440,7 @@ namespace Flee {
 							var shields_ptns = new PointF[16];
 							var shields_colors = new Color[16];
 							for (int i = 0, loopTo = shields_ptns.Length - 1; i <= loopTo; i++) {
-								shields_ptns[i] = Helpers.GetNewPoint(new PointF((float)(drawrect.X + drawrect.Width / 2d), (float)(drawrect.Y + drawrect.Height / 2d)), (float)(i * 360 / 16d + AShip.direction), (float)(drawrect.Width / 2d + drawrect.Width / 4d + 16d)); 
+								shields_ptns[i] = Helpers.GetNewPoint(new PointF((float)(drawrect.X + drawrect.Width / 2d), (float)(drawrect.Y + drawrect.Height / 2d)), (float)(i * 360 / 16d + AShip.direction), (float)(drawrect.Width / 2d + drawrect.Width / 4d + 16d));
 								double f_alpha = AShip.ShieldPoints[i] / 256.0d;
 								double f_red_0 = 1.0d - AShip.shield / AShip.stats.shield / 2.0d;
 								double f_red_1 = 1.0d - AShip.shield / AShip.stats.shield;
@@ -433,7 +450,6 @@ namespace Flee {
 								double f_blue_1 = f_blue_0 * (AShip.shield / AShip.stats.shield);
 								shields_colors[i] = Color.FromArgb((int)Math.Min(255d, f_alpha * 255d * 2d), (int)Math.Min(255d, Math.Max(0d, (1.0d - f_alpha) * f_red_0 * 256d + f_alpha * f_red_1 * 256d)), (int)Math.Min(255d, Math.Max(0d, (1.0d - f_alpha) * f_green_0 * 256d + f_alpha * f_green_1 * 256d)), (int)Math.Min(255d, Math.Max(0d, (1.0d - f_alpha) * f_blue_0 * 256d + f_alpha * f_blue_1 * 256d)));
 							}
-
 							var shieldsbrush = new PathGradientBrush(shields_ptns);
 							shieldsbrush.SurroundColors = shields_colors;
 							shieldsbrush.CenterColor = Color.FromArgb(0, 0, 0, 0);
@@ -444,21 +460,24 @@ namespace Flee {
 							Color integrity_color = AShip.color;
 							if (target_identification)
 								integrity_color = RelationColor(AShip.team);
-							g.DrawRectangle(Pens.DimGray, new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 5 - See.Y)), new Size(AShip.stats.width, 1)));
-							g.DrawRectangle(new Pen(integrity_color), new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 5 - See.Y)), new Size((int)(AShip.integrity / (double)AShip.stats.integrity * AShip.stats.width), 1)));
-							g.DrawString((int)AShip.integrity + "/" + (int)AShip.stats.integrity, Font, new SolidBrush(integrity_color), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 - See.Y)));
+							g.DrawRectangle(Pens.DimGray, new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2), (int)(AShip.location.Y + AShip.stats.width / 2 + 5)), new Size(AShip.stats.width, 1)));
+							g.DrawRectangle(new Pen(integrity_color), new Rectangle(new Point((int)(AShip.location.X - AShip.stats.width / 2d), (int)(AShip.location.Y + AShip.stats.width / 2 + 5)), new Size((int)(AShip.integrity / (double)AShip.stats.integrity * AShip.stats.width), 1)));
+							g.DrawString((int)AShip.integrity + "/" + (int)AShip.stats.integrity, Font, new SolidBrush(integrity_color), new Point((int)(AShip.location.X - AShip.stats.width / 2), (int)(AShip.location.Y + AShip.stats.width / 2 + 7)));
 							if (AShip.stats.shield > 0)
-								g.DrawString((int)AShip.shield + "/" + (int)AShip.stats.shield, Font, Brushes.LightGray, new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 - See.Y + 7)));
+								g.DrawString((int)AShip.shield + "/" + (int)AShip.stats.shield, Font, Brushes.LightGray, new Point((int)(AShip.location.X - AShip.stats.width / 2), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 7)));
 							if (AShip.stats.TotalDeflectorsMax() > 0 || AShip.stats.cold_deflectors > 0)
 								if (AShip.deflectors >= AShip.stats.deflectors)
-									g.DrawString(AShip.deflectors + "/" + AShip.stats.TotalDeflectorsMax(), Font, new SolidBrush(Color.DimGray), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 14 - See.Y)));
+									g.DrawString(AShip.deflectors + "/" + AShip.stats.TotalDeflectorsMax(), Font, new SolidBrush(Color.DimGray), new Point((int)(AShip.location.X - AShip.stats.width / 2), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 14)));
 								else
-									g.DrawString(AShip.deflectors + "/" + AShip.stats.TotalDeflectorsMax() + " <- " + AShip.deflector_cooldown, Font, new SolidBrush(Color.Gray), new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 14 - See.Y)));
+									g.DrawString(AShip.deflectors + "/" + AShip.stats.TotalDeflectorsMax() + " <- " + AShip.deflector_cooldown, Font, new SolidBrush(Color.Gray), new Point((int)(AShip.location.X - AShip.stats.width / 2), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 14)));
 							if (AShip.emp_damage > 0.0f)
-								g.DrawString(((int)AShip.emp_damage).ToString(), Font, Brushes.DarkBlue, new Point((int)(AShip.location.X - AShip.stats.width / 2 - See.X), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 - See.Y + 7 + 7 + 7)));
+								g.DrawString(((int)AShip.emp_damage).ToString(), Font, Brushes.DarkBlue, new Point((int)(AShip.location.X - AShip.stats.width / 2), (int)(AShip.location.Y + AShip.stats.width / 2 + 7 + 7 + 7 + 7)));
 						}
 					}
+				}
+		    }
 			// text infos
+			g.ResetTransform();
 			g.DrawImage(SpriteArray.GetSpriteArray("Upgrades").GetSprite(5, 0), new PointF(0, 0));
 			g.DrawString(game.world.CountTeamShips(game.player_team) + " / " + game.player_team.ship_count_limit, new Font("Consolas", 10f), Brushes.Gray, new Point(32, 8));
 			// special infos
@@ -514,14 +533,14 @@ namespace Flee {
 
 		/* Camera */
 		public void ClampCameraLocationToArena() {
-			if (See.X < 0)
-				See.X = 0;
-			if (See.Y < 0)
-				See.Y = 0;
-			if (See.X > game.world.ArenaSize.Width - DrawBox.Width)
-				See.X = game.world.ArenaSize.Width - DrawBox.Width;
-			if (See.Y > game.world.ArenaSize.Height - DrawBox.Height)
-				See.Y = game.world.ArenaSize.Height - DrawBox.Height;
+			if (camera_location.X < 0)
+				camera_location.X = 0;
+			if (camera_location.Y < 0)
+				camera_location.Y = 0;
+			if (camera_location.X > game.world.ArenaSize.Width)
+				camera_location.X = game.world.ArenaSize.Width;
+			if (camera_location.Y > game.world.ArenaSize.Height)
+				camera_location.Y = game.world.ArenaSize.Height;
 		}
 
 		/* Minimap Controls */
@@ -532,8 +551,8 @@ namespace Flee {
 			if (menuHost.Visible)
 				return;
 			MiniMDown = true;
-			See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBox.Width / 2d);
-			See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBox.Height / 2d);
+			camera_location.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBox.Width / 2d);
+			camera_location.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBox.Height / 2d);
 			ClampCameraLocationToArena();
 		}
 		private void MiniBox_MouseUp(object sender, MouseEventArgs e) {
@@ -545,8 +564,8 @@ namespace Flee {
 			if (!game.IsPlaying())
 				return;
 			if (MiniMDown) {
-				See.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBox.Width / 2d);
-				See.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBox.Height / 2d);
+				camera_location.X = (int)(((e.X / (float)MiniBox.Width) * game.world.ArenaSize.Width) - DrawBox.Width / 2d);
+				camera_location.Y = (int)(((e.Y / (float)MiniBox.Height) * game.world.ArenaSize.Height) - DrawBox.Height / 2d);
 				ClampCameraLocationToArena();
 			}
 		}
@@ -602,20 +621,26 @@ namespace Flee {
 		private Point down_mouse_location = new Point(0, 0);
 		private Point last_mouse_location = new Point(0, 0);
 		private bool SelectStarted = false;
+		private Point ScreenLocationToWorldLocation(Point p) {
+			Point rst = new Point();
+			rst.X = (int)(((float)p.X - (float)DrawBox.Width / 2.0f) * (1.0f / camera_scale) + camera_location.X);
+			rst.Y = (int)(((float)p.Y - (float)DrawBox.Height / 2.0f) * (1.0f / camera_scale) + camera_location.Y);
+			return (rst);
+		}
 		private void DrawBox_MouseDown(object sender, MouseEventArgs e) {
-			last_mouse_location = new Point((int)(e.X * DrawBox.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBox.Height / (double)DrawBox.Height + See.Y));
+			last_mouse_location = ScreenLocationToWorldLocation(new Point(e.X, e.Y)); //    new Point((int)(e.X * DrawBox.Width / (double)DrawBox.Width + camera_location.X), (int)(e.Y * DrawBox.Height / (double)DrawBox.Height + camera_location.Y));
 			if (e.Button == MouseButtons.Left) {
 				SelectStarted = true;
-				down_mouse_location = new Point((int)(e.X * DrawBox.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBox.Height / (double)DrawBox.Height + See.Y));
+				down_mouse_location = ScreenLocationToWorldLocation(new Point(e.X, e.Y)); //     = new Point((int)(e.X * DrawBox.Width / (double)DrawBox.Width + camera_location.X), (int)(e.Y * DrawBox.Height / (double)DrawBox.Height + camera_location.Y));
 			}
 		}
 		private void DrawBox_MouseMove(object sender, MouseEventArgs e) {
-			last_mouse_location = new Point((int)(e.X * DrawBox.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBox.Height / (double)DrawBox.Height + See.Y));
+			last_mouse_location = ScreenLocationToWorldLocation(new Point(e.X, e.Y)); //     = new Point((int)(e.X * DrawBox.Width / (double)DrawBox.Width + camera_location.X), (int)(e.Y * DrawBox.Height / (double)DrawBox.Height + camera_location.Y));
 		}
 		private void DrawBox_MouseUp(object sender, MouseEventArgs e) {
 			if (e.Button == MouseButtons.Left) {
 				SelectStarted = false;
-				last_mouse_location = new Point((int)(e.X * DrawBox.Width / (double)DrawBox.Width + See.X), (int)(e.Y * DrawBox.Height / (double)DrawBox.Height + See.Y));
+				last_mouse_location = ScreenLocationToWorldLocation(new Point(e.X, e.Y)); //     = new Point((int)(e.X * DrawBox.Width / (double)DrawBox.Width + camera_location.X), (int)(e.Y * DrawBox.Height / (double)DrawBox.Height + camera_location.Y));
 				SelectInSquare();
 			}
 			if (e.Button == MouseButtons.Right) {
@@ -860,6 +885,10 @@ namespace Flee {
 		}
 		private void buttonSettingsOk_Click(object sender, EventArgs e) {
 			PressedEscape();
+		}
+		private void mouse_wheel(object sender, MouseEventArgs e) {
+			camera_scale *= (e.Delta > 0) ? 1.2f : (1.0f / 1.2f);
+			camera_scale = Math.Max(0.3f, Math.Min(4.0f, camera_scale));
 		}
 
 	}
