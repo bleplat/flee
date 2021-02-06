@@ -65,8 +65,8 @@ outfit Faster_Steering_II
 #
 
 outfit Engine_Afterburner
-	desc=Allow to temporarily slightly increase the ship speed while also reloading 2 deflectors.
-	desc=/!\ Space afterburn is slow to ignite.
+	desc=Allow to temporarily slightly but instantly increase the ship speed while also reloading 2 deflectors.
+	desc=/!\ Space afterburn is slow to reset.
 	sprite_coords=0;5
 	sprite_color=Purple
 	required_stat=speed > 0
@@ -78,7 +78,7 @@ ability Afterburn
 	sprite_coords=0;5
 	sprite_color=Purple
 	required_upgrade=Engine_Afterburner
-	time=150
-	once_effect=ship.speed += 35
-	once_effect=ship.deflectors += 2
+	time=350
+	purchase_effect=ship.speed += 35
+	purchase_effect=ship.deflectors += 2
 	cost=0;0;0;50

@@ -2,13 +2,16 @@
 # Diplomacy
 #
 
+#	require_nonbot=1
 ability SOS
 	desc=Call nearby allies to help you.
+	desc=/!\ Your allies may not answer to the call.
 	sprite_coords=2;0
 	sprite_color=Orange
-	require_nonbot=1
-	time=1
-	once_effect=sos()
+	cost=5;1;0;0
+	time=100
+	purchase_effect=effect() EFF_sos
+	purchase_effect=sos()
 
 ability Self-Destruct
 	desc=At least, this ship wont be salvaged.

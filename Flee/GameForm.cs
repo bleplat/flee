@@ -819,6 +819,7 @@ namespace Flee {
 								//ship.team.ship_count_approximation += AUp.required_team_slots;
 								ship.Upgrading = AUp;
 								ship.upgrade_progress = 0;
+								AUp.ApplyPurchaseEffects(ship);
 							}
 				// next item
 				x = x + 1;

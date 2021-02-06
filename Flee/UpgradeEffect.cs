@@ -54,13 +54,28 @@ namespace Flee {
 			if (this.advanced) {
 				switch (this.op) {
 				// politic
-				case "sos()": return;
+				case "sos()":
+					foreach (Ship other_ship in ship.world.ships) {
+						if (Helpers.DistanceSQ(ref other_ship.location, ref ship.location) < Math.Pow(ship.world.ArenaSize.Width / 3, 2)) {
+							if (!ReferenceEquals(other_ship, ship)) {
+								if (other_ship.bot_ship && !other_ship.auto) {
+									if (other_ship.agressivity >= 1.0f && (int)other_ship.agressivity % 5 == 1) {
+										if (other_ship.team.IsFriendWith(ship.team)) {
+											other_ship.ai_target = ship;
+											other_ship.AISetOrder((int)Ship.AIOrder.Escort, true);
+										}
+									}
+								}
+							}
+						}
+					}
+					return;
 				case "suicide()": ship.integrity = Int32.MinValue / 2; return;
 				case "free()": ship.SetTeam(ship.world.wilderness_team); return;
 				case "give()": return;
 				case "surrender()": return;
 				case "affinity()": ship.team.affinity = (AffinityEnum)Enum.Parse(typeof(AffinityEnum), this.right); return;
-				//
+				// not politic
 				case "effect()":
 					ship.world.effects.Add(new Effect(-1, this.right, ship.location, ship.direction, ship.speed_vec));
 					return;
