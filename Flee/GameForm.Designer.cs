@@ -83,6 +83,11 @@ namespace Flee {
 			this.PictureBoxAvailableMetal = new System.Windows.Forms.PictureBox();
 			this._DrawBox = new System.Windows.Forms.PictureBox();
 			this._Ticker = new System.Windows.Forms.Timer(this.components);
+			this.trackBarDifficulty = new System.Windows.Forms.TrackBar();
+			this.label9 = new System.Windows.Forms.Label();
+			this.label10 = new System.Windows.Forms.Label();
+			this.label11 = new System.Windows.Forms.Label();
+			this.label12 = new System.Windows.Forms.Label();
 			this.MainPanel.SuspendLayout();
 			this.menuMain.SuspendLayout();
 			this.menuHost.SuspendLayout();
@@ -104,6 +109,7 @@ namespace Flee {
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableCrystal)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableMetal)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this._DrawBox)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.trackBarDifficulty)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// MainPanel
@@ -111,8 +117,8 @@ namespace Flee {
 			this.MainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.MainPanel.Controls.Add(this.menuMain);
 			this.MainPanel.Controls.Add(this.menuHost);
+			this.MainPanel.Controls.Add(this.menuMain);
 			this.MainPanel.Controls.Add(this.menuSettings);
 			this.MainPanel.Controls.Add(this._MiniBox);
 			this.MainPanel.Controls.Add(this.UpgradeDetails);
@@ -132,9 +138,9 @@ namespace Flee {
 			this.menuMain.Controls.Add(this.buttonHost);
 			this.menuMain.Controls.Add(this.Label3);
 			this.menuMain.Controls.Add(this.Label4);
-			this.menuMain.Location = new System.Drawing.Point(224, 192);
+			this.menuMain.Location = new System.Drawing.Point(196, 124);
 			this.menuMain.Name = "menuMain";
-			this.menuMain.Size = new System.Drawing.Size(346, 237);
+			this.menuMain.Size = new System.Drawing.Size(403, 347);
 			this.menuMain.TabIndex = 6;
 			// 
 			// buttonSettings
@@ -142,7 +148,7 @@ namespace Flee {
 			this.buttonSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.buttonSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.buttonSettings.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.buttonSettings.Location = new System.Drawing.Point(59, 146);
+			this.buttonSettings.Location = new System.Drawing.Point(87, 201);
 			this.buttonSettings.Name = "buttonSettings";
 			this.buttonSettings.Size = new System.Drawing.Size(230, 34);
 			this.buttonSettings.TabIndex = 7;
@@ -155,7 +161,7 @@ namespace Flee {
 			this.buttonMultiplayer.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.buttonMultiplayer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.buttonMultiplayer.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.buttonMultiplayer.Location = new System.Drawing.Point(59, 106);
+			this.buttonMultiplayer.Location = new System.Drawing.Point(87, 161);
 			this.buttonMultiplayer.Name = "buttonMultiplayer";
 			this.buttonMultiplayer.Size = new System.Drawing.Size(230, 34);
 			this.buttonMultiplayer.TabIndex = 7;
@@ -168,7 +174,7 @@ namespace Flee {
 			this.buttonHost.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.buttonHost.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.buttonHost.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.buttonHost.Location = new System.Drawing.Point(59, 66);
+			this.buttonHost.Location = new System.Drawing.Point(87, 121);
 			this.buttonHost.Name = "buttonHost";
 			this.buttonHost.Size = new System.Drawing.Size(230, 34);
 			this.buttonHost.TabIndex = 7;
@@ -192,9 +198,9 @@ namespace Flee {
 			this.Label4.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.Label4.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Label4.ForeColor = System.Drawing.Color.Silver;
-			this.Label4.Location = new System.Drawing.Point(0, 196);
+			this.Label4.Location = new System.Drawing.Point(0, 306);
 			this.Label4.Name = "Label4";
-			this.Label4.Size = new System.Drawing.Size(346, 41);
+			this.Label4.Size = new System.Drawing.Size(403, 41);
 			this.Label4.TabIndex = 8;
 			this.Label4.Text = "Some sprites are from MillionthVector.\r\nThe music is from PhilippWeigl.";
 			this.Label4.TextAlign = System.Drawing.ContentAlignment.BottomRight;
@@ -202,6 +208,11 @@ namespace Flee {
 			// menuHost
 			// 
 			this.menuHost.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.menuHost.Controls.Add(this.trackBarDifficulty);
+			this.menuHost.Controls.Add(this.label12);
+			this.menuHost.Controls.Add(this.label11);
+			this.menuHost.Controls.Add(this.label10);
+			this.menuHost.Controls.Add(this.label9);
 			this.menuHost.Controls.Add(this.SeedTextBox);
 			this.menuHost.Controls.Add(this.label6);
 			this.menuHost.Controls.Add(this.checkBoxLAN);
@@ -225,7 +236,7 @@ namespace Flee {
 			this.SeedTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.SeedTextBox.Font = new System.Drawing.Font("Corbel", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.SeedTextBox.ForeColor = System.Drawing.Color.White;
-			this.SeedTextBox.Location = new System.Drawing.Point(151, 108);
+			this.SeedTextBox.Location = new System.Drawing.Point(151, 85);
 			this.SeedTextBox.Name = "SeedTextBox";
 			this.SeedTextBox.Size = new System.Drawing.Size(230, 33);
 			this.SeedTextBox.TabIndex = 6;
@@ -249,7 +260,7 @@ namespace Flee {
 			this.checkBoxLAN.AutoCheck = false;
 			this.checkBoxLAN.AutoSize = true;
 			this.checkBoxLAN.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBoxLAN.Location = new System.Drawing.Point(151, 192);
+			this.checkBoxLAN.Location = new System.Drawing.Point(151, 169);
 			this.checkBoxLAN.Name = "checkBoxLAN";
 			this.checkBoxLAN.Size = new System.Drawing.Size(79, 17);
 			this.checkBoxLAN.TabIndex = 9;
@@ -261,7 +272,7 @@ namespace Flee {
 			this.checkBoxArmagedon.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.checkBoxArmagedon.AutoSize = true;
 			this.checkBoxArmagedon.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.checkBoxArmagedon.Location = new System.Drawing.Point(151, 215);
+			this.checkBoxArmagedon.Location = new System.Drawing.Point(151, 192);
 			this.checkBoxArmagedon.Name = "checkBoxArmagedon";
 			this.checkBoxArmagedon.Size = new System.Drawing.Size(111, 17);
 			this.checkBoxArmagedon.TabIndex = 9;
@@ -273,7 +284,7 @@ namespace Flee {
 			this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.label5.AutoSize = true;
 			this.label5.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label5.Location = new System.Drawing.Point(5, 188);
+			this.label5.Location = new System.Drawing.Point(5, 165);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(63, 19);
 			this.label5.TabIndex = 1;
@@ -284,7 +295,7 @@ namespace Flee {
 			this.Label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.Label2.AutoSize = true;
 			this.Label2.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.Label2.Location = new System.Drawing.Point(5, 108);
+			this.Label2.Location = new System.Drawing.Point(5, 85);
 			this.Label2.Name = "Label2";
 			this.Label2.Size = new System.Drawing.Size(47, 19);
 			this.Label2.TabIndex = 1;
@@ -308,7 +319,7 @@ namespace Flee {
 			this._RandomizeButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this._RandomizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this._RandomizeButton.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this._RandomizeButton.Location = new System.Drawing.Point(156, 140);
+			this._RandomizeButton.Location = new System.Drawing.Point(156, 117);
 			this._RandomizeButton.Name = "_RandomizeButton";
 			this._RandomizeButton.Size = new System.Drawing.Size(221, 31);
 			this._RandomizeButton.TabIndex = 7;
@@ -757,6 +768,64 @@ namespace Flee {
 			this._Ticker.Interval = 25;
 			this._Ticker.Tick += new System.EventHandler(this.Ticker_Tick);
 			// 
+			// trackBarDifficulty
+			// 
+			this.trackBarDifficulty.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.trackBarDifficulty.BackColor = System.Drawing.Color.Black;
+			this.trackBarDifficulty.LargeChange = 2;
+			this.trackBarDifficulty.Location = new System.Drawing.Point(151, 247);
+			this.trackBarDifficulty.Name = "trackBarDifficulty";
+			this.trackBarDifficulty.Size = new System.Drawing.Size(226, 45);
+			this.trackBarDifficulty.TabIndex = 10;
+			this.trackBarDifficulty.TickStyle = System.Windows.Forms.TickStyle.Both;
+			// 
+			// label9
+			// 
+			this.label9.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label9.AutoSize = true;
+			this.label9.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label9.Location = new System.Drawing.Point(149, 225);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(70, 19);
+			this.label9.TabIndex = 11;
+			this.label9.Text = "Difficulty";
+			// 
+			// label10
+			// 
+			this.label10.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label10.AutoSize = true;
+			this.label10.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+			this.label10.Location = new System.Drawing.Point(154, 288);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(45, 15);
+			this.label10.TabIndex = 11;
+			this.label10.Text = "normal";
+			// 
+			// label11
+			// 
+			this.label11.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label11.AutoSize = true;
+			this.label11.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+			this.label11.Location = new System.Drawing.Point(250, 288);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(31, 15);
+			this.label11.TabIndex = 11;
+			this.label11.Text = "hard";
+			// 
+			// label12
+			// 
+			this.label12.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label12.AutoSize = true;
+			this.label12.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+			this.label12.Location = new System.Drawing.Point(317, 288);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(63, 15);
+			this.label12.TabIndex = 11;
+			this.label12.Text = "nightmare";
+			// 
 			// GameForm
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -801,6 +870,7 @@ namespace Flee {
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableCrystal)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableMetal)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this._DrawBox)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.trackBarDifficulty)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -1027,5 +1097,10 @@ namespace Flee {
 		internal Label label6;
 		private Button buttonSettings;
 		private Button buttonMultiplayer;
+		private Label label9;
+		private TrackBar trackBarDifficulty;
+		private Label label11;
+		private Label label10;
+		private Label label12;
 	}
 }

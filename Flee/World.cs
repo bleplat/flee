@@ -9,6 +9,7 @@ namespace Flee {
 		/* Definition */
 		public Size ArenaSize = new Size(30000, 30000);
 		public int Seed;
+		public float difficulty = 1.0f;
 
 		/* Characteristics */
 		public Point background_offset = new Point(0, 0);
@@ -85,7 +86,8 @@ namespace Flee {
 		public bool is_invaded_by_ascended = false;
 
 		/* Creation */
-		public World(int seed, bool armagedon) {
+		public World(int seed, float difficulty, bool armagedon) {
+			this.difficulty = difficulty;
 			InitSectors();
 			Random rand = InitRandom(seed);
 			InitSpecialTeams();
@@ -123,10 +125,13 @@ namespace Flee {
 			{
 				teams.Add(new Team(this, AffinityEnum.Friendly, new Random(rand.Next()))); // at least 1 Friendly
 				teams.Add(new Team(this, AffinityEnum.Dissident, new Random(rand.Next()))); // at least 1 Dissident
+				teams[teams.Count - 1].damage_multiplicator = difficulty;
 				teams.Add(new Team(this, AffinityEnum.Hostile, new Random(rand.Next()))); // at least 1 Hostile
+				teams[teams.Count - 1].damage_multiplicator = difficulty;
 				int additional_team_count = rand.Next(2, 5); // 2, 3 or 4 additional teams
 				for (int i = 0; i < additional_team_count; i++) {
 					teams.Add(new Team(this, RandomNPCAffinity(rand), new Random(rand.Next())));
+					teams[teams.Count - 1].damage_multiplicator = difficulty;
 				}
 			}
 		}
@@ -203,6 +208,7 @@ namespace Flee {
 			Team player_team = new Team(this);
 			player_team.InitPlayerTeam(affinity);
 			teams.Add(player_team);
+			player_team.damage_multiplicator = (1.0f / difficulty);
 			// Player Station
 			ShipStats station_type = Loader.RandomShipFromRole(rand, (int)ShipRole.Shipyard | (int)ShipRole.Playable);
 			PointF origin = SpawnStations(new Random(rand.Next()), station_type, player_team, 3);

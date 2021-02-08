@@ -85,6 +85,7 @@ namespace Flee {
 			game.is_multiplayer = checkBoxLAN.Checked;
 			game.is_host = true;
 			game.armagedon = checkBoxArmagedon.Checked;
+			game.difficulty = 1.0f + trackBarDifficulty.Value * 0.1f;
 		}
 		void SetMenuVisible(bool visible) {
 			StartPlayingButton.Enabled = visible;

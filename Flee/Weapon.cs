@@ -75,7 +75,6 @@ namespace Flee {
 				PointF spawn_point = PTN; // TODO: simplify
 				int time_to_live = (int)(stats.range / (double)stats.celerity);
 				double power = this.stats.power;
-				power *= this.ship.team.damage_multiplicator;
 				int dispersion = stats.sub_ammos;
 				//if ((base_stats.special & (int)SpecialBits.Straight) != 0)
 				//	QA = ship.direction;

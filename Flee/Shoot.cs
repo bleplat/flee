@@ -53,8 +53,8 @@ namespace Flee {
 		public Shoot(ref World world, Weapon weapon, PointF location, float direction, float speed = -1) : base(ref world) {
 			this.time_to_live = (int)(weapon.stats.range / weapon.stats.celerity);
 			this.Team = weapon.ship.team;
-			this.power = weapon.stats.power / weapon.stats.sub_ammos;
-			this.emp_power = weapon.stats.emp_power / weapon.stats.sub_ammos;
+			this.power = weapon.stats.power / weapon.stats.sub_ammos * weapon.ship.team.damage_multiplicator;
+			this.emp_power = weapon.stats.emp_power / weapon.stats.sub_ammos * weapon.ship.team.damage_multiplicator;
 			this.special = weapon.stats.special;
 			this.type = weapon.stats.sprite;
 			this.location = location;

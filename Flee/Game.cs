@@ -22,6 +22,7 @@ namespace Flee {
 		public bool is_multiplayer = false;
 		public bool is_host = true;
 		public bool armagedon = true;
+		public float difficulty = 1.0f;
 
 		/* Members */
 		GameForm parent_form = null;
@@ -38,7 +39,7 @@ namespace Flee {
 			this.is_multiplayer = false;
 			this.is_host = true;
 			// create the world
-			world = new World(seed, armagedon);
+			world = new World(seed, difficulty, armagedon);
 			player_team = world.CreateAndSpawnPlayer(AffinityEnum.Friendly);
 			// set playing
 			play_state = PlayState.Playing;
