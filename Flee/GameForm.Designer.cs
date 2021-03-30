@@ -30,13 +30,12 @@ namespace Flee {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
 			this.MainPanel = new System.Windows.Forms.Panel();
-			this.menuMain = new System.Windows.Forms.Panel();
-			this.buttonSettings = new System.Windows.Forms.Button();
-			this.buttonMultiplayer = new System.Windows.Forms.Button();
-			this.buttonHost = new System.Windows.Forms.Button();
-			this.Label3 = new System.Windows.Forms.Label();
-			this.Label4 = new System.Windows.Forms.Label();
 			this.menuHost = new System.Windows.Forms.Panel();
+			this.trackBarDifficulty = new System.Windows.Forms.TrackBar();
+			this.label12 = new System.Windows.Forms.Label();
+			this.label11 = new System.Windows.Forms.Label();
+			this.label10 = new System.Windows.Forms.Label();
+			this.label9 = new System.Windows.Forms.Label();
 			this.SeedTextBox = new System.Windows.Forms.TextBox();
 			this.label6 = new System.Windows.Forms.Label();
 			this.checkBoxLAN = new System.Windows.Forms.CheckBox();
@@ -45,6 +44,12 @@ namespace Flee {
 			this.Label2 = new System.Windows.Forms.Label();
 			this._StartPlayingButton = new System.Windows.Forms.Button();
 			this._RandomizeButton = new System.Windows.Forms.Button();
+			this.menuMain = new System.Windows.Forms.Panel();
+			this.buttonSettings = new System.Windows.Forms.Button();
+			this.buttonMultiplayer = new System.Windows.Forms.Button();
+			this.buttonHost = new System.Windows.Forms.Button();
+			this.Label3 = new System.Windows.Forms.Label();
+			this.Label4 = new System.Windows.Forms.Label();
 			this.menuSettings = new System.Windows.Forms.Panel();
 			this.buttonSettingsOk = new System.Windows.Forms.Button();
 			this.label8 = new System.Windows.Forms.Label();
@@ -83,14 +88,10 @@ namespace Flee {
 			this.PictureBoxAvailableMetal = new System.Windows.Forms.PictureBox();
 			this._DrawBox = new System.Windows.Forms.PictureBox();
 			this._Ticker = new System.Windows.Forms.Timer(this.components);
-			this.trackBarDifficulty = new System.Windows.Forms.TrackBar();
-			this.label9 = new System.Windows.Forms.Label();
-			this.label10 = new System.Windows.Forms.Label();
-			this.label11 = new System.Windows.Forms.Label();
-			this.label12 = new System.Windows.Forms.Label();
 			this.MainPanel.SuspendLayout();
-			this.menuMain.SuspendLayout();
 			this.menuHost.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackBarDifficulty)).BeginInit();
+			this.menuMain.SuspendLayout();
 			this.menuSettings.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._MiniBox)).BeginInit();
 			this.UpgradeDetails.SuspendLayout();
@@ -109,7 +110,6 @@ namespace Flee {
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableCrystal)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableMetal)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this._DrawBox)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.trackBarDifficulty)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// MainPanel
@@ -129,81 +129,6 @@ namespace Flee {
 			this.MainPanel.Name = "MainPanel";
 			this.MainPanel.Size = new System.Drawing.Size(800, 600);
 			this.MainPanel.TabIndex = 0;
-			// 
-			// menuMain
-			// 
-			this.menuMain.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.menuMain.Controls.Add(this.buttonSettings);
-			this.menuMain.Controls.Add(this.buttonMultiplayer);
-			this.menuMain.Controls.Add(this.buttonHost);
-			this.menuMain.Controls.Add(this.Label3);
-			this.menuMain.Controls.Add(this.Label4);
-			this.menuMain.Location = new System.Drawing.Point(196, 124);
-			this.menuMain.Name = "menuMain";
-			this.menuMain.Size = new System.Drawing.Size(403, 347);
-			this.menuMain.TabIndex = 6;
-			// 
-			// buttonSettings
-			// 
-			this.buttonSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.buttonSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.buttonSettings.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.buttonSettings.Location = new System.Drawing.Point(87, 201);
-			this.buttonSettings.Name = "buttonSettings";
-			this.buttonSettings.Size = new System.Drawing.Size(230, 34);
-			this.buttonSettings.TabIndex = 7;
-			this.buttonSettings.Text = "Settings";
-			this.buttonSettings.UseVisualStyleBackColor = true;
-			this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
-			// 
-			// buttonMultiplayer
-			// 
-			this.buttonMultiplayer.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.buttonMultiplayer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.buttonMultiplayer.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.buttonMultiplayer.Location = new System.Drawing.Point(87, 161);
-			this.buttonMultiplayer.Name = "buttonMultiplayer";
-			this.buttonMultiplayer.Size = new System.Drawing.Size(230, 34);
-			this.buttonMultiplayer.TabIndex = 7;
-			this.buttonMultiplayer.Text = "Multiplayer";
-			this.buttonMultiplayer.UseVisualStyleBackColor = true;
-			this.buttonMultiplayer.Click += new System.EventHandler(this.buttonMultiplayer_Click);
-			// 
-			// buttonHost
-			// 
-			this.buttonHost.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.buttonHost.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.buttonHost.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.buttonHost.Location = new System.Drawing.Point(87, 121);
-			this.buttonHost.Name = "buttonHost";
-			this.buttonHost.Size = new System.Drawing.Size(230, 34);
-			this.buttonHost.TabIndex = 7;
-			this.buttonHost.Text = "Singleplayer";
-			this.buttonHost.UseVisualStyleBackColor = true;
-			this.buttonHost.Click += new System.EventHandler(this.buttonHost_Click);
-			// 
-			// Label3
-			// 
-			this.Label3.AutoSize = true;
-			this.Label3.Dock = System.Windows.Forms.DockStyle.Top;
-			this.Label3.Font = new System.Drawing.Font("Corbel", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.Label3.Location = new System.Drawing.Point(0, 0);
-			this.Label3.Name = "Label3";
-			this.Label3.Size = new System.Drawing.Size(87, 39);
-			this.Label3.TabIndex = 6;
-			this.Label3.Text = "FLEE";
-			// 
-			// Label4
-			// 
-			this.Label4.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.Label4.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.Label4.ForeColor = System.Drawing.Color.Silver;
-			this.Label4.Location = new System.Drawing.Point(0, 306);
-			this.Label4.Name = "Label4";
-			this.Label4.Size = new System.Drawing.Size(403, 41);
-			this.Label4.TabIndex = 8;
-			this.Label4.Text = "Some sprites are from MillionthVector.\r\nThe music is from PhilippWeigl.";
-			this.Label4.TextAlign = System.Drawing.ContentAlignment.BottomRight;
 			// 
 			// menuHost
 			// 
@@ -228,6 +153,64 @@ namespace Flee {
 			this.menuHost.Size = new System.Drawing.Size(385, 353);
 			this.menuHost.TabIndex = 5;
 			this.menuHost.Visible = false;
+			// 
+			// trackBarDifficulty
+			// 
+			this.trackBarDifficulty.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.trackBarDifficulty.BackColor = System.Drawing.Color.Black;
+			this.trackBarDifficulty.LargeChange = 2;
+			this.trackBarDifficulty.Location = new System.Drawing.Point(151, 247);
+			this.trackBarDifficulty.Name = "trackBarDifficulty";
+			this.trackBarDifficulty.Size = new System.Drawing.Size(226, 45);
+			this.trackBarDifficulty.TabIndex = 10;
+			this.trackBarDifficulty.TickStyle = System.Windows.Forms.TickStyle.Both;
+			// 
+			// label12
+			// 
+			this.label12.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label12.AutoSize = true;
+			this.label12.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+			this.label12.Location = new System.Drawing.Point(317, 288);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(63, 15);
+			this.label12.TabIndex = 11;
+			this.label12.Text = "nightmare";
+			// 
+			// label11
+			// 
+			this.label11.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label11.AutoSize = true;
+			this.label11.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+			this.label11.Location = new System.Drawing.Point(250, 288);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(31, 15);
+			this.label11.TabIndex = 11;
+			this.label11.Text = "hard";
+			// 
+			// label10
+			// 
+			this.label10.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label10.AutoSize = true;
+			this.label10.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+			this.label10.Location = new System.Drawing.Point(154, 288);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(45, 15);
+			this.label10.TabIndex = 11;
+			this.label10.Text = "normal";
+			// 
+			// label9
+			// 
+			this.label9.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label9.AutoSize = true;
+			this.label9.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label9.Location = new System.Drawing.Point(149, 225);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(70, 19);
+			this.label9.TabIndex = 11;
+			this.label9.Text = "Difficulty";
 			// 
 			// SeedTextBox
 			// 
@@ -327,6 +310,81 @@ namespace Flee {
 			this._RandomizeButton.UseVisualStyleBackColor = true;
 			this._RandomizeButton.Click += new System.EventHandler(this.RandomizeButton_Click);
 			// 
+			// menuMain
+			// 
+			this.menuMain.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.menuMain.Controls.Add(this.buttonSettings);
+			this.menuMain.Controls.Add(this.buttonMultiplayer);
+			this.menuMain.Controls.Add(this.buttonHost);
+			this.menuMain.Controls.Add(this.Label3);
+			this.menuMain.Controls.Add(this.Label4);
+			this.menuMain.Location = new System.Drawing.Point(196, 124);
+			this.menuMain.Name = "menuMain";
+			this.menuMain.Size = new System.Drawing.Size(403, 347);
+			this.menuMain.TabIndex = 6;
+			// 
+			// buttonSettings
+			// 
+			this.buttonSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.buttonSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonSettings.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.buttonSettings.Location = new System.Drawing.Point(87, 201);
+			this.buttonSettings.Name = "buttonSettings";
+			this.buttonSettings.Size = new System.Drawing.Size(230, 34);
+			this.buttonSettings.TabIndex = 7;
+			this.buttonSettings.Text = "Settings";
+			this.buttonSettings.UseVisualStyleBackColor = true;
+			this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
+			// 
+			// buttonMultiplayer
+			// 
+			this.buttonMultiplayer.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.buttonMultiplayer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonMultiplayer.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.buttonMultiplayer.Location = new System.Drawing.Point(87, 161);
+			this.buttonMultiplayer.Name = "buttonMultiplayer";
+			this.buttonMultiplayer.Size = new System.Drawing.Size(230, 34);
+			this.buttonMultiplayer.TabIndex = 7;
+			this.buttonMultiplayer.Text = "Multiplayer";
+			this.buttonMultiplayer.UseVisualStyleBackColor = true;
+			this.buttonMultiplayer.Click += new System.EventHandler(this.buttonMultiplayer_Click);
+			// 
+			// buttonHost
+			// 
+			this.buttonHost.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.buttonHost.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonHost.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.buttonHost.Location = new System.Drawing.Point(87, 121);
+			this.buttonHost.Name = "buttonHost";
+			this.buttonHost.Size = new System.Drawing.Size(230, 34);
+			this.buttonHost.TabIndex = 7;
+			this.buttonHost.Text = "Singleplayer";
+			this.buttonHost.UseVisualStyleBackColor = true;
+			this.buttonHost.Click += new System.EventHandler(this.buttonHost_Click);
+			// 
+			// Label3
+			// 
+			this.Label3.AutoSize = true;
+			this.Label3.Dock = System.Windows.Forms.DockStyle.Top;
+			this.Label3.Font = new System.Drawing.Font("Corbel", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label3.Location = new System.Drawing.Point(0, 0);
+			this.Label3.Name = "Label3";
+			this.Label3.Size = new System.Drawing.Size(87, 39);
+			this.Label3.TabIndex = 6;
+			this.Label3.Text = "FLEE";
+			// 
+			// Label4
+			// 
+			this.Label4.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.Label4.Font = new System.Drawing.Font("Constantia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label4.ForeColor = System.Drawing.Color.Silver;
+			this.Label4.Location = new System.Drawing.Point(0, 306);
+			this.Label4.Name = "Label4";
+			this.Label4.Size = new System.Drawing.Size(403, 41);
+			this.Label4.TabIndex = 8;
+			this.Label4.Text = "Some sprites are from MillionthVector.\r\nThe music is from PhilippWeigl.";
+			this.Label4.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+			// 
 			// menuSettings
 			// 
 			this.menuSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -420,9 +478,9 @@ namespace Flee {
 			this.UpgradeDetails.Controls.Add(this.PriceSlotsIcon);
 			this.UpgradeDetails.Controls.Add(this.PriceUIcon);
 			this.UpgradeDetails.Controls.Add(this.PriceMIcon);
-			this.UpgradeDetails.Location = new System.Drawing.Point(152, 12);
+			this.UpgradeDetails.Location = new System.Drawing.Point(152, 16);
 			this.UpgradeDetails.Name = "UpgradeDetails";
-			this.UpgradeDetails.Size = new System.Drawing.Size(412, 94);
+			this.UpgradeDetails.Size = new System.Drawing.Size(412, 99);
 			this.UpgradeDetails.TabIndex = 4;
 			this.UpgradeDetails.Visible = false;
 			// 
@@ -487,7 +545,7 @@ namespace Flee {
 			this.UpDesc.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.UpDesc.Location = new System.Drawing.Point(0, 42);
 			this.UpDesc.Name = "UpDesc";
-			this.UpDesc.Size = new System.Drawing.Size(410, 50);
+			this.UpDesc.Size = new System.Drawing.Size(410, 55);
 			this.UpDesc.TabIndex = 0;
 			this.UpDesc.Text = "Description";
 			// 
@@ -768,64 +826,6 @@ namespace Flee {
 			this._Ticker.Interval = 25;
 			this._Ticker.Tick += new System.EventHandler(this.Ticker_Tick);
 			// 
-			// trackBarDifficulty
-			// 
-			this.trackBarDifficulty.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.trackBarDifficulty.BackColor = System.Drawing.Color.Black;
-			this.trackBarDifficulty.LargeChange = 2;
-			this.trackBarDifficulty.Location = new System.Drawing.Point(151, 247);
-			this.trackBarDifficulty.Name = "trackBarDifficulty";
-			this.trackBarDifficulty.Size = new System.Drawing.Size(226, 45);
-			this.trackBarDifficulty.TabIndex = 10;
-			this.trackBarDifficulty.TickStyle = System.Windows.Forms.TickStyle.Both;
-			// 
-			// label9
-			// 
-			this.label9.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.label9.AutoSize = true;
-			this.label9.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label9.Location = new System.Drawing.Point(149, 225);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(70, 19);
-			this.label9.TabIndex = 11;
-			this.label9.Text = "Difficulty";
-			// 
-			// label10
-			// 
-			this.label10.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.label10.AutoSize = true;
-			this.label10.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-			this.label10.Location = new System.Drawing.Point(154, 288);
-			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(45, 15);
-			this.label10.TabIndex = 11;
-			this.label10.Text = "normal";
-			// 
-			// label11
-			// 
-			this.label11.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.label11.AutoSize = true;
-			this.label11.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-			this.label11.Location = new System.Drawing.Point(250, 288);
-			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(31, 15);
-			this.label11.TabIndex = 11;
-			this.label11.Text = "hard";
-			// 
-			// label12
-			// 
-			this.label12.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.label12.AutoSize = true;
-			this.label12.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-			this.label12.Location = new System.Drawing.Point(317, 288);
-			this.label12.Name = "label12";
-			this.label12.Size = new System.Drawing.Size(63, 15);
-			this.label12.TabIndex = 11;
-			this.label12.Text = "nightmare";
-			// 
 			// GameForm
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -845,10 +845,11 @@ namespace Flee {
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
 			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
 			this.MainPanel.ResumeLayout(false);
-			this.menuMain.ResumeLayout(false);
-			this.menuMain.PerformLayout();
 			this.menuHost.ResumeLayout(false);
 			this.menuHost.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackBarDifficulty)).EndInit();
+			this.menuMain.ResumeLayout(false);
+			this.menuMain.PerformLayout();
 			this.menuSettings.ResumeLayout(false);
 			this.menuSettings.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this._MiniBox)).EndInit();
@@ -870,7 +871,6 @@ namespace Flee {
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableCrystal)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxAvailableMetal)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this._DrawBox)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.trackBarDifficulty)).EndInit();
 			this.ResumeLayout(false);
 
 		}
